@@ -1,0 +1,32 @@
+{
+  "rows": 964,
+  "tickers": 100,
+  "features": 122,
+  "towers": {
+    "income": 15,
+    "balance": 10,
+    "cashflow": 7,
+    "growth": 9,
+    "profitability": 5,
+    "leverage_liquidity": 7,
+    "efficiency": 5,
+    "per_share": 5,
+    "market_price": 10,
+    "valuation": 8,
+    "management_neo": 14,
+    "ownership": 6,
+    "disclosure_text": 6,
+    "sector_context": 3,
+    "macro_regime": 4,
+    "form": 6,
+    "bbref_bridge": 2
+  },
+  "model": "equities_mtnn_v4_transformer_d64_b1",
+  "dim": 64,
+  "fusion": "transformer",
+  "val_recall": 0.6984924623115578,
+  "test_recall": 0.89,
+  "purity": 0.6423079228992542,
+  "sector_acc": 0.6188630490956072,
+  "cqs": 0.6108
+}

@@ -1,0 +1,99 @@
+{
+  "trained": "2026-07-16 14:13",
+  "model": "equities_mtnn_v4_transformer_d64_b1",
+  "epochs": 50,
+  "best_epoch": 40,
+  "best_val_recall_at_10": 0.6984924623115578,
+  "dim": 64,
+  "fusion": "transformer",
+  "tower_blocks": 1,
+  "towers": {
+    "income": 15,
+    "balance": 10,
+    "cashflow": 7,
+    "growth": 9,
+    "profitability": 5,
+    "leverage_liquidity": 7,
+    "efficiency": 5,
+    "per_share": 5,
+    "market_price": 10,
+    "valuation": 8,
+    "management_neo": 14,
+    "ownership": 6,
+    "disclosure_text": 6,
+    "sector_context": 3,
+    "macro_regime": 4,
+    "form": 6,
+    "bbref_bridge": 2
+  },
+  "positive_pairs": 864,
+  "final_loss": 1.8528175354003906,
+  "held_out_recall": {
+    "train": {
+      "pairs": 565,
+      "recall_at_10_mtnn": 1.0
+    },
+    "val": {
+      "pairs": 199,
+      "recall_at_10_mtnn": 0.6984924623115578
+    },
+    "test": {
+      "pairs": 100,
+      "recall_at_10_mtnn": 0.89
+    },
+    "all": {
+      "pairs": 864,
+      "recall_at_10_mtnn": 0.918
+    }
+  },
+  "cross_cycle_archetype_purity_at_20": 0.6423079228992542,
+  "sector_top1_acc": 0.6188630490956072,
+  "next_profile": {
+    "val": {
+      "rows": 199,
+      "mae_z": 0.2161567360162735,
+      "r2": 0.1503,
+      "rmse": 0.5597
+    },
+    "test": {
+      "rows": 100,
+      "mae_z": 0.26977360248565674,
+      "r2": 0.1341,
+      "rmse": 0.6054
+    }
+  },
+  "market_directional_acc": null,
+  "loss_weights": {
+    "archetype": 0.25,
+    "sector": 0.15,
+    "profile": 0.12,
+    "next_profile": 0.1,
+    "skills": 0.2,
+    "valuation": 0.12,
+    "market": 0.12,
+    "vol": 0.05,
+    "health": 0.08,
+    "payout": 0.05,
+    "mgmt": 0.08,
+    "own": 0.05
+  },
+  "composite": {
+    "cqs": 0.6108,
+    "recall_at_10": 0.89,
+    "purity_at_20": 0.6423079228992542,
+    "next_r2": 0.1341,
+    "sector_acc": 0.6188630490956072,
+    "market_acc": null,
+    "parts": {
+      "recall": 0.89,
+      "purity": 0.6423079228992542,
+      "r2_clip": 0.1341,
+      "sector": 0.6188630490956072,
+      "market_bonus": 0.0
+    }
+  },
+  "promote": {
+    "ok": true,
+    "reason": "CQS 0.6108"
+  }
+}
