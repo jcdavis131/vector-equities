@@ -2,7 +2,7 @@
 
 **Solo personal project, no connection to employer, built with public/free-tier only — Port of Vector Hoops MTNN**
 
-**LIVE PROD: 964 company-FYs • 100 tickers • 17 towers • 64-d transformer MTNN • val 69.8% test 89% purity 64.2% CQS 0.611**
+**LIVE PROD: 2741 company-FYs • 283 tickers • 17 towers • 64-d transformer MTNN • val 69.8% test 89% purity 64.2% CQS 0.611**
 
 Hoops 12,966 player-seasons → Equities REAL: SEC EDGAR CompanyFacts XBRL (curl fallback, UA Cameron Davis, <10 req/s) 2015-2024 summary cache 20 tags <5KB each, per-FY z ±4, 122 feats, 17 families, 12 skills, 8 archetypes, 11 GICS
 

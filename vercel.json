@@ -1,0 +1,25 @@
+{
+  "cleanUrls": true,
+  "redirects": [
+    {
+      "destination": "https://equities.dumbmodel.com/:path*",
+      "has": [{"type": "host", "value": "equities.jcamd.com"}],
+      "permanent": true,
+      "source": "/:path*"
+    },
+    {
+      "destination": "/model",
+      "permanent": true,
+      "source": "/dashboard"
+    },
+    {
+      "destination": "/",
+      "permanent": true,
+      "source": "/wiki"
+    }
+  ],
+  "rewrites": [
+    {"destination": "/model.html", "source": "/model"},
+    {"destination": "/trends.html", "source": "/trends"}
+  ]
+}

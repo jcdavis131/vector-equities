@@ -1,6 +1,6 @@
 {
-  "rows": 964,
-  "tickers": 100,
+  "rows": 2741,
+  "tickers": 283,
   "features": 122,
   "towers": {
     "income": 15,
@@ -21,12 +21,12 @@
     "form": 6,
     "bbref_bridge": 2
   },
-  "model": "equities_mtnn_v4_transformer_d64_b1",
+  "model": "equities_mtnn_v4_transformer_d64_b2",
   "dim": 64,
   "fusion": "transformer",
-  "val_recall": 0.6984924623115578,
-  "test_recall": 0.89,
-  "purity": 0.6423079228992542,
-  "sector_acc": 0.6188630490956072,
-  "cqs": 0.6108
+  "val_recall": 0.882,
+  "test_recall": 0.8621908127208481,
+  "purity": 0.6586502845602109,
+  "sector_acc": 0.5535885167464115,
+  "cqs": 0.6347
 }
