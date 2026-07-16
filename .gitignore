@@ -1,0 +1,15 @@
+# Build artifacts (large)
+pipeline/data/train_matrix.npz
+pipeline/data/embedding.npz
+pipeline/data/skill_labels.npz
+pipeline/data/archetype_model.npz
+pipeline/data/mtnn_best.pt
+pipeline/cache/
+__pycache__/
+*.pyc
+data/*.npz
+data/*.pt
+.DS_Store
+# Keep small reports
+!pipeline/data/mtnn_report.json
+!pipeline/data/feature_manifest.json
