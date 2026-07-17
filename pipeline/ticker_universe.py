@@ -9,7 +9,7 @@ DATA_DIR.mkdir(parents=True, exist_ok=True)
 CACHE = ROOT / "pipeline" / "cache"
 CACHE.mkdir(parents=True, exist_ok=True)
 
-USER_AGENT = "Cameron Davis jcdavis131@gmail.com VectorEquities research"
+USER_AGENT = "VectorEquities research (contact via GitHub)"
 
 SP500_FALLBACK = [
     ("AAPL","Technology"),("MSFT","Technology"),("NVDA","Technology"),("AMZN","Consumer Discretionary"),

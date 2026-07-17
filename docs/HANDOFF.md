@@ -61,6 +61,4 @@ python3 pipeline/fetch_market.py
 - Hyper-param sweep: tower_hidden 96->128, d-model 96->128, fusion_hidden 256, nce-temp 0.07-0.10
 - Add Procrustes era alignment like hoops for rate regimes
 
-## Solo disclaimer
 
-Solo personal project, no connection to employer, built with public/free-tier only

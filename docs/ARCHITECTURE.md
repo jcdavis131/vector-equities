@@ -1,6 +1,5 @@
 # Vector Equities — Architecture Deep Dive
 
-Solo personal project, no connection to employer, built with public/free-tier only
 
 ## Overview
 Vector Equities is a direct port of Vector Hoops MTNN to public equities. Company-fiscal-year replaces player-season.
@@ -78,7 +77,7 @@ Hoops baseline: recall ~0.977, purity 0.67, CQS 0.793. Equities synthetic target
 - Best-checkpoint on composite proxy (0.5*recall+0.5*purity) not recall-only (fixes early-epoch restore bug)
 - FY embedding 12-d learned for macro regime
 
-## Data Pipeline (free-tier only)
+## Data Pipeline
 
 - SEC EDGAR: `fetch_sec.py` CompanyFacts XBRL US-GAAP -> financials, 10-K MD&A text length/sentiment, risk count
 - DEF 14A: `parse_neo.py` NEO features: count, CEO age/tenure/founder, total comp breakdown, equity pct, pay ratio, board indep, insider own
@@ -104,6 +103,3 @@ Hoops baseline: recall ~0.977, purity 0.67, CQS 0.793. Equities synthetic target
 - Add insider transaction sequence model
 - Build web artifact dashboard like vector-hoops: PCA 3 map, archetype explorer, skill lens
 
-## Disclaimer
-
-Solo personal project, no connection to employer, built with public/free-tier only. SEC data public domain. Market data via yfinance free tier.

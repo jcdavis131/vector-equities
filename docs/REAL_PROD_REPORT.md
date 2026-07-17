@@ -2,14 +2,13 @@
 
 **Final Checkpoint: 2026-07-16 14:18 CT — 964 company-FYs • 100 tickers • Transformer beats Gated**
 
-Solo personal project, no connection to employer, built with public/free-tier only
 
 ---
 
 ## Data Pipeline — Real SEC
 
 - Source: SEC EDGAR CompanyFacts XBRL via `https://data.sec.gov/api/xbrl/companyfacts/CIK{cik}.json`
-- Client: curl -sL fallback, UA `Cameron Davis jcdavis131@gmail.com`, sleep 0.25s (<10 req/s), RSS <60MB
+- Client: curl -sL fallback, UA `SEC contact (configured via User-Agent)`, sleep 0.25s (<10 req/s), RSS <60MB
 - Summary cache: `pipeline/cache/sec/sec_summary/summary_*.json` — 20 tags <5KB each (Revenues, NetIncomeLoss, GrossProfit, Assets, Liabilities, Equity, Cash, Debt, EPS, OCF, CAPEX, etc) + 10 FYs 2015-2024
 - Universe: `pipeline/data/universe.json` 300 tickers S&P 100 + 200 large cap, CIK mapped via SEC tickers.json
 - Build: `build_real_from_summary.py` per-FY median impute + z ±4 (Hoops DNA), 17 families ~122 feats, 12 skills, 11 GICS, 8 archetypes k-means on 14-d profile
@@ -85,8 +84,4 @@ Split: Train FY<=2020? Actually split by positive pairs chronological, holdout 1
 - `pipeline/data/embedding.npz` (964,64) TRUE
 - `pipeline/data/mtnn_best.pt` 2.6M
 - `assets/` 3.1M total
-
-## Solo Disclaimer
-
-Solo personal project, no connection to employer, built with public/free-tier only. SEC public domain, yfinance free tier.
 

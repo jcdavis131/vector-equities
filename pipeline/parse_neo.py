@@ -3,7 +3,6 @@ DEF 14A Named Executive Officer parser — extracts NEO features for management 
 
 Real parser would use SEC 14A HTML + Regex. This scaffold demonstrates fields.
 
-Solo personal project, no connection to employer, built with public/free-tier only
 """
 from pathlib import Path
 import re, json

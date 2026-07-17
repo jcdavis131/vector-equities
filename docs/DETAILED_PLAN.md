@@ -30,7 +30,7 @@ Families designed (122 feats):
 - Bridge (2): Altman Z, Piotroski F
 
 Fetchers:
-- `fetch_sec.py`: https://data.sec.gov/api/xbrl/companyfacts/CIK{cik}.json with User-Agent Cameron Davis, caches to pipeline/cache/sec — public domain
+- `fetch_sec.py`: https://data.sec.gov/api/xbrl/companyfacts/CIK{cik}.json with User-Agent VectorEquities, caches to pipeline/cache/sec — public domain
 - `fetch_market.py`: yfinance Ticker history free tier -> returns, vol, beta, cache
 - `parse_neo.py`: DEF 14A regex parser scaffold, founder detection, age extract, compensation fields
 - Synthetic fallback: `build_demo_v3.py` generates 1200x12 with sector+archetype biased bases + AR1 continuity 0.80 (tunable) for offline CI, honest per-FY z-score

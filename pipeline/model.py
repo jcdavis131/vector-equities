@@ -2,7 +2,6 @@
 Vector Equities MTNN Model — port of vector-hoops train_mtnn.py architectures
 ResidualTower, GatedFusion, ConcatFusion, TransformerFusion, SkillTowers, MTNN
 
-Solo personal project, no connection to employer, built with public/free-tier only
 """
 from __future__ import annotations
 import torch

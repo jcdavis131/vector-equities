@@ -2,7 +2,6 @@
 Market data fetcher via yfinance (free tier) — price, returns, vol, beta
 Cache to pipeline/cache/market
 
-Solo personal project, no connection to employer, built with public/free-tier only
 """
 from pathlib import Path
 import json, time
