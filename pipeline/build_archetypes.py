@@ -1,8 +1,11 @@
 """
 Build archetypes via k-means on financial profile (like hoops 8 archetypes)
 """
-import json, numpy as np
+
+import json
 from pathlib import Path
+
+import numpy as np
 from sklearn.cluster import KMeans
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -10,9 +13,16 @@ DATA_PATH = ROOT / "pipeline" / "data" / "train_matrix.npz"
 MANIFEST_PATH = ROOT / "pipeline" / "data" / "feature_manifest.json"
 
 ARCHETYPE_NAMES = [
-    "Compounder","Cash_Cow","Turnaround","HyperGrowth_SaaS",
-    "Heavy_Industrial","Bank_Capital_Heavy","Moonshot_Bio","Serial_Acquirer"
+    "Compounder",
+    "Cash_Cow",
+    "Turnaround",
+    "HyperGrowth_SaaS",
+    "Heavy_Industrial",
+    "Bank_Capital_Heavy",
+    "Moonshot_Bio",
+    "Serial_Acquirer",
 ]
+
 
 def build(k=8):
     npz = np.load(DATA_PATH, allow_pickle=False)
@@ -30,7 +40,9 @@ def build(k=8):
 
     # save
     out = ROOT / "pipeline" / "data" / "archetype_model.npz"
-    np.savez_compressed(out, centroids=centroids, labels=labels, names=np.array(ARCHETYPE_NAMES))
+    np.savez_compressed(
+        out, centroids=centroids, labels=labels, names=np.array(ARCHETYPE_NAMES)
+    )
     print(f"Archetypes k={k}: built, inertia {km.inertia_:.1f}")
     # overwrite cluster in train_matrix? We'll keep but report
     # update train_matrix.npz cluster field
@@ -39,5 +51,6 @@ def build(k=8):
     np.savez_compressed(DATA_PATH, **npz_data)
     print(f"Updated cluster in {DATA_PATH}")
 
-if __name__=="__main__":
+
+if __name__ == "__main__":
     build()

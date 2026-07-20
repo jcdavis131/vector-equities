@@ -5,13 +5,16 @@ career_pos_emb = year_norm + absolute year + tenure + time_since_ceo + macro
 
 Outputs tensors for model_career.ContinuousFusion + CausalCareerTransformer
 """
-from pathlib import Path
-import json, bisect
+
+import json
 from collections import defaultdict
+from pathlib import Path
+
 import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA_DIR = ROOT / "pipeline" / "data"
+
 
 def load_bundle(path=None):
     # try v5 first, fallback v4, then train_matrix
@@ -22,7 +25,7 @@ def load_bundle(path=None):
         DATA_DIR / "train_matrix.npz",
     ]
     if path:
-        candidates = [Path(path)] + candidates
+        candidates = [Path(path), *candidates]
     npz_path = None
     for c in candidates:
         if c.exists():
@@ -41,25 +44,55 @@ def load_bundle(path=None):
     tickers = npz["ticker"].astype(str)
     names = npz["name"].astype(str) if "name" in npz else tickers
     fiscal_years = npz["fiscal_year"].astype(str)
-    sectors = npz["sector"].astype(str) if "sector" in npz else np.array(["Unknown"]*len(Z))
+    sectors = (
+        npz["sector"].astype(str) if "sector" in npz else np.array(["Unknown"] * len(Z))
+    )
     # forward labels if exist
     fwd = {}
-    for k in ["fwd_ret_1m","fwd_ret_3m","fwd_ret_6m","fwd_ret_12m","fwd_vol_6m","fwd_dd_6m","triple_barrier","ceo_change_flag","time_since_ceo","price"]:
+    for k in [
+        "fwd_ret_1m",
+        "fwd_ret_3m",
+        "fwd_ret_6m",
+        "fwd_ret_12m",
+        "fwd_vol_6m",
+        "fwd_dd_6m",
+        "triple_barrier",
+        "ceo_change_flag",
+        "time_since_ceo",
+        "price",
+    ]:
         if k in npz:
             fwd[k] = npz[k]
-    print(f"Loaded bundle {npz_path} N={len(Z)} D={Z.shape[1]} fwd keys={list(fwd.keys())}")
-    return Z, mask, Z_raw, tickers, names, fiscal_years, sectors, manifest, fwd, npz_path
+    print(
+        f"Loaded bundle {npz_path} N={len(Z)} D={Z.shape[1]} fwd keys={list(fwd.keys())}"
+    )
+    return (
+        Z,
+        mask,
+        Z_raw,
+        tickers,
+        names,
+        fiscal_years,
+        sectors,
+        manifest,
+        fwd,
+        npz_path,
+    )
+
 
 def family_slices(manifest):
     fams = defaultdict(list)
-    for j,f in enumerate(manifest["features"]):
+    for j, _f in enumerate(manifest["features"]):
         fam = manifest["families"][j] if j < len(manifest["families"]) else "unknown"
         fams[fam].append(j)
     return dict(fams), manifest["features"]
 
-def build_sequences(Z, mask, Z_raw, tickers, fiscal_years, sectors, manifest, fwd, max_seq_len=10):
+
+def build_sequences(
+    Z, mask, Z_raw, tickers, fiscal_years, sectors, manifest, fwd, max_seq_len=10
+):
     feats = manifest["features"]
-    feat_to_idx = {f:i for i,f in enumerate(feats)}
+    feat_to_idx = {f: i for i, f in enumerate(feats)}
     # time enc sources
     idx_ceo_tenure = feat_to_idx.get("CEO_TENURE", None)
     idx_rate = feat_to_idx.get("RATE_10Y", None)
@@ -69,7 +102,7 @@ def build_sequences(Z, mask, Z_raw, tickers, fiscal_years, sectors, manifest, fw
 
     # group by ticker
     by_ticker = defaultdict(list)
-    for i,(t,s) in enumerate(zip(tickers, fiscal_years)):
+    for i, (t, s) in enumerate(zip(tickers, fiscal_years, strict=False)):
         try:
             fy = int(str(s)[:4])
         except:
@@ -79,7 +112,7 @@ def build_sequences(Z, mask, Z_raw, tickers, fiscal_years, sectors, manifest, fw
     for ticker, lst in by_ticker.items():
         lst_sorted = sorted(lst, key=lambda x: x[0])  # by FY
         # filter to 2015-2024
-        lst_sorted = [(fy,i) for fy,i in lst_sorted if 2015 <= fy <= 2024]
+        lst_sorted = [(fy, i) for fy, i in lst_sorted if 2015 <= fy <= 2024]
         if len(lst_sorted) == 0:
             continue
         # avg rows per ticker etc
@@ -94,7 +127,7 @@ def build_sequences(Z, mask, Z_raw, tickers, fiscal_years, sectors, manifest, fw
         }
         fys = []
         idxs = []
-        for fy,i in lst_sorted:
+        for fy, i in lst_sorted:
             fys.append(fy)
             idxs.append(i)
         seq["fiscal_years"] = np.array(fys, dtype=np.int64)
@@ -103,18 +136,25 @@ def build_sequences(Z, mask, Z_raw, tickers, fiscal_years, sectors, manifest, fw
         sequences.append(seq)
     # sort by ticker for determinism
     sequences = sorted(sequences, key=lambda x: x["ticker"])
-    print(f"Built {len(sequences)} ticker sequences avg len {np.mean([s['valid_len'] for s in sequences]):.2f}")
-    return sequences, feat_to_idx, dict(
-        ceo_tenure=idx_ceo_tenure,
-        rate=idx_rate,
-        vix=idx_vix,
-        price_vs=idx_price_vs,
-        rsi=idx_rsi,
+    print(
+        f"Built {len(sequences)} ticker sequences avg len {np.mean([s['valid_len'] for s in sequences]):.2f}"
     )
+    return (
+        sequences,
+        feat_to_idx,
+        {
+            "ceo_tenure": idx_ceo_tenure,
+            "rate": idx_rate,
+            "vix": idx_vix,
+            "price_vs": idx_price_vs,
+            "rsi": idx_rsi,
+        },
+    )
+
 
 def get_time_enc_for_seq(seq, Z_raw, fwd, feat_idx_map):
     # seq contains indices and fiscal_years
-    L = len(seq["fiscal_years"])
+    len(seq["fiscal_years"])
     max_len = 10
     time_enc = np.zeros((max_len, 8), dtype=np.float32)
     year_norm_seq = np.zeros((max_len, 1), dtype=np.float32)
@@ -130,12 +170,15 @@ def get_time_enc_for_seq(seq, Z_raw, fwd, feat_idx_map):
     ceo_change_seq = np.zeros((max_len,), dtype=np.float32)
     time_since_ceo_seq = np.zeros((max_len,), dtype=np.float32)
 
-    for pos, (fy, orig_idx) in enumerate(zip(seq["fiscal_years"], seq["indices"])):
+    for pos, (fy, orig_idx) in enumerate(
+        zip(seq["fiscal_years"], seq["indices"], strict=False)
+    ):
         if pos >= max_len:
             break
         year_norm = (fy - 2015) / 9.0
-        year_norm_seq[pos,0] = year_norm
+        year_norm_seq[pos, 0] = year_norm
         mask_seq[pos] = True
+
         # raw feature access
         def raw_feat(idx_name):
             j = feat_idx_map.get(idx_name)
@@ -148,6 +191,7 @@ def get_time_enc_for_seq(seq, Z_raw, fwd, feat_idx_map):
                 return float(v)
             except:
                 return 0.0
+
         ceo_tenure = raw_feat("CEO_TENURE")
         rate = raw_feat("RATE_10Y")
         vix = raw_feat("VIX_AVG_FY")
@@ -172,7 +216,7 @@ def get_time_enc_for_seq(seq, Z_raw, fwd, feat_idx_map):
         rate_norm = np.clip(rate / 5.0, 0, 1.5)
         vix_norm = np.clip(vix / 40.0, 0, 1.5)
         # price_vs already 0-1ish, rsi 0-100
-        price_vs_clipped = np.clip(price_vs, 0, 1.5) if price_vs !=0 else 0.9
+        price_vs_clipped = np.clip(price_vs, 0, 1.5) if price_vs != 0 else 0.9
         # rsi from normalized Z_raw? Might be raw 0-100 or normalized. If raw is normalized (z-score) fallback.
         # Heuristic: if rsi raw magnitude <5 likely z-scored, map to 0.5
         if abs(rsi) < 5 and abs(rsi) > 0:
@@ -183,20 +227,23 @@ def get_time_enc_for_seq(seq, Z_raw, fwd, feat_idx_map):
             if abs(rsi) < 4:
                 rsi_norm = 0.5
             else:
-                rsi_norm = np.clip((rsi + 4)/8, 0,1)  # rough
+                rsi_norm = np.clip((rsi + 4) / 8, 0, 1)  # rough
         else:
-            rsi_norm = np.clip(rsi / 100.0, 0,1) if rsi !=0 else 0.5
+            rsi_norm = np.clip(rsi / 100.0, 0, 1) if rsi != 0 else 0.5
 
-        time_enc[pos] = np.array([
-            year_norm,
-            ceo_tenure_norm,
-            time_since_norm,
-            ceo_change,
-            rate_norm,
-            vix_norm,
-            price_vs_clipped,
-            rsi_norm,
-        ], dtype=np.float32)
+        time_enc[pos] = np.array(
+            [
+                year_norm,
+                ceo_tenure_norm,
+                time_since_norm,
+                ceo_change,
+                rate_norm,
+                vix_norm,
+                price_vs_clipped,
+                rsi_norm,
+            ],
+            dtype=np.float32,
+        )
 
         # forward labels
         for key_arr, out_arr in [
@@ -210,7 +257,9 @@ def get_time_enc_for_seq(seq, Z_raw, fwd, feat_idx_map):
             if key_arr in fwd:
                 try:
                     v = fwd[key_arr][orig_idx]
-                    if isinstance(v, (float, np.floating)) and (np.isnan(v) or np.isinf(v)):
+                    if isinstance(v, (float, np.floating)) and (
+                        np.isnan(v) or np.isinf(v)
+                    ):
                         pass
                     else:
                         out_arr[pos] = float(v)
@@ -240,6 +289,7 @@ def get_time_enc_for_seq(seq, Z_raw, fwd, feat_idx_map):
         "time_since_ceo": time_since_ceo_seq,
     }
 
+
 def collate_batch(batch_seqs, Z, mask, Z_raw, fams, feat_list, max_len=10):
     """
     batch_seqs: list of seq dicts from build_sequences
@@ -249,13 +299,17 @@ def collate_batch(batch_seqs, Z, mask, Z_raw, fams, feat_list, max_len=10):
     # family dims
     fam_dims = {fam: len(cols) for fam, cols in fams.items()}
     # init per family
-    xs_seq = {fam: np.zeros((B, max_len, fam_dims[fam]), dtype=np.float32) for fam in fams}
-    ms_seq = {fam: np.zeros((B, max_len, fam_dims[fam]), dtype=np.float32) for fam in fams}
+    xs_seq = {
+        fam: np.zeros((B, max_len, fam_dims[fam]), dtype=np.float32) for fam in fams
+    }
+    ms_seq = {
+        fam: np.zeros((B, max_len, fam_dims[fam]), dtype=np.float32) for fam in fams
+    }
     time_enc_seq = np.zeros((B, max_len, 8), dtype=np.float32)
     year_norm_seq = np.zeros((B, max_len, 1), dtype=np.float32)
     valid_mask = np.zeros((B, max_len), dtype=bool)
     fwd_ret_6m = np.full((B, max_len), np.nan, dtype=np.float32)
-    fwd_ret_1m = np.full((B, max_len), np.nan, dtype=np.float32)
+    np.full((B, max_len), np.nan, dtype=np.float32)
     triple = np.full((B, max_len), -1, dtype=np.int64)
     sectors = []
     tickers = []
@@ -291,13 +345,18 @@ def collate_batch(batch_seqs, Z, mask, Z_raw, fams, feat_list, max_len=10):
         "triple": triple,
     }
 
+
 # For standalone test
 if __name__ == "__main__":
-    Z, mask, Z_raw, tickers, names, fiscal_years, sectors, manifest, fwd, path = load_bundle()
+    Z, mask, Z_raw, tickers, names, fiscal_years, sectors, manifest, fwd, path = (
+        load_bundle()
+    )
     fams, feat_list = family_slices(manifest)
-    seqs, feat_to_idx, extra_idx = build_sequences(Z, mask, Z_raw, tickers, fiscal_years, sectors, manifest, fwd)
+    seqs, feat_to_idx, extra_idx = build_sequences(
+        Z, mask, Z_raw, tickers, fiscal_years, sectors, manifest, fwd
+    )
     print(f"Example seq {seqs[0]}")
     # test time enc for first
-    feat_map = {f:i for i,f in enumerate(feat_list)}
+    feat_map = {f: i for i, f in enumerate(feat_list)}
     enc = get_time_enc_for_seq(seqs[0], Z_raw, fwd, feat_map)
-    print(enc["time_enc"][:seqs[0]["valid_len"]])
+    print(enc["time_enc"][: seqs[0]["valid_len"]])
