@@ -1,0 +1,384 @@
+{
+  "generated_at": "2026-07-20T21:24:18.649920Z",
+  "universe_file": "/home/hatch/workspace/vector-equities/pipeline/data/universe_nasdaq_nyse_common_cik.json",
+  "filing_limits": {
+    "10-K": 1
+  },
+  "slice": {
+    "start": 0,
+    "limit": 20,
+    "total_universe": 1,
+    "processed_this_run": 1
+  },
+  "totals": {
+    "ok": 0,
+    "fail": 1,
+    "total_chunks": 0,
+    "total_entries": 20
+  },
+  "entries": [
+    {
+      "ticker": "AAPL",
+      "cik": "0000320193",
+      "status": "ok",
+      "chunk_count": 42,
+      "has_business": true,
+      "has_risk": true,
+      "has_mda": true,
+      "chunks_file": "/home/hatch/workspace/vector-equities/pipeline/data/chunks_v2/AAPL.json",
+      "filings_fetched": [
+        {
+          "form": "10-K",
+          "accession": "0000320193-25-000079",
+          "primary_doc": "aapl-20250927.htm",
+          "html_path": "/home/hatch/workspace/vector-equities/pipeline/cache/sec_edgar_html/0000320193/000032019325000079_aapl-20250927.htm.html",
+          "status": "ok",
+          "code": "200",
+          "filing_year": "2025",
+          "filing_quarter": "FY"
+        }
+      ]
+    },
+    {
+      "ticker": "META",
+      "cik": "0001326801",
+      "status": "ok",
+      "chunk_count": 114,
+      "has_business": true,
+      "has_risk": true,
+      "has_mda": true,
+      "chunks_file": "/home/hatch/workspace/vector-equities/pipeline/data/chunks_v2/META.json",
+      "filings_fetched": [
+        {
+          "form": "10-K",
+          "accession": "0001628280-26-003942",
+          "primary_doc": "meta-20251231.htm",
+          "html_path": "/home/hatch/workspace/vector-equities/pipeline/cache/sec_edgar_html/0001326801/000162828026003942_meta-20251231.htm.html",
+          "status": "ok",
+          "code": "cached",
+          "filing_year": "2025",
+          "filing_quarter": "FY"
+        }
+      ]
+    },
+    {
+      "ticker": "MSFT",
+      "cik": "0000789019",
+      "status": "ok",
+      "chunk_count": 47,
+      "has_business": true,
+      "has_risk": true,
+      "has_mda": true,
+      "chunks_file": "/home/hatch/workspace/vector-equities/pipeline/data/chunks_v2/MSFT.json",
+      "filings_fetched": [
+        {
+          "form": "10-K",
+          "accession": "0000950170-25-100235",
+          "primary_doc": "msft-20250630.htm",
+          "html_path": "/home/hatch/workspace/vector-equities/pipeline/cache/sec_edgar_html/0000789019/000095017025100235_msft-20250630.htm.html",
+          "status": "ok",
+          "code": "cached",
+          "filing_year": "2025",
+          "filing_quarter": "FY"
+        }
+      ]
+    },
+    {
+      "ticker": "NVDA",
+      "cik": "0001045810",
+      "status": "ok",
+      "chunk_count": 82,
+      "has_business": true,
+      "has_risk": true,
+      "has_mda": true,
+      "chunks_file": "/home/hatch/workspace/vector-equities/pipeline/data/chunks_v2/NVDA.json",
+      "filings_fetched": [
+        {
+          "form": "10-K",
+          "accession": "0001045810-26-000021",
+          "primary_doc": "nvda-20260125.htm",
+          "html_path": "/home/hatch/workspace/vector-equities/pipeline/cache/sec_edgar_html/0001045810/000104581026000021_nvda-20260125.htm.html",
+          "status": "ok",
+          "code": "cached",
+          "filing_year": "2026",
+          "filing_quarter": "FY"
+        }
+      ]
+    },
+    {
+      "ticker": "TSLA",
+      "cik": "0001318605",
+      "status": "ok",
+      "chunk_count": 71,
+      "has_business": true,
+      "has_risk": true,
+      "has_mda": true,
+      "chunks_file": "/home/hatch/workspace/vector-equities/pipeline/data/chunks_v2/TSLA.json",
+      "filings_fetched": [
+        {
+          "form": "10-K",
+          "accession": "0001628280-26-003952",
+          "primary_doc": "tsla-20251231.htm",
+          "html_path": "/home/hatch/workspace/vector-equities/pipeline/cache/sec_edgar_html/0001318605/000162828026003952_tsla-20251231.htm.html",
+          "status": "ok",
+          "code": "cached",
+          "filing_year": "2025",
+          "filing_quarter": "FY"
+        }
+      ]
+    },
+    {
+      "ticker": "A",
+      "cik": "0001090872",
+      "status": "ok",
+      "chunk_count": 121,
+      "has_business": true,
+      "has_risk": false,
+      "has_mda": true,
+      "chunks_file": "/home/hatch/workspace/vector-equities/pipeline/data/chunks_v2/A.json",
+      "filings_fetched": [
+        {
+          "form": "10-K",
+          "accession": "0001090872-25-000087",
+          "primary_doc": "a-20251031.htm",
+          "html_path": "/home/hatch/workspace/vector-equities/pipeline/cache/sec_edgar_html/0001090872/000109087225000087_a-20251031.htm.html",
+          "status": "ok",
+          "code": "cached",
+          "filing_year": "2025",
+          "filing_quarter": "FY"
+        }
+      ]
+    },
+    {
+      "ticker": "AA",
+      "cik": "0001675149",
+      "status": "ok",
+      "chunk_count": 136,
+      "has_business": true,
+      "has_risk": true,
+      "has_mda": true,
+      "chunks_file": "/home/hatch/workspace/vector-equities/pipeline/data/chunks_v2/AA.json",
+      "filings_fetched": [
+        {
+          "form": "10-K",
+          "accession": "0001193125-26-077167",
+          "primary_doc": "aa-20251231.htm",
+          "html_path": "/home/hatch/workspace/vector-equities/pipeline/cache/sec_edgar_html/0001675149/000119312526077167_aa-20251231.htm.html",
+          "status": "ok",
+          "code": "cached",
+          "filing_year": "2025",
+          "filing_quarter": "FY"
+        }
+      ]
+    },
+    {
+      "ticker": "AACG",
+      "status": "no_target_filings",
+      "chunks": []
+    },
+    {
+      "ticker": "AAL",
+      "cik": "0000006201",
+      "status": "ok",
+      "chunk_count": 104,
+      "has_business": true,
+      "has_risk": true,
+      "has_mda": true,
+      "chunks_file": "/home/hatch/workspace/vector-equities/pipeline/data/chunks_v2/AAL.json",
+      "filings_fetched": [
+        {
+          "form": "10-K",
+          "accession": "0000006201-26-000014",
+          "primary_doc": "aal-20251231.htm",
+          "html_path": "/home/hatch/workspace/vector-equities/pipeline/cache/sec_edgar_html/0000006201/000000620126000014_aal-20251231.htm.html",
+          "status": "ok",
+          "code": "cached",
+          "filing_year": "2025",
+          "filing_quarter": "FY"
+        }
+      ]
+    },
+    {
+      "ticker": "AAME",
+      "cik": "0000008177",
+      "status": "ok",
+      "chunk_count": 50,
+      "has_business": true,
+      "has_risk": true,
+      "has_mda": true,
+      "chunks_file": "/home/hatch/workspace/vector-equities/pipeline/data/chunks_v2/AAME.json",
+      "filings_fetched": [
+        {
+          "form": "10-K",
+          "accession": "0001140361-25-010239",
+          "primary_doc": "ef20038925_10k.htm",
+          "html_path": "/home/hatch/workspace/vector-equities/pipeline/cache/sec_edgar_html/0000008177/000114036125010239_ef20038925_10k.htm.html",
+          "status": "ok",
+          "code": "200",
+          "filing_year": "2024",
+          "filing_quarter": "FY"
+        }
+      ]
+    },
+    {
+      "ticker": "AAOI",
+      "cik": "0001158114",
+      "status": "ok",
+      "chunk_count": 231,
+      "has_business": true,
+      "has_risk": true,
+      "has_mda": true,
+      "chunks_file": "/home/hatch/workspace/vector-equities/pipeline/data/chunks_v2/AAOI.json",
+      "filings_fetched": [
+        {
+          "form": "10-K",
+          "accession": "0001437749-26-005875",
+          "primary_doc": "aaoi20251231_10k.htm",
+          "html_path": "/home/hatch/workspace/vector-equities/pipeline/cache/sec_edgar_html/0001158114/000143774926005875_aaoi20251231_10k.htm.html",
+          "status": "ok",
+          "code": "200",
+          "filing_year": "2025",
+          "filing_quarter": "FY"
+        }
+      ]
+    },
+    {
+      "ticker": "AAON",
+      "cik": "0000824142",
+      "status": "ok",
+      "chunk_count": 58,
+      "has_business": true,
+      "has_risk": true,
+      "has_mda": true,
+      "chunks_file": "/home/hatch/workspace/vector-equities/pipeline/data/chunks_v2/AAON.json",
+      "filings_fetched": [
+        {
+          "form": "10-K",
+          "accession": "0000824142-26-000005",
+          "primary_doc": "aaon-20251231.htm",
+          "html_path": "/home/hatch/workspace/vector-equities/pipeline/cache/sec_edgar_html/0000824142/000082414226000005_aaon-20251231.htm.html",
+          "status": "ok",
+          "code": "200",
+          "filing_year": "2025",
+          "filing_quarter": "FY"
+        }
+      ]
+    },
+    {
+      "ticker": "RCS",
+      "status": "no_target_filings",
+      "chunk_count": 0,
+      "has_business": false,
+      "has_risk": false,
+      "has_mda": false,
+      "chunks_file": "",
+      "filings_fetched": []
+    },
+    {
+      "ticker": "KF",
+      "status": "no_target_filings",
+      "chunk_count": 0,
+      "has_business": false,
+      "has_risk": false,
+      "has_mda": false,
+      "chunks_file": "",
+      "filings_fetched": []
+    },
+    {
+      "ticker": "RCUS",
+      "cik": "0001724521",
+      "status": "ok",
+      "chunk_count": 116,
+      "has_business": true,
+      "has_risk": true,
+      "has_mda": true,
+      "chunks_file": "/home/hatch/workspace/vector-equities/pipeline/data/chunks_v2/RCUS.json",
+      "filings_fetched": [
+        {
+          "form": "10-K",
+          "accession": "0001724521-26-000009",
+          "primary_doc": "rcus-20251231.htm",
+          "html_path": "/home/hatch/workspace/vector-equities/pipeline/cache/sec_edgar_html/0001724521/000172452126000009_rcus-20251231.htm.html",
+          "status": "ok",
+          "code": "cached",
+          "filing_year": "2025",
+          "filing_quarter": "FY"
+        }
+      ]
+    },
+    {
+      "ticker": "RDCM",
+      "status": "no_target_filings",
+      "chunk_count": 0,
+      "has_business": false,
+      "has_risk": false,
+      "has_mda": false,
+      "chunks_file": "",
+      "filings_fetched": []
+    },
+    {
+      "ticker": "KFRC",
+      "cik": "0000930420",
+      "status": "ok",
+      "chunk_count": 60,
+      "has_business": true,
+      "has_risk": true,
+      "has_mda": true,
+      "chunks_file": "/home/hatch/workspace/vector-equities/pipeline/data/chunks_v2/KFRC.json",
+      "filings_fetched": [
+        {
+          "form": "10-K",
+          "accession": "0000930420-26-000007",
+          "primary_doc": "kfrc-20251231.htm",
+          "html_path": "/home/hatch/workspace/vector-equities/pipeline/cache/sec_edgar_html/0000930420/000093042026000007_kfrc-20251231.htm.html",
+          "status": "ok",
+          "code": "200",
+          "filing_year": "2025",
+          "filing_quarter": "FY"
+        }
+      ]
+    },
+    {
+      "ticker": "DAVA",
+      "status": "no_target_filings",
+      "chunk_count": 0,
+      "has_business": false,
+      "has_risk": false,
+      "has_mda": false,
+      "chunks_file": "",
+      "filings_fetched": []
+    },
+    {
+      "ticker": "DB",
+      "status": "no_target_filings",
+      "chunk_count": 0,
+      "has_business": false,
+      "has_risk": false,
+      "has_mda": false,
+      "chunks_file": "",
+      "filings_fetched": []
+    },
+    {
+      "ticker": "DBD",
+      "cik": "0000028823",
+      "status": "no_chunks",
+      "chunk_count": 0,
+      "has_business": false,
+      "has_risk": false,
+      "has_mda": false,
+      "chunks_file": "/home/hatch/workspace/vector-equities/pipeline/data/chunks_v2/DBD.json",
+      "filings_fetched": [
+        {
+          "form": "10-K",
+          "accession": "0000028823-26-000008",
+          "primary_doc": "dbd-20251231.htm",
+          "html_path": "/home/hatch/workspace/vector-equities/pipeline/cache/sec_edgar_html/0000028823/000002882326000008_dbd-20251231.htm.html",
+          "status": "ok",
+          "code": "200",
+          "filing_year": "2025",
+          "filing_quarter": "FY"
+        }
+      ]
+    }
+  ]
+}

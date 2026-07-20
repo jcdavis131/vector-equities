@@ -1,0 +1,234 @@
+[
+  {
+    "ticker": "A",
+    "chunk_count": 121,
+    "has_business": true,
+    "has_risk": false,
+    "has_mda": true,
+    "has_table": true
+  },
+  {
+    "ticker": "AA",
+    "chunk_count": 136,
+    "has_business": true,
+    "has_risk": true,
+    "has_mda": true,
+    "has_table": true
+  },
+  {
+    "ticker": "AAL",
+    "chunk_count": 104,
+    "has_business": true,
+    "has_risk": true,
+    "has_mda": true,
+    "has_table": true
+  },
+  {
+    "ticker": "AAME",
+    "chunk_count": 50,
+    "has_business": true,
+    "has_risk": true,
+    "has_mda": true,
+    "has_table": true
+  },
+  {
+    "ticker": "AAOI",
+    "chunk_count": 231,
+    "has_business": true,
+    "has_risk": true,
+    "has_mda": true,
+    "has_table": true
+  },
+  {
+    "ticker": "AAON",
+    "chunk_count": 58,
+    "has_business": true,
+    "has_risk": true,
+    "has_mda": true,
+    "has_table": true
+  },
+  {
+    "ticker": "AAP",
+    "chunk_count": 72,
+    "has_business": true,
+    "has_risk": true,
+    "has_mda": true,
+    "has_table": true
+  },
+  {
+    "ticker": "AAPL",
+    "chunk_count": 42,
+    "has_business": true,
+    "has_risk": true,
+    "has_mda": true,
+    "has_table": true
+  },
+  {
+    "ticker": "AB",
+    "chunk_count": 0,
+    "has_business": false,
+    "has_risk": false,
+    "has_mda": false,
+    "has_table": false
+  },
+  {
+    "ticker": "ABBV",
+    "chunk_count": 0,
+    "has_business": false,
+    "has_risk": false,
+    "has_mda": false,
+    "has_table": false
+  },
+  {
+    "ticker": "ABCB",
+    "chunk_count": 0,
+    "has_business": false,
+    "has_risk": false,
+    "has_mda": false,
+    "has_table": false
+  },
+  {
+    "ticker": "ABCL",
+    "chunk_count": 0,
+    "has_business": false,
+    "has_risk": false,
+    "has_mda": false,
+    "has_table": false
+  },
+  {
+    "ticker": "AGO",
+    "chunk_count": 226,
+    "has_business": true,
+    "has_risk": true,
+    "has_mda": true,
+    "has_table": true
+  },
+  {
+    "ticker": "AGX",
+    "chunk_count": 114,
+    "has_business": true,
+    "has_risk": true,
+    "has_mda": true,
+    "has_table": true
+  },
+  {
+    "ticker": "DAN",
+    "chunk_count": 74,
+    "has_business": true,
+    "has_risk": true,
+    "has_mda": true,
+    "has_table": true
+  },
+  {
+    "ticker": "DARE",
+    "chunk_count": 132,
+    "has_business": true,
+    "has_risk": true,
+    "has_mda": true,
+    "has_table": true
+  },
+  {
+    "ticker": "DASH",
+    "chunk_count": 138,
+    "has_business": true,
+    "has_risk": true,
+    "has_mda": true,
+    "has_table": true
+  },
+  {
+    "ticker": "DBD",
+    "chunk_count": 0,
+    "has_business": false,
+    "has_risk": false,
+    "has_mda": false,
+    "has_table": false
+  },
+  {
+    "ticker": "KEYS",
+    "chunk_count": 90,
+    "has_business": true,
+    "has_risk": true,
+    "has_mda": true,
+    "has_table": true
+  },
+  {
+    "ticker": "KFFB",
+    "chunk_count": 60,
+    "has_business": true,
+    "has_risk": true,
+    "has_mda": false,
+    "has_table": true
+  },
+  {
+    "ticker": "KFRC",
+    "chunk_count": 60,
+    "has_business": true,
+    "has_risk": true,
+    "has_mda": true,
+    "has_table": true
+  },
+  {
+    "ticker": "KFY",
+    "chunk_count": 77,
+    "has_business": true,
+    "has_risk": true,
+    "has_mda": true,
+    "has_table": true
+  },
+  {
+    "ticker": "META",
+    "chunk_count": 114,
+    "has_business": true,
+    "has_risk": true,
+    "has_mda": true,
+    "has_table": true
+  },
+  {
+    "ticker": "MSFT",
+    "chunk_count": 47,
+    "has_business": true,
+    "has_risk": true,
+    "has_mda": true,
+    "has_table": true
+  },
+  {
+    "ticker": "NVDA",
+    "chunk_count": 82,
+    "has_business": true,
+    "has_risk": true,
+    "has_mda": true,
+    "has_table": true
+  },
+  {
+    "ticker": "RCON",
+    "chunk_count": 127,
+    "has_business": true,
+    "has_risk": false,
+    "has_mda": true,
+    "has_table": true
+  },
+  {
+    "ticker": "RCUS",
+    "chunk_count": 116,
+    "has_business": true,
+    "has_risk": true,
+    "has_mda": true,
+    "has_table": true
+  },
+  {
+    "ticker": "RDI",
+    "chunk_count": 124,
+    "has_business": true,
+    "has_risk": true,
+    "has_mda": true,
+    "has_table": true
+  },
+  {
+    "ticker": "TSLA",
+    "chunk_count": 71,
+    "has_business": true,
+    "has_risk": true,
+    "has_mda": true,
+    "has_table": true
+  }
+]

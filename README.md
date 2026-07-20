@@ -2,14 +2,19 @@
 
 Live: [equities.dumbmodel.com](https://equities.dumbmodel.com) · GitHub: [jcdavis131/vector-equities](https://github.com/jcdavis131/vector-equities)
 
+> Solo personal project, no connection to employer, built with public/free-tier only.
+> **Built in raw WebGPU / WebGL / Canvas — no Unity/Unreal, just browser graphics APIs straight.** Zero engine, raw `<canvas>` + custom shaders, static Vercel.
+
 2741 company-FYs · 283 tickers · 17 family towers · 64-d transformer MTNN · 8 archetypes · 11 GICS sectors
 
 Interactive PCA map of public companies. Each company-year is embedded via 17 residual towers (income, balance, cashflow, growth, profitability, leverage, efficiency, per-share, market, valuation, management, ownership, disclosure, sector, macro, form, bridge) fused by a 4-layer transformer into a 64-d L2-normalized vector. Cosine similarity = business similarity.
 
-- **Data:** SEC EDGAR XBRL CompanyFacts (2015-2024) + market data
-- **Model:** 17× ResidualTower → Transformer fusion (d_model 128, 4L 4H) → 64-d
+- **Data:** SEC EDGAR XBRL CompanyFacts (2015-2024) + market data + V2 10-K chunks (3439 tickers, ~150k chunks, Item 1/1A/7 with tables)
+- **Model:** 17× ResidualTower → Transformer fusion (d_model 128, 4L 4H) → 64-d + wiki embedding tower 384-d MiniLM
 - **Training:** Same-ticker adjacent FY contrastive (InfoNCE) + sector hard negatives
-- **Frontend:** `index.html` loads `assets/real_data.json` (2741 points, 12 skills, PCA xyz)
+- **Frontend:** `index.html` loads `assets/real_data.json` (2741 points, 12 skills, PCA xyz) + `chunks_v2/{TICKER}.json` wiki with tables
+
+
 
 ## Quickstart
 
