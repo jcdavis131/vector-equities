@@ -606,9 +606,9 @@
     "ticker": "XYZ",
     "ticker_sec": "XYZ",
     "cik": "0001512673",
-    "company": "Block",
-    "sector": "Inc.",
-    "sector_raw": "Inc.",
+    "company": "Block, Inc.",
+    "sector": "Financials",
+    "sector_raw": "Financials",
     "exchange": ""
   },
   {
@@ -714,9 +714,9 @@
     "ticker": "BXP",
     "ticker_sec": "BXP",
     "cik": "0001037540",
-    "company": "BXP",
-    "sector": "Inc.",
-    "sector_raw": "Inc.",
+    "company": "BXP, Inc.",
+    "sector": "Real Estate",
+    "sector_raw": "Real Estate",
     "exchange": ""
   },
   {
@@ -1704,9 +1704,9 @@
     "ticker": "FFIV",
     "ticker_sec": "FFIV",
     "cik": "0001048695",
-    "company": "F5",
-    "sector": "Inc.",
-    "sector_raw": "Inc.",
+    "company": "F5, Inc.",
+    "sector": "Technology",
+    "sector_raw": "Information Technology",
     "exchange": ""
   },
   {
@@ -2697,6 +2697,1833 @@
     "company": "Marriott International",
     "sector": "Consumer Discretionary",
     "sector_raw": "Consumer Discretionary",
+    "exchange": ""
+  },
+  {
+    "ticker": "MRSH",
+    "ticker_sec": "MRSH",
+    "cik": "0000062709",
+    "company": "Marsh McLennan",
+    "sector": "Financials",
+    "sector_raw": "Financials",
+    "exchange": ""
+  },
+  {
+    "ticker": "MLM",
+    "ticker_sec": "MLM",
+    "cik": "0000916076",
+    "company": "Martin Marietta Materials",
+    "sector": "Materials",
+    "sector_raw": "Materials",
+    "exchange": ""
+  },
+  {
+    "ticker": "MRVL",
+    "ticker_sec": "MRVL",
+    "cik": "0001835632",
+    "company": "Marvell Technology",
+    "sector": "Technology",
+    "sector_raw": "Information Technology",
+    "exchange": ""
+  },
+  {
+    "ticker": "MAS",
+    "ticker_sec": "MAS",
+    "cik": "0000062996",
+    "company": "Masco",
+    "sector": "Industrials",
+    "sector_raw": "Industrials",
+    "exchange": ""
+  },
+  {
+    "ticker": "MA",
+    "ticker_sec": "MA",
+    "cik": "0001141391",
+    "company": "Mastercard",
+    "sector": "Financials",
+    "sector_raw": "Financials",
+    "exchange": ""
+  },
+  {
+    "ticker": "MKC",
+    "ticker_sec": "MKC",
+    "cik": "0000063754",
+    "company": "McCormick & Company",
+    "sector": "Consumer Staples",
+    "sector_raw": "Consumer Staples",
+    "exchange": ""
+  },
+  {
+    "ticker": "MCD",
+    "ticker_sec": "MCD",
+    "cik": "0000063908",
+    "company": "McDonald's",
+    "sector": "Consumer Discretionary",
+    "sector_raw": "Consumer Discretionary",
+    "exchange": ""
+  },
+  {
+    "ticker": "MCK",
+    "ticker_sec": "MCK",
+    "cik": "0000927653",
+    "company": "McKesson Corporation",
+    "sector": "Healthcare",
+    "sector_raw": "Health Care",
+    "exchange": ""
+  },
+  {
+    "ticker": "MDT",
+    "ticker_sec": "MDT",
+    "cik": "0001613103",
+    "company": "Medtronic",
+    "sector": "Healthcare",
+    "sector_raw": "Health Care",
+    "exchange": ""
+  },
+  {
+    "ticker": "MRK",
+    "ticker_sec": "MRK",
+    "cik": "0000310158",
+    "company": "Merck & Co.",
+    "sector": "Healthcare",
+    "sector_raw": "Health Care",
+    "exchange": ""
+  },
+  {
+    "ticker": "META",
+    "ticker_sec": "META",
+    "cik": "0001326801",
+    "company": "Meta Platforms",
+    "sector": "Communication",
+    "sector_raw": "Communication Services",
+    "exchange": ""
+  },
+  {
+    "ticker": "MET",
+    "ticker_sec": "MET",
+    "cik": "0001099219",
+    "company": "MetLife",
+    "sector": "Financials",
+    "sector_raw": "Financials",
+    "exchange": ""
+  },
+  {
+    "ticker": "MTD",
+    "ticker_sec": "MTD",
+    "cik": "0001037646",
+    "company": "Mettler Toledo",
+    "sector": "Healthcare",
+    "sector_raw": "Health Care",
+    "exchange": ""
+  },
+  {
+    "ticker": "MGM",
+    "ticker_sec": "MGM",
+    "cik": "0000789570",
+    "company": "MGM Resorts",
+    "sector": "Consumer Discretionary",
+    "sector_raw": "Consumer Discretionary",
+    "exchange": ""
+  },
+  {
+    "ticker": "MCHP",
+    "ticker_sec": "MCHP",
+    "cik": "0000827054",
+    "company": "Microchip Technology",
+    "sector": "Technology",
+    "sector_raw": "Information Technology",
+    "exchange": ""
+  },
+  {
+    "ticker": "MU",
+    "ticker_sec": "MU",
+    "cik": "0000723125",
+    "company": "Micron Technology",
+    "sector": "Technology",
+    "sector_raw": "Information Technology",
+    "exchange": ""
+  },
+  {
+    "ticker": "MSFT",
+    "ticker_sec": "MSFT",
+    "cik": "0000789019",
+    "company": "Microsoft",
+    "sector": "Technology",
+    "sector_raw": "Information Technology",
+    "exchange": ""
+  },
+  {
+    "ticker": "MAA",
+    "ticker_sec": "MAA",
+    "cik": "0000912595",
+    "company": "Mid-America Apartment Communities",
+    "sector": "Real Estate",
+    "sector_raw": "Real Estate",
+    "exchange": ""
+  },
+  {
+    "ticker": "MRNA",
+    "ticker_sec": "MRNA",
+    "cik": "0001682852",
+    "company": "Moderna",
+    "sector": "Healthcare",
+    "sector_raw": "Health Care",
+    "exchange": ""
+  },
+  {
+    "ticker": "TAP",
+    "ticker_sec": "TAP",
+    "cik": "0000024545",
+    "company": "Molson Coors Beverage Company",
+    "sector": "Consumer Staples",
+    "sector_raw": "Consumer Staples",
+    "exchange": ""
+  },
+  {
+    "ticker": "MDLZ",
+    "ticker_sec": "MDLZ",
+    "cik": "0001103982",
+    "company": "Mondelez International",
+    "sector": "Consumer Staples",
+    "sector_raw": "Consumer Staples",
+    "exchange": ""
+  },
+  {
+    "ticker": "MPWR",
+    "ticker_sec": "MPWR",
+    "cik": "0001280452",
+    "company": "Monolithic Power Systems",
+    "sector": "Technology",
+    "sector_raw": "Information Technology",
+    "exchange": ""
+  },
+  {
+    "ticker": "MNST",
+    "ticker_sec": "MNST",
+    "cik": "0000865752",
+    "company": "Monster Beverage",
+    "sector": "Consumer Staples",
+    "sector_raw": "Consumer Staples",
+    "exchange": ""
+  },
+  {
+    "ticker": "MCO",
+    "ticker_sec": "MCO",
+    "cik": "0001059556",
+    "company": "Moody's Corporation",
+    "sector": "Financials",
+    "sector_raw": "Financials",
+    "exchange": ""
+  },
+  {
+    "ticker": "MS",
+    "ticker_sec": "MS",
+    "cik": "0000895421",
+    "company": "Morgan Stanley",
+    "sector": "Financials",
+    "sector_raw": "Financials",
+    "exchange": ""
+  },
+  {
+    "ticker": "MOS",
+    "ticker_sec": "MOS",
+    "cik": "0001285785",
+    "company": "Mosaic Company (The)",
+    "sector": "Materials",
+    "sector_raw": "Materials",
+    "exchange": ""
+  },
+  {
+    "ticker": "MSI",
+    "ticker_sec": "MSI",
+    "cik": "0000068505",
+    "company": "Motorola Solutions",
+    "sector": "Technology",
+    "sector_raw": "Information Technology",
+    "exchange": ""
+  },
+  {
+    "ticker": "MSCI",
+    "ticker_sec": "MSCI",
+    "cik": "0001408198",
+    "company": "MSCI Inc.",
+    "sector": "Financials",
+    "sector_raw": "Financials",
+    "exchange": ""
+  },
+  {
+    "ticker": "NDAQ",
+    "ticker_sec": "NDAQ",
+    "cik": "0001120193",
+    "company": "Nasdaq, Inc.",
+    "sector": "Financials",
+    "sector_raw": "Financials",
+    "exchange": ""
+  },
+  {
+    "ticker": "NTAP",
+    "ticker_sec": "NTAP",
+    "cik": "0001002047",
+    "company": "NetApp",
+    "sector": "Technology",
+    "sector_raw": "Information Technology",
+    "exchange": ""
+  },
+  {
+    "ticker": "NFLX",
+    "ticker_sec": "NFLX",
+    "cik": "0001065280",
+    "company": "Netflix",
+    "sector": "Communication",
+    "sector_raw": "Communication Services",
+    "exchange": ""
+  },
+  {
+    "ticker": "NEM",
+    "ticker_sec": "NEM",
+    "cik": "0001164727",
+    "company": "Newmont",
+    "sector": "Materials",
+    "sector_raw": "Materials",
+    "exchange": ""
+  },
+  {
+    "ticker": "NWSA",
+    "ticker_sec": "NWSA",
+    "cik": "0001564708",
+    "company": "News Corp (Class A)",
+    "sector": "Communication",
+    "sector_raw": "Communication Services",
+    "exchange": ""
+  },
+  {
+    "ticker": "NWS",
+    "ticker_sec": "NWS",
+    "cik": "0001564708",
+    "company": "News Corp (Class B)",
+    "sector": "Communication",
+    "sector_raw": "Communication Services",
+    "exchange": ""
+  },
+  {
+    "ticker": "NEE",
+    "ticker_sec": "NEE",
+    "cik": "0000753308",
+    "company": "NextEra Energy",
+    "sector": "Utilities",
+    "sector_raw": "Utilities",
+    "exchange": ""
+  },
+  {
+    "ticker": "NKE",
+    "ticker_sec": "NKE",
+    "cik": "0000320187",
+    "company": "Nike, Inc.",
+    "sector": "Consumer Discretionary",
+    "sector_raw": "Consumer Discretionary",
+    "exchange": ""
+  },
+  {
+    "ticker": "NI",
+    "ticker_sec": "NI",
+    "cik": "0001111711",
+    "company": "NiSource",
+    "sector": "Utilities",
+    "sector_raw": "Utilities",
+    "exchange": ""
+  },
+  {
+    "ticker": "NDSN",
+    "ticker_sec": "NDSN",
+    "cik": "0000072331",
+    "company": "Nordson Corporation",
+    "sector": "Industrials",
+    "sector_raw": "Industrials",
+    "exchange": ""
+  },
+  {
+    "ticker": "NSC",
+    "ticker_sec": "NSC",
+    "cik": "0000702165",
+    "company": "Norfolk Southern",
+    "sector": "Industrials",
+    "sector_raw": "Industrials",
+    "exchange": ""
+  },
+  {
+    "ticker": "NTRS",
+    "ticker_sec": "NTRS",
+    "cik": "0000073124",
+    "company": "Northern Trust",
+    "sector": "Financials",
+    "sector_raw": "Financials",
+    "exchange": ""
+  },
+  {
+    "ticker": "NOC",
+    "ticker_sec": "NOC",
+    "cik": "0001133421",
+    "company": "Northrop Grumman",
+    "sector": "Industrials",
+    "sector_raw": "Industrials",
+    "exchange": ""
+  },
+  {
+    "ticker": "NCLH",
+    "ticker_sec": "NCLH",
+    "cik": "0001513761",
+    "company": "Norwegian Cruise Line Holdings",
+    "sector": "Consumer Discretionary",
+    "sector_raw": "Consumer Discretionary",
+    "exchange": ""
+  },
+  {
+    "ticker": "NRG",
+    "ticker_sec": "NRG",
+    "cik": "0001013871",
+    "company": "NRG Energy",
+    "sector": "Utilities",
+    "sector_raw": "Utilities",
+    "exchange": ""
+  },
+  {
+    "ticker": "NUE",
+    "ticker_sec": "NUE",
+    "cik": "0000073309",
+    "company": "Nucor",
+    "sector": "Materials",
+    "sector_raw": "Materials",
+    "exchange": ""
+  },
+  {
+    "ticker": "NVDA",
+    "ticker_sec": "NVDA",
+    "cik": "0001045810",
+    "company": "Nvidia",
+    "sector": "Technology",
+    "sector_raw": "Information Technology",
+    "exchange": ""
+  },
+  {
+    "ticker": "NVR",
+    "ticker_sec": "NVR",
+    "cik": "0000906163",
+    "company": "NVR, Inc.",
+    "sector": "Consumer Discretionary",
+    "sector_raw": "Consumer Discretionary",
+    "exchange": ""
+  },
+  {
+    "ticker": "NXPI",
+    "ticker_sec": "NXPI",
+    "cik": "0001413447",
+    "company": "NXP Semiconductors",
+    "sector": "Technology",
+    "sector_raw": "Information Technology",
+    "exchange": ""
+  },
+  {
+    "ticker": "ORLY",
+    "ticker_sec": "ORLY",
+    "cik": "0000898173",
+    "company": "O\u2019Reilly Automotive",
+    "sector": "Consumer Discretionary",
+    "sector_raw": "Consumer Discretionary",
+    "exchange": ""
+  },
+  {
+    "ticker": "OXY",
+    "ticker_sec": "OXY",
+    "cik": "0000797468",
+    "company": "Occidental Petroleum",
+    "sector": "Energy",
+    "sector_raw": "Energy",
+    "exchange": ""
+  },
+  {
+    "ticker": "ODFL",
+    "ticker_sec": "ODFL",
+    "cik": "0000878927",
+    "company": "Old Dominion",
+    "sector": "Industrials",
+    "sector_raw": "Industrials",
+    "exchange": ""
+  },
+  {
+    "ticker": "OMC",
+    "ticker_sec": "OMC",
+    "cik": "0000029989",
+    "company": "Omnicom Group",
+    "sector": "Communication",
+    "sector_raw": "Communication Services",
+    "exchange": ""
+  },
+  {
+    "ticker": "ON",
+    "ticker_sec": "ON",
+    "cik": "0001097864",
+    "company": "ON Semiconductor",
+    "sector": "Technology",
+    "sector_raw": "Information Technology",
+    "exchange": ""
+  },
+  {
+    "ticker": "OKE",
+    "ticker_sec": "OKE",
+    "cik": "0001039684",
+    "company": "Oneok",
+    "sector": "Energy",
+    "sector_raw": "Energy",
+    "exchange": ""
+  },
+  {
+    "ticker": "ORCL",
+    "ticker_sec": "ORCL",
+    "cik": "0001341439",
+    "company": "Oracle Corporation",
+    "sector": "Technology",
+    "sector_raw": "Information Technology",
+    "exchange": ""
+  },
+  {
+    "ticker": "OTIS",
+    "ticker_sec": "OTIS",
+    "cik": "0001781335",
+    "company": "Otis Worldwide",
+    "sector": "Industrials",
+    "sector_raw": "Industrials",
+    "exchange": ""
+  },
+  {
+    "ticker": "PCAR",
+    "ticker_sec": "PCAR",
+    "cik": "0000075362",
+    "company": "Paccar",
+    "sector": "Industrials",
+    "sector_raw": "Industrials",
+    "exchange": ""
+  },
+  {
+    "ticker": "PKG",
+    "ticker_sec": "PKG",
+    "cik": "0000075677",
+    "company": "Packaging Corporation of America",
+    "sector": "Materials",
+    "sector_raw": "Materials",
+    "exchange": ""
+  },
+  {
+    "ticker": "PLTR",
+    "ticker_sec": "PLTR",
+    "cik": "0001321655",
+    "company": "Palantir Technologies",
+    "sector": "Technology",
+    "sector_raw": "Information Technology",
+    "exchange": ""
+  },
+  {
+    "ticker": "PANW",
+    "ticker_sec": "PANW",
+    "cik": "0001327567",
+    "company": "Palo Alto Networks",
+    "sector": "Technology",
+    "sector_raw": "Information Technology",
+    "exchange": ""
+  },
+  {
+    "ticker": "PSKY",
+    "ticker_sec": "PSKY",
+    "cik": "0002041610",
+    "company": "Paramount Skydance Corporation",
+    "sector": "Communication",
+    "sector_raw": "Communication Services",
+    "exchange": ""
+  },
+  {
+    "ticker": "PH",
+    "ticker_sec": "PH",
+    "cik": "0000076334",
+    "company": "Parker Hannifin",
+    "sector": "Industrials",
+    "sector_raw": "Industrials",
+    "exchange": ""
+  },
+  {
+    "ticker": "PAYX",
+    "ticker_sec": "PAYX",
+    "cik": "0000723531",
+    "company": "Paychex",
+    "sector": "Industrials",
+    "sector_raw": "Industrials",
+    "exchange": ""
+  },
+  {
+    "ticker": "PYPL",
+    "ticker_sec": "PYPL",
+    "cik": "0001633917",
+    "company": "PayPal",
+    "sector": "Financials",
+    "sector_raw": "Financials",
+    "exchange": ""
+  },
+  {
+    "ticker": "PNR",
+    "ticker_sec": "PNR",
+    "cik": "0000077360",
+    "company": "Pentair",
+    "sector": "Industrials",
+    "sector_raw": "Industrials",
+    "exchange": ""
+  },
+  {
+    "ticker": "PEP",
+    "ticker_sec": "PEP",
+    "cik": "0000077476",
+    "company": "PepsiCo",
+    "sector": "Consumer Staples",
+    "sector_raw": "Consumer Staples",
+    "exchange": ""
+  },
+  {
+    "ticker": "PFE",
+    "ticker_sec": "PFE",
+    "cik": "0000078003",
+    "company": "Pfizer",
+    "sector": "Healthcare",
+    "sector_raw": "Health Care",
+    "exchange": ""
+  },
+  {
+    "ticker": "PCG",
+    "ticker_sec": "PCG",
+    "cik": "0001004980",
+    "company": "PG&E Corporation",
+    "sector": "Utilities",
+    "sector_raw": "Utilities",
+    "exchange": ""
+  },
+  {
+    "ticker": "PM",
+    "ticker_sec": "PM",
+    "cik": "0001413329",
+    "company": "Philip Morris International",
+    "sector": "Consumer Staples",
+    "sector_raw": "Consumer Staples",
+    "exchange": ""
+  },
+  {
+    "ticker": "PSX",
+    "ticker_sec": "PSX",
+    "cik": "0001534701",
+    "company": "Phillips 66",
+    "sector": "Energy",
+    "sector_raw": "Energy",
+    "exchange": ""
+  },
+  {
+    "ticker": "PNW",
+    "ticker_sec": "PNW",
+    "cik": "0000764622",
+    "company": "Pinnacle West Capital",
+    "sector": "Utilities",
+    "sector_raw": "Utilities",
+    "exchange": ""
+  },
+  {
+    "ticker": "PNC",
+    "ticker_sec": "PNC",
+    "cik": "0000713676",
+    "company": "PNC Financial Services",
+    "sector": "Financials",
+    "sector_raw": "Financials",
+    "exchange": ""
+  },
+  {
+    "ticker": "PPG",
+    "ticker_sec": "PPG",
+    "cik": "0000079879",
+    "company": "PPG Industries",
+    "sector": "Materials",
+    "sector_raw": "Materials",
+    "exchange": ""
+  },
+  {
+    "ticker": "PPL",
+    "ticker_sec": "PPL",
+    "cik": "0000922224",
+    "company": "PPL Corporation",
+    "sector": "Utilities",
+    "sector_raw": "Utilities",
+    "exchange": ""
+  },
+  {
+    "ticker": "PFG",
+    "ticker_sec": "PFG",
+    "cik": "0001126328",
+    "company": "Principal Financial Group",
+    "sector": "Financials",
+    "sector_raw": "Financials",
+    "exchange": ""
+  },
+  {
+    "ticker": "PG",
+    "ticker_sec": "PG",
+    "cik": "0000080424",
+    "company": "Procter & Gamble",
+    "sector": "Consumer Staples",
+    "sector_raw": "Consumer Staples",
+    "exchange": ""
+  },
+  {
+    "ticker": "PGR",
+    "ticker_sec": "PGR",
+    "cik": "0000080661",
+    "company": "Progressive Corporation",
+    "sector": "Financials",
+    "sector_raw": "Financials",
+    "exchange": ""
+  },
+  {
+    "ticker": "PLD",
+    "ticker_sec": "PLD",
+    "cik": "0001045609",
+    "company": "Prologis",
+    "sector": "Real Estate",
+    "sector_raw": "Real Estate",
+    "exchange": ""
+  },
+  {
+    "ticker": "PRU",
+    "ticker_sec": "PRU",
+    "cik": "0001137774",
+    "company": "Prudential Financial",
+    "sector": "Financials",
+    "sector_raw": "Financials",
+    "exchange": ""
+  },
+  {
+    "ticker": "PEG",
+    "ticker_sec": "PEG",
+    "cik": "0000788784",
+    "company": "Public Service Enterprise Group",
+    "sector": "Utilities",
+    "sector_raw": "Utilities",
+    "exchange": ""
+  },
+  {
+    "ticker": "PTC",
+    "ticker_sec": "PTC",
+    "cik": "0000857005",
+    "company": "PTC Inc.",
+    "sector": "Technology",
+    "sector_raw": "Information Technology",
+    "exchange": ""
+  },
+  {
+    "ticker": "PSA",
+    "ticker_sec": "PSA",
+    "cik": "0001393311",
+    "company": "Public Storage",
+    "sector": "Real Estate",
+    "sector_raw": "Real Estate",
+    "exchange": ""
+  },
+  {
+    "ticker": "PHM",
+    "ticker_sec": "PHM",
+    "cik": "0000822416",
+    "company": "PulteGroup",
+    "sector": "Consumer Discretionary",
+    "sector_raw": "Consumer Discretionary",
+    "exchange": ""
+  },
+  {
+    "ticker": "PWR",
+    "ticker_sec": "PWR",
+    "cik": "0001050915",
+    "company": "Quanta Services",
+    "sector": "Industrials",
+    "sector_raw": "Industrials",
+    "exchange": ""
+  },
+  {
+    "ticker": "QCOM",
+    "ticker_sec": "QCOM",
+    "cik": "0000804328",
+    "company": "Qualcomm",
+    "sector": "Technology",
+    "sector_raw": "Information Technology",
+    "exchange": ""
+  },
+  {
+    "ticker": "DGX",
+    "ticker_sec": "DGX",
+    "cik": "0001022079",
+    "company": "Quest Diagnostics",
+    "sector": "Healthcare",
+    "sector_raw": "Health Care",
+    "exchange": ""
+  },
+  {
+    "ticker": "Q",
+    "ticker_sec": "Q",
+    "cik": "0002058873",
+    "company": "Qnity Electronics",
+    "sector": "Technology",
+    "sector_raw": "Information Technology",
+    "exchange": ""
+  },
+  {
+    "ticker": "RL",
+    "ticker_sec": "RL",
+    "cik": "0001037038",
+    "company": "Ralph Lauren Corporation",
+    "sector": "Consumer Discretionary",
+    "sector_raw": "Consumer Discretionary",
+    "exchange": ""
+  },
+  {
+    "ticker": "RJF",
+    "ticker_sec": "RJF",
+    "cik": "0000720005",
+    "company": "Raymond James Financial",
+    "sector": "Financials",
+    "sector_raw": "Financials",
+    "exchange": ""
+  },
+  {
+    "ticker": "RTX",
+    "ticker_sec": "RTX",
+    "cik": "0000101829",
+    "company": "RTX Corporation",
+    "sector": "Industrials",
+    "sector_raw": "Industrials",
+    "exchange": ""
+  },
+  {
+    "ticker": "O",
+    "ticker_sec": "O",
+    "cik": "0000726728",
+    "company": "Realty Income",
+    "sector": "Real Estate",
+    "sector_raw": "Real Estate",
+    "exchange": ""
+  },
+  {
+    "ticker": "REG",
+    "ticker_sec": "REG",
+    "cik": "0000910606",
+    "company": "Regency Centers",
+    "sector": "Real Estate",
+    "sector_raw": "Real Estate",
+    "exchange": ""
+  },
+  {
+    "ticker": "REGN",
+    "ticker_sec": "REGN",
+    "cik": "0000872589",
+    "company": "Regeneron Pharmaceuticals",
+    "sector": "Healthcare",
+    "sector_raw": "Health Care",
+    "exchange": ""
+  },
+  {
+    "ticker": "RF",
+    "ticker_sec": "RF",
+    "cik": "0001281761",
+    "company": "Regions Financial Corporation",
+    "sector": "Financials",
+    "sector_raw": "Financials",
+    "exchange": ""
+  },
+  {
+    "ticker": "RSG",
+    "ticker_sec": "RSG",
+    "cik": "0001060391",
+    "company": "Republic Services",
+    "sector": "Industrials",
+    "sector_raw": "Industrials",
+    "exchange": ""
+  },
+  {
+    "ticker": "RMD",
+    "ticker_sec": "RMD",
+    "cik": "0000943819",
+    "company": "ResMed",
+    "sector": "Healthcare",
+    "sector_raw": "Health Care",
+    "exchange": ""
+  },
+  {
+    "ticker": "RVTY",
+    "ticker_sec": "RVTY",
+    "cik": "0000031791",
+    "company": "Revvity",
+    "sector": "Healthcare",
+    "sector_raw": "Health Care",
+    "exchange": ""
+  },
+  {
+    "ticker": "HOOD",
+    "ticker_sec": "HOOD",
+    "cik": "0001783879",
+    "company": "Robinhood Markets",
+    "sector": "Financials",
+    "sector_raw": "Financials",
+    "exchange": ""
+  },
+  {
+    "ticker": "ROK",
+    "ticker_sec": "ROK",
+    "cik": "0001024478",
+    "company": "Rockwell Automation",
+    "sector": "Industrials",
+    "sector_raw": "Industrials",
+    "exchange": ""
+  },
+  {
+    "ticker": "ROL",
+    "ticker_sec": "ROL",
+    "cik": "0000084839",
+    "company": "Rollins, Inc.",
+    "sector": "Industrials",
+    "sector_raw": "Industrials",
+    "exchange": ""
+  },
+  {
+    "ticker": "ROP",
+    "ticker_sec": "ROP",
+    "cik": "0000882835",
+    "company": "Roper Technologies",
+    "sector": "Technology",
+    "sector_raw": "Information Technology",
+    "exchange": ""
+  },
+  {
+    "ticker": "ROST",
+    "ticker_sec": "ROST",
+    "cik": "0000745732",
+    "company": "Ross Stores",
+    "sector": "Consumer Discretionary",
+    "sector_raw": "Consumer Discretionary",
+    "exchange": ""
+  },
+  {
+    "ticker": "RCL",
+    "ticker_sec": "RCL",
+    "cik": "0000884887",
+    "company": "Royal Caribbean Group",
+    "sector": "Consumer Discretionary",
+    "sector_raw": "Consumer Discretionary",
+    "exchange": ""
+  },
+  {
+    "ticker": "SPGI",
+    "ticker_sec": "SPGI",
+    "cik": "0000064040",
+    "company": "S&P Global",
+    "sector": "Financials",
+    "sector_raw": "Financials",
+    "exchange": ""
+  },
+  {
+    "ticker": "CRM",
+    "ticker_sec": "CRM",
+    "cik": "0001108524",
+    "company": "Salesforce",
+    "sector": "Technology",
+    "sector_raw": "Information Technology",
+    "exchange": ""
+  },
+  {
+    "ticker": "SNDK",
+    "ticker_sec": "SNDK",
+    "cik": "0002023554",
+    "company": "Sandisk",
+    "sector": "Technology",
+    "sector_raw": "Information Technology",
+    "exchange": ""
+  },
+  {
+    "ticker": "SBAC",
+    "ticker_sec": "SBAC",
+    "cik": "0001034054",
+    "company": "SBA Communications",
+    "sector": "Real Estate",
+    "sector_raw": "Real Estate",
+    "exchange": ""
+  },
+  {
+    "ticker": "SLB",
+    "ticker_sec": "SLB",
+    "cik": "0000087347",
+    "company": "Schlumberger",
+    "sector": "Energy",
+    "sector_raw": "Energy",
+    "exchange": ""
+  },
+  {
+    "ticker": "STX",
+    "ticker_sec": "STX",
+    "cik": "0001137789",
+    "company": "Seagate Technology",
+    "sector": "Technology",
+    "sector_raw": "Information Technology",
+    "exchange": ""
+  },
+  {
+    "ticker": "SRE",
+    "ticker_sec": "SRE",
+    "cik": "0001032208",
+    "company": "Sempra",
+    "sector": "Utilities",
+    "sector_raw": "Utilities",
+    "exchange": ""
+  },
+  {
+    "ticker": "NOW",
+    "ticker_sec": "NOW",
+    "cik": "0001373715",
+    "company": "ServiceNow",
+    "sector": "Technology",
+    "sector_raw": "Information Technology",
+    "exchange": ""
+  },
+  {
+    "ticker": "SHW",
+    "ticker_sec": "SHW",
+    "cik": "0000089800",
+    "company": "Sherwin-Williams",
+    "sector": "Materials",
+    "sector_raw": "Materials",
+    "exchange": ""
+  },
+  {
+    "ticker": "SPG",
+    "ticker_sec": "SPG",
+    "cik": "0001063761",
+    "company": "Simon Property Group",
+    "sector": "Real Estate",
+    "sector_raw": "Real Estate",
+    "exchange": ""
+  },
+  {
+    "ticker": "SWKS",
+    "ticker_sec": "SWKS",
+    "cik": "0000004127",
+    "company": "Skyworks Solutions",
+    "sector": "Technology",
+    "sector_raw": "Information Technology",
+    "exchange": ""
+  },
+  {
+    "ticker": "SJM",
+    "ticker_sec": "SJM",
+    "cik": "0000091419",
+    "company": "J.M. Smucker Company (The)",
+    "sector": "Consumer Staples",
+    "sector_raw": "Consumer Staples",
+    "exchange": ""
+  },
+  {
+    "ticker": "SW",
+    "ticker_sec": "SW",
+    "cik": "0002005951",
+    "company": "Smurfit Westrock",
+    "sector": "Materials",
+    "sector_raw": "Materials",
+    "exchange": ""
+  },
+  {
+    "ticker": "SNA",
+    "ticker_sec": "SNA",
+    "cik": "0000091440",
+    "company": "Snap-on",
+    "sector": "Industrials",
+    "sector_raw": "Industrials",
+    "exchange": ""
+  },
+  {
+    "ticker": "SOLV",
+    "ticker_sec": "SOLV",
+    "cik": "0001964738",
+    "company": "Solventum",
+    "sector": "Healthcare",
+    "sector_raw": "Health Care",
+    "exchange": ""
+  },
+  {
+    "ticker": "SO",
+    "ticker_sec": "SO",
+    "cik": "0000092122",
+    "company": "Southern Company",
+    "sector": "Utilities",
+    "sector_raw": "Utilities",
+    "exchange": ""
+  },
+  {
+    "ticker": "LUV",
+    "ticker_sec": "LUV",
+    "cik": "0000092380",
+    "company": "Southwest Airlines",
+    "sector": "Industrials",
+    "sector_raw": "Industrials",
+    "exchange": ""
+  },
+  {
+    "ticker": "SWK",
+    "ticker_sec": "SWK",
+    "cik": "0000093556",
+    "company": "Stanley Black & Decker",
+    "sector": "Industrials",
+    "sector_raw": "Industrials",
+    "exchange": ""
+  },
+  {
+    "ticker": "SBUX",
+    "ticker_sec": "SBUX",
+    "cik": "0000829224",
+    "company": "Starbucks",
+    "sector": "Consumer Discretionary",
+    "sector_raw": "Consumer Discretionary",
+    "exchange": ""
+  },
+  {
+    "ticker": "STT",
+    "ticker_sec": "STT",
+    "cik": "0000093751",
+    "company": "State Street Corporation",
+    "sector": "Financials",
+    "sector_raw": "Financials",
+    "exchange": ""
+  },
+  {
+    "ticker": "STLD",
+    "ticker_sec": "STLD",
+    "cik": "0001022671",
+    "company": "Steel Dynamics",
+    "sector": "Materials",
+    "sector_raw": "Materials",
+    "exchange": ""
+  },
+  {
+    "ticker": "STE",
+    "ticker_sec": "STE",
+    "cik": "0001757898",
+    "company": "Steris",
+    "sector": "Healthcare",
+    "sector_raw": "Health Care",
+    "exchange": ""
+  },
+  {
+    "ticker": "SYK",
+    "ticker_sec": "SYK",
+    "cik": "0000310764",
+    "company": "Stryker Corporation",
+    "sector": "Healthcare",
+    "sector_raw": "Health Care",
+    "exchange": ""
+  },
+  {
+    "ticker": "SMCI",
+    "ticker_sec": "SMCI",
+    "cik": "0001375365",
+    "company": "Supermicro",
+    "sector": "Technology",
+    "sector_raw": "Information Technology",
+    "exchange": ""
+  },
+  {
+    "ticker": "SYF",
+    "ticker_sec": "SYF",
+    "cik": "0001601712",
+    "company": "Synchrony Financial",
+    "sector": "Financials",
+    "sector_raw": "Financials",
+    "exchange": ""
+  },
+  {
+    "ticker": "SNPS",
+    "ticker_sec": "SNPS",
+    "cik": "0000883241",
+    "company": "Synopsys",
+    "sector": "Technology",
+    "sector_raw": "Information Technology",
+    "exchange": ""
+  },
+  {
+    "ticker": "SYY",
+    "ticker_sec": "SYY",
+    "cik": "0000096021",
+    "company": "Sysco",
+    "sector": "Consumer Staples",
+    "sector_raw": "Consumer Staples",
+    "exchange": ""
+  },
+  {
+    "ticker": "TMUS",
+    "ticker_sec": "TMUS",
+    "cik": "0001283699",
+    "company": "T-Mobile US",
+    "sector": "Communication",
+    "sector_raw": "Communication Services",
+    "exchange": ""
+  },
+  {
+    "ticker": "TROW",
+    "ticker_sec": "TROW",
+    "cik": "0001113169",
+    "company": "T. Rowe Price",
+    "sector": "Financials",
+    "sector_raw": "Financials",
+    "exchange": ""
+  },
+  {
+    "ticker": "TTWO",
+    "ticker_sec": "TTWO",
+    "cik": "0000946581",
+    "company": "Take-Two Interactive",
+    "sector": "Communication",
+    "sector_raw": "Communication Services",
+    "exchange": ""
+  },
+  {
+    "ticker": "TPR",
+    "ticker_sec": "TPR",
+    "cik": "0001116132",
+    "company": "Tapestry, Inc.",
+    "sector": "Consumer Discretionary",
+    "sector_raw": "Consumer Discretionary",
+    "exchange": ""
+  },
+  {
+    "ticker": "TRGP",
+    "ticker_sec": "TRGP",
+    "cik": "0001389170",
+    "company": "Targa Resources",
+    "sector": "Energy",
+    "sector_raw": "Energy",
+    "exchange": ""
+  },
+  {
+    "ticker": "TGT",
+    "ticker_sec": "TGT",
+    "cik": "0000027419",
+    "company": "Target Corporation",
+    "sector": "Consumer Staples",
+    "sector_raw": "Consumer Staples",
+    "exchange": ""
+  },
+  {
+    "ticker": "TEL",
+    "ticker_sec": "TEL",
+    "cik": "0001385157",
+    "company": "TE Connectivity",
+    "sector": "Technology",
+    "sector_raw": "Information Technology",
+    "exchange": ""
+  },
+  {
+    "ticker": "TDY",
+    "ticker_sec": "TDY",
+    "cik": "0001094285",
+    "company": "Teledyne Technologies",
+    "sector": "Technology",
+    "sector_raw": "Information Technology",
+    "exchange": ""
+  },
+  {
+    "ticker": "TER",
+    "ticker_sec": "TER",
+    "cik": "0000097210",
+    "company": "Teradyne",
+    "sector": "Technology",
+    "sector_raw": "Information Technology",
+    "exchange": ""
+  },
+  {
+    "ticker": "TSLA",
+    "ticker_sec": "TSLA",
+    "cik": "0001318605",
+    "company": "Tesla, Inc.",
+    "sector": "Consumer Discretionary",
+    "sector_raw": "Consumer Discretionary",
+    "exchange": ""
+  },
+  {
+    "ticker": "TXN",
+    "ticker_sec": "TXN",
+    "cik": "0000097476",
+    "company": "Texas Instruments",
+    "sector": "Technology",
+    "sector_raw": "Information Technology",
+    "exchange": ""
+  },
+  {
+    "ticker": "TPL",
+    "ticker_sec": "TPL",
+    "cik": "0001811074",
+    "company": "Texas Pacific Land Corporation",
+    "sector": "Energy",
+    "sector_raw": "Energy",
+    "exchange": ""
+  },
+  {
+    "ticker": "TXT",
+    "ticker_sec": "TXT",
+    "cik": "0000217346",
+    "company": "Textron",
+    "sector": "Industrials",
+    "sector_raw": "Industrials",
+    "exchange": ""
+  },
+  {
+    "ticker": "TMO",
+    "ticker_sec": "TMO",
+    "cik": "0000097745",
+    "company": "Thermo Fisher Scientific",
+    "sector": "Healthcare",
+    "sector_raw": "Health Care",
+    "exchange": ""
+  },
+  {
+    "ticker": "TJX",
+    "ticker_sec": "TJX",
+    "cik": "0000109198",
+    "company": "TJX Companies",
+    "sector": "Consumer Discretionary",
+    "sector_raw": "Consumer Discretionary",
+    "exchange": ""
+  },
+  {
+    "ticker": "TKO",
+    "ticker_sec": "TKO",
+    "cik": "0001973266",
+    "company": "TKO Group Holdings",
+    "sector": "Communication",
+    "sector_raw": "Communication Services",
+    "exchange": ""
+  },
+  {
+    "ticker": "TTD",
+    "ticker_sec": "TTD",
+    "cik": "0001671933",
+    "company": "Trade Desk (The)",
+    "sector": "Communication",
+    "sector_raw": "Communication Services",
+    "exchange": ""
+  },
+  {
+    "ticker": "TSCO",
+    "ticker_sec": "TSCO",
+    "cik": "0000916365",
+    "company": "Tractor Supply",
+    "sector": "Consumer Discretionary",
+    "sector_raw": "Consumer Discretionary",
+    "exchange": ""
+  },
+  {
+    "ticker": "TT",
+    "ticker_sec": "TT",
+    "cik": "0001466258",
+    "company": "Trane Technologies",
+    "sector": "Industrials",
+    "sector_raw": "Industrials",
+    "exchange": ""
+  },
+  {
+    "ticker": "TDG",
+    "ticker_sec": "TDG",
+    "cik": "0001260221",
+    "company": "TransDigm Group",
+    "sector": "Industrials",
+    "sector_raw": "Industrials",
+    "exchange": ""
+  },
+  {
+    "ticker": "TRV",
+    "ticker_sec": "TRV",
+    "cik": "0000086312",
+    "company": "Travelers Companies (The)",
+    "sector": "Financials",
+    "sector_raw": "Financials",
+    "exchange": ""
+  },
+  {
+    "ticker": "TRMB",
+    "ticker_sec": "TRMB",
+    "cik": "0000864749",
+    "company": "Trimble Inc.",
+    "sector": "Technology",
+    "sector_raw": "Information Technology",
+    "exchange": ""
+  },
+  {
+    "ticker": "TFC",
+    "ticker_sec": "TFC",
+    "cik": "0000092230",
+    "company": "Truist Financial",
+    "sector": "Financials",
+    "sector_raw": "Financials",
+    "exchange": ""
+  },
+  {
+    "ticker": "TYL",
+    "ticker_sec": "TYL",
+    "cik": "0000860731",
+    "company": "Tyler Technologies",
+    "sector": "Technology",
+    "sector_raw": "Information Technology",
+    "exchange": ""
+  },
+  {
+    "ticker": "TSN",
+    "ticker_sec": "TSN",
+    "cik": "0000100493",
+    "company": "Tyson Foods",
+    "sector": "Consumer Staples",
+    "sector_raw": "Consumer Staples",
+    "exchange": ""
+  },
+  {
+    "ticker": "USB",
+    "ticker_sec": "USB",
+    "cik": "0000036104",
+    "company": "U.S. Bancorp",
+    "sector": "Financials",
+    "sector_raw": "Financials",
+    "exchange": ""
+  },
+  {
+    "ticker": "UBER",
+    "ticker_sec": "UBER",
+    "cik": "0001543151",
+    "company": "Uber",
+    "sector": "Industrials",
+    "sector_raw": "Industrials",
+    "exchange": ""
+  },
+  {
+    "ticker": "UDR",
+    "ticker_sec": "UDR",
+    "cik": "0000074208",
+    "company": "UDR, Inc.",
+    "sector": "Real Estate",
+    "sector_raw": "Real Estate",
+    "exchange": ""
+  },
+  {
+    "ticker": "ULTA",
+    "ticker_sec": "ULTA",
+    "cik": "0001403568",
+    "company": "Ulta Beauty",
+    "sector": "Consumer Discretionary",
+    "sector_raw": "Consumer Discretionary",
+    "exchange": ""
+  },
+  {
+    "ticker": "UNP",
+    "ticker_sec": "UNP",
+    "cik": "0000100885",
+    "company": "Union Pacific Corporation",
+    "sector": "Industrials",
+    "sector_raw": "Industrials",
+    "exchange": ""
+  },
+  {
+    "ticker": "UAL",
+    "ticker_sec": "UAL",
+    "cik": "0000100517",
+    "company": "United Airlines Holdings",
+    "sector": "Industrials",
+    "sector_raw": "Industrials",
+    "exchange": ""
+  },
+  {
+    "ticker": "UPS",
+    "ticker_sec": "UPS",
+    "cik": "0001090727",
+    "company": "United Parcel Service",
+    "sector": "Industrials",
+    "sector_raw": "Industrials",
+    "exchange": ""
+  },
+  {
+    "ticker": "URI",
+    "ticker_sec": "URI",
+    "cik": "0001067701",
+    "company": "United Rentals",
+    "sector": "Industrials",
+    "sector_raw": "Industrials",
+    "exchange": ""
+  },
+  {
+    "ticker": "UNH",
+    "ticker_sec": "UNH",
+    "cik": "0000731766",
+    "company": "UnitedHealth Group",
+    "sector": "Healthcare",
+    "sector_raw": "Health Care",
+    "exchange": ""
+  },
+  {
+    "ticker": "UHS",
+    "ticker_sec": "UHS",
+    "cik": "0000352915",
+    "company": "Universal Health Services",
+    "sector": "Healthcare",
+    "sector_raw": "Health Care",
+    "exchange": ""
+  },
+  {
+    "ticker": "VLO",
+    "ticker_sec": "VLO",
+    "cik": "0001035002",
+    "company": "Valero Energy",
+    "sector": "Energy",
+    "sector_raw": "Energy",
+    "exchange": ""
+  },
+  {
+    "ticker": "VEEV",
+    "ticker_sec": "VEEV",
+    "cik": "0001393052",
+    "company": "Veeva Systems",
+    "sector": "Healthcare",
+    "sector_raw": "Health Care",
+    "exchange": ""
+  },
+  {
+    "ticker": "VTR",
+    "ticker_sec": "VTR",
+    "cik": "0000740260",
+    "company": "Ventas",
+    "sector": "Real Estate",
+    "sector_raw": "Real Estate",
+    "exchange": ""
+  },
+  {
+    "ticker": "VLTO",
+    "ticker_sec": "VLTO",
+    "cik": "0001967680",
+    "company": "Veralto",
+    "sector": "Industrials",
+    "sector_raw": "Industrials",
+    "exchange": ""
+  },
+  {
+    "ticker": "VRSN",
+    "ticker_sec": "VRSN",
+    "cik": "0001014473",
+    "company": "Verisign",
+    "sector": "Technology",
+    "sector_raw": "Information Technology",
+    "exchange": ""
+  },
+  {
+    "ticker": "VRSK",
+    "ticker_sec": "VRSK",
+    "cik": "0001442145",
+    "company": "Verisk Analytics",
+    "sector": "Industrials",
+    "sector_raw": "Industrials",
+    "exchange": ""
+  },
+  {
+    "ticker": "VZ",
+    "ticker_sec": "VZ",
+    "cik": "0000732712",
+    "company": "Verizon",
+    "sector": "Communication",
+    "sector_raw": "Communication Services",
+    "exchange": ""
+  },
+  {
+    "ticker": "VRTX",
+    "ticker_sec": "VRTX",
+    "cik": "0000875320",
+    "company": "Vertex Pharmaceuticals",
+    "sector": "Healthcare",
+    "sector_raw": "Health Care",
+    "exchange": ""
+  },
+  {
+    "ticker": "VRT",
+    "ticker_sec": "VRT",
+    "cik": "0001674101",
+    "company": "Vertiv",
+    "sector": "Industrials",
+    "sector_raw": "Industrials",
+    "exchange": ""
+  },
+  {
+    "ticker": "VTRS",
+    "ticker_sec": "VTRS",
+    "cik": "0001792044",
+    "company": "Viatris",
+    "sector": "Healthcare",
+    "sector_raw": "Health Care",
+    "exchange": ""
+  },
+  {
+    "ticker": "VICI",
+    "ticker_sec": "VICI",
+    "cik": "0001705696",
+    "company": "Vici Properties",
+    "sector": "Real Estate",
+    "sector_raw": "Real Estate",
+    "exchange": ""
+  },
+  {
+    "ticker": "V",
+    "ticker_sec": "V",
+    "cik": "0001403161",
+    "company": "Visa Inc.",
+    "sector": "Financials",
+    "sector_raw": "Financials",
+    "exchange": ""
+  },
+  {
+    "ticker": "VST",
+    "ticker_sec": "VST",
+    "cik": "0001692819",
+    "company": "Vistra Corp.",
+    "sector": "Utilities",
+    "sector_raw": "Utilities",
+    "exchange": ""
+  },
+  {
+    "ticker": "VMC",
+    "ticker_sec": "VMC",
+    "cik": "0001396009",
+    "company": "Vulcan Materials Company",
+    "sector": "Materials",
+    "sector_raw": "Materials",
+    "exchange": ""
+  },
+  {
+    "ticker": "WRB",
+    "ticker_sec": "WRB",
+    "cik": "0000011544",
+    "company": "W. R. Berkley Corporation",
+    "sector": "Financials",
+    "sector_raw": "Financials",
+    "exchange": ""
+  },
+  {
+    "ticker": "GWW",
+    "ticker_sec": "GWW",
+    "cik": "0000277135",
+    "company": "W. W. Grainger",
+    "sector": "Industrials",
+    "sector_raw": "Industrials",
+    "exchange": ""
+  },
+  {
+    "ticker": "WAB",
+    "ticker_sec": "WAB",
+    "cik": "0000943452",
+    "company": "Wabtec",
+    "sector": "Industrials",
+    "sector_raw": "Industrials",
+    "exchange": ""
+  },
+  {
+    "ticker": "WMT",
+    "ticker_sec": "WMT",
+    "cik": "0000104169",
+    "company": "Walmart",
+    "sector": "Consumer Staples",
+    "sector_raw": "Consumer Staples",
+    "exchange": ""
+  },
+  {
+    "ticker": "DIS",
+    "ticker_sec": "DIS",
+    "cik": "0001744489",
+    "company": "Walt Disney Company (The)",
+    "sector": "Communication",
+    "sector_raw": "Communication Services",
+    "exchange": ""
+  },
+  {
+    "ticker": "WBD",
+    "ticker_sec": "WBD",
+    "cik": "0001437107",
+    "company": "Warner Bros. Discovery",
+    "sector": "Communication",
+    "sector_raw": "Communication Services",
+    "exchange": ""
+  },
+  {
+    "ticker": "WM",
+    "ticker_sec": "WM",
+    "cik": "0000823768",
+    "company": "Waste Management",
+    "sector": "Industrials",
+    "sector_raw": "Industrials",
+    "exchange": ""
+  },
+  {
+    "ticker": "WAT",
+    "ticker_sec": "WAT",
+    "cik": "0001000697",
+    "company": "Waters Corporation",
+    "sector": "Healthcare",
+    "sector_raw": "Health Care",
+    "exchange": ""
+  },
+  {
+    "ticker": "WEC",
+    "ticker_sec": "WEC",
+    "cik": "0000783325",
+    "company": "WEC Energy Group",
+    "sector": "Utilities",
+    "sector_raw": "Utilities",
+    "exchange": ""
+  },
+  {
+    "ticker": "WFC",
+    "ticker_sec": "WFC",
+    "cik": "0000072971",
+    "company": "Wells Fargo",
+    "sector": "Financials",
+    "sector_raw": "Financials",
+    "exchange": ""
+  },
+  {
+    "ticker": "WELL",
+    "ticker_sec": "WELL",
+    "cik": "0000766704",
+    "company": "Welltower",
+    "sector": "Real Estate",
+    "sector_raw": "Real Estate",
+    "exchange": ""
+  },
+  {
+    "ticker": "WST",
+    "ticker_sec": "WST",
+    "cik": "0000105770",
+    "company": "West Pharmaceutical Services",
+    "sector": "Healthcare",
+    "sector_raw": "Health Care",
+    "exchange": ""
+  },
+  {
+    "ticker": "WDC",
+    "ticker_sec": "WDC",
+    "cik": "0000106040",
+    "company": "Western Digital",
+    "sector": "Technology",
+    "sector_raw": "Information Technology",
+    "exchange": ""
+  },
+  {
+    "ticker": "WY",
+    "ticker_sec": "WY",
+    "cik": "0000106535",
+    "company": "Weyerhaeuser",
+    "sector": "Real Estate",
+    "sector_raw": "Real Estate",
+    "exchange": ""
+  },
+  {
+    "ticker": "WSM",
+    "ticker_sec": "WSM",
+    "cik": "0000719955",
+    "company": "Williams-Sonoma, Inc.",
+    "sector": "Consumer Discretionary",
+    "sector_raw": "Consumer Discretionary",
+    "exchange": ""
+  },
+  {
+    "ticker": "WMB",
+    "ticker_sec": "WMB",
+    "cik": "0000107263",
+    "company": "Williams Companies",
+    "sector": "Energy",
+    "sector_raw": "Energy",
+    "exchange": ""
+  },
+  {
+    "ticker": "WTW",
+    "ticker_sec": "WTW",
+    "cik": "0001140536",
+    "company": "Willis Towers Watson",
+    "sector": "Financials",
+    "sector_raw": "Financials",
+    "exchange": ""
+  },
+  {
+    "ticker": "WDAY",
+    "ticker_sec": "WDAY",
+    "cik": "0001327811",
+    "company": "Workday, Inc.",
+    "sector": "Technology",
+    "sector_raw": "Information Technology",
+    "exchange": ""
+  },
+  {
+    "ticker": "WYNN",
+    "ticker_sec": "WYNN",
+    "cik": "0001174922",
+    "company": "Wynn Resorts",
+    "sector": "Consumer Discretionary",
+    "sector_raw": "Consumer Discretionary",
+    "exchange": ""
+  },
+  {
+    "ticker": "XEL",
+    "ticker_sec": "XEL",
+    "cik": "0000072903",
+    "company": "Xcel Energy",
+    "sector": "Utilities",
+    "sector_raw": "Utilities",
+    "exchange": ""
+  },
+  {
+    "ticker": "XYL",
+    "ticker_sec": "XYL",
+    "cik": "0001524472",
+    "company": "Xylem Inc.",
+    "sector": "Industrials",
+    "sector_raw": "Industrials",
+    "exchange": ""
+  },
+  {
+    "ticker": "YUM",
+    "ticker_sec": "YUM",
+    "cik": "0001041061",
+    "company": "Yum! Brands",
+    "sector": "Consumer Discretionary",
+    "sector_raw": "Consumer Discretionary",
+    "exchange": ""
+  },
+  {
+    "ticker": "ZBRA",
+    "ticker_sec": "ZBRA",
+    "cik": "0000877212",
+    "company": "Zebra Technologies",
+    "sector": "Technology",
+    "sector_raw": "Information Technology",
+    "exchange": ""
+  },
+  {
+    "ticker": "ZBH",
+    "ticker_sec": "ZBH",
+    "cik": "0001136869",
+    "company": "Zimmer Biomet",
+    "sector": "Healthcare",
+    "sector_raw": "Health Care",
+    "exchange": ""
+  },
+  {
+    "ticker": "ZTS",
+    "ticker_sec": "ZTS",
+    "cik": "0001555280",
+    "company": "Zoetis",
+    "sector": "Healthcare",
+    "sector_raw": "Health Care",
     "exchange": ""
   }
 ]

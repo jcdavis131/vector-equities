@@ -181,7 +181,29 @@ def fetch_sec_tickers():
 
 
 def fetch_sp500_list():
+    import csv
+    import io
+
     cache = CACHE / "sp500.csv"
+    # Prefer local cache if it looks valid (>50 lines, has META)
+    if cache.exists() and cache.stat().st_size > 5000:
+        try:
+            txt = cache.read_text()
+            if "META" in txt and "Symbol" in txt:
+                reader = csv.DictReader(io.StringIO(txt))
+                out = []
+                for row in reader:
+                    sym = (row.get("Symbol") or row.get("Ticker") or "").strip()
+                    name = (row.get("Security") or row.get("Name") or sym).strip()
+                    sec = (row.get("GICS Sector") or row.get("Sector") or "Industrials").strip()
+                    if sym:
+                        out.append((sym, name, sec))
+                if len(out) >= 400:
+                    print(f"Loaded cached S&P {len(out)} from {cache}")
+                    return out
+        except Exception as e:
+            print(f"Cache S&P parse fail: {e}")
+
     urls = [
         "https://raw.githubusercontent.com/datasets/s-and-p-500-companies/master/data/constituents.csv",
         "https://raw.githubusercontent.com/fja05680/sp500/master/sp500.csv",
@@ -193,18 +215,17 @@ def fetch_sp500_list():
         try:
             txt = raw.decode()
             if "Symbol" in txt or "Ticker" in txt or "AAPL" in txt:
-                cache.write_bytes(raw)
-                lines = txt.splitlines()
+                # Validate with csv parsing
+                reader = csv.DictReader(io.StringIO(txt))
                 out = []
-                for line in lines[1:]:
-                    parts = [p.strip().strip('"') for p in line.split(",")]
-                    if len(parts) >= 3:
-                        sym = parts[0]
-                        sec = parts[2] if len(parts) > 2 else "Industrials"
-                        name = parts[1] if len(parts) > 1 else sym
-                        if sym:
-                            out.append((sym, name, sec))
-                if len(out) > 50:
+                for row in reader:
+                    sym = (row.get("Symbol") or row.get("Ticker") or "").strip()
+                    name = (row.get("Security") or row.get("Name") or sym).strip()
+                    sec = (row.get("GICS Sector") or row.get("Sector") or "Industrials").strip()
+                    if sym:
+                        out.append((sym, name, sec))
+                if len(out) > 200:  # must be substantial
+                    cache.write_bytes(raw)
                     print(f"Got {len(out)} S&P from {url}")
                     return out
         except Exception as e:

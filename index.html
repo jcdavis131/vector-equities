@@ -33,13 +33,14 @@ td{padding:6px;border-bottom:1px solid rgba(30,36,51,.6)}
 .b-Serial_Acquirer{color:#ff8cc8;background:rgba(255,140,200,.08);border-color:rgba(255,140,200,.3)}
 a{color:var(--blue);text-decoration:none}
 footer{padding:16px 24px;color:var(--muted);font-size:10px;border-top:1px solid var(--grid)}
+.search-hint{font-size:10px;color:var(--muted);margin-top:4px}
 </style>
 </head>
 <body>
 <header>
 <div>
 <h1>Vector Equities — Company Embedding Explorer</h1>
-<div class="sub">2741 company-FYs • 283 tickers • 17 towers • 64-d transformer MTNN</div>
+<div class="sub" id="headerStats">Loading S&P 500 universe…</div>
 </div>
 <div class="sub"><a href="https://github.com/jcdavis131/vector-equities" target="_blank" rel="noopener">GitHub</a> • <a href="./docs/ARCHITECTURE.md">Architecture</a></div>
 </header>
@@ -50,12 +51,13 @@ footer{padding:16px 24px;color:var(--muted);font-size:10px;border-top:1px solid 
 <div>
 <label>Archetype <select id="archF"><option value="">All 8</option></select></label>
 <label style="margin-left:8px">Sector <select id="secF"><option value="">All 11</option></select></label>
-<label style="margin-left:8px">Ticker <input id="q" placeholder="e.g. TICK0420" style="width:110px"/></label>
+<label style="margin-left:8px">Search <input id="q" placeholder="e.g. Meta, AAPL, Microsoft" style="width:190px"/></label>
 </div>
 </div>
 <canvas id="c" width="900" height="460"></canvas>
 <div class="kpis" id="kpis"></div>
-<div class="sub" id="hover" style="margin-top:8px;min-height:18px">Hover a point • click to inspect skills</div>
+<div class="sub" id="hover" style="margin-top:8px;min-height:18px">Hover a point • click to inspect • Try "Meta" now works for all S&P 500</div>
+<div class="search-hint">Searches ticker + company name • aliases: meta/facebook → META, google/alphabet → GOOGL, msft/microsoft → MSFT, tesla → TSLA, nvda/nvidia → NVDA</div>
 </div>
 <div class="card">
 <div style="font-size:13px;margin-bottom:8px">Inspected Company-FY</div>
@@ -66,7 +68,7 @@ footer{padding:16px 24px;color:var(--muted);font-size:10px;border-top:1px solid 
 </div>
 <div style="margin-top:14px">
 <div style="font-size:12px;margin-bottom:6px">Top Similar (cosine in 64-d, holdout years masked)</div>
-<table><thead><tr><th>Ticker FY</th><th>Archetype</th><th>Sector</th><th>Cos</th></tr></thead><tbody id="sim"></tbody></table>
+<table><thead><tr><th>Ticker FY</th><th>Company</th><th>Archetype</th><th>Sector</th><th>Cos</th></tr></thead><tbody id="sim"></tbody></table>
 </div>
 </div>
 </div>
@@ -74,12 +76,39 @@ footer{padding:16px 24px;color:var(--muted);font-size:10px;border-top:1px solid 
 <div class="card"><div style="font-size:12px">Next FY Projection vs Actual (z-scored)</div><table><thead><tr><th>Metric</th><th>Actual Next</th><th>Pred</th><th>Err</th></tr></thead><tbody id="nexttbl"></tbody></table><div class="sub" style="margin-top:8px">Projection based on current year embedding and historical transitions.</div></div>
 <div class="card"><div style="font-size:12px">Model Status</div><pre id="report" style="white-space:pre-wrap;font-size:10px;color:var(--muted);max-height:240px;overflow:auto"></pre></div>
 </div>
-<footer>© 2026 Vector Equities · equities.dumbmodel.com · <a href="https://github.com/jcdavis131/vector-equities" target="_blank" rel="noopener">GitHub</a></footer>
+<footer>© 2026 Vector Equities · equities.dumbmodel.com · Full S&P 500 (503) • 64-d transformer MTNN • <a href="https://github.com/jcdavis131/vector-equities" target="_blank" rel="noopener">GitHub</a></footer>
 <script type="module">
 const ARCHETYPES=["Compounder","Cash_Cow","Turnaround","HyperGrowth_SaaS","Heavy_Industrial","Bank_Capital_Heavy","Moonshot_Bio","Serial_Acquirer"];
-const SECTORS=["Technology","Healthcare","Financials","Energy","Industrials","ConsStaples","ConsDisc","Utilities","Materials","RealEstate","Communication"];
-let Data={emb:[]}, meta={};
+const SECTORS=["Technology","Healthcare","Financials","Energy","Industrials","Consumer Staples","Consumer Discretionary","Utilities","Materials","Real Estate","Communication"];
 
+// Alias map for common company names -> ticker
+const ALIAS = {
+  "meta": "META",
+  "facebook": "META",
+  "meta platforms": "META",
+  "microsoft": "MSFT",
+  "msft": "MSFT",
+  "apple": "AAPL",
+  "aapl": "AAPL",
+  "nvidia": "NVDA",
+  "nvda": "NVDA",
+  "tesla": "TSLA",
+  "tsla": "TSLA",
+  "google": "GOOGL",
+  "alphabet": "GOOGL",
+  "googl": "GOOGL",
+  "goog": "GOOG",
+  "amazon": "AMZN",
+  "amzn": "AMZN",
+  "berkshire": "BRK-B",
+  "brk.b": "BRK-B",
+  "brk-b": "BRK-B",
+  "jpmorgan": "JPM",
+  "netflix": "NFLX",
+  "broadcom": "AVGO",
+};
+
+let Data={all:[], latest:[], latestMap:new Map()}, meta={};
 
 async function load(){
  const rep = await fetch('./pipeline/data/mtnn_report.json').then(r=>r.json()).catch(()=>null);
@@ -95,59 +124,47 @@ async function load(){
    const skillKeys = real.skill_keys || ["Profitability","Growth","Moat","CashConv","CapAlloc","BalHealth","Effic","ValDisc","Mom","MgmtQual","Yield","Disclose"];
    Data.skill_keys = skillKeys;
    const targetDim = real.dim || 64;
-   Data.emb = points.map(p=>{
-     // Map arch string already present
+   const all = points.map(p=>{
      const arch = p.archetype || p.arch || "Compounder";
      const sec = p.sector || "Technology";
      const x = p.x, y=p.y, z=p.z||0;
      const skills = p.skills || Array.from({length:12},()=>50);
      const dim = p.emb?.length || targetDim;
      const emb = new Float32Array(dim);
-     // fill from provided emb truncated
      if(p.emb){ for(let i=0;i<Math.min(dim,p.emb.length);i++) emb[i]=p.emb[i]; }
-     // if emb shorter than dim, hash-fill remaining deterministically
      if(p.emb && p.emb.length < dim){
        let h=0; for(let c of p.ticker) h=(h*31 + c.charCodeAt(0))>>>0;
        for(let i=p.emb.length;i<dim;i++){ emb[i]=(Math.sin(h*0.01 + i)*0.5); }
      }
-     // normalize
      let norm=Math.sqrt(emb.reduce((s,v)=>s+v*v,0)); if(norm>0) for(let i=0;i<dim;i++) emb[i]/=norm;
-     return {ticker:p.ticker, fy:parseInt(p.year), year:p.year, arch, sec, x, y, z, skills, emb, ret: skills[8]||50, name:p.name||p.ticker};
+     return {ticker:p.ticker, fy:parseInt(p.year), year:p.year, arch, sec, x, y, z, skills, emb, ret: skills[8]||50, name:p.name||p.ticker, nameLower:(p.name||p.ticker).toLowerCase()};
    });
-   console.log("Loaded real", Data.emb.length, "real points");
-   populateFilters();
-   draw();
-   // auto-select first
-   if(Data.emb.length) inspect(Data.emb[0]);
-   return;
- }catch(e){ console.warn("real_data load failed", e); }
- // fallback synthetic
- try{
-   const mani=await fetch('./pipeline/data/feature_manifest.json').then(r=>r.json()).catch(()=>null);
-   const N=120; 
-   const points=[];
-   for(let i=0;i<N;i++){
-     const arch=ARCHETYPES[Math.floor(Math.random()*ARCHETYPES.length)];
-     const sec=SECTORS[Math.floor(Math.random()*SECTORS.length)];
-     let x= (Math.random()-0.5)*2, y=(Math.random()-0.5)*2, z=(Math.random()-0.5)*0.6;
-     const bias={Compounder:[-0.8,-0.6],Cash_Cow:[0.8,-0.6],Turnaround:[-0.9,0.7],HyperGrowth_SaaS:[0.9,0.7],Heavy_Industrial:[-0.2,-0.9],Bank_Capital_Heavy:[0.2,0.9],Moonshot_Bio:[0.0,0.0],Serial_Acquirer:[0.5,0.0]};
-     const b=bias[arch]||[0,0]; x+=b[0]+(Math.random()-0.5)*0.4; y+=b[1]+(Math.random()-0.5)*0.4;
-     const si=SECTORS.indexOf(sec); x+=Math.cos(si*0.6)*0.15; y+=Math.sin(si*0.6)*0.15;
-     const ticker=`TICK${String(i).padStart(4,'0')}`;
-     const fy=2024;
-     const skills=Array.from({length:12},()=>Math.floor(20+Math.random()*75));
-     if(arch==="Compounder"){ skills[0]=85+Math.random()*10; skills[1]=80+Math.random()*12; }
-     if(arch==="Cash_Cow"){ skills[6]=85+Math.random()*12; skills[10]=88+Math.random()*10; }
-     if(arch==="HyperGrowth_SaaS"){ skills[1]=90+Math.random()*8; skills[8]=84+Math.random()*10; }
-     if(arch==="Bank_Capital_Heavy"){ skills[5]=88+Math.random()*10; }
-     points.push({ticker,fy,arch,sec,x,y,z,skills,emb:Float32Array.from({length:48},()=>Math.random()-0.5), ret: (Math.random()-0.4)*40});
-   }
-   Data.emb=points;
-   populateFilters();
-   draw();
- }catch(e){ console.error(e); }
-}
+   Data.all = all;
 
+   // Build latest per ticker (max year)
+   const latestMap = new Map();
+   for(const p of all){
+     const existing = latestMap.get(p.ticker);
+     if(!existing || p.fy > existing.fy) latestMap.set(p.ticker, p);
+   }
+   Data.latest = Array.from(latestMap.values());
+   Data.latestMap = latestMap;
+
+   console.log(`Loaded real ${Data.all.length} points, ${Data.latest.length} tickers, dim ${targetDim}`);
+   // Update header stats
+   const headerEl = document.getElementById('headerStats');
+   if(headerEl){
+     const towers = real.towers ? Object.keys(real.towers).length : 20;
+     headerEl.textContent = `${real.rows||Data.all.length} company-FYs • ${Data.latest.length} tickers (full S&P 500) • ${towers} towers • ${targetDim}-d transformer MTNN • built ${real.built||''}`;
+   }
+   populateFilters();
+   draw();
+   // Auto-select META if exists else first
+   const metaPoint = Data.latest.find(p=>p.ticker==='META') || Data.latest.find(p=>p.nameLower.includes('meta')) || Data.latest[0];
+   if(metaPoint) inspect(metaPoint);
+   return;
+ }catch(e){ console.warn("real_data load failed", e, e.stack); }
+}
 
 function populateFilters(){
  const af=document.getElementById('archF'); ARCHETYPES.forEach(a=>{ const o=document.createElement('option'); o.value=a; o.textContent=a; af.appendChild(o); });
@@ -156,24 +173,73 @@ function populateFilters(){
 }
 
 let sel=null;
+
+function resolveAlias(qLower){
+  if(!qLower) return null;
+  // direct alias
+  if(ALIAS[qLower]) return ALIAS[qLower];
+  // partial alias contains
+  for(const [k,v] of Object.entries(ALIAS)){
+    if(qLower.includes(k) || k.includes(qLower)){
+      // avoid too short false positives for 'a' etc, require length >=3
+      if(k.length>=3) return v;
+    }
+  }
+  return null;
+}
+
 function draw(){
  const c=document.getElementById('c'), ctx=c.getContext('2d');
  ctx.clearRect(0,0,c.width,c.height);
- const archF=document.getElementById('archF').value, secF=document.getElementById('secF').value, q=document.getElementById('q').value.trim().toUpperCase();
- const filtered=Data.emb.filter(p=> (!archF||p.arch===archF) && (!secF||p.sec===secF) && (!q||p.ticker.includes(q)) );
- // project: x,y from -2..2 to canvas
+ const archF=document.getElementById('archF').value, secF=document.getElementById('secF').value;
+ const qRaw=document.getElementById('q').value.trim();
+ const qLower=qRaw.toLowerCase();
+ const qUpper=qRaw.toUpperCase();
+ const aliasedTicker = resolveAlias(qLower);
+
+ const filtered=Data.latest.filter(p=>{
+   if(archF && p.arch!==archF) return false;
+   if(secF && p.sec!==secF && !p.sec.includes(secF) && secF!=="ConsStaples" && secF!=="ConsDisc"){
+     // handle sector naming mismatch
+     if(secF==="ConsStaples" && !p.sec.includes("Consumer Staples")) return false;
+     if(secF==="ConsDisc" && !p.sec.includes("Consumer Discretionary")) return false;
+     if(secF==="RealEstate" && !p.sec.includes("Real Estate")) return false;
+     if(secF!=="ConsStaples" && secF!=="ConsDisc" && secF!=="RealEstate" && p.sec!==secF) {
+       // allow substring
+       if(!p.sec.toLowerCase().includes(secF.toLowerCase())) return false;
+     }
+   }
+   if(!qRaw) return true;
+   // if alias matches ticker, prioritize
+   if(aliasedTicker && p.ticker===aliasedTicker) return true;
+   // ticker substring (case-insensitive)
+   if(p.ticker.toUpperCase().includes(qUpper)) return true;
+   // name substring
+   if(p.nameLower.includes(qLower)) return true;
+   // sector contains query
+   if(p.sec.toLowerCase().includes(qLower)) return true;
+   // arch contains
+   if(p.arch.toLowerCase().includes(qLower)) return true;
+   return false;
+ });
+
+ // If query is alias and filtered didn't include alias due to sector filter, force include
+ if(aliasedTicker && qLower && !filtered.find(p=>p.ticker===aliasedTicker)){
+   const aliasPoint = Data.latest.find(p=>p.ticker===aliasedTicker);
+   if(aliasPoint) filtered.unshift(aliasPoint);
+ }
+
  const colorMap={Compounder:"#7cf8c7",Cash_Cow:"#f0e442",Turnaround:"#ff9f1c",HyperGrowth_SaaS:"#6ea8ff",Heavy_Industrial:"#a0a8c0",Bank_Capital_Heavy:"#ff6b6b",Moonshot_Bio:"#c792ea",Serial_Acquirer:"#ff8cc8"};
  c._pts=[];
  filtered.forEach(p=>{
    const px= ((p.x+2)/4.2)*c.width*0.86 + c.width*0.07;
    const py= ((p.y+2)/4.2)*c.height*0.86 + c.height*0.07;
-   const r= 3.5 + Math.max(0, p.ret/35)*3; // size by momentum skill proxy
-   // shadow
-   ctx.beginPath(); ctx.fillStyle=colorMap[p.arch]||"#fff"; ctx.globalAlpha= p===sel?1:0.78;
+   const r= 3.5 + Math.max(0, p.ret/35)*3;
+   ctx.beginPath(); ctx.fillStyle=colorMap[p.arch]||"#fff"; ctx.globalAlpha= p===sel?1:0.85;
    ctx.arc(px,py,r,0,Math.PI*2); ctx.fill(); ctx.globalAlpha=1;
    c._pts.push({...p,px,py,r});
  });
- document.getElementById('hover').textContent=`${filtered.length} companies shown (latest FY) — color by archetype, size by momentum proxy`;
+ document.getElementById('hover').textContent=`${filtered.length} / ${Data.latest.length} companies shown (latest FY) — color by archetype, size by momentum proxy${qRaw?' • filtered by "'+qRaw+'"':''}`;
 }
 
 function cosine(a,b){
@@ -184,7 +250,7 @@ function cosine(a,b){
 document.getElementById('c').addEventListener('mousemove',e=>{
  const c=e.target, rect=c.getBoundingClientRect(), x=(e.clientX-rect.left)/rect.width*c.width, y=(e.clientY-rect.top)/rect.height*c.height;
  const hit=c._pts?.find(p=> Math.hypot(p.px-x,p.py-y)<7);
- if(hit){ document.getElementById('hover').innerHTML=`<b>${hit.ticker} FY${hit.fy}</b> <span class="badge b-${hit.arch}">${hit.arch}</span> <span class="badge">${hit.sec}</span>  x=${hit.x.toFixed(2)} y=${hit.y.toFixed(2)} momentum~${hit.ret.toFixed(1)}%`; }
+ if(hit){ document.getElementById('hover').innerHTML=`<b>${hit.ticker}</b> (${hit.name}) FY${hit.fy} <span class="badge b-${hit.arch}">${hit.arch}</span> <span class="badge">${hit.sec}</span>  x=${hit.x.toFixed(2)} y=${hit.y.toFixed(2)} mom=${hit.ret.toFixed(0)}`; }
 });
 document.getElementById('c').addEventListener('click',e=>{
  const c=e.target, rect=c.getBoundingClientRect(), x=(e.clientX-rect.left)/rect.width*c.width, y=(e.clientY-rect.top)/rect.height*c.height;
@@ -192,11 +258,14 @@ document.getElementById('c').addEventListener('click',e=>{
 });
 
 function inspect(p){
+ // Use latest point for that ticker's history? Keep p as passed (latest)
+ const allHistoryForTicker = Data.all.filter(o=>o.ticker===p.ticker).sort((a,b)=>a.fy-b.fy);
  const detail=document.getElementById('detail');
- detail.innerHTML=`<div><b style="font-size:16px">${p.ticker} FY${p.fy}</b> <span class="badge b-${p.arch}">${p.arch}</span> <span class="badge">${p.sec}</span></div><div style="margin-top:8px">Profile z-scores and market metrics for this company-year.</div>`;
+ detail.innerHTML=`<div><b style="font-size:16px">${p.ticker}</b> <span style="color:#8a90a6">${p.name}</span> FY${p.fy} <span class="badge b-${p.arch}">${p.arch}</span> <span class="badge">${p.sec}</span></div><div style="margin-top:8px">Showing ${allHistoryForTicker.length} FYs (2015-2024) • Skills are 0-100 percentile per FY • ${p.ticker==="META"?"Meta Platforms (Facebook) — now searchable via 'Meta'":p.name}</div>`;
  drawRadar(p.skills);
- const sims=Data.emb.filter(o=>o.ticker!==p.ticker).map(o=>({o, s: cosine(p.emb,o.emb)+ (o.arch===p.arch?0.12:0) + (o.sec===p.sec?0.08:0) })).sort((a,b)=>b.s-a.s).slice(0,8);
- document.getElementById('sim').innerHTML=sims.map(({o,s})=>`<tr><td>${o.ticker} FY${o.fy}</td><td><span class="badge b-${o.arch}">${o.arch}</span></td><td>${o.sec}</td><td>${s.toFixed(3)}</td></tr>`).join('');
+ // Similar: search across latest, not all history, to avoid duplicate ticker FYs
+ const sims=Data.latest.filter(o=>o.ticker!==p.ticker).map(o=>({o, s: cosine(p.emb,o.emb)+ (o.arch===p.arch?0.12:0) + (o.sec===p.sec?0.08:0) })).sort((a,b)=>b.s-a.s).slice(0,12);
+ document.getElementById('sim').innerHTML=sims.map(({o,s})=>`<tr><td>${o.ticker} FY${o.fy}</td><td style="max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${o.name}</td><td><span class="badge b-${o.arch}">${o.arch}</span></td><td>${o.sec}</td><td>${s.toFixed(3)}</td></tr>`).join('');
  const nextRows=["REV_YOY","NET_MARGIN","ROE","ROIC","FCF_MARGIN","DEBT/EBITDA","EV/EBITDA","RET_12M_next"].map((k,i)=>{
    const actual=(Math.random()*2-1).toFixed(2), pred=(parseFloat(actual)+ (Math.random()-0.5)*0.6).toFixed(2), err=(Math.abs(parseFloat(actual)-parseFloat(pred))).toFixed(2);
    return `<tr><td>${k}</td><td>${actual}</td><td>${pred}</td><td>${err}</td></tr>`;
