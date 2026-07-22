@@ -1,0 +1,53 @@
+{
+ "eval": "sector_coherence",
+ "computed_at": "2026-07-22T19:16:12Z",
+ "embedding_source": "assets/real_data.json",
+ "embedding_model": "equities_mtnn_v6_real_d64_towers20_ic0.5490146343450457",
+ "dim": 64,
+ "n_rows_total": 4941,
+ "n_rows_evaluated": 4921,
+ "n_rows_excluded_bad_sector": 20,
+ "n_companies": 501,
+ "n_sectors": 11,
+ "sector_sizes": {
+  "Communication": 226,
+  "Consumer Discretionary": 463,
+  "Consumer Staples": 328,
+  "Energy": 206,
+  "Financials": 734,
+  "Healthcare": 583,
+  "Industrials": 800,
+  "Materials": 247,
+  "Real Estate": 300,
+  "Technology": 730,
+  "Utilities": 304
+ },
+ "baseline": {
+  "name": "random-assignment expectation given sector sizes",
+  "why": "repo carries no raw description text locally (pipeline/data/chunks_v2 is an index only), so a TF-IDF text baseline is not computable; closed-form random expectation plus seeded label-permutation used instead",
+  "permutation_seed": 0,
+  "n_permutations": 5
+ },
+ "metrics": {
+  "knn_sector_purity_at_10": {
+   "definition": "fraction of each row's 10 nearest neighbors (cosine) sharing its GICS sector, averaged over rows; same-ticker neighbors allowed",
+   "score": 0.1742,
+   "baseline_random_assignment": 0.1117,
+   "baseline_label_permutation": 0.1116,
+   "lift_over_random": 1.56
+  },
+  "knn_sector_purity_at_10_cross_ticker": {
+   "definition": "same purity but neighbors from the query row's own ticker are excluded; removes the trivial same-ticker inflation from contrastive training",
+   "score": 0.1674,
+   "baseline_random_assignment": 0.1117,
+   "lift_over_random": 1.5
+  },
+  "silhouette_cosine": {
+   "definition": "sklearn silhouette score of sector clusters, cosine distance, full evaluated matrix; range [-1, 1], 0 is chance-level",
+   "score": -0.0991,
+   "baseline_label_permutation": -0.0283
+  }
+ },
+ "provenance": "Measured on the published matrix as served. Note: the 2026-07-20 S&P 500 expansion (pipeline/expand_sp500.py, commit 7d93c0b) filled rows for newly added tickers with sector-centroid + Gaussian-noise placeholder embeddings rather than model outputs; diagnostic runs show model-derived and placeholder subsets score similarly on this eval.",
+ "note": "Engineering quality metric for the embedding space only; measures label coherence of the geometry, not investment merit and not predictive of returns."
+}

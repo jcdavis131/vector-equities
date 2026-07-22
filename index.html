@@ -75,6 +75,10 @@ footer{padding:16px 24px;color:var(--muted);font-size:10px;border-top:1px solid 
 <div style="padding:0 16px 16px;display:grid;grid-template-columns:1fr 1fr;gap:16px">
 <div class="card"><div style="font-size:12px">Next FY Projection vs Actual (z-scored)</div><table><thead><tr><th>Metric</th><th>Actual Next</th><th>Pred</th><th>Err</th></tr></thead><tbody id="nexttbl"></tbody></table><div class="sub" style="margin-top:8px">Projection based on current year embedding and historical transitions.</div></div>
 <div class="card"><div style="font-size:12px">Model Status</div><pre id="report" style="white-space:pre-wrap;font-size:10px;color:var(--muted);max-height:240px;overflow:auto"></pre></div>
+<div class="card" style="grid-column:1 / -1"><div style="font-size:12px">Embedding QA — Sector Coherence</div>
+<div class="kpis" id="cohKpis"></div>
+<div class="sub" id="cohCaption" style="margin-top:8px">Loading assets/eval_sector_coherence.json…</div>
+</div>
 </div>
 <footer>© 2026 Vector Equities · equities.dumbmodel.com · Full S&P 500 (503) • 64-d transformer MTNN • <a href="https://github.com/jcdavis131/vector-equities" target="_blank" rel="noopener">GitHub</a></footer>
 <script type="module">
@@ -117,6 +121,24 @@ async function load(){
   const kpis=`<div class="kpi"><b>${((rep.cross_cycle_archetype_purity_at_20||0)*100).toFixed(1)}%</b>purity@20</div><div class="kpi"><b>${((rep.sector_top1_acc||0)*100).toFixed(1)}%</b>sector</div><div class="kpi"><b>${((rep.held_out_recall?.val?.recall_at_10_mtnn||0)*100).toFixed(1)}%</b>recall@10</div><div class="kpi"><b>${rep.towers?Object.keys(rep.towers).length:17}</b>towers</div><div class="kpi"><b>${rep.dim??64}</b>d</div>`;
   document.getElementById('kpis').innerHTML=kpis;
  }
+ // Sector-coherence eval readout (engineering QA of the embedding space)
+ try{
+  const coh = await fetch('./assets/eval_sector_coherence.json').then(r=>r.json());
+  const m = coh.metrics||{};
+  const pur = m.knn_sector_purity_at_10||{}, cross = m.knn_sector_purity_at_10_cross_ticker||{}, sil = m.silhouette_cosine||{};
+  const pct = v => (v==null?'—':(v*100).toFixed(1)+'%');
+  document.getElementById('cohKpis').innerHTML =
+   `<div class="kpi"><b>${pct(pur.score)}</b>sector purity@10 (random ${pct(pur.baseline_random_assignment)})</div>`+
+   `<div class="kpi"><b>${pct(cross.score)}</b>cross-ticker purity@10</div>`+
+   `<div class="kpi"><b>${sil.score==null?'—':sil.score.toFixed(3)}</b>silhouette, cosine (permuted ${sil.baseline_label_permutation==null?'—':sil.baseline_label_permutation.toFixed(3)})</div>`+
+   `<div class="kpi"><b>${coh.n_rows_evaluated??'—'}</b>rows · ${coh.n_companies??'—'} tickers · ${coh.n_sectors??'—'} sectors</div>`;
+  const lift = pur.lift_over_random!=null ? `${pur.lift_over_random}x random` : 'vs random';
+  const verdict = (sil.score!=null && sil.score<=0)
+   ? 'sector structure in this space is weak — sectors overlap heavily'
+   : 'sector clusters separate above chance';
+  document.getElementById('cohCaption').textContent =
+   `k-NN sector purity and silhouette of the published 64-d embedding vs GICS sector labels, against the named baseline "random-assignment expectation given sector sizes" (no raw text in repo for a TF-IDF baseline). Purity is ${lift}; ${verdict}. Note: rows added in the 2026-07-20 S&P 500 expansion carry sector-centroid+noise placeholder embeddings (see assets/eval_sector_coherence.json provenance). This is an engineering quality metric of the embedding geometry only — not investment advice and not predictive of returns. Computed ${coh.computed_at||''}.`;
+ }catch(e){ const el=document.getElementById('cohCaption'); if(el) el.textContent='eval_sector_coherence.json unavailable'; }
  // Try load REAL data first
  try{
    const real = await fetch('./assets/real_data.json').then(r=>r.json());

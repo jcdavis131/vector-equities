@@ -39,6 +39,7 @@ python3 pipeline/regen_assets.py
 - `assets/real_data.json` — 2741 points with xyz, skills, emb
 - `assets/real_data_latest.json` — latest FY per ticker (283)
 - `assets/real_pca.json` — PCA projection
+- `assets/eval_sector_coherence.json` — sector-coherence eval of the published embedding (k-NN sector purity@10, cosine silhouette) vs the random-assignment expectation given sector sizes; regenerate with `python pipeline/eval_sector_coherence.py`, gated by `tests/test_eval_sector_coherence.py`. Engineering metric of the embedding geometry only — not investment advice, not predictive of returns.
 
 ## Deploy
 
