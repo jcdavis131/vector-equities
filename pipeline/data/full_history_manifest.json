@@ -1,29 +1,29 @@
 {
-  "built": "2026-07-23T02:07:08.038349",
+  "built": "2026-07-23T02:11:49.464868",
   "source_universe": "/home/hatch/workspace/vector-equities/pipeline/data/universe_full.json",
   "total_tickers": 7370,
-  "active": 6316,
-  "defunct": 1054,
-  "has_history": 2368,
-  "pre_1980_first_date": 72,
+  "active": 6253,
+  "defunct": 1117,
+  "has_history": 2508,
+  "pre_1980_first_date": 71,
   "pre_1970_first_date": 22,
   "sixties_start": 22,
   "era_breakdown": {
-    "1990s": 192,
+    "1990s": 200,
     "1960s": 22,
-    "2000s": 197,
-    "1980s": 160,
-    "2010s+": 790,
-    "1970s": 50
+    "2000s": 221,
+    "1980s": 162,
+    "2010s+": 839,
+    "1970s": 49
   },
   "added_from_known_defunct": 34,
   "history_coverage": {
     "1960s": 22,
-    "1970s": 50,
-    "1980s": 160,
-    "1990s": 192,
-    "2000s": 197,
-    "2010s+": 790
+    "1970s": 49,
+    "1980s": 162,
+    "1990s": 200,
+    "2000s": 221,
+    "2010s+": 839
   },
   "long_history_sample": [
     [
