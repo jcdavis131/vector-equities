@@ -3,18 +3,15 @@
 Live: [equities.dumbmodel.com](https://equities.dumbmodel.com) · GitHub: [jcdavis131/vector-equities](https://github.com/jcdavis131/vector-equities)
 
 > Solo personal project, no connection to employer, built with public/free-tier only.
-> **Built in raw WebGPU / WebGL / Canvas — no Unity/Unreal, just browser graphics APIs straight.** Zero engine, raw `<canvas>` + custom shaders, static Vercel.
 
-2741 company-FYs · 283 tickers · 17 family towers · 64-d transformer MTNN · 8 archetypes · 11 GICS sectors
+An interactive PCA map of public companies. Each company fiscal-year is embedded by a multi-tower neural net — 17 residual towers over statement families (income, balance, cashflow, growth, profitability, leverage, efficiency, per-share, market, valuation, management, ownership, disclosure, sector, macro, form, bridge) fused by a 4-layer transformer into a 64-dim L2-normalized vector — and cosine distance in that space is the site's notion of business similarity. Static site (plain HTML/JS/canvas, no framework), hosted on Vercel.
 
-Interactive PCA map of public companies. Each company-year is embedded via 17 residual towers (income, balance, cashflow, growth, profitability, leverage, efficiency, per-share, market, valuation, management, ownership, disclosure, sector, macro, form, bridge) fused by a 4-layer transformer into a 64-d L2-normalized vector. Cosine similarity = business similarity.
+The served dataset currently covers ~2,700 company-FYs across ~280 tickers (2015–2024); exact counts live in `assets/real_data.json` and `assets/manifest.json` and change as the pipeline reruns.
 
-- **Data:** SEC EDGAR XBRL CompanyFacts (2015-2024) + market data + V2 10-K chunks (3439 tickers, ~150k chunks, Item 1/1A/7 with tables)
-- **Model:** 17× ResidualTower → Transformer fusion (d_model 128, 4L 4H) → 64-d + wiki embedding tower 384-d MiniLM
-- **Training:** Same-ticker adjacent FY contrastive (InfoNCE) + sector hard negatives
-- **Frontend:** `index.html` loads `assets/real_data.json` (2741 points, 12 skills, PCA xyz) + `chunks_v2/{TICKER}.json` wiki with tables
-
-
+- **Data:** SEC EDGAR XBRL CompanyFacts (2015–2024) + market data + 10-K text chunks (Item 1/1A/7, tables included)
+- **Model:** 17× ResidualTower → transformer fusion (d_model 128, 4 layers, 4 heads) → 64-d, plus a 384-d MiniLM wiki-text tower
+- **Training:** same-ticker adjacent-FY contrastive (InfoNCE) with sector hard negatives
+- **Frontend:** `index.html` loads `assets/real_data.json` (points with xyz, 12 skill grades, embeddings) and per-ticker 10-K chunk files
 
 ## Quickstart
 
@@ -28,21 +25,17 @@ python3 pipeline/regen_assets.py
 
 ## Architecture
 
-- **Towers:** 17 families, `cat([x·m, m]) → 96h → 24d` with skip
-- **Fusion:** attention over towers, FY embedding, CLS token → 64-d L2
-- **Heads:** 8 archetypes, 11 sectors, 14-d profile, next-year profile, 12 skill grades, valuation, market
+- **Towers:** 17 families, `cat([x·m, m]) → 96h → 24d` with skip connections
+- **Fusion:** attention over towers + FY embedding + CLS token → 64-d L2-normalized
+- **Heads:** 8 archetypes, 11 GICS sectors, 14-d profile, next-year profile, 12 skill grades, valuation, market
 - **Skills:** Profitability, Growth, Moat, Cash Conversion, Capital Allocation, Balance Health, Efficiency, Valuation Discipline, Momentum, Management Quality, Yield, Disclosure
 
-## Assets
+## Evaluation
 
-- `assets/manifest.json` — rows, tickers, dim, towers
-- `assets/real_data.json` — 2741 points with xyz, skills, emb
-- `assets/real_data_latest.json` — latest FY per ticker (283)
-- `assets/real_pca.json` — PCA projection
-- `assets/eval_sector_coherence.json` — sector-coherence eval of the published embedding (k-NN sector purity@10, cosine silhouette) vs the random-assignment expectation given sector sizes; regenerate with `python pipeline/eval_sector_coherence.py`, gated by `tests/test_eval_sector_coherence.py`. Engineering metric of the embedding geometry only — not investment advice, not predictive of returns.
+`assets/eval_sector_coherence.json` measures label coherence of the published embedding geometry: k-NN sector purity@10 of 0.174 (cross-ticker 0.167) against a random-assignment baseline of 0.112 — a 1.5–1.6x lift, measured on the matrix as served (the file records provenance caveats, including placeholder rows from the S&P 500 expansion). Regenerate with `python pipeline/eval_sector_coherence.py`; gated by `tests/test_eval_sector_coherence.py`. This is an engineering metric of the embedding geometry only — not investment advice, and not predictive of returns.
 
 ## Deploy
 
-Vercel static import, domains: `equities.dumbmodel.com` and `equities.jcamd.com` (redirect via `vercel.json`).
+Vercel static import; domains `equities.dumbmodel.com` and `equities.jcamd.com` (redirect via `vercel.json`).
 
-© 2026 Vector Equities · [equities.dumbmodel.com](https://equities.dumbmodel.com)
+MIT. Solo personal project, no connection to employer, built with public/free-tier only.
