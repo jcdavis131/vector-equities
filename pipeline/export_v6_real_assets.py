@@ -130,6 +130,9 @@ with torch.no_grad():
         c_seq, z_seq, out = model.forward_sequence(xs_t, ms_t, te_t, yn_t, vm_t)
         # c_seq shape (1,L,dim)
         c_np = c_seq[0].cpu().numpy()  # L,dim
+        # Archetype from the model's archetype head (per-timestep logits),
+        # argmaxed per row below — not a modulo cycle.
+        arch_logits = out["archetype"][0].cpu().numpy()  # L,n_archetypes
         valid_len = raw_seq["valid_len"]
         for seq_pos in range(valid_len):
             orig_idx = raw_seq["indices"][seq_pos]
@@ -145,6 +148,7 @@ with torch.no_grad():
                     else 0,
                     "sector": sectors_arr[orig_idx],
                     "orig_idx": int(orig_idx),
+                    "archetype_idx": int(arch_logits[seq_pos].argmax()),
                 }
             )
 
@@ -184,35 +188,17 @@ def scale_axis(arr, target_range=2.0):
 
 xyz_scaled = np.stack([scale_axis(xyz[:, i], 1.8) for i in range(3)], axis=1)
 
-# Load old real_data to copy skills if present
-old_real_path = ASSETS_DIR / "real_data.json"
-old_points_by_key = {}
-if old_real_path.exists():
-    try:
-        old_data = json.loads(old_real_path.read_text())
-        for pt in old_data.get("points", []):
-            key = (pt.get("ticker"), str(pt.get("year")))
-            old_points_by_key[key] = pt
-    except Exception as e:
-        print(f"old load fail {e}")
-
-# Archetype assignment: use model archetype head for each seq? We can get from out archetype logits for latest? Simpler reuse old archetype or infer via sector bias
-# For now use old archetype if available else fallback cycle
+# Archetype comes from the model's archetype head (captured above as
+# archetype_idx). Skills are unavailable: this model has no skills head
+# (n_skills=0), so per-company grades cannot be computed and are emitted as
+# null rather than fabricated. See the provenance block in real_data.json.
 from feature_spec import ARCHETYPE_NAMES
 
 points = []
 for i, meta in enumerate(all_meta):
     ticker = meta["ticker"]
     year = meta["year"]
-    key = (ticker, year)
-    old_pt = old_points_by_key.get(key)
-    if old_pt:
-        skills = old_pt.get("skills", [50] * 12)
-        archetype = old_pt.get("archetype", ARCHETYPE_NAMES[i % len(ARCHETYPE_NAMES)])
-    else:
-        # fallback randomish skills based on sector
-        skills = (np.random.rand(12) * 60 + 20).tolist()
-        archetype = ARCHETYPE_NAMES[i % len(ARCHETYPE_NAMES)]
+    archetype = ARCHETYPE_NAMES[meta["archetype_idx"]]
     x, y, z = xyz_scaled[i].tolist()
     emb_list = embs[i].tolist()  # 64-d
     points.append(
@@ -226,7 +212,7 @@ for i, meta in enumerate(all_meta):
             "x": float(x),
             "y": float(y),
             "z": float(z),
-            "skills": [float(s) for s in skills],
+            "skills": None,
             "emb": emb_list,
         }
     )
@@ -237,6 +223,51 @@ points = sorted(points, key=lambda p: (p["ticker"], p["year"]))
 # Build new real_data.json
 # skill_keys from feature_spec
 from feature_spec import SKILL_KEYS
+
+built = time.strftime("%Y-%m-%d %H:%M UTC", time.gmtime())
+provenance = {
+    "classification": "MIXED",
+    "computed_at": built,
+    "method": (
+        "pipeline/export_v6_real_assets.py — EquitiesCareerMTNN forward "
+        "pass over the v6 real+conditioned feature bundle"
+    ),
+    "real_fields": {
+        "fields": ["emb", "x", "y", "z", "archetype", "arch", "ic", "prec20"],
+        "classification": "REAL",
+        "note": (
+            "emb is the 64-d model embedding; x/y/z are PCA-3 of emb; "
+            "archetype/arch are the argmax of the model archetype head; "
+            "ic/prec20 come from the training checkpoint."
+        ),
+    },
+    "skills": {
+        "fields": ["skills"],
+        "classification": "UNAVAILABLE",
+        "value": None,
+        "note": (
+            "This model has no skills head (n_skills=0), so per-company "
+            "skill grades cannot be computed and are emitted as null. Prior "
+            "builds filled skills with np.random.rand(12)*60+20 — fabricated "
+            "noise rendered as an on-page Skills Radar; removed."
+        ),
+    },
+    "removed_fabricated_fields": {
+        "fields": ["val_recall", "test_recall", "purity", "sector_acc", "cqs"],
+        "classification": "FORBIDDEN",
+        "note": (
+            "Hardcoded metric literals (val_recall 0.882, purity 0.6586, "
+            "sector_acc 0.5535, cqs 0.6347) and a mislabeled test_recall "
+            "(aliased the IC, 0.5066 fabricated fallback) with no computation "
+            "behind them. Removed per data_provenance_SOP.md; real IC kept as ic."
+        ),
+    },
+    "reproducibility": (
+        "No .pt checkpoint is committed; without one this script raises "
+        "SystemExit and the asset cannot be regenerated on a clean checkout. "
+        "Real re-export plan: dottie tasks/artifacts/equities_reexport_plan.md."
+    ),
+}
 
 real_data_obj = {
     "points": points,
@@ -260,11 +291,6 @@ real_data_obj = {
     "fusion": "transformer",
     "rows": len(points),
     "tickers": len({p["ticker"] for p in points}),
-    "val_recall": 0.882,
-    "test_recall": ckpt.get("ic", 0.5066),
-    "purity": 0.6586,
-    "sector_acc": 0.5535,
-    "cqs": 0.6347,
     "years": sorted({p["year"] for p in points}),
     "features": len(manifest["features"]),
     "towers": fam_dims,
@@ -278,7 +304,8 @@ real_data_obj = {
         "BDRY/Oil/Copper yfinance YoY",
         "GSCPI proxy BDRY+Oil+GPR",
     ],
-    "built": time.strftime("%Y-%m-%d %H:%M UTC", time.gmtime()),
+    "built": built,
+    "provenance": provenance,
 }
 out_path = ASSETS_DIR / "real_data.json"
 out_path.write_text(json.dumps(real_data_obj))
@@ -296,11 +323,6 @@ manifest_out = {
     "model": real_data_obj["model"],
     "dim": dim,
     "fusion": "transformer",
-    "val_recall": real_data_obj["val_recall"],
-    "test_recall": real_data_obj["test_recall"],
-    "purity": real_data_obj["purity"],
-    "sector_acc": real_data_obj["sector_acc"],
-    "cqs": real_data_obj["cqs"],
     "ic": real_data_obj["ic"],
     "prec20": real_data_obj["prec20"],
     "families_count": len(set(manifest["families"])),
@@ -308,6 +330,7 @@ manifest_out = {
     "real_families": manifest["families"],
     "sources": real_data_obj["real_sources"],
     "years": real_data_obj["years"],
+    "provenance": provenance,
 }
 (ASSETS_DIR / "manifest.json").write_text(json.dumps(manifest_out, indent=2))
 print(f"Wrote manifest {ASSETS_DIR / 'manifest.json'}")

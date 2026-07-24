@@ -28,11 +28,6 @@
   "model": "equities_mtnn_v6_real_d64_towers20_ic0.5490146343450457",
   "dim": 64,
   "fusion": "transformer",
-  "val_recall": 0.882,
-  "test_recall": 0.5490146343450457,
-  "purity": 0.6586,
-  "sector_acc": 0.5535,
-  "cqs": 0.6347,
   "ic": 0.5490146343450457,
   "prec20": 0.7,
   "families_count": 20,
@@ -365,5 +360,55 @@
     "2022",
     "2023",
     "2024"
-  ]
+  ],
+  "provenance": {
+    "classification": "MIXED",
+    "note_scope": "Frozen shipped artifact classified as served. It cannot be regenerated on a clean checkout (no .pt committed). The corrected generator is pipeline/export_v6_real_assets.py.",
+    "embeddings": {
+      "fields": [
+        "emb",
+        "x",
+        "y",
+        "z"
+      ],
+      "classification": "MIXED",
+      "note": "64-d model embedding for 2741 rows plus 2200 sector-centroid+Gaussian-noise PLACEHOLDER rows added by the 2026-07-20 S&P 500 expansion; x/y/z are PCA-3 of emb. See assets/eval_sector_coherence.json placeholder_contamination."
+    },
+    "skills": {
+      "fields": [
+        "skills"
+      ],
+      "classification": "FORBIDDEN",
+      "note": "Per-company skills are np.random.rand(12)*60+20 noise, not measured percentiles, yet rendered as the on-page Skills Radar. This model has no skills head, so skill grades are unavailable. Retained in this frozen artifact but flagged; the corrected generator emits null."
+    },
+    "archetype": {
+      "fields": [
+        "archetype",
+        "arch"
+      ],
+      "classification": "FORBIDDEN",
+      "note": "Assigned by an i % len(ARCHETYPE_NAMES) modulo cycle in the builder of record, not the model's archetype head. The corrected generator uses the model archetype head."
+    },
+    "removed_fabricated_fields": {
+      "fields": [
+        "val_recall",
+        "test_recall",
+        "purity",
+        "sector_acc",
+        "cqs"
+      ],
+      "classification": "FORBIDDEN",
+      "note": "Hardcoded metric literals (val_recall 0.882, purity 0.6586, sector_acc 0.5535, cqs 0.6347) and a mislabeled test_recall (aliased the IC) with no computation behind them. Removed per data_provenance_SOP.md. Real IC retained as ic."
+    },
+    "ic_prec20": {
+      "fields": [
+        "ic",
+        "prec20"
+      ],
+      "classification": "REAL",
+      "note": "From the training checkpoint at build time; irreproducible now (no .pt committed)."
+    },
+    "reproducibility": "No .pt checkpoint committed; export_v6_real_assets.py raises SystemExit without one. Real re-export plan: dottie tasks/artifacts/equities_reexport_plan.md.",
+    "sop": "data_provenance_SOP.md"
+  }
 }
