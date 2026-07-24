@@ -86,11 +86,29 @@
   "model": "equities_mtnn_v4_concat_d64_b1_lowmem",
   "dim": 64,
   "fusion": "concat",
-  "val_recall": 1.0,
-  "test_recall": 1.0,
-  "purity": 0.6957230115730502,
-  "sector_acc": 0.9683773361020469,
-  "cqs": 0.8579,
+  "provenance": {
+    "sop": "data_provenance_SOP.md",
+    "note": "Fabricated top-level metric literals removed per operator directive (real + verified data only). val_recall/test_recall/purity/sector_acc/cqs had no committed computation behind them and did not ship. No committed checkpoint reproduces IC/prec@20; the sector-coherence eval is the only measured embedding metric.",
+    "removed_fabricated": [
+      "val_recall",
+      "test_recall",
+      "purity",
+      "sector_acc",
+      "cqs"
+    ],
+    "fields": {
+      "embeddings": {
+        "classification": "MIXED",
+        "detail": "Real 64-d model forward-pass embeddings plus sector-centroid + Gaussian-noise PLACEHOLDER rows from the 2026-07-20 S&P 500 expansion.",
+        "reference": "assets/eval_sector_coherence.json"
+      },
+      "sector_coherence": {
+        "classification": "REAL",
+        "detail": "Measured k-NN sector purity + silhouette of the published matrix; engineering QA of geometry only, not predictive.",
+        "reference": "assets/eval_sector_coherence.json"
+      }
+    }
+  },
   "families_count": 18,
   "real_features": [
     "REV",

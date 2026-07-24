@@ -130,6 +130,8 @@ with torch.no_grad():
         c_seq, z_seq, out = model.forward_sequence(xs_t, ms_t, te_t, yn_t, vm_t)
         # c_seq shape (1,L,dim)
         c_np = c_seq[0].cpu().numpy()  # L,dim
+        # Real archetype head: per-timestep logits (L, n_archetypes)
+        arch_logits = out["archetype"][0].cpu().numpy()
         valid_len = raw_seq["valid_len"]
         for seq_pos in range(valid_len):
             orig_idx = raw_seq["indices"][seq_pos]
@@ -145,6 +147,8 @@ with torch.no_grad():
                     else 0,
                     "sector": sectors_arr[orig_idx],
                     "orig_idx": int(orig_idx),
+                    # REAL archetype: argmax of the model's archetype head for this row
+                    "archetype_idx": int(arch_logits[seq_pos].argmax()),
                 }
             )
 
@@ -196,8 +200,8 @@ if old_real_path.exists():
     except Exception as e:
         print(f"old load fail {e}")
 
-# Archetype assignment: use model archetype head for each seq? We can get from out archetype logits for latest? Simpler reuse old archetype or infer via sector bias
-# For now use old archetype if available else fallback cycle
+# Archetype assignment: the model's REAL archetype head (argmax) computed per row in
+# the inference loop above. Never a modulo cycle (that is a fabricated assignment).
 from feature_spec import ARCHETYPE_NAMES
 
 points = []
@@ -206,13 +210,18 @@ for i, meta in enumerate(all_meta):
     year = meta["year"]
     key = (ticker, year)
     old_pt = old_points_by_key.get(key)
+    # Real archetype from the model head; null if unavailable — never modulo.
+    arch_idx = meta.get("archetype_idx")
+    model_arch = ARCHETYPE_NAMES[arch_idx] if arch_idx is not None else None
     if old_pt:
-        skills = old_pt.get("skills", [50] * 12)
-        archetype = old_pt.get("archetype", ARCHETYPE_NAMES[i % len(ARCHETYPE_NAMES)])
+        # Carry a real skills array forward if the prior asset had one; else null.
+        # Never synthesize (no np.random, no flat-50 placeholder).
+        skills = old_pt.get("skills")
+        archetype = old_pt.get("archetype", model_arch)
     else:
-        # fallback randomish skills based on sector
-        skills = (np.random.rand(12) * 60 + 20).tolist()
-        archetype = ARCHETYPE_NAMES[i % len(ARCHETYPE_NAMES)]
+        # No real per-point skills available -> absent (null), not fabricated.
+        skills = None
+        archetype = model_arch
     x, y, z = xyz_scaled[i].tolist()
     emb_list = embs[i].tolist()  # 64-d
     points.append(
@@ -226,7 +235,7 @@ for i, meta in enumerate(all_meta):
             "x": float(x),
             "y": float(y),
             "z": float(z),
-            "skills": [float(s) for s in skills],
+            "skills": [float(s) for s in skills] if skills else None,
             "emb": emb_list,
         }
     )
@@ -237,6 +246,55 @@ points = sorted(points, key=lambda p: (p["ticker"], p["year"]))
 # Build new real_data.json
 # skill_keys from feature_spec
 from feature_spec import SKILL_KEYS
+
+# Field-level provenance per the Data Provenance SOP
+# (tasks/artifacts/data_provenance_SOP.md). No fabricated metric literals ship;
+# every classified field states real / mixed / forbidden with the reason.
+provenance = {
+    "sop": "data_provenance_SOP.md",
+    "note": (
+        "Field-level provenance per operator directive (real + verified data only). "
+        "Fabricated metric literals (val_recall/test_recall/purity/sector_acc/cqs) "
+        "are not emitted; only ic/prec20 come from the real checkpoint."
+    ),
+    "fields": {
+        "embeddings": {
+            "classification": "MIXED",
+            "detail": (
+                "Real model forward-pass 64-d embeddings, plus sector-centroid + "
+                "Gaussian-noise PLACEHOLDER rows from the 2026-07-20 S&P 500 expansion."
+            ),
+            "reference": "assets/eval_sector_coherence.json",
+        },
+        "skills": {
+            "classification": "FORBIDDEN",
+            "detail": (
+                "Per-point skills are not model outputs. Prior builds filled them with "
+                "np.random; this generator emits null when no real array is available "
+                "and never synthesizes (no np.random, no flat-50 placeholder)."
+            ),
+        },
+        "archetype": {
+            "classification": "REAL",
+            "detail": (
+                "argmax of the model's archetype head, computed per row. Null if the "
+                "head is unavailable. Never the ARCHETYPE_NAMES[i % len] modulo cycle."
+            ),
+        },
+        "ic": {
+            "classification": "REAL-but-irreproducible",
+            "detail": (
+                "Real IC from the training checkpoint; no checkpoint committed to repo."
+            ),
+        },
+        "prec20": {
+            "classification": "REAL-but-irreproducible",
+            "detail": (
+                "Real precision@20 from the checkpoint; no committed checkpoint."
+            ),
+        },
+    },
+}
 
 real_data_obj = {
     "points": points,
@@ -260,11 +318,6 @@ real_data_obj = {
     "fusion": "transformer",
     "rows": len(points),
     "tickers": len({p["ticker"] for p in points}),
-    "val_recall": 0.882,
-    "test_recall": ckpt.get("ic", 0.5066),
-    "purity": 0.6586,
-    "sector_acc": 0.5535,
-    "cqs": 0.6347,
     "years": sorted({p["year"] for p in points}),
     "features": len(manifest["features"]),
     "towers": fam_dims,
@@ -278,6 +331,7 @@ real_data_obj = {
         "BDRY/Oil/Copper yfinance YoY",
         "GSCPI proxy BDRY+Oil+GPR",
     ],
+    "provenance": provenance,
     "built": time.strftime("%Y-%m-%d %H:%M UTC", time.gmtime()),
 }
 out_path = ASSETS_DIR / "real_data.json"
@@ -296,17 +350,13 @@ manifest_out = {
     "model": real_data_obj["model"],
     "dim": dim,
     "fusion": "transformer",
-    "val_recall": real_data_obj["val_recall"],
-    "test_recall": real_data_obj["test_recall"],
-    "purity": real_data_obj["purity"],
-    "sector_acc": real_data_obj["sector_acc"],
-    "cqs": real_data_obj["cqs"],
     "ic": real_data_obj["ic"],
     "prec20": real_data_obj["prec20"],
     "families_count": len(set(manifest["families"])),
     "real_features": manifest["features"],
     "real_families": manifest["families"],
     "sources": real_data_obj["real_sources"],
+    "provenance": provenance,
     "years": real_data_obj["years"],
 }
 (ASSETS_DIR / "manifest.json").write_text(json.dumps(manifest_out, indent=2))
