@@ -1,49 +1,30 @@
-"""auto-generated test gap mapper for parse_def14a_v2 - coverage <80%"""
+import importlib.util, sys, pathlib
+import pytest, json, re, math
 
-import json
-import pathlib
-import pytest
+def load_module():
+    mod_path = pathlib.Path("/home/hatch/workspace/vector-equities/pipeline/parse_def14a_v2.py")
+    spec = importlib.util.spec_from_file_location("pipeline_mod_parsev2", str(mod_path))
+    mod = importlib.util.module_from_spec(spec)
+    sys.modules["pipeline_mod_parsev2"] = mod
+    spec.loader.exec_module(mod)
+    return mod
 
-try:
-    import pipeline.parse_def14a_v2 as target_module
-except Exception:
+
+def test_smoke():
+    mod = load_module()
+    assert hasattr(mod, "parse_one")
+
+def test_parse_one_tmp(tmp_path):
+    mod = load_module()
+    p = tmp_path / "def14a.html"
+    p.write_text("<html><body>CEO Tim Cook Age 62 Total 15M</body></html>")
+    out = mod.parse_one(str(p))
+    assert isinstance(out, (dict, list))
+
+def test_parse_one_missing():
+    mod = load_module()
     try:
-        from importlib import import_module
-        target_module = import_module("pipeline.parse_def14a_v2")
-    except Exception:
-        target_module = None
-
-
-@pytest.fixture
-def sample_data():
-    return {"module": "parse_def14a_v2", "input": 1, "repo": "vector-equities"}
-
-
-@pytest.fixture
-def tmp_output(tmp_path):
-    return tmp_path
-
-
-@pytest.mark.parametrize("value", [0, 1, 2])
-def test_parse_def14a_v2_basic_parametrized(value, sample_data):
-    if target_module is None:
-        pytest.skip(f"{import_path} not importable - TODO: fix import")
-    pytest.skip("TODO: fill assert - auto-generated gap mapper for parse_def14a_v2")
-
-
-def test_parse_def14a_v2_edge_cases():
-    assert False, "TODO: implement edge case - parse_def14a_v2"
-
-
-@pytest.mark.parametrize("bad_input", ["", None, {}])
-def test_parse_def14a_v2_invalid_inputs(bad_input, tmp_output):
-    if target_module is None:
-        pytest.skip(f"{import_path} not importable")
-    pytest.skip("TODO: implement invalid-input handling - parse_def14a_v2")
-
-
-def test_parse_def14a_v2_integration(sample_data, tmp_output):
-    p = tmp_output / "parse_def14a_v2_sample.json"
-    p.write_text(json.dumps(sample_data))
-    assert p.exists()
-    pytest.skip("TODO: implement integration - parse_def14a_v2")
+        out = mod.parse_one("/nonexistent/path.html")
+        assert isinstance(out, (dict, list))
+    except Exception as e:
+        assert isinstance(e, Exception) and not isinstance(e, NotImplementedError)

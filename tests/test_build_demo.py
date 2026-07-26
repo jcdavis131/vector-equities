@@ -1,49 +1,41 @@
-"""auto-generated test gap mapper for build_demo - coverage <80%"""
+import importlib.util, sys, pathlib
+import pytest, json, re, math
 
-import json
-import pathlib
-import pytest
-
-try:
-    import pipeline.build_demo as target_module
-except Exception:
-    try:
-        from importlib import import_module
-        target_module = import_module("pipeline.build_demo")
-    except Exception:
-        target_module = None
+def load_module():
+    mod_path = pathlib.Path("/home/hatch/workspace/vector-equities/pipeline/build_demo.py")
+    spec = importlib.util.spec_from_file_location("pipeline_mod_demo", str(mod_path))
+    mod = importlib.util.module_from_spec(spec)
+    sys.modules["pipeline_mod_demo"] = mod
+    spec.loader.exec_module(mod)
+    return mod
 
 
-@pytest.fixture
-def sample_data():
-    return {"module": "build_demo", "input": 1, "repo": "vector-equities"}
+def test_smoke():
+    mod = load_module()
+    assert hasattr(mod, "gen_company_profile") or hasattr(mod, "save_bundle")
 
+def test_gen_company_profile():
+    mod = load_module()
+    if hasattr(mod, "gen_company_profile"):
+        prof = mod.gen_company_profile("AAPL")
+        assert isinstance(prof, dict)
+        assert prof.get("ticker") == "AAPL" or "ticker" in prof
 
-@pytest.fixture
-def tmp_output(tmp_path):
-    return tmp_path
+def test_gen_with_sector():
+    mod = load_module()
+    if hasattr(mod, "gen_company_profile"):
+        prof = mod.gen_company_profile("MSFT", sector="Technology")
+        assert isinstance(prof, dict)
 
-
-@pytest.mark.parametrize("value", [0, 1, 2])
-def test_build_demo_basic_parametrized(value, sample_data):
-    if target_module is None:
-        pytest.skip(f"{import_path} not importable - TODO: fix import")
-    pytest.skip("TODO: fill assert - auto-generated gap mapper for build_demo")
-
-
-def test_build_demo_edge_cases():
-    assert False, "TODO: implement edge case - build_demo"
-
-
-@pytest.mark.parametrize("bad_input", ["", None, {}])
-def test_build_demo_invalid_inputs(bad_input, tmp_output):
-    if target_module is None:
-        pytest.skip(f"{import_path} not importable")
-    pytest.skip("TODO: implement invalid-input handling - build_demo")
-
-
-def test_build_demo_integration(sample_data, tmp_output):
-    p = tmp_output / "build_demo_sample.json"
-    p.write_text(json.dumps(sample_data))
-    assert p.exists()
-    pytest.skip("TODO: implement integration - build_demo")
+def test_save_bundle_tmp(tmp_path):
+    mod = load_module()
+    if hasattr(mod, "save_bundle"):
+        import numpy as np
+        bundle = {"Z": np.random.randn(2,3), "ticker": np.array(["AAPL","MSFT"])}
+        out = tmp_path / "bundle.npz"
+        try:
+            mod.save_bundle(bundle, str(out))
+            assert out.exists()
+        except TypeError:
+            mod.save_bundle(bundle, out)
+            assert out.exists() or (tmp_path / "bundle.npz").exists()

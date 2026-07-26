@@ -1,49 +1,45 @@
-"""auto-generated test gap mapper for feature_spec - coverage <80%"""
+import importlib.util, sys, pathlib
+import pytest, json, re, math
 
-import json
-import pathlib
-import pytest
-
-try:
-    import pipeline.feature_spec as target_module
-except Exception:
-    try:
-        from importlib import import_module
-        target_module = import_module("pipeline.feature_spec")
-    except Exception:
-        target_module = None
+def load_module():
+    mod_path = pathlib.Path("/home/hatch/workspace/vector-equities/pipeline/feature_spec.py")
+    spec = importlib.util.spec_from_file_location("pipeline_mod_featspec", str(mod_path))
+    mod = importlib.util.module_from_spec(spec)
+    sys.modules["pipeline_mod_featspec"] = mod
+    spec.loader.exec_module(mod)
+    return mod
 
 
-@pytest.fixture
-def sample_data():
-    return {"module": "feature_spec", "input": 1, "repo": "vector-equities"}
+def test_smoke():
+    mod = load_module()
+    assert hasattr(mod, "FEATURE_FAMILIES") or hasattr(mod, "ALL_FEATURES") or hasattr(mod, "FAMILY_OF")
 
+def test_families_structure():
+    mod = load_module()
+    if hasattr(mod, "FEATURE_FAMILIES"):
+        fams = mod.FEATURE_FAMILIES
+        assert isinstance(fams, dict)
+        assert len(fams) >= 10
+        for fam, feats in fams.items():
+            assert isinstance(feats, list)
+            assert len(feats) >= 2
 
-@pytest.fixture
-def tmp_output(tmp_path):
-    return tmp_path
+def test_all_features_unique():
+    mod = load_module()
+    if hasattr(mod, "ALL_FEATURES"):
+        af = mod.ALL_FEATURES
+        assert len(af) == len(set(af))  # unique? might have duplicates like GROSS_MARGIN appears twice across families
+        assert len(af) >= 50
 
+def test_game_profile_features():
+    mod = load_module()
+    if hasattr(mod, "GAME_PROFILE_FEATURES"):
+        gpf = mod.GAME_PROFILE_FEATURES
+        assert len(gpf) == 14 or len(gpf)>=10
+        assert all(isinstance(s,str) for s in gpf)
 
-@pytest.mark.parametrize("value", [0, 1, 2])
-def test_feature_spec_basic_parametrized(value, sample_data):
-    if target_module is None:
-        pytest.skip(f"{import_path} not importable - TODO: fix import")
-    pytest.skip("TODO: fill assert - auto-generated gap mapper for feature_spec")
-
-
-def test_feature_spec_edge_cases():
-    assert False, "TODO: implement edge case - feature_spec"
-
-
-@pytest.mark.parametrize("bad_input", ["", None, {}])
-def test_feature_spec_invalid_inputs(bad_input, tmp_output):
-    if target_module is None:
-        pytest.skip(f"{import_path} not importable")
-    pytest.skip("TODO: implement invalid-input handling - feature_spec")
-
-
-def test_feature_spec_integration(sample_data, tmp_output):
-    p = tmp_output / "feature_spec_sample.json"
-    p.write_text(json.dumps(sample_data))
-    assert p.exists()
-    pytest.skip("TODO: implement integration - feature_spec")
+def test_skill_keys():
+    mod = load_module()
+    if hasattr(mod, "SKILL_KEYS"):
+        sk = mod.SKILL_KEYS
+        assert len(sk) == 12

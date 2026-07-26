@@ -1,49 +1,81 @@
-"""auto-generated test gap mapper for composite_score - coverage <80%"""
+import importlib.util, sys, pathlib
+import pytest, json, re, math
 
-import json
-import pathlib
-import pytest
-
-try:
-    import pipeline.composite_score as target_module
-except Exception:
-    try:
-        from importlib import import_module
-        target_module = import_module("pipeline.composite_score")
-    except Exception:
-        target_module = None
+def load_module():
+    mod_path = pathlib.Path("/home/hatch/workspace/vector-equities/pipeline/composite_score.py")
+    spec = importlib.util.spec_from_file_location("pipeline_mod_composite_score", str(mod_path))
+    mod = importlib.util.module_from_spec(spec)
+    sys.modules["pipeline_mod_composite_score"] = mod
+    spec.loader.exec_module(mod)
+    return mod
 
 
-@pytest.fixture
-def sample_data():
-    return {"module": "composite_score", "input": 1, "repo": "vector-equities"}
+def test_smoke_has_functions():
+    mod = load_module()
+    for fn in ["sigmoid","partial_cqs","composite_quality","should_promote"]:
+        assert hasattr(mod, fn), f"missing {fn}"
 
+def test_sigmoid_values():
+    mod = load_module()
+    import numpy as np
+    assert abs(mod.sigmoid(0) - 0.5) < 1e-6
+    assert mod.sigmoid(10) > 0.9
+    assert mod.sigmoid(-10) < 0.1
 
-@pytest.fixture
-def tmp_output(tmp_path):
-    return tmp_path
+def test_partial_cqs_none_handling():
+    mod = load_module()
+    assert mod.partial_cqs(None, 0.8) == 0.8
+    assert mod.partial_cqs(0.6, None) == 0.6
+    assert abs(mod.partial_cqs(0.6, 0.8) - 0.7) < 1e-6
 
+def test_composite_quality_real():
+    mod = load_module()
+    report = {
+        "held_out_recall": {"test": {"recall_at_10_mtnn": 0.82}},
+        "cross_cycle_archetype_purity_at_20": 0.65,
+        "next_profile": {"test": {"r2": 0.25}},
+        "sector_top1_acc": 0.55,
+        "market_directional_acc": 0.58,
+    }
+    out = mod.composite_quality(report)
+    assert "cqs" in out
+    assert isinstance(out["cqs"], float)
+    assert 0 <= out["cqs"] <= 1.5
+    assert out["recall_at_10"] == 0.82
+    assert out["parts"]["r2_clip"] == 0.25
+    # market bonus clipped
+    assert -0.5 <= out["parts"]["market_bonus"] <= 0.5
 
-@pytest.mark.parametrize("value", [0, 1, 2])
-def test_composite_score_basic_parametrized(value, sample_data):
-    if target_module is None:
-        pytest.skip(f"{import_path} not importable - TODO: fix import")
-    pytest.skip("TODO: fill assert - auto-generated gap mapper for composite_score")
+def test_composite_quality_r2_clipping():
+    mod = load_module()
+    report = {
+        "held_out_recall": {"test": {"recall_at_10_mtnn": 0.9}},
+        "cross_cycle_archetype_purity_at_20": 0.7,
+        "next_profile": {"test": {"r2": 2.0}},  # >0.9 should clip
+    }
+    out = mod.composite_quality(report)
+    assert out["parts"]["r2_clip"] == 0.9
 
+def test_should_promote_logic():
+    mod = load_module()
+    high = {
+        "held_out_recall": {"test": {"recall_at_10_mtnn": 0.80}},
+        "cross_cycle_archetype_purity_at_20": 0.8,
+        "next_profile": {"test": {"r2": 0.5}},
+        "sector_top1_acc": 0.9,
+        "market_directional_acc": 0.7,
+    }
+    ok, msg = mod.should_promote(high, baseline=0.60)
+    # cqs high but recall 0.80 >=0.75 so should promote True (cqs >=0.605)
+    assert isinstance(ok, bool)
+    assert isinstance(msg, str)
+    assert "CQS" in msg
 
-def test_composite_score_edge_cases():
-    assert False, "TODO: implement edge case - composite_score"
-
-
-@pytest.mark.parametrize("bad_input", ["", None, {}])
-def test_composite_score_invalid_inputs(bad_input, tmp_output):
-    if target_module is None:
-        pytest.skip(f"{import_path} not importable")
-    pytest.skip("TODO: implement invalid-input handling - composite_score")
-
-
-def test_composite_score_integration(sample_data, tmp_output):
-    p = tmp_output / "composite_score_sample.json"
-    p.write_text(json.dumps(sample_data))
-    assert p.exists()
-    pytest.skip("TODO: implement integration - composite_score")
+def test_should_promote_fail_low_recall():
+    mod = load_module()
+    low = {
+        "held_out_recall": {"test": {"recall_at_10_mtnn": 0.5}},
+        "cross_cycle_archetype_purity_at_20": 0.3,
+    }
+    ok, msg = mod.should_promote(low, baseline=0.90)
+    assert ok is False

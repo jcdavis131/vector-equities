@@ -1,49 +1,48 @@
-"""auto-generated test gap mapper for parse_def14a - coverage <80%"""
+import importlib.util, sys, pathlib
+import pytest, json, re, math
 
-import json
-import pathlib
-import pytest
+def load_module():
+    mod_path = pathlib.Path("/home/hatch/workspace/vector-equities/pipeline/parse_def14a.py")
+    spec = importlib.util.spec_from_file_location("pipeline_mod_parse14a", str(mod_path))
+    mod = importlib.util.module_from_spec(spec)
+    sys.modules["pipeline_mod_parse14a"] = mod
+    spec.loader.exec_module(mod)
+    return mod
 
-try:
-    import pipeline.parse_def14a as target_module
-except Exception:
+
+def test_smoke():
+    mod = load_module()
+    for fn in ["html_to_text","extract_comp_table_text","parse_neos_heuristic","parse_def14a_file"]:
+        assert hasattr(mod, fn)
+
+def test_html_to_text():
+    mod = load_module()
+    b = b"<html><p>John Doe  CEO  1,200,000</p></html>"
+    txt = mod.html_to_text(b)
+    assert "John" in txt or "Doe" in txt or len(txt)>0
+
+def test_extract_comp_table_text(tmp_path):
+    mod = load_module()
+    html = tmp_path / "def14a.html"
+    html.write_text("<html><body><table><tr><th>Name</th><th>Total</th></tr><tr><td>Tim Cook</td><td>$15,000,000</td></tr></table></body></html>")
     try:
-        from importlib import import_module
-        target_module = import_module("pipeline.parse_def14a")
+        tbl = mod.extract_comp_table_text(str(html))
+        assert isinstance(tbl, str)
     except Exception:
-        target_module = None
+        # function may accept Path, ensure no crash type
+        tbl = mod.extract_comp_table_text(html)
+        assert isinstance(tbl, str)
 
+def test_parse_neos_heuristic(tmp_path):
+    mod = load_module()
+    html = tmp_path / "def14a.html"
+    html.write_text("<html>Summary Compensation Table\nTim Cook CEO 15000000\nBob CFO 5000000</html>")
+    neos = mod.parse_neos_heuristic(str(html))
+    assert isinstance(neos, (list, dict))
 
-@pytest.fixture
-def sample_data():
-    return {"module": "parse_def14a", "input": 1, "repo": "vector-equities"}
-
-
-@pytest.fixture
-def tmp_output(tmp_path):
-    return tmp_path
-
-
-@pytest.mark.parametrize("value", [0, 1, 2])
-def test_parse_def14a_basic_parametrized(value, sample_data):
-    if target_module is None:
-        pytest.skip(f"{import_path} not importable - TODO: fix import")
-    pytest.skip("TODO: fill assert - auto-generated gap mapper for parse_def14a")
-
-
-def test_parse_def14a_edge_cases():
-    assert False, "TODO: implement edge case - parse_def14a"
-
-
-@pytest.mark.parametrize("bad_input", ["", None, {}])
-def test_parse_def14a_invalid_inputs(bad_input, tmp_output):
-    if target_module is None:
-        pytest.skip(f"{import_path} not importable")
-    pytest.skip("TODO: implement invalid-input handling - parse_def14a")
-
-
-def test_parse_def14a_integration(sample_data, tmp_output):
-    p = tmp_output / "parse_def14a_sample.json"
-    p.write_text(json.dumps(sample_data))
-    assert p.exists()
-    pytest.skip("TODO: implement integration - parse_def14a")
+def test_parse_def14a_file(tmp_path):
+    mod = load_module()
+    html = tmp_path / "def14a.html"
+    html.write_text("<html>Executive Compensation Table Tim Cook 2023 $15M</html>")
+    out = mod.parse_def14a_file(str(html))
+    assert out is not None

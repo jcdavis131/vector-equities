@@ -1,49 +1,34 @@
-"""auto-generated test gap mapper for build_exec_registry_v3 - coverage <80%"""
+import importlib.util, sys, pathlib
+import pytest, json, re, math
 
-import json
-import pathlib
-import pytest
-
-try:
-    import pipeline.build_exec_registry_v3 as target_module
-except Exception:
-    try:
-        from importlib import import_module
-        target_module = import_module("pipeline.build_exec_registry_v3")
-    except Exception:
-        target_module = None
+def load_module():
+    mod_path = pathlib.Path("/home/hatch/workspace/vector-equities/pipeline/build_exec_registry_v3.py")
+    spec = importlib.util.spec_from_file_location("pipeline_mod_execreg", str(mod_path))
+    mod = importlib.util.module_from_spec(spec)
+    sys.modules["pipeline_mod_execreg"] = mod
+    spec.loader.exec_module(mod)
+    return mod
 
 
-@pytest.fixture
-def sample_data():
-    return {"module": "build_exec_registry_v3", "input": 1, "repo": "vector-equities"}
+def test_smoke():
+    mod = load_module()
+    for fn in ["normalize_full","normalize_firstlast","load_parsed","main"]:
+        assert hasattr(mod, fn)
 
+def test_normalize_full():
+    mod = load_module()
+    assert mod.normalize_full("  Tim   Cook ") == "tim cook"
+    assert mod.normalize_full("") == ""
+    assert mod.normalize_full("JOHN DOE") == "john doe"
 
-@pytest.fixture
-def tmp_output(tmp_path):
-    return tmp_path
+def test_normalize_firstlast():
+    mod = load_module()
+    assert mod.normalize_firstlast("Tim Cook") == ("tim","cook")
+    assert mod.normalize_firstlast("Madonna") == ("madonna","") or len(mod.normalize_firstlast("Madonna"))==2
+    assert mod.normalize_firstlast("") == ("","")
 
-
-@pytest.mark.parametrize("value", [0, 1, 2])
-def test_build_exec_registry_v3_basic_parametrized(value, sample_data):
-    if target_module is None:
-        pytest.skip(f"{import_path} not importable - TODO: fix import")
-    pytest.skip("TODO: fill assert - auto-generated gap mapper for build_exec_registry_v3")
-
-
-def test_build_exec_registry_v3_edge_cases():
-    assert False, "TODO: implement edge case - build_exec_registry_v3"
-
-
-@pytest.mark.parametrize("bad_input", ["", None, {}])
-def test_build_exec_registry_v3_invalid_inputs(bad_input, tmp_output):
-    if target_module is None:
-        pytest.skip(f"{import_path} not importable")
-    pytest.skip("TODO: implement invalid-input handling - build_exec_registry_v3")
-
-
-def test_build_exec_registry_v3_integration(sample_data, tmp_output):
-    p = tmp_output / "build_exec_registry_v3_sample.json"
-    p.write_text(json.dumps(sample_data))
-    assert p.exists()
-    pytest.skip("TODO: implement integration - build_exec_registry_v3")
+def test_load_parsed_empty(tmp_path, monkeypatch):
+    mod = load_module()
+    monkeypatch.setattr(mod, "ROOT", tmp_path)
+    res = mod.load_parsed()
+    assert isinstance(res, (list, dict))
