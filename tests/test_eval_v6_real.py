@@ -1,50 +1,49 @@
 """auto-generated test gap mapper for eval_v6_real - coverage <80%"""
-import sys
-from pathlib import Path
 
+import json
+import pathlib
 import pytest
-import numpy as np
-
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT))
-sys.path.insert(0, str(ROOT / "pipeline"))
 
 try:
-    from pipeline import eval_v6_real as target_module
+    import pipeline.eval_v6_real as target_module
 except Exception:
     try:
-        import eval_v6_real as target_module
+        from importlib import import_module
+        target_module = import_module("pipeline.eval_v6_real")
     except Exception:
         target_module = None
 
 
 @pytest.fixture
-def sample_equity_data():
-    return {
-        "points": [
-            {"ticker": f"T{i:04d}", "sector": "Technology", "fiscal_year": 2022}
-            for i in range(10)
-        ],
-        "tickers": [f"T{i:04d}" for i in range(10)],
-    }
+def sample_data():
+    return {"module": "eval_v6_real", "input": 1, "repo": "vector-equities"}
 
 
 @pytest.fixture
-def sample_embedding():
-    rng = np.random.default_rng(99)
-    return rng.normal(0, 1, size=(10, 64)).astype(np.float32)
+def tmp_output(tmp_path):
+    return tmp_path
 
 
-@pytest.mark.parametrize("k", [5, 10, 20])
-def test_eval_v6_real_knn_purity(k, sample_equity_data, sample_embedding):
-    pytest.skip("TODO: fill assert - recall/purity knn eval")
+@pytest.mark.parametrize("value", [0, 1, 2])
+def test_eval_v6_real_basic_parametrized(value, sample_data):
+    if target_module is None:
+        pytest.skip(f"{import_path} not importable - TODO: fix import")
+    pytest.skip("TODO: fill assert - auto-generated gap mapper for eval_v6_real")
 
 
-@pytest.mark.parametrize("sector", ["Technology", "Energy", "Financials"])
-def test_eval_v6_real_sector_coverage(sector, sample_equity_data):
-    assert False, "TODO: assert sector evaluation coverage"
+def test_eval_v6_real_edge_cases():
+    assert False, "TODO: implement edge case - eval_v6_real"
 
 
-@pytest.mark.parametrize("horizon", [1, 3, 7])
-def test_eval_v6_real_horizon_eval(horizon, sample_equity_data, sample_embedding):
-    pytest.skip("TODO: fill assert - forward horizon eval")
+@pytest.mark.parametrize("bad_input", ["", None, {}])
+def test_eval_v6_real_invalid_inputs(bad_input, tmp_output):
+    if target_module is None:
+        pytest.skip(f"{import_path} not importable")
+    pytest.skip("TODO: implement invalid-input handling - eval_v6_real")
+
+
+def test_eval_v6_real_integration(sample_data, tmp_output):
+    p = tmp_output / "eval_v6_real_sample.json"
+    p.write_text(json.dumps(sample_data))
+    assert p.exists()
+    pytest.skip("TODO: implement integration - eval_v6_real")

@@ -1,48 +1,49 @@
 """auto-generated test gap mapper for build_archetypes - coverage <80%"""
-import sys
-from pathlib import Path
 
+import json
+import pathlib
 import pytest
-import numpy as np
-
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT))
-sys.path.insert(0, str(ROOT / "pipeline"))
 
 try:
-    from pipeline import build_archetypes as target_module
+    import pipeline.build_archetypes as target_module
 except Exception:
     try:
-        import build_archetypes as target_module
+        from importlib import import_module
+        target_module = import_module("pipeline.build_archetypes")
     except Exception:
         target_module = None
 
 
 @pytest.fixture
-def sample_equity_data():
-    return {
-        "tickers": ["AAPL", "MSFT", "TSLA"],
-        "Z": np.random.randn(20, 14).astype(np.float32),
-        "sectors": ["Technology", "Technology", "Consumer Discretionary"],
-    }
+def sample_data():
+    return {"module": "build_archetypes", "input": 1, "repo": "vector-equities"}
 
 
 @pytest.fixture
-def sample_embedding():
-    rng = np.random.default_rng(7)
-    return rng.normal(0, 1, size=(20, 64)).astype(np.float32)
+def tmp_output(tmp_path):
+    return tmp_path
 
 
-@pytest.mark.parametrize("k", [4, 8, 12])
-def test_build_archetypes_cluster_count(k, sample_equity_data, sample_embedding):
-    pytest.skip("TODO: fill assert - cluster count validation")
+@pytest.mark.parametrize("value", [0, 1, 2])
+def test_build_archetypes_basic_parametrized(value, sample_data):
+    if target_module is None:
+        pytest.skip(f"{import_path} not importable - TODO: fix import")
+    pytest.skip("TODO: fill assert - auto-generated gap mapper for build_archetypes")
 
 
-@pytest.mark.parametrize("sector", ["Technology", "Financials", "Healthcare"])
-def test_build_archetypes_sector_purity(sector, sample_equity_data):
-    assert False, "TODO: assert archetype sector purity"
+def test_build_archetypes_edge_cases():
+    assert False, "TODO: implement edge case - build_archetypes"
 
 
-@pytest.mark.parametrize("seed", [0, 1, 42])
-def test_build_archetypes_reproducibility(seed, sample_equity_data, sample_embedding):
-    pytest.skip("TODO: fill assert - kmeans reproducibility")
+@pytest.mark.parametrize("bad_input", ["", None, {}])
+def test_build_archetypes_invalid_inputs(bad_input, tmp_output):
+    if target_module is None:
+        pytest.skip(f"{import_path} not importable")
+    pytest.skip("TODO: implement invalid-input handling - build_archetypes")
+
+
+def test_build_archetypes_integration(sample_data, tmp_output):
+    p = tmp_output / "build_archetypes_sample.json"
+    p.write_text(json.dumps(sample_data))
+    assert p.exists()
+    pytest.skip("TODO: implement integration - build_archetypes")

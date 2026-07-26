@@ -1,50 +1,49 @@
 """auto-generated test gap mapper for build_advanced_features - coverage <80%"""
-import sys
-from pathlib import Path
 
+import json
+import pathlib
 import pytest
-import numpy as np
-
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT))
-sys.path.insert(0, str(ROOT / "pipeline"))
 
 try:
-    from pipeline import build_advanced_features as target_module
+    import pipeline.build_advanced_features as target_module
 except Exception:
     try:
-        import build_advanced_features as target_module
+        from importlib import import_module
+        target_module = import_module("pipeline.build_advanced_features")
     except Exception:
         target_module = None
 
 
 @pytest.fixture
-def sample_equity_data():
-    return {
-        "ticker": "AAPL",
-        "sector": "Technology",
-        "fiscal_year": 2023,
-        "features": np.random.randn(14).astype(np.float32),
-        "market_cap": 2.5e12,
-    }
+def sample_data():
+    return {"module": "build_advanced_features", "input": 1, "repo": "vector-equities"}
 
 
 @pytest.fixture
-def sample_embedding():
-    rng = np.random.default_rng(42)
-    return rng.normal(0, 1, size=(64,)).astype(np.float32)
+def tmp_output(tmp_path):
+    return tmp_path
 
 
-@pytest.mark.parametrize("ticker", ["AAPL", "MSFT", "GOOGL"])
-def test_build_advanced_features_tower_build(ticker, sample_equity_data, sample_embedding):
-    pytest.skip("TODO: fill assert - implement advanced tower build check")
+@pytest.mark.parametrize("value", [0, 1, 2])
+def test_build_advanced_features_basic_parametrized(value, sample_data):
+    if target_module is None:
+        pytest.skip(f"{import_path} not importable - TODO: fix import")
+    pytest.skip("TODO: fill assert - auto-generated gap mapper for build_advanced_features")
 
 
-@pytest.mark.parametrize("family", ["profitability", "growth", "defense"])
-def test_build_advanced_features_family_metrics(family, sample_equity_data):
-    assert False, "TODO: assert family metrics computed"
+def test_build_advanced_features_edge_cases():
+    assert False, "TODO: implement edge case - build_advanced_features"
 
 
-@pytest.mark.parametrize("horizon", [1, 2, 3])
-def test_build_advanced_features_horizon_logic(horizon, sample_equity_data, sample_embedding):
-    pytest.skip("TODO: fill assert - horizon embedding logic")
+@pytest.mark.parametrize("bad_input", ["", None, {}])
+def test_build_advanced_features_invalid_inputs(bad_input, tmp_output):
+    if target_module is None:
+        pytest.skip(f"{import_path} not importable")
+    pytest.skip("TODO: implement invalid-input handling - build_advanced_features")
+
+
+def test_build_advanced_features_integration(sample_data, tmp_output):
+    p = tmp_output / "build_advanced_features_sample.json"
+    p.write_text(json.dumps(sample_data))
+    assert p.exists()
+    pytest.skip("TODO: implement integration - build_advanced_features")

@@ -1,52 +1,49 @@
 """auto-generated test gap mapper for composite_score - coverage <80%"""
-import sys
-from pathlib import Path
 
+import json
+import pathlib
 import pytest
-import numpy as np
-
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT))
-sys.path.insert(0, str(ROOT / "pipeline"))
 
 try:
-    from pipeline import composite_score as target_module
+    import pipeline.composite_score as target_module
 except Exception:
     try:
-        import composite_score as target_module
+        from importlib import import_module
+        target_module = import_module("pipeline.composite_score")
     except Exception:
         target_module = None
 
 
 @pytest.fixture
-def sample_equity_data():
-    return {
-        "report": {
-            "held_out_recall": {"test": {"recall_at_10_mtnn": 0.42}},
-            "cross_cycle_archetype_purity_at_20": 0.61,
-            "next_profile": {"test": {"r2": 0.15}},
-            "sector_accuracy": 0.55,
-            "market_bonus": 0.1,
-        }
-    }
+def sample_data():
+    return {"module": "composite_score", "input": 1, "repo": "vector-equities"}
 
 
 @pytest.fixture
-def sample_embedding():
-    rng = np.random.default_rng(123)
-    return rng.normal(0, 1, size=(64,)).astype(np.float32)
+def tmp_output(tmp_path):
+    return tmp_path
 
 
-@pytest.mark.parametrize("recall", [0.1, 0.42, 0.9])
-def test_composite_score_recall_weighting(recall, sample_equity_data, sample_embedding):
-    pytest.skip("TODO: fill assert - CQS recall weighting")
+@pytest.mark.parametrize("value", [0, 1, 2])
+def test_composite_score_basic_parametrized(value, sample_data):
+    if target_module is None:
+        pytest.skip(f"{import_path} not importable - TODO: fix import")
+    pytest.skip("TODO: fill assert - auto-generated gap mapper for composite_score")
 
 
-@pytest.mark.parametrize("r2", [-0.2, 0.0, 0.35])
-def test_composite_score_r2_clipping(r2, sample_equity_data):
-    assert False, "TODO: assert R2 clipped to [0,1] in CQS"
+def test_composite_score_edge_cases():
+    assert False, "TODO: implement edge case - composite_score"
 
 
-@pytest.mark.parametrize("purity", [0.2, 0.5, 0.95])
-def test_composite_score_purity_contrib(purity, sample_equity_data, sample_embedding):
-    pytest.skip("TODO: fill assert - purity contribution to composite")
+@pytest.mark.parametrize("bad_input", ["", None, {}])
+def test_composite_score_invalid_inputs(bad_input, tmp_output):
+    if target_module is None:
+        pytest.skip(f"{import_path} not importable")
+    pytest.skip("TODO: implement invalid-input handling - composite_score")
+
+
+def test_composite_score_integration(sample_data, tmp_output):
+    p = tmp_output / "composite_score_sample.json"
+    p.write_text(json.dumps(sample_data))
+    assert p.exists()
+    pytest.skip("TODO: implement integration - composite_score")

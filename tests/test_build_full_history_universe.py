@@ -5,25 +5,30 @@ import pathlib
 import pytest
 
 try:
-    from pipeline import build_full_history_universe as target_module
-except ImportError:
+    import pipeline.build_full_history_universe as target_module
+except Exception:
     try:
-        import pipeline.build_full_history_universe as target_module
-    except ImportError:
+        from importlib import import_module
+        target_module = import_module("pipeline.build_full_history_universe")
+    except Exception:
         target_module = None
 
 
 @pytest.fixture
 def sample_data():
-    return {"module": "build_full_history_universe", "input": 1}
+    return {"module": "build_full_history_universe", "input": 1, "repo": "vector-equities"}
 
 
-@pytest.mark.parametrize("input_val,expected", [(1, 2), (None, None), (0, 0)])
-def test_build_full_history_universe_basic(input_val, expected, tmp_path):
-    """Basic functionality smoke test - currently unimplemented (gap)."""
+@pytest.fixture
+def tmp_output(tmp_path):
+    return tmp_path
+
+
+@pytest.mark.parametrize("value", [0, 1, 2])
+def test_build_full_history_universe_basic_parametrized(value, sample_data):
     if target_module is None:
-        pytest.skip(f"pipeline.build_full_history_universe not importable")
-    pytest.skip("TODO: fill assert - auto-generated stub requires implementation")
+        pytest.skip(f"{import_path} not importable - TODO: fix import")
+    pytest.skip("TODO: fill assert - auto-generated gap mapper for build_full_history_universe")
 
 
 def test_build_full_history_universe_edge_cases():
@@ -31,14 +36,14 @@ def test_build_full_history_universe_edge_cases():
 
 
 @pytest.mark.parametrize("bad_input", ["", None, {}])
-def test_build_full_history_universe_invalid_inputs(bad_input, tmp_path):
+def test_build_full_history_universe_invalid_inputs(bad_input, tmp_output):
     if target_module is None:
-        pytest.skip(f"pipeline.build_full_history_universe not importable")
-    pytest.skip("TODO: implement invalid-input handling")
+        pytest.skip(f"{import_path} not importable")
+    pytest.skip("TODO: implement invalid-input handling - build_full_history_universe")
 
 
-def test_build_full_history_universe_integration(sample_data, tmp_path):
-    tmp_file = tmp_path / f"build_full_history_universe_sample.json"
-    tmp_file.write_text(json.dumps(sample_data))
-    assert tmp_file.exists()
+def test_build_full_history_universe_integration(sample_data, tmp_output):
+    p = tmp_output / "build_full_history_universe_sample.json"
+    p.write_text(json.dumps(sample_data))
+    assert p.exists()
     pytest.skip("TODO: implement integration - build_full_history_universe")

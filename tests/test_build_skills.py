@@ -1,33 +1,22 @@
-"""
-auto-generated test gap mapper – vector-equities/pipeline/build_skills.py
-Covers: pipeline.build_skills
-Generated: 2026-07-26
-Branch: test-gap/2026-07-26
-Note: stubs must fail/skip until filled – never fake passing tests.
-"""
+"""auto-generated test gap mapper for build_skills - coverage <80%"""
+
+import json
+import pathlib
 import pytest
 
-# TODO: ensure package importability – adjust sys.path if repo lacks pyproject package layout
 try:
-    import pipeline
+    import pipeline.build_skills as target_module
 except Exception:
-    pass
-
-# Attempt to import target module – if fails, tests will skip clearly
-try:
-    from importlib import import_module
-    TARGET = import_module("pipeline.build_skills")
-except Exception as exc:  # pragma: no cover
-    TARGET = None
-    _IMPORT_ERROR = exc
-else:
-    _IMPORT_ERROR = None
+    try:
+        from importlib import import_module
+        target_module = import_module("pipeline.build_skills")
+    except Exception:
+        target_module = None
 
 
 @pytest.fixture
 def sample_data():
-    """Sample data fixture – TODO: replace with real minimal data."""
-    return {"example": 1, "items": [1, 2, 3]}
+    return {"module": "build_skills", "input": 1, "repo": "vector-equities"}
 
 
 @pytest.fixture
@@ -35,44 +24,26 @@ def tmp_output(tmp_path):
     return tmp_path
 
 
-def _require_target():
-    if TARGET is None:
-        pytest.skip(f"Target module pipeline.build_skills not importable: {_IMPORT_ERROR} – TODO: fix import path")
-
-
-# 2-5 parametrized tests with clear names and TODO asserts
-@pytest.mark.parametrize("value", [0, 1, 42])
+@pytest.mark.parametrize("value", [0, 1, 2])
 def test_build_skills_basic_parametrized(value, sample_data):
-    """Basic sanity – parametrized on build_skills."""
-    _require_target()
-    pytest.skip("TODO: fill assert – auto-generated gap mapper")
-
-@pytest.mark.parametrize("case", ["empty", "minimal", "typical"])
-def test_build_skills_handles_cases(case, tmp_output):
-    """Case handling for '{case}' scenario."""
-    _require_target()
-    # arrange
-    data = case
-    # act – TODO: call TARGET function/class
-    result = None  # TODO: TARGET.your_func(data)
-    # assert
-    pytest.skip(f"TODO: fill assert for case={case} – got {result}")
-
-def test_build_skills_smoke_import():
-    """Smoke import & attributes exist."""
-    _require_target()
-    assert hasattr(TARGET, "__name__")
-    # TODO: list expected public API
-    # Example dynamic check:
-    #   expected = ['build']
-    #   for name in expected: assert hasattr(TARGET, name), f"missing {name}"
-    pytest.skip("TODO: enumerate expected API – ['build'] []")
+    if target_module is None:
+        pytest.skip(f"{import_path} not importable - TODO: fix import")
+    pytest.skip("TODO: fill assert - auto-generated gap mapper for build_skills")
 
 
-def test_build_skills_build_contract(sample_data):
-    """Contract test for build – TODO: replace with real behavior."""
-    _require_target()
-    if not hasattr(TARGET, "build"):
-        pytest.skip(f"TARGET missing build – TODO verify name")
-    fn = getattr(TARGET, "build")
-    pytest.skip(f"TODO: call {fn} with sample_data and assert – auto-generated")
+def test_build_skills_edge_cases():
+    assert False, "TODO: implement edge case - build_skills"
+
+
+@pytest.mark.parametrize("bad_input", ["", None, {}])
+def test_build_skills_invalid_inputs(bad_input, tmp_output):
+    if target_module is None:
+        pytest.skip(f"{import_path} not importable")
+    pytest.skip("TODO: implement invalid-input handling - build_skills")
+
+
+def test_build_skills_integration(sample_data, tmp_output):
+    p = tmp_output / "build_skills_sample.json"
+    p.write_text(json.dumps(sample_data))
+    assert p.exists()
+    pytest.skip("TODO: implement integration - build_skills")
