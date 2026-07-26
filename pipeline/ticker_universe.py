@@ -195,7 +195,9 @@ def fetch_sp500_list():
                 for row in reader:
                     sym = (row.get("Symbol") or row.get("Ticker") or "").strip()
                     name = (row.get("Security") or row.get("Name") or sym).strip()
-                    sec = (row.get("GICS Sector") or row.get("Sector") or "Industrials").strip()
+                    sec = (
+                        row.get("GICS Sector") or row.get("Sector") or "Industrials"
+                    ).strip()
                     if sym:
                         out.append((sym, name, sec))
                 if len(out) >= 400:
@@ -221,7 +223,9 @@ def fetch_sp500_list():
                 for row in reader:
                     sym = (row.get("Symbol") or row.get("Ticker") or "").strip()
                     name = (row.get("Security") or row.get("Name") or sym).strip()
-                    sec = (row.get("GICS Sector") or row.get("Sector") or "Industrials").strip()
+                    sec = (
+                        row.get("GICS Sector") or row.get("Sector") or "Industrials"
+                    ).strip()
                     if sym:
                         out.append((sym, name, sec))
                 if len(out) > 200:  # must be substantial
