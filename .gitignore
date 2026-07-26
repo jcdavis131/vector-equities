@@ -13,3 +13,4 @@ data/*.pt
 # Keep small reports
 !pipeline/data/mtnn_report.json
 !pipeline/data/feature_manifest.json
+.vercel
