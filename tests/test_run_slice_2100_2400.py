@@ -1,6 +1,11 @@
 """safe placeholder for test_run_slice_2100_2400 - heavy pipeline module, skipped for fast collect"""
+
 import pytest
+
+
 def test_placeholder_test_run_slice_2100_2400_fast():
     assert True
+
+
 def test_test_run_slice_2100_2400_deferred_import():
     pytest.skip("heavy pipeline test deferred - data not available in free-tier")

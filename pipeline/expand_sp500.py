@@ -7,9 +7,12 @@ Expand real_data.json to include ALL S&P 500 tickers (503) minimum
 - Writes new real_data.json + real_data_latest.json + updates manifest
 """
 
-import json, pathlib, random, math
+import json
+import pathlib
+import random
+from collections import Counter, defaultdict
+
 import numpy as np
-from collections import defaultdict, Counter
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 ASSETS = ROOT / "assets"
@@ -50,12 +53,14 @@ for sector, pts in by_sector.items():
     arch_counter = Counter(p["archetype"] for p in pts)
     most_common_arch = arch_counter.most_common(1)[0][0]
     sector_stats[sector] = {
-        "x": xs, "y": ys, "z": zs,
+        "x": xs,
+        "y": ys,
+        "z": zs,
         "emb_mean": embs,
         "skills_mean": skills,
         "arch": most_common_arch,
         "arch_dist": arch_counter,
-        "count": len(pts)
+        "count": len(pts),
     }
 
 # Global stats fallback
@@ -188,7 +193,7 @@ for ticker in sp_tickers:
         skills_noise = np.random.normal(0, 6, size=base_skills.shape)
         skills = base_skills + skills_noise
         # Boost some skills for known mega caps
-        if ticker in ["META","GOOGL","MSFT","NVDA","AAPL"]:
+        if ticker in ["META", "GOOGL", "MSFT", "NVDA", "AAPL"]:
             # boost growth, moat, profitability
             skills[1] = min(100, skills[1] + 15)  # Growth
             skills[2] = min(100, skills[2] + 10)  # Moat
@@ -210,7 +215,9 @@ for ticker in sp_tickers:
         }
         new_points.append(point)
 
-print(f"Generated {len(new_points)} new points for {len(sp_tickers)-len(existing_tickers)} missing tickers")
+print(
+    f"Generated {len(new_points)} new points for {len(sp_tickers) - len(existing_tickers)} missing tickers"
+)
 
 # Combine
 all_points = points + new_points
@@ -227,13 +234,16 @@ real["built"] = "2026-07-20 expanded SP500"
 # Write
 out_path = ASSETS / "real_data.json"
 out_path.write_text(json.dumps(real))
-print(f"Wrote {out_path} rows {real['rows']} tickers {real['tickers']} size {out_path.stat().st_size/1024/1024:.2f} MB")
+print(
+    f"Wrote {out_path} rows {real['rows']} tickers {real['tickers']} size {out_path.stat().st_size / 1024 / 1024:.2f} MB"
+)
 
 # Also create latest only
-latest_points = [p for p in all_points_sorted if p["year"]=="2024"]
+latest_points = [p for p in all_points_sorted if p["year"] == "2024"]
 # If some tickers don't have 2024? we generated 2024 for all missing, and existing should have 2024 for many but not all
 # For existing tickers missing 2024, take max year
 from collections import defaultdict
+
 latest_by_ticker = {}
 for p in sorted(all_points_sorted, key=lambda x: (x["ticker"], x["year"])):
     latest_by_ticker[p["ticker"]] = p
@@ -255,7 +265,9 @@ print(f"Wrote latest {len(latest_list)}")
 # Also flat
 flat_path = ASSETS / "real_data_flat.json"
 # flat is just points count?
-flat_path.write_text(json.dumps({"points": all_points_sorted[:5000]}))  # not needed but keep compat
+flat_path.write_text(
+    json.dumps({"points": all_points_sorted[:5000]})
+)  # not needed but keep compat
 
 # Update manifest
 manifest_path = ASSETS / "manifest.json"

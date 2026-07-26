@@ -1,9 +1,15 @@
-import importlib.util, sys, pathlib
-import pytest, json, re, math
+import importlib.util
+import pathlib
+import sys
+
 
 def load_module():
-    mod_path = pathlib.Path("/home/hatch/workspace/vector-equities/pipeline/composite_score.py")
-    spec = importlib.util.spec_from_file_location("pipeline_mod_composite_score", str(mod_path))
+    mod_path = pathlib.Path(
+        "/home/hatch/workspace/vector-equities/pipeline/composite_score.py"
+    )
+    spec = importlib.util.spec_from_file_location(
+        "pipeline_mod_composite_score", str(mod_path)
+    )
     mod = importlib.util.module_from_spec(spec)
     sys.modules["pipeline_mod_composite_score"] = mod
     spec.loader.exec_module(mod)
@@ -12,21 +18,23 @@ def load_module():
 
 def test_smoke_has_functions():
     mod = load_module()
-    for fn in ["sigmoid","partial_cqs","composite_quality","should_promote"]:
+    for fn in ["sigmoid", "partial_cqs", "composite_quality", "should_promote"]:
         assert hasattr(mod, fn), f"missing {fn}"
+
 
 def test_sigmoid_values():
     mod = load_module()
-    import numpy as np
     assert abs(mod.sigmoid(0) - 0.5) < 1e-6
     assert mod.sigmoid(10) > 0.9
     assert mod.sigmoid(-10) < 0.1
+
 
 def test_partial_cqs_none_handling():
     mod = load_module()
     assert mod.partial_cqs(None, 0.8) == 0.8
     assert mod.partial_cqs(0.6, None) == 0.6
     assert abs(mod.partial_cqs(0.6, 0.8) - 0.7) < 1e-6
+
 
 def test_composite_quality_real():
     mod = load_module()
@@ -46,6 +54,7 @@ def test_composite_quality_real():
     # market bonus clipped
     assert -0.5 <= out["parts"]["market_bonus"] <= 0.5
 
+
 def test_composite_quality_r2_clipping():
     mod = load_module()
     report = {
@@ -55,6 +64,7 @@ def test_composite_quality_r2_clipping():
     }
     out = mod.composite_quality(report)
     assert out["parts"]["r2_clip"] == 0.9
+
 
 def test_should_promote_logic():
     mod = load_module()
@@ -70,6 +80,7 @@ def test_should_promote_logic():
     assert isinstance(ok, bool)
     assert isinstance(msg, str)
     assert "CQS" in msg
+
 
 def test_should_promote_fail_low_recall():
     mod = load_module()

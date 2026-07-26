@@ -1,8 +1,12 @@
-import importlib.util, sys, pathlib
-import pytest, json, re, math
+import importlib.util
+import pathlib
+import sys
+
 
 def load_module():
-    mod_path = pathlib.Path("/home/hatch/workspace/vector-equities/pipeline/build_skills.py")
+    mod_path = pathlib.Path(
+        "/home/hatch/workspace/vector-equities/pipeline/build_skills.py"
+    )
     spec = importlib.util.spec_from_file_location("pipeline_mod_skills", str(mod_path))
     mod = importlib.util.module_from_spec(spec)
     sys.modules["pipeline_mod_skills"] = mod
@@ -13,6 +17,7 @@ def load_module():
 def test_smoke():
     mod = load_module()
     assert hasattr(mod, "build")
+
 
 def test_build_basic():
     mod = load_module()
@@ -26,6 +31,7 @@ def test_build_basic():
     except Exception as e:
         # should not be TODO skip
         assert not isinstance(e, NotImplementedError)
+
 
 def test_build_with_tmp(tmp_path, monkeypatch):
     mod = load_module()
