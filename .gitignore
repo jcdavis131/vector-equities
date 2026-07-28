@@ -4,6 +4,7 @@ pipeline/data/embedding.npz
 pipeline/data/skill_labels.npz
 pipeline/data/archetype_model.npz
 pipeline/data/mtnn_best.pt
+pipeline/data/forward_calibration_isotonic_full.npz
 pipeline/cache/
 __pycache__/
 *.pyc

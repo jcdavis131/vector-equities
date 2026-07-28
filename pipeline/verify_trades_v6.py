@@ -113,33 +113,33 @@ def check_train_matrix():
         if c.exists():
             found=c; break
     if not found:
-        warn("train_matrix_v6 missing, will create minimal if needed (skip for speed)")
-        # quick create minimal small npz if not exists to satisfy downstream
-        try:
-            import numpy as np
-            N=EXPECTED_ROWS; D=EXPECTED_FEATS
-            np.random.seed(7)
-            Z=np.random.randn(N,D).astype('float32')*0.3
-            mask=np.ones((N,D),dtype='float32')
-            # tickers from flat
-            try:
-                data=json.loads(REAL_FLAT.read_text()[:2000000])  # partial?
-                # if partial fails, use dummy
-                tickers=[d.get("ticker","AAPL") for d in json.loads(REAL_FLAT.read_text())]  # full may be heavy
-            except:
-                tickers=["TICK"]*N
-            import pathlib
-            out=DATA_DIR / "train_matrix_v6.npz"
-            out.parent.mkdir(parents=True, exist_ok=True)
-            # Use small subset for speed
-            np.savez_compressed(out, Z=Z, mask=mask, ticker=np.array(tickers[:N]), fiscal_year=np.array(["2024"]*N), name=np.array(tickers[:N]), sector=np.array(["Tech"]*N), Z_raw=Z,
-                                fwd_ret_6m=np.random.randn(N).astype('float32')*0.08,
-                                fwd_dd_6m=np.random.randn(N).astype('float32')*0.05-0.05)
-            ok(f"created minimal {out}")
-            found=out
-        except Exception as e:
-            warn(f"create minimal failed {e}")
-            return True
+        # A VERIFIER MUST NEVER CREATE ITS OWN SUBJECT.
+        #
+        # This block used to fabricate the matrix it was supposed to check:
+        # np.random.seed(7); Z = np.random.randn(N, D) * 0.3, plus
+        # fwd_ret_6m = np.random.randn(N) * 0.08 and
+        # fwd_dd_6m = np.random.randn(N) * 0.05 - 0.05, with sector hardcoded to
+        # "Tech", fiscal_year to "2024" and ticker falling back to "TICK". It wrote
+        # that to the CANONICAL DATA_DIR/train_matrix_v6.npz, set found=out, and
+        # then ran the real checks against the file it had just invented.
+        #
+        # Two consequences, both bad:
+        #   1. check_train_matrix() returned True, so main()'s
+        #      sys.exit(0 if all(p for _, p in results) else 1) exited 0 and the run
+        #      reported VERIFIED on data that did not exist a second earlier.
+        #   2. It used the real filename, so any later run -- training included --
+        #      would pick the fabricated matrix up as genuine. That is pipeline
+        #      poisoning, not a test fixture.
+        #
+        # The old `except Exception: return True` made it worse: even when
+        # fabrication FAILED, the check still reported pass.
+        fail(
+            "train matrix missing -- looked for "
+            + ", ".join(str(c) for c in candidates)
+            + ". NOT creating one: a verifier that manufactures its subject "
+              "verifies nothing. Build the real matrix first."
+        )
+        return False
     try:
         import numpy as np
         npz=np.load(found, allow_pickle=True)
