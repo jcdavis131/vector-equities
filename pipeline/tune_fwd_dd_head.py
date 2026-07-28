@@ -211,7 +211,15 @@ def main():
         print(f"After shift fix: bias {metrics['bias_after']*100:.4f}%")
 
     assert abs(metrics['bias_after']) < BIAS_TOLERANCE, f"Bias after {metrics['bias_after']} not < {BIAS_TOLERANCE}"
-    print(f"PASS: bias <1% achieved: {metrics['bias_after_abs']*100:.3f}%")
+    # Say the same thing the artifact says. This line used to print a bare "PASS"
+    # on synthetic input, so the console asserted something the JSON did not.
+    if is_real:
+        print(f"PASS: bias <1% achieved on REAL data: {metrics['bias_after_abs']*100:.3f}%")
+    else:
+        print(f"bias <1% achieved: {metrics['bias_after_abs']*100:.3f}% "
+              "-- NOT A PASS: fitted to synthetic data manufactured to hit "
+              f"PRED_MEAN_TARGET={PRED_MEAN_TARGET} / TRUE_MEAN_TARGET={TRUE_MEAN_TARGET}. "
+              "Re-run with --real and a real bundle to earn a verdict.")
 
     if not MANIFEST_PATH.exists():
         print(f"Manifest not found at {MANIFEST_PATH}, creating minimal")
@@ -254,7 +262,23 @@ def main():
         "bias_after_pct": f"{metrics['bias_after']*100:.3f}%",
         "bias_after_abs_pct": f"{metrics['bias_after_abs']*100:.4f}%",
         "bias_tolerance": f"<{BIAS_TOLERANCE*100:.1f}%",
-        "passed": abs(metrics["bias_after"]) < BIAS_TOLERANCE,
+        # `bias_within_tolerance` is the MEASUREMENT; `passed` is the VERDICT, and
+        # the verdict now consumes provenance. It did not before: `is_real` was
+        # computed in main() and written to `trained_on`, and then `passed` ignored
+        # it — so a calibration fitted to data MANUFACTURED to hit the targets
+        # shipped as passed:true.
+        #
+        # Why that was a tautology, not a result: synthetic_data() draws `true`
+        # around TRUE_MEAN_TARGET (0.0561), sets pred = 0.7*true + (PRED_MEAN_TARGET
+        # - 0.7*TRUE_MEAN_TARGET) + noise, then re-centres pred on PRED_MEAN_TARGET
+        # (0.1137) exactly. So the reported "bias_before 5.760%" is just
+        # 0.1137 - 0.0561 by construction, and isotonic regression mapping it back
+        # demonstrates only that isotonic regression works. The give-away is already
+        # in the artifact: ic_before 0.878 against an ic_target of 0.5066 — the
+        # synthetic data does not even have the IC it claims to model.
+        "bias_within_tolerance": bool(abs(metrics["bias_after"]) < BIAS_TOLERANCE),
+        "passed": bool(abs(metrics["bias_after"]) < BIAS_TOLERANCE and is_real),
+        "passed_requires": "bias_within_tolerance AND trained_on == 'real'",
         "ic_before": round(metrics["ic_before"], 5),
         "ic_after": round(metrics["ic_after"], 5),
         "ic_target": 0.5066,
