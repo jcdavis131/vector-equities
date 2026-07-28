@@ -1003,15 +1003,24 @@ def build_v4(limit=None):
 
     (DATA_DIR / "feature_manifest.json").write_text(json.dumps(manifest, indent=2))
 
-    # embedding placeholder - keep existing if present else create random
+    # Embedding: keep whatever is there, and NEVER invent one.
+    #
+    # This used to create a random 32-d matrix under the canonical filename when the
+    # file was missing:
+    #     embedding=np.random.randn(N, 32).astype(np.float32)
+    # Nothing downstream can distinguish that from a real model forward pass, and
+    # embedding.npz is gitignored (.gitignore line 3), so the fabrication never
+    # appeared in a diff or a review. It only ever surfaced as "embeddings" in
+    # whatever consumed it.
+    #
+    # Absent is honest; invented is not. The status is recorded in real_rows_meta
+    # below so a consumer can branch on it instead of guessing.
     embed_path = DATA_DIR / "embedding.npz"
+    embedding_status = "present" if embed_path.exists() else "absent (not fabricated)"
     if not embed_path.exists():
-        # create random 32-dim
-        np.savez_compressed(
-            embed_path,
-            embedding=np.random.randn(N, 32).astype(np.float32),
-            ticker=np.array(tickers),
-            fiscal_year=np.array(fyears),
+        print(
+            f"WARN embedding.npz missing at {embed_path} -- NOT creating one. "
+            "A random matrix is not an embedding; run the real embedding step."
         )
 
     # real_rows_meta
@@ -1023,6 +1032,9 @@ def build_v4(limit=None):
         "sources": manifest["sources"],
         "features": ALL_FEATURES,
         "real_flags": real_flags,
+        # Stated, not implied: a consumer must be able to tell "we have embeddings"
+        # from "we had none and this script declined to invent some".
+        "embedding_npz": embedding_status,
         "notes": "v4 adds real DEF14A exec, Form4 counts proxy, static market snapshot per ticker",
     }
     (DATA_DIR / "real_rows_meta.json").write_text(json.dumps(meta, indent=2))
