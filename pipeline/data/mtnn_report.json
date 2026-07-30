@@ -1,12 +1,12 @@
 {
-  "trained": "2026-07-16 14:40",
-  "model": "equities_mtnn_v4_transformer_d64_b2",
+  "trained": "2026-07-30 11:45",
+  "model": "equities_mtnn_v4_transformer_d64_b1",
   "epochs": 60,
-  "best_epoch": 55,
-  "best_val_recall_at_10": 0.882,
+  "best_epoch": 50,
+  "best_val_recall_at_10": 0.912,
   "dim": 64,
   "fusion": "transformer",
-  "tower_blocks": 2,
+  "tower_blocks": 1,
   "towers": {
     "income": 15,
     "balance": 10,
@@ -26,40 +26,40 @@
     "form": 6,
     "bbref_bridge": 2
   },
-  "positive_pairs": 2458,
-  "final_loss": 1.1553214862942696,
+  "positive_pairs": 4331,
+  "final_loss": 1.4097052301679338,
   "held_out_recall": {
     "train": {
-      "pairs": 1611,
-      "recall_at_10_mtnn": 1.0
+      "pairs": 2841,
+      "recall_at_10_mtnn": 0.992
     },
     "val": {
-      "pairs": 564,
-      "recall_at_10_mtnn": 0.888
+      "pairs": 990,
+      "recall_at_10_mtnn": 0.908
     },
     "test": {
-      "pairs": 283,
-      "recall_at_10_mtnn": 0.8621908127208481
+      "pairs": 500,
+      "recall_at_10_mtnn": 0.846
     },
     "all": {
-      "pairs": 2458,
-      "recall_at_10_mtnn": 0.956
+      "pairs": 4331,
+      "recall_at_10_mtnn": 0.964
     }
   },
-  "cross_cycle_archetype_purity_at_20": 0.6586502845602109,
-  "sector_top1_acc": 0.5535885167464115,
+  "cross_cycle_archetype_purity_at_20": 0.6516321010216134,
+  "sector_top1_acc": 0.5400482185909457,
   "next_profile": {
     "val": {
-      "rows": 564,
-      "mae_z": 0.1572028249502182,
-      "r2": 0.3924,
-      "rmse": 0.4164
+      "rows": 990,
+      "mae_z": 0.13959385454654694,
+      "r2": 0.4226,
+      "rmse": 0.3712
     },
     "test": {
-      "rows": 283,
-      "mae_z": 0.21835526823997498,
-      "r2": 0.3144,
-      "rmse": 0.4913
+      "rows": 500,
+      "mae_z": 0.22021695971488953,
+      "r2": 0.293,
+      "rmse": 0.4932
     }
   },
   "market_directional_acc": null,
@@ -78,22 +78,22 @@
     "own": 0.05
   },
   "composite": {
-    "cqs": 0.6347,
-    "recall_at_10": 0.8621908127208481,
-    "purity_at_20": 0.6586502845602109,
-    "next_r2": 0.3144,
-    "sector_acc": 0.5535885167464115,
+    "cqs": 0.6216,
+    "recall_at_10": 0.846,
+    "purity_at_20": 0.6516321010216134,
+    "next_r2": 0.293,
+    "sector_acc": 0.5400482185909457,
     "market_acc": null,
     "parts": {
-      "recall": 0.8621908127208481,
-      "purity": 0.6586502845602109,
-      "r2_clip": 0.3144,
-      "sector": 0.5535885167464115,
+      "recall": 0.846,
+      "purity": 0.6516321010216134,
+      "r2_clip": 0.293,
+      "sector": 0.5400482185909457,
       "market_bonus": 0.0
     }
   },
   "promote": {
     "ok": true,
-    "reason": "CQS 0.6347"
+    "reason": "CQS 0.6216"
   }
 }

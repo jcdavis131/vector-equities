@@ -4,6 +4,7 @@ import http.client
 import json
 import os
 import subprocess
+import tempfile
 import time
 import urllib.request
 from pathlib import Path
@@ -12,12 +13,12 @@ ROOT = Path(__file__).resolve().parents[1]
 CACHE = ROOT / "pipeline" / "cache" / "sec"
 CACHE.mkdir(parents=True, exist_ok=True)
 
-USER_AGENT = "VectorEquities research (contact via GitHub)"
+USER_AGENT = "VectorEquities research jcdavis131@gmail.com"
 
 
 def curl_fetch_json(url, timeout=90):
     # use curl for robustness
-    tmp = "/tmp/sec_fetch_tmp.json"
+    tmp = os.path.join(tempfile.gettempdir(), "sec_fetch_tmp.json")
     try:
         cmd = [
             "curl",
