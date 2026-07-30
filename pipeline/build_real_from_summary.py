@@ -16,6 +16,7 @@ import sys
 sys.path.insert(0, str(ROOT / "pipeline"))
 from feature_spec import ALL_FEATURES, FEATURE_FAMILIES, GAME_PROFILE_FEATURES, SECTORS
 from market_features import get_market_row, valuation_row
+from def14a_features import get_def14a_row
 
 
 def safe_div(a, b):
@@ -180,6 +181,15 @@ def build_from_summary(limit=None):
                 rev=rev, ebitda=ebitda, fcf=fcf, debt=debt, cash=cash,
                 dividends_paid=dividends_paid,
             )
+
+            # Real CEO/NEO total comp from DEF14A inline-XBRL Pay-vs-
+            # Performance tags (parse_def14a_xbrl.py) -- only covers proxies
+            # filed for FY2022+ (the rule's effective date) and only the
+            # tickers/years actually fetched+parsed; None elsewhere, not
+            # fabricated. The other 12 management_neo fields and all 6
+            # ownership fields still have no wired real source (see
+            # docs/DEF14A_FORM4_CHRONOGRAPH_SPEC.md) and stay None below.
+            def14a = get_def14a_row(ticker, yr)
 
             # Piotroski F-score proxy (real, computed from fundamentals already
             # in hand; was hardcoded to a literal 5 for every row before).
@@ -369,9 +379,9 @@ def build_from_summary(limit=None):
                 "CEO_AGE": None,
                 "CEO_TENURE": None,
                 "CEO_FOUNDER_FLAG": None,
-                "CEO_TOTAL_COMP": None,
+                "CEO_TOTAL_COMP": def14a["CEO_TOTAL_COMP"],
                 "CEO_EQUITY_PCT": None,
-                "AVG_NEO_COMP": None,
+                "AVG_NEO_COMP": def14a["AVG_NEO_COMP"],
                 "CEO_PAY_RATIO": None,
                 "BOARD_INDEP_PCT": None,
                 "BOARD_SIZE": None,

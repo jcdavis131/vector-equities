@@ -1,5 +1,90 @@
 # DEF14A + Form 4 Chronograph Pipeline — Next Milestone Spec (Top 50 Prototype)
 
+## 2026-07-30 status: Phase A/B partially built, measured, NOT deployed
+
+Built and verified working, full 500-ticker universe (not just the Top-50
+prototype scoped below):
+
+- `pipeline/fetch_submissions.py`, `pipeline/fetch_def14a_recent.py` (new —
+  narrower than `fetch_def14a_full.py`, which grabs up to 11 *oldest*
+  filings/ticker; this grabs the 2 *newest*, which is what a machine-
+  readable-tag extraction actually needs). 965 DEF14A HTML files fetched.
+- `pipeline/parse_def14a_xbrl.py` (new): instead of the heuristic regex
+  table-scraper in `parse_def14a.py` (measured 4/37 ≈ 11% success on a
+  sample, matching this doc's own §3 warning), reads the inline-XBRL
+  Pay-vs-Performance tags (`ecd:PeoTotalCompAmt`, `ecd:NonPeoNeoAvgTotalCompAmt`)
+  that SEC Item 402(v) has required since the rule took effect for FY2022+
+  proxies. 958/992 filings had at least one tag (96.6%) — a categorically
+  different reliability level than table-scraping, because it's reading a
+  legally-mandated machine-readable fact instead of guessing table layout.
+  Spot-checked AAPL FY2023 CEO_TOTAL_COMP = $63.2M against Tim Cook's
+  publicly reported figure — matches.
+- `pipeline/def14a_features.py` (new, mirrors `market_features.py`'s
+  `get_market_row` shape) + wired into `build_real_from_summary.py`:
+  `CEO_TOTAL_COMP`/`AVG_NEO_COMP` (2 of the 14 `management_neo` fields) now
+  read real values where available, `None` elsewhere — honest, not
+  fabricated. Coverage: 929/4831 (19.2%) and 954/4831 (19.75%) rows
+  respectively, concentrated in FY2023-2024 (XBRL tags don't exist before
+  the rule's effective date, so earlier years are correctly masked, not
+  guessable). The other 12 `management_neo` fields and all 6 `ownership`
+  fields have no XBRL shortcut (age/tenure/board-independence/insider-
+  ownership aren't part of the PVP machine-readable tag set) and remain
+  unbuilt — table/bio-section parsing, same as before.
+
+**Why it isn't deployed.** Retrained (transformer, dim 64, epochs 60,
+matching the recipe from the 2026-07-30 market/valuation fix): CQS dropped
+0.628 -> 0.5771, recall@10 0.912 -> 0.874, purity@20 0.4844 -> 0.3785,
+sector_acc/market_acc/next_r2 all down too, promote gate flips true -> false.
+Not noise — every headline metric moved the same direction.
+
+Root cause, not a data-quality problem: `eval_split()` cuts train at fiscal
+year <= 2021, val <= 2023, test > 2023. The XBRL PVP tag literally does not
+exist before FY2022 (the rule's own effective date), so real
+`CEO_TOTAL_COMP`/`AVG_NEO_COMP` coverage is ~0% in train and effectively
+~100% of its observed coverage in val/test. The `mgmt` decode head (loss
+weight 0.08) sees a target that's always masked during every training
+step and then suddenly present at eval time — a genuine train/eval
+distribution mismatch, not a coincidence, and not something more fetching
+fixes (the data genuinely doesn't exist for train-window years). This
+mismatch appears to cost the shared embedding trunk more broadly, not just
+the `mgmt` head's own score (recall/sector/market/next_r2 all measurably
+worse too).
+
+Separately (not this feature's fault, but found while investigating): the
+initial retrain showed `purity@20` jump to a suspicious exact 1.0. Traced
+it — `build_real_from_summary.py` always writes `cluster=np.zeros(N)`; the
+real 8-archetype cluster assignment is a *separate*, later step
+(`build_archetypes.py`, not part of any current orchestrator) that
+re-populates it. My rebuild ran the first step only, silently reverting
+every row's archetype cluster to 0, which made `cross_cycle_purity`
+trivially return ~1.0 by construction. Re-ran `build_archetypes.py`
+before drawing any conclusion — same failure shape as vector-hoops'
+`enrich_vectors.py` position-label regression earlier the same day: an
+orchestrator step resets a field a *different* script is responsible for
+repopulating, and nothing currently strings the full correct sequence
+together end to end for this repo either.
+
+**State on disk:** `pipeline/data/{train_matrix.npz,feature_manifest.json,
+mtnn_best.pt,mtnn_report.json,embedding.npz,train_matrix_real.npz}` reverted
+to the pre-DEF14A committed reference (CQS 0.628). `pipeline/data/
+def14a_comp.json` (956 real ticker-FY comp records) and the 965 cached
+filing HTMLs are kept — real, verified, reusable data, just not currently
+merged into the deployed matrix. `def14a_features.py`,
+`fetch_def14a_recent.py`, `parse_def14a_xbrl.py`, and the
+`build_real_from_summary.py` wiring are **committed** — correct and inert
+until re-enabled.
+
+**What would actually let this ship:** the train/eval split needs to stop
+being a fixed `<=2021` cutoff for features whose only real-world coverage
+starts in 2022+, or the `mgmt` loss head needs to be masked out during
+training entirely and only scored at eval (so the trunk never trains
+against a feature it can't see in-sample) — either is a real methodology
+change to `train_mtnn.py`'s eval-split / loss-masking logic, bigger than
+this feature's own wiring, not made here.
+
+---
+
+
 **Goal:** Replace placeholder `management_neo` 14 + `ownership` 6 towers with real person-level chronological graph NN input.
 
 **Current reality:** 2741 rows × 122 feats, but management_neo = const (CEO_AGE 55, tenure 6, etc), ownership = const (INST_PCT 0.75). No DEF14A, no Form 4, no person graph.
