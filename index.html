@@ -35,7 +35,7 @@ td{padding:6px;border-bottom:1px solid rgba(30,36,51,.6)}
 .b-Turnaround{color:#ff9f1c;background:rgba(255,159,28,.08);border-color:rgba(255,159,28,.3)}
 .b-HyperGrowth_SaaS{color:#6ea8ff;background:rgba(110,168,255,.08);border-color:rgba(110,168,255,.3)}
 .b-Heavy_Industrial{color:#a0a8c0;background:rgba(160,168,192,.08)}
-.b-Bank_Capital_Heavy{color:#ff6b6b;background:rgba(255,107,107,.08);border-color:rgba(255,107,107,.3)}
+.b-Bank_Capital_Heavy{color:#d9686e;background:rgba(217,104,110,.08);border-color:rgba(217,104,110,.3)}
 .b-Moonshot_Bio{color:#c792ea;background:rgba(199,146,234,.08);border-color:rgba(199,146,234,.3)}
 .b-Serial_Acquirer{color:#ff8cc8;background:rgba(255,140,200,.08);border-color:rgba(255,140,200,.3)}
 a{color:var(--blue);text-decoration:none}
@@ -101,7 +101,7 @@ a:focus-visible, button:focus-visible{ transition:none }
 <label style="margin-left:8px">Search <input id="q" placeholder="e.g. Meta, AAPL, Microsoft" style="width:190px"/></label>
 </div>
 </div>
-<canvas id="c" width="900" height="460"></canvas>
+<canvas id="c" width="900" height="460" aria-label="PCA-3 scatter of S&amp;P 500 companies projected from the 64-d embedding, colored by archetype and sized by market-momentum proxy"></canvas>
 <div class="kpis" id="kpis"></div>
 <div class="sub" id="hover" style="margin-top:8px;min-height:18px">Hover a point • click to inspect • Try "Meta" now works for all S&P 500</div>
 <div class="search-hint">Searches ticker + company name • aliases: meta/facebook → META, google/alphabet → GOOGL, msft/microsoft → MSFT, tesla → TSLA, nvda/nvidia → NVDA</div>
@@ -111,7 +111,7 @@ a:focus-visible, button:focus-visible{ transition:none }
 <div id="detail" class="sub">Select a point on the map to inspect company profile, skills, and similar companies in 64-d space.</div>
 <div style="margin-top:12px">
 <div style="font-size:12px;margin-bottom:6px">Skills Radar (0-100 percentile per FY)</div>
-<canvas id="radar" width="360" height="280" style="height:280px;background:#0f131c;border-radius:10px"></canvas>
+<canvas id="radar" width="360" height="280" style="height:280px;background:#0f131c;border-radius:10px" aria-label="Radar chart of the inspected company-FY's 12 skill percentiles, 0 to 100"></canvas>
 </div>
 <div style="margin-top:14px">
 <div style="font-size:12px;margin-bottom:6px">Top Similar (cosine in 64-d, holdout years masked)</div>
@@ -297,7 +297,16 @@ function draw(){
    if(aliasPoint) filtered.unshift(aliasPoint);
  }
 
- const colorMap={Compounder:"#7cf8c7",Cash_Cow:"#f0e442",Turnaround:"#ff9f1c",HyperGrowth_SaaS:"#6ea8ff",Heavy_Industrial:"#a0a8c0",Bank_Capital_Heavy:"#ff6b6b",Moonshot_Bio:"#c792ea",Serial_Acquirer:"#ff8cc8"};
+ // Archetype colours for the scatter (also mirrored in the .b-* badge CSS above, so a
+ // company's dot and its badge always agree). Checked with a CIELAB dE76 simulation
+ // (Vienot/Brettel matrices) under protanopia/deuteranopia/tritanopia, same method as the
+ // rest of the vector family: at #ff6b6b, Bank_Capital_Heavy collapsed onto Turnaround
+ // (#ff9f1c) under tritanopia — dE 3.4, i.e. genuinely indistinguishable, not a false
+ // alarm — while every other pair stayed >15 dE apart in all three CVD simulations and
+ // >20 apart under normal vision. Moved Bank_Capital_Heavy to #d9686e: now 15.1 dE from
+ // Turnaround under tritanopia, no new close pair introduced, and it still contrasts
+ // 5.7:1 on this canvas's #0b0e14 ground and 5.1:1 as badge text on #151a24.
+ const colorMap={Compounder:"#7cf8c7",Cash_Cow:"#f0e442",Turnaround:"#ff9f1c",HyperGrowth_SaaS:"#6ea8ff",Heavy_Industrial:"#a0a8c0",Bank_Capital_Heavy:"#d9686e",Moonshot_Bio:"#c792ea",Serial_Acquirer:"#ff8cc8"};
  c._pts=[];
  filtered.forEach(p=>{
    const px= ((p.x+2)/4.2)*c.width*0.86 + c.width*0.07;
