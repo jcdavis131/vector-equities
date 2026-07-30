@@ -54,6 +54,17 @@ TAGS = {
     ],
     "SHARES_B": ["WeightedAverageNumberOfSharesOutstandingBasic"],
     "RET_EARN": ["RetainedEarningsAccumulatedDeficit"],
+    "INVENTORY": ["InventoryNet"],
+    "RECEIVABLES": ["AccountsReceivableNetCurrent", "ReceivablesNetCurrent"],
+    "GOODWILL": ["Goodwill"],
+    "INTANGIBLES": [
+        "IntangibleAssetsNetExcludingGoodwill",
+        "FiniteLivedIntangibleAssetsNet",
+    ],
+    "DIVIDENDS_PAID": [
+        "PaymentsOfDividendsCommonStock",
+        "PaymentsOfDividends",
+    ],
 }
 
 

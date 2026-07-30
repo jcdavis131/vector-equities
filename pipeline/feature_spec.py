@@ -52,11 +52,7 @@ FEATURE_FAMILIES = {
         "ROE",
         "ROA",
         "ROIC",
-        "GROSS_MARGIN",
-        "OP_MARGIN",
-        "NET_MARGIN",
         "FCF_ROIC",
-        "EBITDA_MARGIN",
         "ROIC_WACC_SPREAD",
     ],
     "leverage_liquidity": [

@@ -15,6 +15,7 @@ import sys
 
 sys.path.insert(0, str(ROOT / "pipeline"))
 from feature_spec import ALL_FEATURES, FEATURE_FAMILIES, GAME_PROFILE_FEATURES, SECTORS
+from market_features import get_market_row, valuation_row
 
 
 def safe_div(a, b):
@@ -82,29 +83,37 @@ def build_from_summary(limit=None):
             interest = raw.get("INTEREST")
             shares_d = raw.get("SHARES_D") or raw.get("SHARES_B")
             ret_earn = raw.get("RET_EARN")
+            inventory = raw.get("INVENTORY")
+            receivables = raw.get("RECEIVABLES")
+            goodwill = raw.get("GOODWILL")
+            intangibles = raw.get("INTANGIBLES")
+            dividends_paid = raw.get("DIVIDENDS_PAID")
             if gross is None and rev is not None and cogs is not None:
                 gross = rev - cogs
             debt = None
             if debt_lt is not None or debt_st is not None:
                 debt = (debt_lt or 0) + (debt_st or 0)
-            # derived
-            ebitda = (
-                op + depr
-                if (op is not None and depr is not None)
-                else (op * 1.15 if op else None)
-            )
+            # derived -- honest: mask rather than estimate when a real
+            # component is missing (was op*1.15 / ocf*0.8 heuristics, i.e.
+            # fabricated numbers dressed up as derived ones; §257 elsewhere
+            # in this codebase is explicit that missing means masked, never
+            # imputed, and this violated that)
+            ebitda = op + depr if (op is not None and depr is not None) else None
             ebit = op
             fcf = None
             if ocf is not None and capex is not None:
                 fcf = ocf - abs(capex) if capex > 0 else ocf + capex
-            elif ocf is not None:
-                fcf = ocf * 0.8
             gross_margin = safe_div(gross, rev)
             op_margin = safe_div(op, rev)
             net_margin = safe_div(net, rev)
             ebitda_margin = safe_div(ebitda, rev)
             fcf_margin = safe_div(fcf, rev)
             book_value = equity
+            tangible_book = (
+                equity - (goodwill or 0) - (intangibles or 0)
+                if equity is not None
+                else None
+            )
             working_cap = (
                 cur_a - cur_l if (cur_a is not None and cur_l is not None) else None
             )
@@ -147,6 +156,13 @@ def build_from_summary(limit=None):
                 else safe_div(op, invested_cap)
             )
             curr_ratio = safe_div(cur_a, cur_l)
+            quick_ratio = (
+                safe_div(cur_a - inventory, cur_l)
+                if (cur_a is not None and inventory is not None and cur_l)
+                else None
+            )
+            inventory_turn = safe_div(cogs, inventory) if inventory else None
+            receivable_turn = safe_div(rev, receivables) if receivables else None
             debt_eq = safe_div(debt, equity)
             debt_ebitda = safe_div(debt, ebitda)
             int_cov = safe_div(op, interest) if interest else None
@@ -155,26 +171,54 @@ def build_from_summary(limit=None):
             asset_turn = safe_div(rev, assets)
             capex_depr = safe_div(capex, depr)
 
-            # placeholders market/management
-            inst_pct = 0.75
-            inst_delta = 0.0
-            insider_net = 0.0
-            float_pct = 0.9
-            top10_conc = 0.35
-            short_int = 0.03
-            ceo_age = 55
-            ceo_tenure = 6
-            ceo_founder = 0
-            ceo_comp = 12
-            ceo_eq = 1.5
-            avg_neo = 11
-            pay_ratio = 200
-            board_indep = 75
-            board_size = 9
-            insider_own = 3
-            ceo_pay_vs = 0
-            neo_turn = 0.15
-            ceo_dual = 0
+            # Real market/valuation features (price history already fetched by
+            # fetch_market_history.py; was previously hardcoded to None/constants
+            # for all 21 of these -- see docs/rebuild notes 2026-07-30).
+            mkt = get_market_row(ticker, yr)
+            val = valuation_row(
+                price=mkt["_price"], shares=shares_d, eps=eps, bvps=bvps,
+                rev=rev, ebitda=ebitda, fcf=fcf, debt=debt, cash=cash,
+                dividends_paid=dividends_paid,
+            )
+
+            # Piotroski F-score proxy (real, computed from fundamentals already
+            # in hand; was hardcoded to a literal 5 for every row before).
+            prev_net = prev_vals.get(f"NET_{yr-1}")
+            prev_assets = prev_vals.get(f"ASSETS_{yr-1}")
+            prev_roa = safe_div(prev_net, prev_assets) if prev_assets else None
+            piotroski = None
+            if all(v is not None for v in (roa, ocf, net, debt_assets, curr_ratio)):
+                pts = 0
+                pts += 1 if roa > 0 else 0
+                pts += 1 if ocf > 0 else 0
+                pts += 1 if ocf > net else 0
+                prev_debt_assets = prev_vals.get(f"DEBT_ASSETS_{yr-1}")
+                if prev_debt_assets is not None:
+                    pts += 1 if debt_assets < prev_debt_assets else 0
+                prev_curr = prev_vals.get(f"CURR_RATIO_{yr-1}")
+                if prev_curr is not None:
+                    pts += 1 if curr_ratio > prev_curr else 0
+                if shares_yoy is not None:
+                    pts += 1 if shares_yoy <= 0.001 else 0
+                prev_gm = prev_vals.get(f"GROSS_MARGIN_{yr-1}")
+                if prev_gm is not None:
+                    pts += 1 if gross_margin is not None and gross_margin > prev_gm else 0
+                prev_at = prev_vals.get(f"ASSET_TURN_{yr-1}")
+                if prev_at is not None:
+                    pts += 1 if asset_turn is not None and asset_turn > prev_at else 0
+                if prev_roa is not None:
+                    pts += 1 if roa > prev_roa else 0
+                piotroski = pts
+
+            # Everything below genuinely has no free real-data source in this
+            # pipeline yet (13F institutional ownership, DEF14A executive comp
+            # / governance -- fetch_def14a*.py exists but isn't wired to this
+            # script, 10-K text NLP for disclosure sentiment/risk, analyst
+            # estimates for surprise/guidance/revisions). Masked, not
+            # fabricated -- these used to be hardcoded identical constants for
+            # every company (e.g. every CEO age = 55, every board size = 9),
+            # which is worse than missing: it looks like real data until you
+            # check the variance.
             rate_map = {
                 2015: 2.27,
                 2016: 1.84,
@@ -201,7 +245,6 @@ def build_from_summary(limit=None):
             }
             rate_10y = rate_map.get(yr, 3.0)
             vix_avg = vix_map.get(yr, 16)
-            credit_spread = 3.5
             gdp = {
                 2015: 2.9,
                 2016: 1.8,
@@ -254,7 +297,7 @@ def build_from_summary(limit=None):
                 "CASH": cash,
                 "DEBT": debt,
                 "BOOK_VALUE": book_value,
-                "TANGIBLE_BOOK": equity,
+                "TANGIBLE_BOOK": tangible_book,
                 "WORKING_CAPITAL": working_cap,
                 "NET_DEBT": net_debt,
                 "INVESTED_CAPITAL": invested_cap,
@@ -280,15 +323,15 @@ def build_from_summary(limit=None):
                 "FCF_ROIC": safe_div(fcf, invested_cap),
                 "ROIC_WACC_SPREAD": (roic - 0.08) if roic else None,
                 "CURRENT_RATIO": curr_ratio,
-                "QUICK_RATIO": curr_ratio,
+                "QUICK_RATIO": quick_ratio,
                 "DEBT_TO_EQUITY": debt_eq,
                 "DEBT_TO_EBITDA": debt_ebitda,
                 "INTEREST_COVERAGE": int_cov,
                 "DEBT_TO_ASSETS": debt_assets,
                 "NET_DEBT_TO_EBITDA": net_debt_ebitda,
                 "ASSET_TURNOVER": asset_turn,
-                "INVENTORY_TURNOVER": asset_turn,
-                "RECEIVABLE_TURNOVER": asset_turn,
+                "INVENTORY_TURNOVER": inventory_turn,
+                "RECEIVABLE_TURNOVER": receivable_turn,
                 "CASH_CONVERSION_CYCLE": None,
                 "CAPEX_TO_DEPRE": capex_depr,
                 "EPS_DILUTED": eps,
@@ -296,65 +339,75 @@ def build_from_summary(limit=None):
                 "FCFPS": fcfps,
                 "SHARES_YOY": shares_yoy,
                 "DILUTION_3Y": cagr(shares_d, f"SHARES_{yr - 3}"),
-                "RET_1M": None,
-                "RET_3M": None,
-                "RET_6M": None,
-                "RET_12M": None,
-                "VOL_30D": None,
-                "VOL_90D": None,
-                "VOL_252D": None,
-                "BETA_1Y": None,
-                "VOLUME_AVG_30D": None,
-                "MOMENTUM_12_1": None,
-                "PE": None,
-                "PB": None,
-                "PS": None,
-                "EV_EBITDA": None,
-                "EV_SALES": None,
-                "EARNINGS_YIELD": None,
-                "FCF_YIELD": None,
-                "DIV_YIELD": 0.015,
-                "NEO_COUNT": 5,
-                "CEO_AGE": ceo_age,
-                "CEO_TENURE": ceo_tenure,
-                "CEO_FOUNDER_FLAG": ceo_founder,
-                "CEO_TOTAL_COMP": ceo_comp,
-                "CEO_EQUITY_PCT": ceo_eq,
-                "AVG_NEO_COMP": avg_neo,
-                "CEO_PAY_RATIO": pay_ratio,
-                "BOARD_INDEP_PCT": board_indep,
-                "BOARD_SIZE": board_size,
-                "INSIDER_OWN_PCT": insider_own,
-                "CEO_PAY_VS_SECTOR": ceo_pay_vs,
-                "NEO_TURNOVER": neo_turn,
-                "CEO_DUALITY": ceo_dual,
-                "INST_PCT": inst_pct,
-                "INST_DELTA_QOQ": inst_delta,
-                "INSIDER_NET_12M": insider_net,
-                "FLOAT_PCT": float_pct,
-                "TOP10_INST_CONC": top10_conc,
-                "SHORT_INTEREST_PCT": short_int,
-                "MDA_LENGTH": 5,
-                "MDA_SENTIMENT": 0.05,
-                "RISK_FACTOR_COUNT": 20,
-                "RISK_CHANGE_YOY": 0,
-                "FOG_INDEX_PROXY": 18,
-                "TONE_UNCERTAINTY": 0.15,
-                "SECTOR_REL_RET_12M": 0,
-                "SECTOR_CONCENTRATION": 0.2,
-                "SECTOR_BETA": 1.0,
+                "RET_1M": mkt["RET_1M"],
+                "RET_3M": mkt["RET_3M"],
+                "RET_6M": mkt["RET_6M"],
+                "RET_12M": mkt["RET_12M"],
+                "VOL_30D": mkt["VOL_30D"],
+                "VOL_90D": mkt["VOL_90D"],
+                "VOL_252D": mkt["VOL_252D"],
+                "BETA_1Y": mkt["BETA_1Y"],
+                "VOLUME_AVG_30D": mkt["VOLUME_AVG_30D"],
+                "MOMENTUM_12_1": mkt["MOMENTUM_12_1"],
+                "PE": val["PE"],
+                "PB": val["PB"],
+                "PS": val["PS"],
+                "EV_EBITDA": val["EV_EBITDA"],
+                "EV_SALES": val["EV_SALES"],
+                "EARNINGS_YIELD": val["EARNINGS_YIELD"],
+                "FCF_YIELD": val["FCF_YIELD"],
+                "DIV_YIELD": val["DIV_YIELD"],
+                # Below: no free real-data source wired up yet (13F ownership,
+                # DEF14A executive comp/governance, 10-K text NLP, analyst
+                # estimates). Masked (None), not fabricated -- these were
+                # hardcoded identical constants for every company before
+                # (e.g. every CEO age = 55, every board size = 9), which
+                # silently violated this codebase's own §257 masking
+                # discipline. A real fix needs new acquisition work, not
+                # invented numbers standing in for it.
+                "NEO_COUNT": None,
+                "CEO_AGE": None,
+                "CEO_TENURE": None,
+                "CEO_FOUNDER_FLAG": None,
+                "CEO_TOTAL_COMP": None,
+                "CEO_EQUITY_PCT": None,
+                "AVG_NEO_COMP": None,
+                "CEO_PAY_RATIO": None,
+                "BOARD_INDEP_PCT": None,
+                "BOARD_SIZE": None,
+                "INSIDER_OWN_PCT": None,
+                "CEO_PAY_VS_SECTOR": None,
+                "NEO_TURNOVER": None,
+                "CEO_DUALITY": None,
+                "INST_PCT": None,
+                "INST_DELTA_QOQ": None,
+                "INSIDER_NET_12M": None,
+                "FLOAT_PCT": None,
+                "TOP10_INST_CONC": None,
+                "SHORT_INTEREST_PCT": None,
+                "MDA_LENGTH": None,
+                "MDA_SENTIMENT": None,
+                "RISK_FACTOR_COUNT": None,
+                "RISK_CHANGE_YOY": None,
+                "FOG_INDEX_PROXY": None,
+                "TONE_UNCERTAINTY": None,
+                # Sector-relative fields need a second pass over the fully
+                # built matrix (per-sector aggregation) -- not computed here.
+                "SECTOR_REL_RET_12M": None,
+                "SECTOR_CONCENTRATION": None,
+                "SECTOR_BETA": None,
                 "RATE_10Y": rate_10y,
                 "VIX_AVG_FY": vix_avg,
-                "CREDIT_SPREAD_PROXY": credit_spread,
+                "CREDIT_SPREAD_PROXY": None,
                 "GDP_GROWTH_FY": gdp,
-                "EARN_SURPRISE_STREAK": 0,
-                "GUIDANCE_RAISE_FLAG": 0,
-                "EPS_REVISION_UP_PCT": 0.5,
-                "PRICE_VS_52W_HIGH": 0.9,
-                "RSI_14_PROXY": 50,
-                "ACCIDENT_DISCLOSURE": 0,
+                "EARN_SURPRISE_STREAK": None,
+                "GUIDANCE_RAISE_FLAG": None,
+                "EPS_REVISION_UP_PCT": None,
+                "PRICE_VS_52W_HIGH": mkt["PRICE_VS_52W_HIGH"],
+                "RSI_14_PROXY": mkt["RSI_14_PROXY"],
+                "ACCIDENT_DISCLOSURE": None,
                 "ALTMAN_Z": altman,
-                "PIOTROSKI_F_SCORE_PROXY": 5,
+                "PIOTROSKI_F_SCORE_PROXY": piotroski,
             }
             # ensure all features present
             # handle duplicate keys: last wins
@@ -370,6 +423,11 @@ def build_from_summary(limit=None):
             prev_vals[f"BOOK_{yr}"] = book_value
             prev_vals[f"OCF_{yr}"] = ocf
             prev_vals[f"SHARES_{yr}"] = shares_d
+            prev_vals[f"ASSETS_{yr}"] = assets
+            prev_vals[f"DEBT_ASSETS_{yr}"] = debt_assets
+            prev_vals[f"CURR_RATIO_{yr}"] = curr_ratio
+            prev_vals[f"GROSS_MARGIN_{yr}"] = gross_margin
+            prev_vals[f"ASSET_TURN_{yr}"] = asset_turn
 
             if rev is None and assets is None:
                 continue
