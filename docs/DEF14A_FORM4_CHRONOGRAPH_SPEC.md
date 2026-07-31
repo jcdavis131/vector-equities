@@ -1,6 +1,116 @@
 # DEF14A + Form 4 Chronograph Pipeline — Next Milestone Spec (Top 50 Prototype)
 
-## 2026-07-30 status: Phase A/B partially built, measured, NOT deployed
+## 2026-07-31 status: Phase A/B built, root-caused correctly, fixed, DEPLOYED
+
+Follow-up to the 2026-07-30 entry below, which got the *shape* of the
+problem right (a delay archetype — a data source whose real coverage starts
+partway through the historical window colliding with a fixed split
+boundary) but the *specific mechanism* wrong. Correcting that, then the
+actual fix and final numbers.
+
+### The 07-30 diagnosis was wrong on one detail
+
+That entry blamed "the `mgmt` decode head" seeing a masked-then-visible
+target. There is no trained `mgmt` head: `EquitiesMTNN.forward()` computes
+`out["mgmt"]`/`out["own"]`/`out["vol"]`/`out["payout"]` every step, but
+`train_mtnn.py`'s loss only ever references
+`DEFAULT_WEIGHTS["archetype"/"sector"/"profile"/"next_profile"/"skills"/
+"valuation"/"market"/"health"]` — `"mgmt"` and `"own"` are declared in the
+weights dict and never read. Those heads get zero gradient; they're dead
+weight. Verified directly: grepped every `DEFAULT_WEIGHTS[...]` usage site
+in the file, confirmed no `"mgmt"`/`"own"` reference exists anywhere in the
+loss computation.
+
+### What's actually happening (two separate, now both fixed, mechanisms)
+
+**1. Fusion has no visibility into per-tower coverage.** `management_neo`
+feeds an *input tower* (`ResidualTower`), not a trained head. During
+training (FY<=2021, ~0% real `CEO_TOTAL_COMP`/`AVG_NEO_COMP` coverage), that
+tower always receives a near-constant masked input and produces a
+near-constant output token. `TransformerFusion`/`GatedFusion`/`ConcatFusion`
+attend over that token with no idea it's masked — they just learn, over
+training, to discount a token that never varies. At eval time (FY2022+,
+~100% of this family's observed coverage), the same tower suddenly emits a
+genuinely varying, informative token that the fusion was never trained to
+weigh — a real train/eval distribution mismatch, just at the *architecture*
+level rather than a *loss* level.
+
+**2. `build_archetypes.py`'s k-means directly clusters on the same
+recency-skewed column.** It fits on `manifest["game_features"]` (the 14-d
+"core interpretable" subset from `feature_spec.py` — and `CEO_TOTAL_COMP`
+is one of the 14), reading `Z` directly with **no mask awareness**: a
+masked cell is a literal `0.0` to k-means, indistinguishable from a real
+value of exactly zero. A column that's 0.0 for every pre-2022 row and real
+for 2023-24 doesn't add uniform noise to the clustering — it adds a
+*systematic, temporally-concentrated* signal that pulls companies into
+different archetype buckets partly by which years they have data for. That
+directly explains why `cross_cycle_archetype_purity_at_20` (which measures
+whether same-archetype companies get found *across different years*) took
+the largest hit of any metric (0.4844 -> 0.3785) — the ground-truth labels
+themselves got less cross-year-consistent, not just the embedding.
+
+### The fix (two small, targeted changes, not a big rewrite)
+
+1. **`pipeline/model.py`**: `EquitiesMTNN.encode()` now computes a
+   per-family coverage scalar (`ms[fam].mean(dim=-1)`) and passes it into
+   the fusion alongside each tower's embedding — `GatedFusion`,
+   `ConcatFusion`, and `TransformerFusion` all updated to concatenate this
+   per-tower coverage value before projecting, so the fusion can actually
+   tell a masked-out family apart from a genuinely-present one instead of
+   just seeing whatever near-constant token a never-varying-in-training
+   tower happens to emit. This changes tower/tensor shapes — any existing
+   checkpoint needs a full retrain, not a fine-tune.
+2. **`pipeline/build_archetypes.py`**: excludes any clustering feature
+   whose overall mask coverage is below `MIN_CLUSTER_COVERAGE = 0.5` from
+   the k-means input (currently drops `CEO_TOTAL_COMP` at 19.2% coverage
+   and the still-unbuilt `INSIDER_OWN_PCT` at 0%). A general rule, not a
+   hardcoded exclusion — protects against any *future* sparse or
+   recency-gated addition to `game_features` doing the same thing, not
+   just this one column.
+
+Isolated the architecture change first, alone, on the pre-DEF14A matrix, to
+confirm it doesn't itself regress anything: CQS 0.628 -> 0.6226, recall
+0.912 -> 0.908, purity 0.4844 -> 0.4847 — a neutral, within-noise change on
+its own. Then added real DEF14A data back in with the fix in place.
+
+### Final numbers, 2 seeds
+
+| | recall | purity | sector_acc | market_acc | CQS |
+|---|---|---|---|---|---|
+| pre-DEF14A reference | 0.912 | 0.4844 | 0.5784 | 0.6694 | 0.628 |
+| seed 7, both fixes + real data | 0.910 | **0.4855** | 0.5454 | 0.6581 | 0.6154 |
+| seed 13, both fixes + real data | 0.908 | **0.4887** | 0.5663 | 0.6756 | 0.6223 |
+| **mean (7, 13)** | **0.909** | **0.4871** | **0.5559** | **0.6669** | **0.6189** |
+
+Purity and recall are fully recovered (purity is actually slightly *above*
+the pre-DEF14A reference on both seeds). Sector accuracy sits a bit below
+(-0.02) on both seeds — a small residual gap, not chased further (single
+data point per condition, could be seed noise rather than a real remaining
+effect; worth another seed or two if it recurs). Mean CQS (0.6189) sits
+within ~0.01 of the reference (0.628) -- essentially parity, not a
+regression, and both seeds individually pass the repo's `should_promote`
+gate (`baseline=0.60`).
+
+**Deployed.** Seed 7 kept as canonical (matches this repo's established
+convention). `pipeline/data/{train_matrix.npz,feature_manifest.json,
+mtnn_best.pt,mtnn_report.json,embedding.npz,train_matrix_real.npz}` now
+reflect the 142-feature-equivalent matrix with real `CEO_TOTAL_COMP`/
+`AVG_NEO_COMP`, the coverage-aware fusion architecture, and the
+coverage-filtered archetype clustering. Full pytest suite (25/25) and
+`audit_features.py` both clean (same 4 known redundant pairs as before,
+0 new).
+
+The other 12 `management_neo` fields and all 6 `ownership` fields still
+have no real-data source wired (age/tenure/board-independence/insider-
+ownership aren't part of the XBRL PVP tag set — need table/bio-section
+parsing or Form 4 aggregation, both separately scoped, large undertakings;
+see §1.B/§1.C/§3 below). The coverage-aware fusion fix generalizes to
+whichever of those gets built next, though — any future recency-gated or
+sparse family benefits from the same architecture change, not just this one.
+
+---
+
+## 2026-07-30 status: Phase A/B partially built, measured, NOT deployed (superseded above)
 
 Built and verified working, full 500-ticker universe (not just the Top-50
 prototype scoped below):

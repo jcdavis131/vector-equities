@@ -57,21 +57,36 @@ class GatedFusion(nn.Module):
         d_hidden: int = 192,
     ):
         super().__init__()
+        # +1 per tower: a per-family coverage scalar (mean mask over that
+        # family's columns for this row), so the fusion can tell a family
+        # that's genuinely present apart from one that's masked-out, rather
+        # than treating every tower's output as equally trustworthy. Fixes
+        # a real trained/eval mismatch: a family with ~0% train-split
+        # coverage that only exists from a certain year on (e.g. a data
+        # source with a regulatory effective date) produces a near-constant
+        # token during training that fusion learns to discount, then a
+        # genuinely-informative one at eval that fusion was never trained
+        # to weigh -- see docs/DEF14A_FORM4_CHRONOGRAPH_SPEC.md.
+        d_in_tower = d_tower + 1
         self.season_emb = nn.Embedding(n_seasons, d_season)
-        self.gate = nn.Linear(d_tower, 1)
+        self.gate = nn.Linear(d_in_tower, 1)
         self.attn = nn.Sequential(
-            nn.Linear(d_tower, d_tower), nn.Tanh(), nn.Linear(d_tower, 1)
+            nn.Linear(d_in_tower, d_in_tower), nn.Tanh(), nn.Linear(d_in_tower, 1)
         )
         self.fuse = nn.Sequential(
-            nn.Linear(d_tower + d_season, d_hidden),
+            nn.Linear(d_in_tower + d_season, d_hidden),
             nn.GELU(),
             nn.LayerNorm(d_hidden),
             nn.Linear(d_hidden, d_emb),
         )
 
     def forward(
-        self, tower_stack: torch.Tensor, season_ids: torch.Tensor
+        self,
+        tower_stack: torch.Tensor,
+        season_ids: torch.Tensor,
+        coverage: torch.Tensor,
     ) -> torch.Tensor:
+        tower_stack = torch.cat([tower_stack, coverage.unsqueeze(-1)], dim=-1)
         scores = self.attn(tower_stack).squeeze(-1)
         weights = torch.softmax(scores, dim=-1)
         gates = torch.sigmoid(self.gate(tower_stack).squeeze(-1))
@@ -92,7 +107,9 @@ class ConcatFusion(nn.Module):
     ):
         super().__init__()
         self.season_emb = nn.Embedding(n_seasons, d_season)
-        d_in = n_towers * d_tower + d_season
+        # +n_towers: one coverage scalar per family, same reasoning as
+        # GatedFusion/TransformerFusion above.
+        d_in = n_towers * (d_tower + 1) + d_season
         self.fuse = nn.Sequential(
             nn.Linear(d_in, d_hidden),
             nn.GELU(),
@@ -101,8 +118,12 @@ class ConcatFusion(nn.Module):
         )
 
     def forward(
-        self, tower_stack: torch.Tensor, season_ids: torch.Tensor
+        self,
+        tower_stack: torch.Tensor,
+        season_ids: torch.Tensor,
+        coverage: torch.Tensor,
     ) -> torch.Tensor:
+        tower_stack = torch.cat([tower_stack, coverage.unsqueeze(-1)], dim=-1)
         flat = tower_stack.reshape(tower_stack.size(0), -1)
         s = self.season_emb(season_ids)
         return F.normalize(self.fuse(torch.cat([flat, s], dim=-1)), dim=-1)
@@ -123,7 +144,8 @@ class TransformerFusion(nn.Module):
         dropout: float = 0.1,
     ):
         super().__init__()
-        self.tower_proj = nn.Linear(d_tower, d_model)
+        # +1: per-family coverage scalar, same reasoning as GatedFusion above.
+        self.tower_proj = nn.Linear(d_tower + 1, d_model)
         self.season_emb = nn.Embedding(n_seasons, d_season)
         self.season_proj = nn.Linear(d_season, d_model)
         self.cls = nn.Parameter(torch.randn(1, 1, d_model) * 0.02)
@@ -140,9 +162,13 @@ class TransformerFusion(nn.Module):
         self.out = nn.Linear(d_model, d_emb)
 
     def forward(
-        self, tower_stack: torch.Tensor, season_ids: torch.Tensor
+        self,
+        tower_stack: torch.Tensor,
+        season_ids: torch.Tensor,
+        coverage: torch.Tensor,
     ) -> torch.Tensor:
         b = tower_stack.size(0)
+        tower_stack = torch.cat([tower_stack, coverage.unsqueeze(-1)], dim=-1)
         tok = self.tower_proj(tower_stack)
         s = self.season_proj(self.season_emb(season_ids)).unsqueeze(1)
         cls = self.cls.expand(b, -1, -1)
@@ -261,7 +287,14 @@ class EquitiesMTNN(nn.Module):
         parts = torch.stack(
             [self.towers[fam](xs[fam], ms[fam]) for fam in self.families], dim=1
         )
-        return self.fusion(parts, season_ids)
+        # Per-family coverage: mean mask value over that family's columns for
+        # each row, so fusion can see how much of this token is real vs
+        # masked-zero rather than treating every family's output as equally
+        # trustworthy regardless of how sparse or temporally-skewed it is.
+        coverage = torch.stack(
+            [ms[fam].mean(dim=-1) for fam in self.families], dim=1
+        )
+        return self.fusion(parts, season_ids, coverage)
 
     def forward(self, xs, ms, season_ids):
         emb = self.encode(xs, ms, season_ids)

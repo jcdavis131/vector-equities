@@ -24,12 +24,40 @@ ARCHETYPE_NAMES = [
 ]
 
 
+MIN_CLUSTER_COVERAGE = 0.5
+
+
 def build(k=8):
     npz = np.load(DATA_PATH, allow_pickle=False)
     Z = npz["Z"]
+    M = npz["mask"] if "mask" in npz else None
     manifest = json.loads(MANIFEST_PATH.read_text())
-    # Use game profile features for clustering
+    # Use game profile features for clustering, excluding any whose real
+    # coverage is too low. Z stores 0.0 for masked-out cells (mask=0), and
+    # k-means below reads Z directly with no mask awareness -- a column
+    # that's only real for the most recent fiscal years (e.g. a data source
+    # with a regulatory effective date) puts a systematic, temporally-
+    # concentrated distortion into the clustering rather than uniform noise,
+    # which specifically wrecks cross-cycle (cross-year) purity even though
+    # the embedding itself may be fine. Measured directly: adding
+    # CEO_TOTAL_COMP (19% coverage, concentrated FY2023-24) to this list
+    # dropped cross_cycle_archetype_purity_at_20 from 0.48 to 0.39.
     feats = manifest.get("game_features") or manifest["features"][:14]
+    dropped = []
+    if M is not None:
+        kept = []
+        for f in feats:
+            if f not in manifest["features"]:
+                continue
+            j = manifest["features"].index(f)
+            cov = float(M[:, j].mean())
+            if cov < MIN_CLUSTER_COVERAGE:
+                dropped.append((f, round(cov, 3)))
+                continue
+            kept.append(f)
+        feats = kept
+    if dropped:
+        print(f"excluded from clustering (coverage < {MIN_CLUSTER_COVERAGE}): {dropped}")
     idx = [manifest["features"].index(f) for f in feats if f in manifest["features"]]
     X = Z[:, idx]
 
