@@ -1,6 +1,6 @@
 {
  "eval": "sector_coherence",
- "computed_at": "2026-07-30T18:56:20Z",
+ "computed_at": "2026-08-01T07:21:30Z",
  "embedding_source": "assets/real_data.json",
  "embedding_model": "equities_mtnn_v_rebuild_d64_transformer",
  "dim": 64,
@@ -31,21 +31,21 @@
  "metrics": {
   "knn_sector_purity_at_10": {
    "definition": "fraction of each row's 10 nearest neighbors (cosine) sharing its GICS sector, averaged over rows; same-ticker neighbors allowed",
-   "score": 0.7119,
+   "score": 0.7057,
    "baseline_random_assignment": 0.1117,
-   "baseline_label_permutation": 0.1112,
-   "lift_over_random": 6.37
+   "baseline_label_permutation": 0.1106,
+   "lift_over_random": 6.32
   },
   "knn_sector_purity_at_10_cross_ticker": {
    "definition": "same purity but neighbors from the query row's own ticker are excluded; removes the trivial same-ticker inflation from contrastive training",
-   "score": 0.4025,
+   "score": 0.4013,
    "baseline_random_assignment": 0.1117,
-   "lift_over_random": 3.6
+   "lift_over_random": 3.59
   },
   "silhouette_cosine": {
    "definition": "sklearn silhouette score of sector clusters, cosine distance, full evaluated matrix; range [-1, 1], 0 is chance-level",
-   "score": 0.0006,
-   "baseline_label_permutation": -0.0197
+   "score": -0.0034,
+   "baseline_label_permutation": -0.0204
   }
  },
  "provenance": "Measured on the published matrix as served. Note: the 2026-07-20 S&P 500 expansion (pipeline/expand_sp500.py, commit 7d93c0b) filled rows for newly added tickers with sector-centroid + Gaussian-noise placeholder embeddings rather than model outputs; diagnostic runs show model-derived and placeholder subsets score similarly on this eval.",
