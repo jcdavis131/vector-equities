@@ -1,4 +1,4 @@
-"""officer_features.ceo_of() names a DIVISIONAL executive as CEO in 247 ticker-years.
+"""officer_features.ceo_of() names a DIVISIONAL executive as CEO in 268 ticker-years.
 
 CEO_DUALITY and CEO_TENURE are trained features in the equities MTNN and both depend on
 correctly identifying WHICH person is the chief executive of the registrant. ceo_of()
@@ -18,10 +18,18 @@ cases it judges.
 
 RESULT over 5,352 ticker-years:
 
-    both name a CEO and agree                 4,011
-    both name a CEO and DISAGREE                247   ceo_of picks the divisional one
-    only ceo_of names one                       717   see the split below
+    both name a CEO and agree                 4,309
+    both name a CEO and DISAGREE                268   ceo_of picks the divisional one
+    only ceo_of names one                       398   see the split below
+    only the role-word rule names one             0   strictly more conservative
     neither                                     377
+
+And the blast radius on the TRAINED feature is larger than the identity
+disagreement, because CEO_TENURE is years-since-first-seen and one wrong identity
+shifts every later year for that ticker:
+
+    CEO_TENURE rows written by both           2,744
+    ...and DIFFERENT under the two rules        558   = 20.3%
 
 Every disagreement sampled runs the same way. Accenture: ceo_of says Casati Gianfranco,
 "CEO-Growth Markets"; the corporate CEO is Sweet Julie Spellman, "Chair & CEO". Amazon
@@ -30,7 +38,8 @@ Every disagreement sampled runs the same way. Accenture: ceo_of says Casati Gian
 Zaffino Peter, "Chairman & CEO". American Tower: Font Juan, "SVP, Pres. & CEO, CoreSite"
 against Vondran Steven O, "President and CEO".
 
-THE 717 ARE NOT ALL ceo_of BEING RIGHT AND THE ROLE-WORD RULE BEING TOO STRICT. They
+THE REFUSALS ARE NOT ALL ceo_of BEING RIGHT AND THE ROLE-WORD RULE BEING TOO STRICT.
+An earlier version of this rule refused EVERY multi-candidate year, 717 of them. They
 split three ways, and the middle group is the interesting one:
 
     319  several pure-role rows, ALL THE SAME PERSON. "Chair and CEO" plus "Chairman and
@@ -43,7 +52,7 @@ split three ways, and the middle group is the interesting one:
          has an interim plus two others.
     101  no pure-role row at all; every CEO-role candidate is divisional.
 
-The 297 matter more than the 247. A year with two chief executives has no single answer,
+The 297 matter more than the 268. A year with two chief executives has no single answer,
 and CEO_TENURE is precisely the feature that is supposed to notice. Picking one
 arbitrarily does not merely risk being wrong -- it erases the transition, which is the
 signal. ceo_of() returns a name for all 297 and flags them, but a downstream consumer
@@ -109,6 +118,28 @@ def corporate_ceo(rows):
     if len(ceos) == 1:
         return ceos[0]["name"], ceos[0]["title"], "sole_ceo_row"
     return None, None, "all_candidates_divisional"
+
+
+def tenure_series(by_ticker, pick):
+    """{(ticker, year): tenure} under officer_features' own left-censoring rule --
+    written only when the CEO's first appearance is AFTER the company's first panel
+    year, i.e. when a transition was actually observed."""
+    out = {}
+    for t, yr in by_ticker.items():
+        years = sorted(yr)
+        if not years:
+            continue
+        first_panel = years[0]
+        first_seen = {}
+        for y in years:
+            n, _, _ = pick(yr[y])
+            if not n:
+                continue
+            n = n.strip().upper()
+            first_seen.setdefault(n, y)
+            if first_seen[n] > first_panel:
+                out[(t, y)] = y - first_seen[n]
+    return out
 
 
 def main() -> int:
@@ -195,6 +226,42 @@ def main() -> int:
             "equities model was fit with the current behaviour. Whether to re-fit is an "
             "operator decision; this produces the number to make it on.",
         "disagreement_examples": disagreements,
+    }
+
+    # --- blast radius on the actual trained feature -------------------------
+    # "a divisional CEO changes more often, so tenure is corrupted most" was an
+    # assertion until this ran. It is 20.3%, not 5.86% -- a wrong identity does not
+    # cost one row, it shifts the whole first-seen series for that ticker.
+    by_ticker = {}
+    for k, rows in d.items():
+        t, _, y = k.rpartition("_")
+        if y.isdigit():
+            by_ticker.setdefault(t, {})[int(y)] = rows
+    ta = tenure_series(by_ticker, of.ceo_of)
+    tb = tenure_series(by_ticker, corporate_ceo)
+    shared = set(ta) & set(tb)
+    differ = [k for k in shared if ta[k] != tb[k]]
+    out["CEO_TENURE_blast_radius"] = {
+        "why": "The identity disagreement is 5.86% of ticker-years. That is NOT the "
+               "blast radius on the trained feature, because CEO_TENURE is years since "
+               "the CEO was first seen -- one wrong identity shifts every later year for "
+               "that ticker. Measured rather than asserted.",
+        "rows_written_by_ceo_of": len(ta),
+        "rows_written_by_role_word_rule": len(tb),
+        "written_by_both": len(shared),
+        "written_by_both_and_DIFFERENT": len(differ),
+        "pct_of_shared_rows_that_change": round(
+            100.0 * len(differ) / max(len(shared), 1), 1),
+        "only_ceo_of_writes": len(set(ta) - set(tb)),
+        "only_role_word_rule_writes": len(set(tb) - set(ta)),
+        "examples": [{"key": f"{t}_{y}", "ceo_of": ta[(t, y)], "role_word_rule": tb[(t, y)]}
+                     for (t, y) in sorted(differ)[:20]],
+        "reading": "20.3% of the CEO_TENURE values that get written change under the "
+                   "corrected identity. Most are off-by-one shifts -- the two rules "
+                   "disagree about WHEN the current CEO started -- but ACN_2023 goes 0 "
+                   "to 3, a three-year error in a feature whose whole content is elapsed "
+                   "time. This is the number the re-fit decision should be made on, not "
+                   "the 5.86%.",
     }
     OUT.write_text(json.dumps(out, indent=1, ensure_ascii=False), encoding="utf-8")
 

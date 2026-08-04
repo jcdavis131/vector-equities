@@ -512,5 +512,118 @@
    "role_word_rule_says": "Fraser Jane Nind",
    "role_word_title": "Chief Executive Officer"
   }
- ]
+ ],
+ "CEO_TENURE_blast_radius": {
+  "why": "The identity disagreement is 5.86% of ticker-years. That is NOT the blast radius on the trained feature, because CEO_TENURE is years since the CEO was first seen -- one wrong identity shifts every later year for that ticker. Measured rather than asserted.",
+  "rows_written_by_ceo_of": 3076,
+  "rows_written_by_role_word_rule": 2827,
+  "written_by_both": 2744,
+  "written_by_both_and_DIFFERENT": 558,
+  "pct_of_shared_rows_that_change": 20.3,
+  "only_ceo_of_writes": 332,
+  "only_role_word_rule_writes": 83,
+  "examples": [
+   {
+    "key": "A_2025",
+    "ceo_of": 1,
+    "role_word_rule": 0
+   },
+   {
+    "key": "ABT_2021",
+    "ceo_of": 1,
+    "role_word_rule": 0
+   },
+   {
+    "key": "ABT_2022",
+    "ceo_of": 2,
+    "role_word_rule": 1
+   },
+   {
+    "key": "ABT_2023",
+    "ceo_of": 3,
+    "role_word_rule": 2
+   },
+   {
+    "key": "ABT_2024",
+    "ceo_of": 4,
+    "role_word_rule": 3
+   },
+   {
+    "key": "ABT_2025",
+    "ceo_of": 5,
+    "role_word_rule": 4
+   },
+   {
+    "key": "ACGL_2019",
+    "ceo_of": 1,
+    "role_word_rule": 0
+   },
+   {
+    "key": "ACGL_2020",
+    "ceo_of": 2,
+    "role_word_rule": 1
+   },
+   {
+    "key": "ACGL_2021",
+    "ceo_of": 3,
+    "role_word_rule": 2
+   },
+   {
+    "key": "ACGL_2022",
+    "ceo_of": 4,
+    "role_word_rule": 3
+   },
+   {
+    "key": "ACGL_2023",
+    "ceo_of": 5,
+    "role_word_rule": 4
+   },
+   {
+    "key": "ACN_2023",
+    "ceo_of": 0,
+    "role_word_rule": 3
+   },
+   {
+    "key": "ACN_2024",
+    "ceo_of": 0,
+    "role_word_rule": 4
+   },
+   {
+    "key": "ACN_2025",
+    "ceo_of": 1,
+    "role_word_rule": 5
+   },
+   {
+    "key": "ADSK_2018",
+    "ceo_of": 1,
+    "role_word_rule": 0
+   },
+   {
+    "key": "ADSK_2019",
+    "ceo_of": 2,
+    "role_word_rule": 1
+   },
+   {
+    "key": "ADSK_2020",
+    "ceo_of": 3,
+    "role_word_rule": 2
+   },
+   {
+    "key": "ADSK_2021",
+    "ceo_of": 4,
+    "role_word_rule": 3
+   },
+   {
+    "key": "ADSK_2022",
+    "ceo_of": 5,
+    "role_word_rule": 4
+   },
+   {
+    "key": "ADSK_2023",
+    "ceo_of": 6,
+    "role_word_rule": 5
+   }
+  ],
+  "reading": "20.3% of the CEO_TENURE values that get written change under the corrected identity. Most are off-by-one shifts -- the two rules disagree about WHEN the current CEO started -- but ACN_2023 goes 0 to 3, a three-year error in a feature whose whole content is elapsed time. This is the number the re-fit decision should be made on, not the 5.86%."
+ }
 }
