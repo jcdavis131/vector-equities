@@ -1,0 +1,516 @@
+{
+ "question": "How often does officer_features.ceo_of() name a divisional executive as the registrant's CEO?",
+ "why_it_matters": "CEO_DUALITY and CEO_TENURE are trained features in the equities MTNN and both depend on identifying the right person. A divisional CEO changes far more often than a corporate one, so a wrong pick corrupts tenure most.",
+ "ticker_years": 5352,
+ "both_name_a_ceo_and_agree": 4309,
+ "both_name_a_ceo_and_DISAGREE": 268,
+ "disagreement_rate_pct": 5.86,
+ "only_ceo_of_names_one": 398,
+ "only_role_word_rule_names_one": 0,
+ "neither": 377,
+ "role_word_rule_resolution_counts": {
+  "exact": 3943,
+  "absent": 377,
+  "same_person_two_titles": 319,
+  "sole_ceo_row": 315,
+  "transition_or_multiple": 297,
+  "all_candidates_divisional": 101
+ },
+ "direction_of_every_sampled_disagreement": "ceo_of names the DIVISIONAL executive; the role-word rule names the corporate one. Accenture -> 'CEO-Growth Markets' over Sweet Julie Spellman 'Chair & CEO'. Amazon 2022 -> 'CEO Worldwide Consumer' over Jassy Andrew R 'President and CEO'. AIG -> 'CEO, Corebridge Financial' over Zaffino Peter 'Chairman & CEO'.",
+ "why_ceo_of_misses_them": "Its DIVISIONAL stoplist is ('insur gr', 'reinsur', ' group ', ' gr ', 'division') -- written against the insurers it was first run on. It cannot see 'Growth Markets', 'Worldwide Consumer', 'Corebridge', 'CoreSite' or 'FDW'. A stoplist of division NAMES can never be complete; the role-word rule needs no such list because it tests what a corporate title IS rather than what a divisional one contains.",
+ "the_297_transitions": {
+  "count": 297,
+  "what_they_are": "Ticker-years with more than one person holding a pure corporate CEO title -- successions. ACN_2019 carries Nanterme Pierre, Rowland David and Sweet Julie Spellman: the CEO died in January, an interim served, a successor took over in September. All three are real.",
+  "why_they_matter_more_than_the_247": "A year with two chief executives has no single answer, and CEO_TENURE is exactly the feature meant to notice. Picking one arbitrarily does not merely risk being wrong, it ERASES the transition -- which is the signal. ceo_of() returns a name for all of them; a consumer reading the name and not the flag sees a stable CEO where there was a succession.",
+  "examples": [
+   {
+    "key": "A_2024",
+    "people": [
+     "MCDONNELL PADRAIG | President and CEO",
+     "McMullen Michael R. | CEO and President"
+    ],
+    "ceo_of_picked": "MCDONNELL PADRAIG"
+   },
+   {
+    "key": "ABT_2020",
+    "people": [
+     "Ford Robert B | President and CEO",
+     "WHITE MILES D | Chairman and CEO"
+    ],
+    "ceo_of_picked": "Ford Robert B"
+   },
+   {
+    "key": "ACGL_2018",
+    "people": [
+     "GRANDISSON MARC | President & CEO",
+     "IORDANOU CONSTANTINE | Chairman & CEO"
+    ],
+    "ceo_of_picked": "GRANDISSON MARC"
+   },
+   {
+    "key": "ACGL_2024",
+    "people": [
+     "GRANDISSON MARC | CEO",
+     "Papadopoulo Nicolas | CEO"
+    ],
+    "ceo_of_picked": "GRANDISSON MARC"
+   },
+   {
+    "key": "ACN_2019",
+    "people": [
+     "Nanterme Pierre | Chairman & CEO",
+     "ROWLAND DAVID | Chief Executive Officer",
+     "Sweet Julie Spellman | Chief Executive Officer"
+    ],
+    "ceo_of_picked": "Nanterme Pierre"
+   },
+   {
+    "key": "ADSK_2017",
+    "people": [
+     "Anagnost Andrew | President and CEO",
+     "BASS CARL | Chief Executive Officer"
+    ],
+    "ceo_of_picked": "Anagnost Andrew"
+   },
+   {
+    "key": "AEP_2023",
+    "people": [
+     "Akins Nicholas K | CEO",
+     "SLOAT JULIA A | President, CEO"
+    ],
+    "ceo_of_picked": "Akins Nicholas K"
+   },
+   {
+    "key": "AEP_2024",
+    "people": [
+     "FOWKE BENJAMIN G S III | Interim CEO & President",
+     "Fehrman William | CEO and President",
+     "SLOAT JULIA A | President, CEO"
+    ],
+    "ceo_of_picked": "FOWKE BENJAMIN G S III"
+   },
+   {
+    "key": "AIG_2017",
+    "people": [
+     "DUPERREAULT BRIAN | President & CEO",
+     "Hancock Peter D. | President & CEO"
+    ],
+    "ceo_of_picked": "DUPERREAULT BRIAN"
+   },
+   {
+    "key": "AIG_2021",
+    "people": [
+     "DUPERREAULT BRIAN | CEO",
+     "Zaffino Peter | President and CEO"
+    ],
+    "ceo_of_picked": "DUPERREAULT BRIAN"
+   },
+   {
+    "key": "ALB_2020",
+    "people": [
+     "KISSAM LUTHER C IV | Chairman, President & CEO",
+     "Masters J Kent | Chairman, President & CEO"
+    ],
+    "ceo_of_picked": "KISSAM LUTHER C IV"
+   },
+   {
+    "key": "ALGN_2015",
+    "people": [
+     "HOGAN JOSEPH M | President and CEO",
+     "PRESCOTT THOMAS M | President and CEO"
+    ],
+    "ceo_of_picked": "HOGAN JOSEPH M"
+   },
+   {
+    "key": "ALLE_2022",
+    "people": [
+     "PETRATIS DAVID D | Chairman, President & CEO",
+     "Stone John H | President and CEO"
+    ],
+    "ceo_of_picked": "PETRATIS DAVID D"
+   },
+   {
+    "key": "AMT_2020",
+    "people": [
+     "Bartlett Thomas A | President and CEO",
+     "TAICLET JAMES D JR | Chairman, President and CEO"
+    ],
+    "ceo_of_picked": "Bartlett Thomas A"
+   },
+   {
+    "key": "AMZN_2021",
+    "people": [
+     "BEZOS JEFFREY P | Chairman, CEO and President",
+     "Jassy Andrew R | President and CEO"
+    ],
+    "ceo_of_picked": "BEZOS JEFFREY P"
+   },
+   {
+    "key": "AOS_2018",
+    "people": [
+     "Rajendra Ajita G | Chairman and CEO",
+     "Rajendra Ajita G | Chairman, President & CEO",
+     "Wheeler Kevin J. | President and CEO"
+    ],
+    "ceo_of_picked": "Rajendra Ajita G"
+   },
+   {
+    "key": "AOS_2019",
+    "people": [
+     "Rajendra Ajita G | Chairman, President & CEO",
+     "Wheeler Kevin J. | President and CEO"
+    ],
+    "ceo_of_picked": "Rajendra Ajita G"
+   },
+   {
+    "key": "ATO_2017",
+    "people": [
+     "COCKLIN KIM R | Chief Executive Officer",
+     "Haefner Michael E | PRESIDENT & CEO"
+    ],
+    "ceo_of_picked": "COCKLIN KIM R"
+   },
+   {
+    "key": "ATO_2019",
+    "people": [
+     "AKERS JOHN K | PRESIDENT & CEO",
+     "Haefner Michael E | PRESIDENT & CEO"
+    ],
+    "ceo_of_picked": "AKERS JOHN K"
+   },
+   {
+    "key": "AVY_2016",
+    "people": [
+     "Butier Mitchell R | President and CEO",
+     "SCARBOROUGH DEAN A | Chairman and CEO"
+    ],
+    "ceo_of_picked": "Butier Mitchell R"
+   },
+   {
+    "key": "AVY_2023",
+    "people": [
+     "Butier Mitchell R | Chairman & CEO",
+     "STANDER DEON | President & CEO"
+    ],
+    "ceo_of_picked": "Butier Mitchell R"
+   },
+   {
+    "key": "AWK_2020",
+    "people": [
+     "Lynch Walter | President and CEO",
+     "STORY SUSAN N | President and CEO"
+    ],
+    "ceo_of_picked": "Lynch Walter"
+   },
+   {
+    "key": "AWK_2025",
+    "people": [
+     "Griffith John C. | President and CEO",
+     "Hardwick M Susan | Chief Executive Officer"
+    ],
+    "ceo_of_picked": "Griffith John C."
+   },
+   {
+    "key": "AXP_2017",
+    "people": [
+     "CHENAULT KENNETH I | Chairman & CEO",
+     "DODSON SCOTT | President and CEO"
+    ],
+    "ceo_of_picked": "CHENAULT KENNETH I"
+   },
+   {
+    "key": "AXP_2018",
+    "people": [
+     "CHENAULT KENNETH I | Chairman & CEO",
+     "Grillo Francis P | President and CEO",
+     "Squeri Stephen J | Chairman and CEO",
+     "Squeri Stephen J | Chief Executive Officer"
+    ],
+    "ceo_of_picked": "Bush James Peter"
+   }
+  ]
+ },
+ "changes_nothing": "Fixing ceo_of() moves a trained model input and the shipped equities model was fit with the current behaviour. Whether to re-fit is an operator decision; this produces the number to make it on.",
+ "disagreement_examples": [
+  {
+   "key": "ACN_2020",
+   "ceo_of_says": "Casati Gianfranco",
+   "ceo_of_title": "CEO-Growth Markets",
+   "role_word_rule_says": "Sweet Julie Spellman",
+   "role_word_title": "Chief Executive Officer"
+  },
+  {
+   "key": "ACN_2021",
+   "ceo_of_says": "Casati Gianfranco",
+   "ceo_of_title": "CEO-Growth Markets",
+   "role_word_rule_says": "Sweet Julie Spellman",
+   "role_word_title": "Chair & CEO"
+  },
+  {
+   "key": "ACN_2022",
+   "ceo_of_says": "Casati Gianfranco",
+   "ceo_of_title": "CEO-Growth Markets",
+   "role_word_rule_says": "Sweet Julie Spellman",
+   "role_word_title": "Chair & CEO"
+  },
+  {
+   "key": "ACN_2023",
+   "ceo_of_says": "Framil Leonardo",
+   "ceo_of_title": "CEO-Growth Markets",
+   "role_word_rule_says": "Sweet Julie Spellman",
+   "role_word_title": "Chair & CEO"
+  },
+  {
+   "key": "ACN_2024",
+   "ceo_of_says": "Egawa Atsushi",
+   "ceo_of_title": "Co-CEO Asia Pacific",
+   "role_word_rule_says": "Sweet Julie Spellman",
+   "role_word_title": "Chair and CEO"
+  },
+  {
+   "key": "ACN_2025",
+   "ceo_of_says": "Egawa Atsushi",
+   "ceo_of_title": "Co-CEO Asia Pacific",
+   "role_word_rule_says": "Sweet Julie Spellman",
+   "role_word_title": "Chair and CEO"
+  },
+  {
+   "key": "AIG_2022",
+   "ceo_of_says": "Hogan Kevin T.",
+   "ceo_of_title": "CEO, Corebridge Financial, Inc",
+   "role_word_rule_says": "Zaffino Peter",
+   "role_word_title": "Chairman & CEO"
+  },
+  {
+   "key": "AIG_2023",
+   "ceo_of_says": "Hogan Kevin T.",
+   "ceo_of_title": "CEO, Corebridge Financial, Inc",
+   "role_word_rule_says": "Zaffino Peter",
+   "role_word_title": "Chairman & CEO"
+  },
+  {
+   "key": "AIG_2024",
+   "ceo_of_says": "BAILEY DONALD",
+   "ceo_of_title": "EVP & CEO North Amer Insur",
+   "role_word_rule_says": "Zaffino Peter",
+   "role_word_title": "Chairman & CEO"
+  },
+  {
+   "key": "AIG_2025",
+   "ceo_of_says": "BAILEY DONALD",
+   "ceo_of_title": "EVP & CEO North Amer Insur",
+   "role_word_rule_says": "Zaffino Peter",
+   "role_word_title": "Chairman & CEO"
+  },
+  {
+   "key": "AME_2016",
+   "ceo_of_says": "HERMANCE FRANK S",
+   "ceo_of_title": "CHAIRMAN OF THE BOARD & CEO",
+   "role_word_rule_says": "ZAPICO DAVID A",
+   "role_word_title": "CHIEF EXECUTIVE OFFICER"
+  },
+  {
+   "key": "AMT_2024",
+   "ceo_of_says": "Font Juan",
+   "ceo_of_title": "SVP, Pres. & CEO, CoreSite",
+   "role_word_rule_says": "Vondran Steven O",
+   "role_word_title": "President and CEO"
+  },
+  {
+   "key": "AMT_2025",
+   "ceo_of_says": "Font Juan",
+   "ceo_of_title": "SVP, Pres. & CEO, CoreSite",
+   "role_word_rule_says": "Vondran Steven O",
+   "role_word_title": "President and CEO"
+  },
+  {
+   "key": "AMZN_2022",
+   "ceo_of_says": "Clark David H",
+   "ceo_of_title": "CEO Worldwide Consumer",
+   "role_word_rule_says": "Jassy Andrew R",
+   "role_word_title": "President and CEO"
+  },
+  {
+   "key": "AMZN_2023",
+   "ceo_of_says": "Herrington Douglas J",
+   "ceo_of_title": "CEO Worldwide Amazon Stores",
+   "role_word_rule_says": "Jassy Andrew R",
+   "role_word_title": "President and CEO"
+  },
+  {
+   "key": "AMZN_2024",
+   "ceo_of_says": "Garman Matthew S",
+   "ceo_of_title": "CEO Amazon Web Services",
+   "role_word_rule_says": "Jassy Andrew R",
+   "role_word_title": "President and CEO"
+  },
+  {
+   "key": "AMZN_2025",
+   "ceo_of_says": "Garman Matthew S",
+   "ceo_of_title": "CEO Amazon Web Services",
+   "role_word_rule_says": "Jassy Andrew R",
+   "role_word_title": "President and CEO"
+  },
+  {
+   "key": "AON_2017",
+   "ceo_of_says": "Andersen Eric",
+   "ceo_of_title": "CEO, Aon Benfield",
+   "role_word_rule_says": "Case Gregory C",
+   "role_word_title": "President & CEO"
+  },
+  {
+   "key": "AON_2018",
+   "ceo_of_says": "Andersen Eric",
+   "ceo_of_title": "CEO, Aon Benfield",
+   "role_word_rule_says": "Case Gregory C",
+   "role_word_title": "Chief Executive Officer"
+  },
+  {
+   "key": "APO_2022",
+   "ceo_of_says": "Belardi James Richard",
+   "ceo_of_title": "CEO of Athene Holding Ltd.",
+   "role_word_rule_says": "ROWAN MARC J",
+   "role_word_title": "Chief Executive Officer"
+  },
+  {
+   "key": "APO_2023",
+   "ceo_of_says": "Belardi James Richard",
+   "ceo_of_title": "CEO of Athene Holding Ltd.",
+   "role_word_rule_says": "ROWAN MARC J",
+   "role_word_title": "Chief Executive Officer"
+  },
+  {
+   "key": "APO_2024",
+   "ceo_of_says": "Belardi James Richard",
+   "ceo_of_title": "CEO of Athene Holding Ltd.",
+   "role_word_rule_says": "ROWAN MARC J",
+   "role_word_title": "Chief Executive Officer and"
+  },
+  {
+   "key": "APO_2025",
+   "ceo_of_says": "Belardi James Richard",
+   "ceo_of_title": "CEO of Athene Holding Ltd.",
+   "role_word_rule_says": "ROWAN MARC J",
+   "role_word_title": "Chief Executive Officer and"
+  },
+  {
+   "key": "AWK_2022",
+   "ceo_of_says": "Hardwick M Susan",
+   "ceo_of_title": "President, CEO and CFO",
+   "role_word_rule_says": "Lynch Walter",
+   "role_word_title": "President and CEO"
+  },
+  {
+   "key": "BA_2016",
+   "ceo_of_says": "Caret Leanne G",
+   "ceo_of_title": "EVP, Pres. & CEO, BDS",
+   "role_word_rule_says": "Muilenburg Dennis A",
+   "role_word_title": "Chairman, President & CEO"
+  },
+  {
+   "key": "BA_2017",
+   "ceo_of_says": "Caret Leanne G",
+   "ceo_of_title": "EVP, Pres. & CEO, BDS",
+   "role_word_rule_says": "Muilenburg Dennis A",
+   "role_word_title": "Chairman, President & CEO"
+  },
+  {
+   "key": "BA_2018",
+   "ceo_of_says": "Caret Leanne G",
+   "ceo_of_title": "EVP, Pres. & CEO, BDS",
+   "role_word_rule_says": "Muilenburg Dennis A",
+   "role_word_title": "Chairman, President & CEO"
+  },
+  {
+   "key": "BA_2019",
+   "ceo_of_says": "Caret Leanne G",
+   "ceo_of_title": "EVP, Pres. & CEO, BDS",
+   "role_word_rule_says": "Muilenburg Dennis A",
+   "role_word_title": "Chairman, President & CEO"
+  },
+  {
+   "key": "BG_2015",
+   "ceo_of_says": "Padilla Raul",
+   "ceo_of_title": "CEO BG Brazil; MD Sugar & Bio",
+   "role_word_rule_says": "Schroder Soren",
+   "role_word_title": "Chief Executive Officer"
+  },
+  {
+   "key": "BG_2016",
+   "ceo_of_says": "Padilla Raul",
+   "ceo_of_title": "CEO, BG Brazil, MD Sugar & Bio",
+   "role_word_rule_says": "Schroder Soren",
+   "role_word_title": "Chief Executive Officer"
+  },
+  {
+   "key": "BG_2017",
+   "ceo_of_says": "Padilla Raul",
+   "ceo_of_title": "CEO, BG Brazil, MD Sugar & Bio",
+   "role_word_rule_says": "Schroder Soren",
+   "role_word_title": "Chief Executive Officer"
+  },
+  {
+   "key": "BG_2018",
+   "ceo_of_says": "Padilla Raul",
+   "ceo_of_title": "CEO, BG Brazil, MD Sugar & Bio",
+   "role_word_rule_says": "Schroder Soren",
+   "role_word_title": "Chief Executive Officer"
+  },
+  {
+   "key": "BR_2021",
+   "ceo_of_says": "AMSTERDAM ADAM D",
+   "ceo_of_title": "CVP and Sr. Advisor to the CEO",
+   "role_word_rule_says": "Gokey Timothy C",
+   "role_word_title": "CEO"
+  },
+  {
+   "key": "C_2015",
+   "ceo_of_says": "Aristeguieta Francisco",
+   "ceo_of_title": "CEO, Asia Pacific",
+   "role_word_rule_says": "CORBAT MICHAEL",
+   "role_word_title": "Chief Executive Officer"
+  },
+  {
+   "key": "C_2016",
+   "ceo_of_says": "Aristeguieta Francisco",
+   "ceo_of_title": "CEO, Asia Pacific",
+   "role_word_rule_says": "CORBAT MICHAEL",
+   "role_word_title": "Chief Executive Officer"
+  },
+  {
+   "key": "C_2017",
+   "ceo_of_says": "Aristeguieta Francisco",
+   "ceo_of_title": "CEO, Asia Pacific",
+   "role_word_rule_says": "CORBAT MICHAEL",
+   "role_word_title": "Chief Executive Officer"
+  },
+  {
+   "key": "C_2018",
+   "ceo_of_says": "Aristeguieta Francisco",
+   "ceo_of_title": "CEO, Asia Pacific",
+   "role_word_rule_says": "CORBAT MICHAEL",
+   "role_word_title": "Chief Executive Officer"
+  },
+  {
+   "key": "C_2019",
+   "ceo_of_says": "Aristeguieta Francisco",
+   "ceo_of_title": "CEO, Asia Pacific",
+   "role_word_rule_says": "CORBAT MICHAEL",
+   "role_word_title": "Chief Executive Officer"
+  },
+  {
+   "key": "C_2020",
+   "ceo_of_says": "Babej Peter",
+   "ceo_of_title": "CEO, Asia Pacific",
+   "role_word_rule_says": "CORBAT MICHAEL",
+   "role_word_title": "Chief Executive Officer"
+  },
+  {
+   "key": "C_2022",
+   "ceo_of_says": "Babej Peter",
+   "ceo_of_title": "CEO, Asia Pacific",
+   "role_word_rule_says": "Fraser Jane Nind",
+   "role_word_title": "Chief Executive Officer"
+  }
+ ]
+}
