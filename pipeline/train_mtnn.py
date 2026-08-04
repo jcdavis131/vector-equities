@@ -283,10 +283,38 @@ def main():
     # sector mapping
     from feature_spec import SECTORS
 
+    # SECTOR STRINGS ARE UNDERSCORED IN feature_spec.SECTORS AND SPACED IN THE MATRIX.
+    # `sector_to_idx.get(s, -1)` silently returned -1 for every row in three whole sectors:
+    #
+    #     matrix   'Consumer Discretionary'  'Consumer Staples'  'Real Estate'
+    #     SECTORS  'Consumer_Discretionary'  'Consumer_Staples'  'Real_Estate'
+    #     1,098 of 4,831 rows (22.7%) -> -1
+    #
+    # The loss masks -1 (`valid_sec` below) and so does sector_top1_acc, so the damage is
+    # not a wrong gradient — it is the HARD-NEGATIVE MINER at info_nce(pos_a=sector_t...),
+    # which boosts any pair sharing a label and does NOT mask -1. All 1,098 unmapped rows
+    # therefore shared one pseudo-sector: Consumer Discretionary, Consumer Staples and Real
+    # Estate merged into a single 22.7% blob treated as same-sector with each other.
+    #
+    # And sector_top1_acc, published on dumbmodel.com as 0.5454, was computed over the 77.3%
+    # that happened to map, with nothing recording the restriction.
+    def _norm_sector(s: str) -> str:
+        return str(s).strip().replace(" ", "_")
+
     sector_to_idx = {s: i for i, s in enumerate(SECTORS)}
     sector_idx_arr = np.array(
-        [sector_to_idx.get(s, -1) for s in sectors], dtype=np.int64
+        [sector_to_idx.get(_norm_sector(s), -1) for s in sectors], dtype=np.int64
     )
+    # REFUSE RATHER THAN SILENTLY DEGRADE. An unmapped sector is not a missing value, it is
+    # a name this code does not recognise, and the failure mode is invisible: training
+    # proceeds, the metric still prints, and 22.7% of the corpus is quietly one blob.
+    unmapped = sorted({str(s) for s, i in zip(sectors, sector_idx_arr) if i < 0})
+    if unmapped:
+        raise SystemExit(
+            f"{len(unmapped)} sector value(s) do not match feature_spec.SECTORS even after "
+            f"normalising: {unmapped[:6]}. Fix the name or the list — do not train with "
+            f"them collapsed into one pseudo-sector for hard-negative mining."
+        )
     n_sectors = len(SECTORS)
 
     pairs = adjacent_pairs(tickers, fiscal_years)
