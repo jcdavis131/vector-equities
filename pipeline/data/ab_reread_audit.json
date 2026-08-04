@@ -1,0 +1,60 @@
+{
+ "question": "Are the two equities A/B conclusions consistent with their own raw runs?",
+ "why": "vector-pitch 413e3cd and vector-hoops seed_floor.json both compute paired MDEs. These two A/Bs predate that discipline, so they were re-read against their own stored per-seed runs rather than trusted.",
+ "sector_labels_ab_recomputed_paired": {
+  "sector_acc": {
+   "mean_difference": -0.064,
+   "sd_of_differences": 0.0114,
+   "paired_MDE_n5": 0.0118,
+   "clears_paired_floor": true,
+   "recorded_paired_p": 0.0
+  },
+  "cqs": {
+   "mean_difference": -0.0054,
+   "sd_of_differences": 0.0038,
+   "paired_MDE_n5": 0.004,
+   "clears_paired_floor": true,
+   "recorded_paired_p": 0.035
+  },
+  "test_recall": {
+   "mean_difference": 0.002,
+   "sd_of_differences": 0.0047,
+   "paired_MDE_n5": 0.0048,
+   "clears_paired_floor": false,
+   "recorded_paired_p": 0.394
+  },
+  "purity": {
+   "mean_difference": 0.0002,
+   "sd_of_differences": 0.0019,
+   "paired_MDE_n5": 0.0019,
+   "clears_paired_floor": false,
+   "recorded_paired_p": 0.857
+  },
+  "next_r2": {
+   "mean_difference": 0.0013,
+   "sd_of_differences": 0.0018,
+   "paired_MDE_n5": 0.0018,
+   "clears_paired_floor": false,
+   "recorded_paired_p": 0.175
+  }
+ },
+ "FINDING_the_verdict_omits_CQS": {
+  "verdict_as_shipped": "The drop from 0.5697 to 0.5058 is the metric becoming honest: 11 classes over every company is harder than 8 over 77.3% of them. Retrieval, purity and next-year R2 are flat, so the model is not worse.",
+  "problem": "It says 'Retrieval, purity and next-year R2 are flat, so the model is not worse' and does not mention CQS. CQS moved -0.0054 with sd_of_differences 0.0038, a paired MDE of 0.0040, and a recorded paired_p of 0.035. It is the one non-sector metric that DOES clear its floor.",
+  "honest_restatement": "Retrieval, purity and next-year R2 are flat. CQS dropped 0.0054, which is small but above the paired floor and sign-consistent. The sector-accuracy drop is the metric becoming honest; the CQS drop is a real, small regression that the fix also caused, and saying 'the model is not worse' overstates it.",
+  "size_context": "0.0054 on a CQS whose arms mean 0.6162 and 0.6108 -- 0.9% relative. Real, and small."
+ },
+ "officer_features_ab_reread": {
+  "n_seeds": 3,
+  "sector_acc_A_seed_range": 0.0209,
+  "sector_acc_B_minus_A": 0.0132,
+  "sector_acc_paired_deltas_by_seed": [
+   0.0265,
+   -0.0011,
+   0.0142
+  ],
+  "exceeds_noise_floor": false,
+  "what_0265_actually_is": "A SINGLE SEED'S delta (seed 7), not the experiment's result. The 3-seed mean was +0.0132 and it did not clear the 0.0209 floor. I repeatedly wrote 'would have reported +0.0265 as a win' as though 0.0265 were the finding. The underlying argument survives and is in fact sharper: one seed showed +0.0265, the mean was +0.0132, the floor was 0.0209 -- so a 1-seed-vs-1-seed design would indeed have called a non-effect a win, by exactly the margin that motivated adding --seed to the other trainers."
+ },
+ "verdict": "Both A/Bs used PAIRED statistics and were methodologically sound -- ab_sector_labels.json records paired_p per metric. The defects are in the write-ups, not the experiments: one verdict omits the single non-sector metric that cleared its floor, and I quoted numbers from one experiment while naming the other."
+}
