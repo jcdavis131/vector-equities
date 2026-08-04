@@ -1,0 +1,174 @@
+{
+ "question": "Do the four officer-derived columns (NEO_COUNT, NEO_TURNOVER, CEO_DUALITY, CEO_TENURE) improve the equities MTNN?",
+ "verdict": "NO METRIC EXCEEDS THE SEED NOISE FLOOR. The only sign-consistent signal is CQS, positive at all three paired seeds (+0.0032/+0.0025/+0.0050, mean +0.0036) while every other metric is mixed-sign. Three of three under a null is p=0.125 \u2014 suggestive, not significant. The honest reading is that these four columns do not measurably improve the model.",
+ "design": "Identical config and seed in both arms; ONLY train_matrix.npz differs. ARM A is the pre-fill matrix from git HEAD~1 (54.5% observed, 33 zero-coverage columns); ARM B is post-fill (57.0%, 29). Three seeds per arm, because a single pair cannot separate a real gain from seed noise.",
+ "control_validated": "A_prefill seed 7 reproduced the shipped model exactly \u2014 recall 0.910, purity 0.4855, sector 0.5454, r2 0.1965, CQS 0.6154 \u2014 so the trainer is deterministic at fixed seed and arm A is a valid control rather than an approximation of one.",
+ "noise_floor_rule": "The within-arm seed range is the noise floor. A between-arm difference smaller than the larger arm's own spread is not distinguishable from which seed happened to run.",
+ "limitation": "THREE SEEDS IS THIN. It establishes that the effect is not large; it cannot rule out a real effect of roughly the size observed. Ruling that in or out needs more seeds, which is a cost decision, not a finding.",
+ "config": "equities_mtnn_v4_transformer_d64_b1 --dim 64 --epochs 60 --tower-blocks 1",
+ "seeds": [
+  7,
+  11,
+  13
+ ],
+ "summary": {
+  "test_recall": {
+   "A_mean": 0.9053,
+   "A_seed_range": 0.012,
+   "B_mean": 0.908,
+   "B_seed_range": 0.01,
+   "B_minus_A": 0.0027,
+   "noise_floor": 0.012,
+   "exceeds_noise_floor": false,
+   "paired_deltas_by_seed": [
+    -0.006,
+    0.008,
+    0.006
+   ],
+   "paired_all_same_sign": false
+  },
+  "purity20": {
+   "A_mean": 0.4849,
+   "A_seed_range": 0.0081,
+   "B_mean": 0.4885,
+   "B_seed_range": 0.007,
+   "B_minus_A": 0.0035,
+   "noise_floor": 0.0081,
+   "exceeds_noise_floor": false,
+   "paired_deltas_by_seed": [
+    0.0025,
+    0.0046,
+    0.0035
+   ],
+   "paired_all_same_sign": true
+  },
+  "sector_acc": {
+   "A_mean": 0.5593,
+   "A_seed_range": 0.0209,
+   "B_mean": 0.5725,
+   "B_seed_range": 0.0153,
+   "B_minus_A": 0.0132,
+   "noise_floor": 0.0209,
+   "exceeds_noise_floor": false,
+   "paired_deltas_by_seed": [
+    0.0265,
+    -0.0011,
+    0.0142
+   ],
+   "paired_all_same_sign": false
+  },
+  "market_acc": {
+   "A_mean": 0.6591,
+   "A_seed_range": 0.0321,
+   "B_mean": 0.6592,
+   "B_seed_range": 0.0383,
+   "B_minus_A": 0.0001,
+   "noise_floor": 0.0383,
+   "exceeds_noise_floor": false,
+   "paired_deltas_by_seed": [
+    0.0034,
+    -0.0046,
+    0.0016
+   ],
+   "paired_all_same_sign": false
+  },
+  "next_r2_test": {
+   "A_mean": 0.1999,
+   "A_seed_range": 0.0065,
+   "B_mean": 0.2021,
+   "B_seed_range": 0.0056,
+   "B_minus_A": 0.0021,
+   "noise_floor": 0.0065,
+   "exceeds_noise_floor": false,
+   "paired_deltas_by_seed": [
+    0.0071,
+    -0.0018,
+    0.0011
+   ],
+   "paired_all_same_sign": false
+  },
+  "cqs": {
+   "A_mean": 0.6159,
+   "A_seed_range": 0.0124,
+   "B_mean": 0.6194,
+   "B_seed_range": 0.0149,
+   "B_minus_A": 0.0036,
+   "noise_floor": 0.0149,
+   "exceeds_noise_floor": false,
+   "paired_deltas_by_seed": [
+    0.0032,
+    0.0025,
+    0.005
+   ],
+   "paired_all_same_sign": true
+  }
+ },
+ "runs": [
+  {
+   "arm": "A_prefill",
+   "seed": 7,
+   "test_recall": 0.91,
+   "val_recall": 0.93,
+   "purity20": 0.4855,
+   "sector_acc": 0.5454,
+   "market_acc": 0.6581,
+   "next_r2_test": 0.1965,
+   "cqs": 0.6154
+  },
+  {
+   "arm": "A_prefill",
+   "seed": 11,
+   "test_recall": 0.898,
+   "val_recall": 0.868,
+   "purity20": 0.4806,
+   "sector_acc": 0.5663,
+   "market_acc": 0.6435,
+   "next_r2_test": 0.2003,
+   "cqs": 0.6099
+  },
+  {
+   "arm": "A_prefill",
+   "seed": 13,
+   "test_recall": 0.908,
+   "val_recall": 0.928,
+   "purity20": 0.4887,
+   "sector_acc": 0.5663,
+   "market_acc": 0.6756,
+   "next_r2_test": 0.203,
+   "cqs": 0.6223
+  },
+  {
+   "arm": "B_postfill",
+   "seed": 7,
+   "test_recall": 0.904,
+   "val_recall": 0.938,
+   "purity20": 0.488,
+   "sector_acc": 0.5719,
+   "market_acc": 0.6615,
+   "next_r2_test": 0.2036,
+   "cqs": 0.6186
+  },
+  {
+   "arm": "B_postfill",
+   "seed": 11,
+   "test_recall": 0.906,
+   "val_recall": 0.902,
+   "purity20": 0.4852,
+   "sector_acc": 0.5652,
+   "market_acc": 0.6389,
+   "next_r2_test": 0.1985,
+   "cqs": 0.6124
+  },
+  {
+   "arm": "B_postfill",
+   "seed": 13,
+   "test_recall": 0.914,
+   "val_recall": 0.946,
+   "purity20": 0.4922,
+   "sector_acc": 0.5805,
+   "market_acc": 0.6772,
+   "next_r2_test": 0.2041,
+   "cqs": 0.6273
+  }
+ ]
+}
