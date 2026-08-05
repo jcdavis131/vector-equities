@@ -1,6 +1,6 @@
 {
  "eval": "sector_coherence",
- "computed_at": "2026-08-01T07:21:30Z",
+ "computed_at": "2026-08-05T03:12:21Z",
  "embedding_source": "assets/real_data.json",
  "embedding_model": "equities_mtnn_v_rebuild_d64_transformer",
  "dim": 64,

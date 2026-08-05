@@ -1,0 +1,45 @@
+{
+  "eval": "forward",
+  "computed_at": "2026-08-05T03:13:36Z",
+  "source": "assets/trades_final_ranked_v6.csv",
+  "n_trades": 233,
+  "n_scored": 233,
+  "metrics": {
+    "ic_rank_1m": {
+      "score": 0.0051,
+      "n": 233,
+      "description": "Spearman pred 1M vs true 1M (scaled from 6M if univariate)"
+    },
+    "ic_rank_3m": {
+      "score": 0.0064,
+      "n": 233
+    },
+    "ic_rank_6m": {
+      "score": 0.007,
+      "n": 233,
+      "description": "Spearman calibrated fwd6 vs true_fwd 12M realized; gate IC>0"
+    },
+    "ic_rank_12m": {
+      "score": 0.0062,
+      "n": 233
+    },
+    "triple_barrier_hit_rate_10pct_before_minus7pct_63d": {
+      "score": 0.2189,
+      "n": 233,
+      "definition": "+10% hit before -7% 63d (proxy true_fwd>=0.10 & dd>-0.07)"
+    },
+    "distress_early_warning_corr_pred_vs_dd": {
+      "score": -0.2624,
+      "description": "pred fwd6 vs dd threshold; positive means higher pred -> less distress"
+    },
+    "entry_mean": 0.8409,
+    "calibration_bias_after": 0.0,
+    "ic_target": 0.5066
+  },
+  "gate": {
+    "ic_gt_zero": true,
+    "triple_barrier_gt_random": false,
+    "note": "Gate promotion on IC>0 not just sector purity to prove embedding knows business future not just label"
+  },
+  "provenance": "Computed from published trades_final_ranked_v6.csv; isotonic calibration from assets/forward_calibration_isotonic.json"
+}

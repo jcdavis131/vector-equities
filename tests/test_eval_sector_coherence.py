@@ -104,6 +104,12 @@ def test_emitted_report_schema_and_consistency():
         report["n_rows_evaluated"] + report["n_rows_excluded_bad_sector"]
         == report["n_rows_total"]
     )
+    # Shipped metric gate: v6_real 500 tickers should be >0.65 purity, >0.35 cross
+    assert purity["score"] >= 0.65, f"purity {purity['score']} < 0.65 - regression from v6_real 0.7057"
+    assert cross["score"] >= 0.35, f"cross-ticker {cross['score']} < 0.35"
+    assert purity["lift_over_random"] >= 5.0, "lift should be >=5x for 0.7057 vs 0.11 baseline"
+    # silhouette sanity: permutation baseline worse
+    assert sil["baseline_label_permutation"] < sil["score"] + 0.05
 
 
 def test_emitted_report_matches_live_asset_counts():
