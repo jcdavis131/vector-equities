@@ -37,10 +37,11 @@ python3 pipeline/regen_assets.py
 - **k-NN sector purity@10:** 0.7057 (baseline random 0.1117) — **lift 6.32×**, n=4831 rows / 500 tickers / 11 sectors, 64-d `equities_mtnn_v_rebuild_d64_transformer`
 - **cross-ticker purity@10** (same-ticker neighbors excluded to remove trivial same-ticker inflation from contrastive training): 0.4013 (baseline 0.1117) — lift 3.59×
 - **silhouette cosine:** -0.0034 vs label-permutation -0.0204 (range [-1,1], sector clusters overlap but separate above chance)
+- **forward IC (n=233 trades, isotonic-calibrated):** 1m 0.0051 / 3m 0.0064 / 6m 0.007 / 12m 0.0062, triple-barrier +10% before -7% 63d 0.2189 — gate IC>0 passed (see `assets/eval_forward.json`)
 
 Superseded placeholder: README previously reported 0.174 (cross-ticker 0.167) lift 1.5–1.6× from an older matrix with S&P 500 expansion placeholder rows — see `assets/eval_sector_coherence.json` provenance: diagnostic runs show model-derived and placeholder subsets score similarly, but the served 2026-08-01 matrix is 500 tickers v6 real and scores 0.7057/0.4013. That older 0.174 is kept as a provenance note, not the shipped metric.
 
-Regenerate with `python pipeline/eval_sector_coherence.py`; gated by `tests/test_eval_sector_coherence.py` (>0.65 purity threshold) and `tests/test_no_ticker_leakage.py` (FY embedding 12-d excluded from tower inputs, coverage scalar prevents zero-impute bias, year_norm excluded from X). Forward heads gated by `pipeline/eval_forward.py` (IC>0, triple-barrier hit rate). This is an engineering metric of the embedding geometry only — not investment advice, and not predictive of returns.
+Regenerate with `python pipeline/eval_sector_coherence.py`; gated by `tests/test_eval_sector_coherence.py` (>0.65 purity threshold) and `tests/test_no_ticker_leakage.py` (FY embedding 12-d excluded from tower inputs, coverage scalar prevents zero-impute bias, year_norm excluded from X). `assets/eval_forward.json` (n=233 trades, isotonic-calibrated `trades_final_ranked_v6.csv`): IC rank 1m 0.0051 / 3m 0.0064 / 6m 0.007 / 12m 0.0062, triple-barrier 0.2189, gate IC>0 passed via `pipeline/eval_forward.py`. This is an engineering metric of the embedding geometry only — not investment advice, and not predictive of returns.
 
 ## Deploy
 
