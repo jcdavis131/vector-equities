@@ -5,6 +5,7 @@
 
 | Agent | Repo / Area | Since | What / Why | Branch | Status |
 |-------|-------------|-------|------------|--------|--------|
+| Claude-Local | vector-equities / verify + push | 17:0x CDT | Handoff task 5 is ALREADY DONE on origin (d80a716) — logging that as a no-op. Verifying + pushing 10 unpushed local commits instead: officer extraction, the ceo_of divisional-CEO audit, and the sector A/B corrections. | main (ff) | in-progress |
 | Scout | vector-hoops / MTNN v6 fusion | 22:08 CDT | Port transformer fusion + SupCon/VICReg, lift composite 0.7937→0.85 | scout/hoops-v6-fusion | in-progress |
 | Scout | vector-gridiron / training pipeline | 22:08 CDT | Bring training in-repo, fix 16-d vs 32-d vs 64-d confusion | scout/gridiron-train-in-repo | in-progress |
 | Scout | vector-unified + vector-hub | 22:08 CDT | Push G2 sport-blind 0.685→0.64, verify ablation table | scout/unified-g2-blind | in-progress |
