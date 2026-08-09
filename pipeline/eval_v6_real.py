@@ -13,6 +13,8 @@ from dataset_career import (
 )
 from model_career import EquitiesCareerMTNN
 
+from _torch_safe import safe_torch_load
+
 DATA_DIR = Path("pipeline/data")
 Z, mask, Z_raw, tickers, names, fiscal_years, sectors, manifest, fwd, npz_path = (
     load_bundle()
@@ -20,8 +22,8 @@ Z, mask, Z_raw, tickers, names, fiscal_years, sectors, manifest, fwd, npz_path =
 fams, _ = family_slices(manifest)
 fam_dims = {fam: len(cols) for fam, cols in fams.items()}
 
-ckpt = torch.load(
-    DATA_DIR / "mtnn_career_v6_best.pt", map_location="cpu", weights_only=False
+ckpt = safe_torch_load(
+    DATA_DIR / "mtnn_career_v6_best.pt", map_location="cpu"
 )
 args = ckpt["args"]
 print(

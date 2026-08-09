@@ -72,6 +72,7 @@ def score_trades(
     if model_path.exists():
         try:
             import torch
+            from _torch_safe import safe_torch_load
             from dataset_career import (
                 build_sequences,
                 family_slices,
@@ -90,7 +91,7 @@ def score_trades(
                 Z, mask, Z_raw, tickers_b, fy_arr, sectors_arr, manifest, fwd
             )
             device = "cuda" if torch.cuda.is_available() else "cpu"
-            ckpt = torch.load(model_path, map_location=device, weights_only=False)
+            ckpt = safe_torch_load(model_path, map_location=device)
             args = ckpt.get("args", {})
             model = EquitiesCareerMTNN(
                 fam_dims=fam_dims,
