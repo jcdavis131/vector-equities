@@ -35,15 +35,13 @@ Backfill steps (mirrors hoops pipeline):
 This scaffold implements the audit + placeholder fetch skeleton so
 real fetch functions can be wired without breaking resumability.
 """
+
 from __future__ import annotations
 
 import json
 import pathlib
 import sys
 import time
-import urllib.request
-import subprocess
-from typing import Dict, List, Tuple
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 CACHE_SEC = ROOT / "pipeline" / "cache" / "sec"
@@ -60,10 +58,15 @@ UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Scout/1.0 Equities/1.0"
 # Equities equivalents of hoops cap_rules / payroll_by_season
 # Market-cap regime by year — used for era-aware forward return normalization
 # Like hoops cap_rules.json: cap, tax, apron, cba, tv, growth -> here: spx level, rate regime, sec rule
-MARKET_REGIME_BY_YEAR: Dict[str, Dict] = {
+MARKET_REGIME_BY_YEAR: dict[str, dict] = {
     "2018": {"spx_close": 2506, "fed_funds_upper": 2.5, "sec_rule": "Dodd-Frank 2010", "regime": "QT start"},
     "2019": {"spx_close": 3230, "fed_funds_upper": 1.75, "sec_rule": "Dodd-Frank", "regime": "pre-COVID bull"},
-    "2020": {"spx_close": 3756, "fed_funds_upper": 0.25, "sec_rule": "COVID relief", "regime": "zero-rate crash+rebound"},
+    "2020": {
+        "spx_close": 3756,
+        "fed_funds_upper": 0.25,
+        "sec_rule": "COVID relief",
+        "regime": "zero-rate crash+rebound",
+    },
     "2021": {"spx_close": 4766, "fed_funds_upper": 0.25, "sec_rule": "COVID", "regime": "meme/squeeze"},
     "2022": {"spx_close": 3839, "fed_funds_upper": 4.5, "sec_rule": "Inflation Reduction Act", "regime": "rate shock"},
     "2023": {"spx_close": 4770, "fed_funds_upper": 5.5, "sec_rule": "IRA 2023", "regime": "AI-led recovery"},
@@ -78,7 +81,7 @@ EXPECTED_SEC_FILES = EXPECTED_TICKERS * len(EXPECTED_YEARS)
 EXPECTED_MARKET_FILES = EXPECTED_TICKERS  # one 5y history per ticker
 
 
-def audit_cache() -> Dict:
+def audit_cache() -> dict:
     sec_files = list(CACHE_SEC.glob("*.json")) if CACHE_SEC.exists() else []
     market_files = list(CACHE_MARKET.glob("*.json")) if CACHE_MARKET.exists() else []
     sec_populated = [f for f in sec_files if f.stat().st_size > 0]
@@ -108,7 +111,8 @@ def audit_cache() -> Dict:
             try:
                 if DEST_EQUITIES.stat().st_size < 5000:
                     skeleton = True
-            except: pass
+            except Exception:
+                pass
     else:
         equities_count = 0
         skeleton = True
@@ -140,7 +144,9 @@ def audit_cache() -> Dict:
         "assets_equities_skeleton": skeleton,
         "assets_equities_bytes": DEST_EQUITIES.stat().st_size if DEST_EQUITIES.exists() else 0,
         "coverage_years": EXPECTED_YEARS,
-        "market_regime_reference": "pipeline/market_regime.json equivalent to hoops cap_rules.json — see MARKET_REGIME_BY_YEAR in this file",
+        "market_regime_reference": (
+            "pipeline/market_regime.json equivalent to hoops cap_rules.json — " "see MARKET_REGIME_BY_YEAR in this file"
+        ),
     }
 
 
@@ -152,7 +158,10 @@ def write_regime_reference():
         # merge without overwrite pattern from hoops rebuild
         try:
             existing = json.loads(out.read_text())
-            merged = {**MARKET_REGIME_BY_YEAR, **{k: v for k, v in existing.items() if k not in MARKET_REGIME_BY_YEAR or existing[k]}}
+            merged = {
+                **MARKET_REGIME_BY_YEAR,
+                **{k: v for k, v in existing.items() if k not in MARKET_REGIME_BY_YEAR or existing[k]},
+            }
             # keep existing where it has richer detail — only fill missing keys
             for k in MARKET_REGIME_BY_YEAR:
                 if k not in existing:
@@ -188,7 +197,7 @@ def fetch_ticker_placeholder(ticker: str, period="5y", force=False, offline=Fals
             "price_vs_52w": 0.9,
             "stub": True,
             "note": "placeholder — replace with real yfinance fetch in fetch_market_history.py",
-            "_scaffold": "fetch_missing_core.py placeholder"
+            "_scaffold": "fetch_missing_core.py placeholder",
         }
         # Only write placeholder if explicitly asked via --scaffold-write
         if "--scaffold-write" in sys.argv:
@@ -216,7 +225,7 @@ def fetch_sec_placeholder(ticker: str, year: int, force=False, offline=False) ->
             "def14a_filing": None,
             "insider_summary": None,
             "stub": True,
-            "_scaffold": "fetch_missing_core.py placeholder"
+            "_scaffold": "fetch_missing_core.py placeholder",
         }
         cache_file.write_text(json.dumps(placeholder, indent=2))
         return True
@@ -225,7 +234,7 @@ def fetch_sec_placeholder(ticker: str, year: int, force=False, offline=False) ->
 
 def main():
     args = sys.argv[1:]
-    audit_only = "--audit-only" in args or "--offline" in args and "--full" not in args
+    audit_only = "--audit-only" in args or ("--offline" in args and "--full" not in args)
     dry_run = "--dry-run" in args
     force = "--force" in args
     offline = "--offline" in args
@@ -233,21 +242,28 @@ def main():
     year_filter = None
     if "--ticker" in args:
         idx = args.index("--ticker")
-        if idx+1 < len(args):
-            ticker_filter = args[idx+1].upper()
+        if idx + 1 < len(args):
+            ticker_filter = args[idx + 1].upper()
     if "--year" in args:
         idx = args.index("--year")
-        if idx+1 < len(args):
+        if idx + 1 < len(args):
             try:
-                year_filter = int(args[idx+1])
-            except: pass
+                year_filter = int(args[idx + 1])
+            except Exception:
+                pass
 
     audit = audit_cache()
     print(json.dumps(audit, indent=2))
 
-    if dry_run or audit_only and "--full" not in args and "--scaffold-write" not in args:
-        print(f"\nEquities cache missing {audit['missing_pct']}% — {audit['populated_total']}/{audit['expected_total']} files")
-        print(f"Skeleton? assets/data/equities.json skeleton={audit['assets_equities_skeleton']} count={audit['assets_equities_count']} bytes={audit['assets_equities_bytes']}")
+    if dry_run or (audit_only and "--full" not in args and "--scaffold-write" not in args):
+        print(
+            f"\nEquities cache missing {audit['missing_pct']}% — "
+            f"{audit['populated_total']}/{audit['expected_total']} files"
+        )
+        print(
+            f"Skeleton? assets/data/equities.json skeleton={audit['assets_equities_skeleton']} "
+            f"count={audit['assets_equities_count']} bytes={audit['assets_equities_bytes']}"
+        )
         print(f"Years expected: {audit['coverage_years']} vs hoops 1996-97→2025-26 (30 seasons, 686 files, 94M)")
         if not dry_run and audit_only:
             return
@@ -267,7 +283,8 @@ def main():
         if DEST_UNIVERSE.exists():
             try:
                 universe = json.loads(DEST_UNIVERSE.read_text()).get("tickers", [])[:10]
-            except: pass
+            except Exception:
+                pass
         tickers = universe or (["AAPL", "MSFT", "GOOGL"] if "--scaffold-write" in args else [])
         for t in tickers:
             fetch_ticker_placeholder(t, force=force, offline=offline)
