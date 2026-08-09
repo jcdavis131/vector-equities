@@ -63,8 +63,7 @@ OUT = ROOT / "pipeline" / "data" / "officers.json"
 CACHE = ROOT / "pipeline" / "cache" / "sec_form345"
 
 UA = "vector-unified research jcdavis131@gmail.com"
-URL = ("https://www.sec.gov/files/structureddata/data/"
-       "insider-transactions-data-sets/{q}_form345.zip")
+URL = "https://www.sec.gov/files/structureddata/data/" "insider-transactions-data-sets/{q}_form345.zip"
 
 # Keyword -> normalised role. ORDER MATTERS: the first match wins, so the more specific
 # strings are listed before the ones they contain. "Chief Financial Officer" must be tested
@@ -144,7 +143,7 @@ def fetch_quarter(q: str, retries: int = 3) -> bytes | None:
             return raw
         except urllib.error.HTTPError as e:
             if e.code == 404:
-                return None          # quarter not published yet
+                return None  # quarter not published yet
             time.sleep(2 * (attempt + 1))
         except Exception:
             time.sleep(2 * (attempt + 1))
@@ -210,16 +209,15 @@ def main() -> int:
             key = acc.get(row.get("ACCESSION_NUMBER", ""))
             if key is None:
                 continue
-            rel = (row.get("RPTOWNER_RELATIONSHIP") or "")
+            rel = row.get("RPTOWNER_RELATIONSHIP") or ""
             if "officer" not in rel.lower():
-                continue          # directors and 10% owners are not officers
+                continue  # directors and 10% owners are not officers
             nm = (row.get("RPTOWNERNAME") or "").strip()
             ttl = (row.get("RPTOWNER_TITLE") or "").strip()
             if nm:
                 roster[key].add((nm, ttl))
         seen_q += 1
-        print(f"  {q}: {len(acc):>6} submissions in universe   "
-              f"running roster keys {len(roster)}")
+        print(f"  {q}: {len(acc):>6} submissions in universe   " f"running roster keys {len(roster)}")
 
     print(f"\nquarters read {seen_q}, unavailable {missing_q}")
 

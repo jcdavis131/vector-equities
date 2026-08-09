@@ -6,6 +6,7 @@ import torch
 
 sys.path.insert(0, "pipeline")
 import torch.nn.functional as F
+from _torch_safe import safe_torch_load
 from dataset_career import (
     build_sequences,
     family_slices,
@@ -14,19 +15,13 @@ from dataset_career import (
 )
 from model_career import EquitiesCareerMTNN
 
-from _torch_safe import safe_torch_load
-
 DATA_DIR = Path("pipeline/data")
 Z, mask, Z_raw, tickers_b, names, fy_arr, sectors_arr, manifest, fwd, _ = load_bundle()
 fams, feat_list = family_slices(manifest)
 fam_dims = {fam: len(c) for fam, c in fams.items()}
-seqs, _, _ = build_sequences(
-    Z, mask, Z_raw, tickers_b, fy_arr, sectors_arr, manifest, fwd
-)
+seqs, _, _ = build_sequences(Z, mask, Z_raw, tickers_b, fy_arr, sectors_arr, manifest, fwd)
 
-ckpt = safe_torch_load(
-    DATA_DIR / "mtnn_career_best.pt", map_location="cpu"
-)
+ckpt = safe_torch_load(DATA_DIR / "mtnn_career_best.pt", map_location="cpu")
 args = ckpt["args"]
 
 
@@ -72,9 +67,7 @@ def build_batch(batch_list):
     vm = np.zeros((B, L), dtype=bool)
     triple = np.full((B, L), -1, dtype=np.int32)
     for b, seq in enumerate(batch_list):
-        enc = get_time_enc_for_seq(
-            seq, Z_raw, fwd, {f: i for i, f in enumerate(feat_list)}
-        )
+        enc = get_time_enc_for_seq(seq, Z_raw, fwd, {f: i for i, f in enumerate(feat_list)})
         te_seq[b] = enc["time_enc"]
         yn_seq[b] = enc["year_norm"]
         vm[b] = enc["mask"]
@@ -160,9 +153,7 @@ for cfg in configs:
         p.requires_grad = "entry_head" in n
     trainable = sum(p.numel() for p in model.parameters() if p.requires_grad)
     print(f"trainable {trainable}")
-    opt = torch.optim.Adam(
-        filter(lambda p: p.requires_grad, model.parameters()), lr=cfg["lr"]
-    )
+    opt = torch.optim.Adam(filter(lambda p: p.requires_grad, model.parameters()), lr=cfg["lr"])
     best_max = 0
     for ep in range(cfg["epochs"]):
         model.train()
@@ -186,9 +177,7 @@ for cfg in configs:
             target = (triple_t[mask_t] == 1).float()
             logit = logits[mask_t]
             pw = torch.tensor([cfg["pw"]])
-            bce = F.binary_cross_entropy_with_logits(
-                logit, target, pos_weight=pw, reduction="none"
-            )
+            bce = F.binary_cross_entropy_with_logits(logit, target, pos_weight=pw, reduction="none")
             if cfg["gamma"] > 0:
                 prob = torch.sigmoid(logit)
                 pt = torch.where(target == 1, prob, 1 - prob)
@@ -203,7 +192,8 @@ for cfg in configs:
             nb += 1
         mean, std, mn, mx = evaluate_last(model)
         print(
-            f"Ep {ep + 1}/{cfg['epochs']} loss {tot / max(1, nb):.4f} mean {mean:.3f} std {std:.3f} min {mn:.3f} max {mx:.3f} spread {mx - mn:.3f}"
+            f"Ep {ep + 1}/{cfg['epochs']} loss {tot / max(1, nb):.4f} mean {mean:.3f} std {std:.3f} min {mn:.3f} max "
+            f"{mx:.3f} spread {mx - mn:.3f}"
         )
         if mx > best_max:
             best_max = mx

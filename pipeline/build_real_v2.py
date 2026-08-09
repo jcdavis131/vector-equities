@@ -57,16 +57,14 @@ def safe_div(a, b):
         return None
     try:
         return float(a) / float(b)
-    except:
+    except Exception:
         return None
 
 
 def build_real_v2(limit=100, years_range=(2015, 2024), sec_only=True):
     uni = load_universe(limit)
     years = list(range(years_range[0], years_range[1] + 1))
-    print(
-        f"Building REAL v2 for {len(uni)} tickers x {len(years)} years sec_only={sec_only}"
-    )
+    print(f"Building REAL v2 for {len(uni)} tickers x {len(years)} years sec_only={sec_only}")
     all_rows = []
     for idx, entry in enumerate(uni):
         ticker = entry["ticker"]
@@ -192,18 +190,18 @@ def build_real_v2(limit=100, years_range=(2015, 2024), sec_only=True):
                 invested_cap = equity + debt - cash
 
             def yoy(curr, prev_key):
-                prev = prev_vals.get(prev_key)
+                prev = prev_vals.get(prev_key)  # noqa: B023 (loop var used only within same iteration)
                 if curr is None or prev is None or prev == 0:
                     return None
                 return (curr - prev) / abs(prev)
 
             def cagr(curr, prev_key, yrs=3):
-                prev = prev_vals.get(prev_key)
+                prev = prev_vals.get(prev_key)  # noqa: B023 (loop var used only within same iteration)
                 if curr is None or prev is None or prev <= 0 or curr <= 0:
                     return None
                 try:
                     return (curr / prev) ** (1.0 / yrs) - 1
-                except:
+                except Exception:
                     return None
 
             rev_yoy = yoy(rev, f"REV_{yr - 1}")
@@ -217,11 +215,7 @@ def build_real_v2(limit=100, years_range=(2015, 2024), sec_only=True):
             shares_yoy = yoy(shares_d, f"SHARES_{yr - 1}")
             roe = safe_div(net, equity)
             roa = safe_div(net, assets)
-            roic = (
-                safe_div(net, invested_cap)
-                if invested_cap
-                else safe_div(op, invested_cap)
-            )
+            roic = safe_div(net, invested_cap) if invested_cap else safe_div(op, invested_cap)
             curr_ratio = safe_div(cur_a, cur_l)
             debt_eq = safe_div(debt, equity)
             debt_ebitda = safe_div(debt, ebitda)
@@ -233,16 +227,16 @@ def build_real_v2(limit=100, years_range=(2015, 2024), sec_only=True):
 
             # Market placeholders if sec_only
             if sec_only:
-                ret_1m = ret_3m = ret_6m = ret_12m = vol_30 = vol_90 = vol_252 = (
-                    beta
-                ) = vol_avg = mom_12_1 = price_vs_52w = None
+                ret_1m = ret_3m = ret_6m = ret_12m = vol_30 = vol_90 = vol_252 = beta = vol_avg = mom_12_1 = (
+                    price_vs_52w
+                ) = None
                 pe = pb = ps = ev_ebitda = ev_sales = earn_yield = fcf_yield = None
                 div_yield = 0.015
             else:
                 # will be filled later by market enrichment
-                ret_1m = ret_3m = ret_6m = ret_12m = vol_30 = vol_90 = vol_252 = (
-                    beta
-                ) = vol_avg = mom_12_1 = price_vs_52w = None
+                ret_1m = ret_3m = ret_6m = ret_12m = vol_30 = vol_90 = vol_252 = beta = vol_avg = mom_12_1 = (
+                    price_vs_52w
+                ) = None
                 pe = pb = ps = ev_ebitda = ev_sales = earn_yield = fcf_yield = None
                 div_yield = 0.015
 
@@ -314,13 +308,7 @@ def build_real_v2(limit=100, years_range=(2015, 2024), sec_only=True):
             rsi = 50
             accident = 0
             altman = None
-            if (
-                assets
-                and assets != 0
-                and equity
-                and ret_earn is not None
-                and ebit is not None
-            ):
+            if assets and assets != 0 and equity and ret_earn is not None and ebit is not None:
                 try:
                     wc = working_cap or 0
                     mv = equity  # proxy market cap
@@ -332,7 +320,7 @@ def build_real_v2(limit=100, years_range=(2015, 2024), sec_only=True):
                         + 0.6 * (mv / liab_v)
                         + 1.0 * ((rev or 0) / assets)
                     )
-                except:
+                except Exception:
                     altman = None
             piotroski = 5
 
@@ -503,7 +491,7 @@ def build_real_v2(limit=100, years_range=(2015, 2024), sec_only=True):
                         continue
                     Z_raw[i, j] = float(val)
                     mask[i, j] = 1.0
-                except:
+                except Exception:
                     pass
     # Fill median per FY then global
     Z_filled = Z_raw.copy()

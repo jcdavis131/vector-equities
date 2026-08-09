@@ -18,7 +18,6 @@ for that specific field -- never imputed.
 
 from __future__ import annotations
 
-import datetime
 import json
 import math
 from pathlib import Path
@@ -70,11 +69,20 @@ def get_market_row(ticker: str, year: int) -> dict:
     ticker has no cached history or too few trading days for a given window.
     """
     out = {
-        "RET_1M": None, "RET_3M": None, "RET_6M": None, "RET_12M": None,
-        "VOL_30D": None, "VOL_90D": None, "VOL_252D": None, "BETA_1Y": None,
-        "VOLUME_AVG_30D": None, "MOMENTUM_12_1": None,
-        "PRICE_VS_52W_HIGH": None, "RSI_14_PROXY": None,
-        "_price": None, "_shares_implied_ok": False,
+        "RET_1M": None,
+        "RET_3M": None,
+        "RET_6M": None,
+        "RET_12M": None,
+        "VOL_30D": None,
+        "VOL_90D": None,
+        "VOL_252D": None,
+        "BETA_1Y": None,
+        "VOLUME_AVG_30D": None,
+        "MOMENTUM_12_1": None,
+        "PRICE_VS_52W_HIGH": None,
+        "RSI_14_PROXY": None,
+        "_price": None,
+        "_shares_implied_ok": False,
     }
     hist = _load(ticker)
     if not hist:
@@ -86,8 +94,7 @@ def get_market_row(ticker: str, year: int) -> dict:
     price = rows[-1]["close"]
     out["_price"] = price
 
-    for months, n_days, key in ((1, 21, "RET_1M"), (3, 63, "RET_3M"),
-                                 (6, 126, "RET_6M"), (12, 252, "RET_12M")):
+    for _months, n_days, key in ((1, 21, "RET_1M"), (3, 63, "RET_3M"), (6, 126, "RET_6M"), (12, 252, "RET_12M")):
         p0 = _price_n_days_before(rows, n_days)
         if p0:
             out[key] = (price - p0) / p0
@@ -155,15 +162,31 @@ def get_market_row(ticker: str, year: int) -> dict:
     return out
 
 
-def valuation_row(price: float | None, shares: float | None, eps: float | None,
-                   bvps: float | None, rev: float | None, ebitda: float | None,
-                   fcf: float | None, debt: float | None, cash: float | None,
-                   dividends_paid: float | None) -> dict:
+def valuation_row(
+    price: float | None,
+    shares: float | None,
+    eps: float | None,
+    bvps: float | None,
+    rev: float | None,
+    ebitda: float | None,
+    fcf: float | None,
+    debt: float | None,
+    cash: float | None,
+    dividends_paid: float | None,
+) -> dict:
     """PE/PB/PS/EV_*/yields from real price + fundamentals already computed
     upstream (shares/eps/bvps/rev/ebitda/fcf/debt/cash are all real SEC-
     derived values already flowing through build_real_from_summary.py)."""
-    out = {"PE": None, "PB": None, "PS": None, "EV_EBITDA": None, "EV_SALES": None,
-           "EARNINGS_YIELD": None, "FCF_YIELD": None, "DIV_YIELD": None}
+    out = {
+        "PE": None,
+        "PB": None,
+        "PS": None,
+        "EV_EBITDA": None,
+        "EV_SALES": None,
+        "EARNINGS_YIELD": None,
+        "FCF_YIELD": None,
+        "DIV_YIELD": None,
+    }
     if price is None or shares is None or shares <= 0:
         return out
     mkt_cap = price * shares

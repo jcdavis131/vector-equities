@@ -31,19 +31,14 @@ def safe_div(a, b):
         return None
     try:
         return float(a) / float(b)
-    except:
+    except Exception:
         return None
 
 
 def clean_name(s):
     if not s:
         return ""
-    s = (
-        s.replace("\xa0", " ")
-        .replace("\u200b", " ")
-        .replace("\u200c", "")
-        .replace("\u200d", "")
-    )
+    s = s.replace("\xa0", " ").replace("\u200b", " ").replace("\u200c", "").replace("\u200d", "")
     s = re.sub(r"\s+", " ", s).strip()
     s = re.sub(r"\(\d+\)", "", s).strip()
     s = re.sub(r"\s+", " ", s).strip()
@@ -82,9 +77,7 @@ def is_person_name(name):
         return False
     if low.startswith("chief executive"):
         return False
-    if len(cn) > 35 and any(
-        k in low for k in ["officer", "chairman", "president", "vice"]
-    ):
+    if len(cn) > 35 and any(k in low for k in ["officer", "chairman", "president", "vice"]):
         return False
     return True
 
@@ -98,7 +91,7 @@ def load_summaries():
             j = json.loads(p.read_text())
             cik = j.get("_meta", {}).get("cik") or p.stem.replace("summary_", "")
             out[cik] = j
-        except:
+        except Exception:
             pass
     return out
 
@@ -119,13 +112,13 @@ def load_def14a():
         return {}
     print(f"Loading DEF14A from {path} size {path.stat().st_size}")
     raw_entries = []
-    with open(path) as f:
+    with Path(path).open() as f:
         for line in f:
             try:
                 j = json.loads(line)
                 if j.get("ticker"):
                     raw_entries.append(j)
-            except:
+            except Exception:
                 continue
     print(f"Loaded {len(raw_entries)} DEF14A filings raw")
     tmp = {}
@@ -135,7 +128,7 @@ def load_def14a():
         try:
             yr = int(fdate_str[:4])
             mo = int(fdate_str[5:7]) if len(fdate_str) >= 7 else 6
-        except:
+        except Exception:
             continue
         if mo >= 1 and mo <= 4:
             fy = yr - 1
@@ -165,16 +158,8 @@ def load_def14a():
                 else:
                     cn = clean_name(n_name)
                     parts = cn.split()
-                    if (
-                        len(parts) >= 2
-                        and parts[0][0].isupper()
-                        and parts[1][0].isupper()
-                    ):
-                        tentative = (
-                            " ".join(parts[:3])
-                            if len(parts) >= 3
-                            else " ".join(parts[:2])
-                        )
+                    if len(parts) >= 2 and parts[0][0].isupper() and parts[1][0].isupper():
+                        tentative = " ".join(parts[:3]) if len(parts) >= 3 else " ".join(parts[:2])
                         if is_person_name(tentative):
                             neo_copy = dict(neo)
                             neo_copy["name"] = tentative
@@ -193,9 +178,7 @@ def load_def14a():
                     ceo_candidate = neo
                     break
             if ceo_candidate is None and neos_filtered:
-                ceo_candidate = max(
-                    neos_filtered, key=lambda x: x.get("total_comp", 0) or 0
-                )
+                ceo_candidate = max(neos_filtered, key=lambda x: x.get("total_comp", 0) or 0)
             if ceo_candidate is None:
                 continue
             ceo_name_raw = ceo_candidate.get("name", "")
@@ -213,7 +196,7 @@ def load_def14a():
                         return v / 1e6
                     else:
                         return v
-                except:
+                except Exception:
                     return None
 
             ceo_comp = comp_million(ceo_candidate.get("total_comp"))
@@ -221,21 +204,13 @@ def load_def14a():
             comps = [c for c in comps if c is not None]
             avg_comp = float(np.mean(comps)) if comps else None
             neo_count = len(neos_filtered) if neos_filtered else ent.get("neo_count", 0)
-            combined_ceo = (
-                ceo_candidate.get("name", "") + " " + ceo_candidate.get("row_text", "")
-            ).lower()
+            combined_ceo = (ceo_candidate.get("name", "") + " " + ceo_candidate.get("row_text", "")).lower()
             founder_flag = 1 if "founder" in combined_ceo else 0
-            bs = (
-                board_size
-                if isinstance(board_size, int) and 3 <= board_size <= 20
-                else 9
-            )
+            bs = board_size if isinstance(board_size, int) and 3 <= board_size <= 20 else 9
             ceo_counts[ceo_name.lower()] += 1
             tenure = ceo_counts[ceo_name.lower()]
             curr_neo_names = {
-                clean_name(n.get("name", "")).lower()
-                for n in neos_filtered
-                if clean_name(n.get("name", ""))
+                clean_name(n.get("name", "")).lower() for n in neos_filtered if clean_name(n.get("name", ""))
             }
             if prev_neo_names is None:
                 turnover = 0.15
@@ -258,9 +233,7 @@ def load_def14a():
                 "BOARD_SIZE": bs,
                 "CEO_NAME": ceo_name,
                 "NEO_NAMES": list(curr_neo_names),
-                "CEO_CHANGE_FLAG": 1
-                if (prev_ceo_name is not None and ceo_name.lower() != prev_ceo_name)
-                else 0,
+                "CEO_CHANGE_FLAG": 1 if (prev_ceo_name is not None and ceo_name.lower() != prev_ceo_name) else 0,
             }
             prev_neo_names = curr_neo_names
             prev_ceo_name = ceo_name.lower()
@@ -280,7 +253,7 @@ def load_form4():
     counts = defaultdict(lambda: defaultdict(int))
     total_lines = 0
     for fp in files:
-        with open(fp) as f:
+        with Path(fp).open() as f:
             for line in f:
                 try:
                     j = json.loads(line)
@@ -291,7 +264,7 @@ def load_form4():
                     yr = int(fdate[:4])
                     counts[ticker][yr] += 1
                     total_lines += 1
-                except:
+                except Exception:
                     continue
     flat = {}
     for ticker, year_dict in counts.items():
@@ -417,11 +390,7 @@ def compute_market_metrics_at_fy(history, spy_history, fy):
     beta = None
     if spy_history is not None and len(spy_history) > 252:
         try:
-            spy_list = (
-                spy_history
-                if isinstance(spy_history, list)
-                else spy_history.get("history", [])
-            )
+            spy_list = spy_history if isinstance(spy_history, list) else spy_history.get("history", [])
             spy_closes = np.array([h["close"] for h in spy_list], dtype=float)
             spy_dates = [h["date"] for h in spy_list]
             spy_idx = bisect.bisect_right(spy_dates, dates[idx]) - 1
@@ -466,11 +435,7 @@ def compute_market_metrics_at_fy(history, spy_history, fy):
         # forward vol 6M
         fwd_vol_6m = vol_for(126, idx + 126) if idx + 126 < len(history) else None
         # max drawdown next 6M
-        future_closes = (
-            closes[idx + 1 : idx + 127]
-            if idx + 127 < len(closes)
-            else closes[idx + 1 :]
-        )
+        future_closes = closes[idx + 1 : idx + 127] if idx + 127 < len(closes) else closes[idx + 1 :]
         if len(future_closes) > 5:
             peak = np.maximum.accumulate(future_closes)
             drawdown = (future_closes - peak) / peak
@@ -533,7 +498,7 @@ def build_v5(limit=None):
                 t = j.get("ticker")
                 if t:
                     market_static[t] = j
-            except:
+            except Exception:
                 pass
 
     all_rows = []
@@ -545,11 +510,7 @@ def build_v5(limit=None):
         ticker = entry["ticker"]
         sector = entry.get("sector", "Industrials")
         company = entry.get("company", ticker)
-        summ = (
-            summaries.get(cik)
-            or summaries.get(entry["cik"])
-            or summaries.get(cik.lstrip("0"))
-        )
+        summ = summaries.get(cik) or summaries.get(entry["cik"]) or summaries.get(cik.lstrip("0"))
         if not summ:
             continue
         prev_vals = {}
@@ -591,11 +552,7 @@ def build_v5(limit=None):
             debt = None
             if debt_lt is not None or debt_st is not None:
                 debt = (debt_lt or 0) + (debt_st or 0)
-            ebitda = (
-                op + depr
-                if (op is not None and depr is not None)
-                else (op * 1.15 if op else None)
-            )
+            ebitda = op + depr if (op is not None and depr is not None) else (op * 1.15 if op else None)
             ebit = op
             fcf = None
             if ocf is not None and capex is not None:
@@ -608,29 +565,25 @@ def build_v5(limit=None):
             ebitda_margin = safe_div(ebitda, rev)
             fcf_margin = safe_div(fcf, rev)
             book_value = equity
-            working_cap = (
-                cur_a - cur_l if (cur_a is not None and cur_l is not None) else None
-            )
+            working_cap = cur_a - cur_l if (cur_a is not None and cur_l is not None) else None
             net_debt = debt - cash if (debt is not None and cash is not None) else None
             invested_cap = (
-                equity + debt - cash
-                if (equity is not None and debt is not None and cash is not None)
-                else None
+                equity + debt - cash if (equity is not None and debt is not None and cash is not None) else None
             )
 
             def yoy(curr, prev_key):
-                prev = prev_vals.get(prev_key)
+                prev = prev_vals.get(prev_key)  # noqa: B023 (loop var used only within same iteration)
                 if curr is None or prev is None or prev == 0:
                     return None
                 return (curr - prev) / abs(prev)
 
             def cagr(curr, prev_key, yrs=3):
-                prev = prev_vals.get(prev_key)
+                prev = prev_vals.get(prev_key)  # noqa: B023 (loop var used only within same iteration)
                 if curr is None or prev is None or prev <= 0 or curr <= 0:
                     return None
                 try:
                     return (curr / prev) ** (1.0 / yrs) - 1
-                except:
+                except Exception:
                     return None
 
             rev_yoy = yoy(rev, f"REV_{yr - 1}")
@@ -644,11 +597,7 @@ def build_v5(limit=None):
             shares_yoy = yoy(shares_d, f"SHARES_{yr - 1}")
             roe = safe_div(net, equity)
             roa = safe_div(net, assets)
-            roic = (
-                safe_div(net, invested_cap)
-                if invested_cap
-                else safe_div(op, invested_cap)
-            )
+            roic = safe_div(net, invested_cap) if invested_cap else safe_div(op, invested_cap)
             curr_ratio = safe_div(cur_a, cur_l)
             debt_eq = safe_div(debt, equity)
             debt_ebitda = safe_div(debt, ebitda)
@@ -696,11 +645,7 @@ def build_v5(limit=None):
                 # we need previous changes list; we have ceo_history_per_ticker but includes current
                 # compute by scanning sorted history
                 sorted_ceo = sorted(
-                    [
-                        (fy_, nm)
-                        for fy_, nm in ceo_history_per_ticker[ticker]
-                        if fy_ <= yr
-                    ],
+                    [(fy_, nm) for fy_, nm in ceo_history_per_ticker[ticker] if fy_ <= yr],
                     key=lambda x: x[0],
                 )
                 for i in range(1, len(sorted_ceo)):
@@ -723,9 +668,7 @@ def build_v5(limit=None):
             m_metrics = None
             if m_hist and m_hist.get("history"):
                 spy_list = spy_hist.get("history") if spy_hist else None
-                m_metrics = compute_market_metrics_at_fy(
-                    m_hist.get("history"), spy_list, yr
-                )
+                m_metrics = compute_market_metrics_at_fy(m_hist.get("history"), spy_list, yr)
             # fallback static
             if m_metrics is None:
                 mkt_static = market_static.get(ticker)
@@ -842,13 +785,7 @@ def build_v5(limit=None):
             }.get(yr, 2)
 
             altman = None
-            if (
-                assets
-                and assets != 0
-                and equity
-                and ret_earn is not None
-                and ebit is not None
-            ):
+            if assets and assets != 0 and equity and ret_earn is not None and ebit is not None:
                 try:
                     wc = working_cap or 0
                     mv = equity
@@ -860,7 +797,7 @@ def build_v5(limit=None):
                         + 0.6 * (mv / liab_v)
                         + 1.0 * ((rev or 0) / assets)
                     )
-                except:
+                except Exception:
                     pass
 
             row_feat = {
@@ -1020,9 +957,7 @@ def build_v5(limit=None):
                 }
             )
 
-    print(
-        f"Collected {len(all_rows)} rows from {len({r['ticker'] for r in all_rows})} tickers (v5)"
-    )
+    print(f"Collected {len(all_rows)} rows from {len({r['ticker'] for r in all_rows})} tickers (v5)")
     D = len(ALL_FEATURES)
     N = len(all_rows)
     Z_raw = np.zeros((N, D), dtype=np.float32)
@@ -1046,7 +981,7 @@ def build_v5(limit=None):
                         continue
                     Z_raw[i, j] = float(val)
                     mask[i, j] = 1.0
-                except:
+                except Exception:
                     pass
     # fill median per FY then global, z-score per FY
     Z_filled = Z_raw.copy()
@@ -1078,75 +1013,46 @@ def build_v5(limit=None):
 
     # forward labels arrays
     fwd_ret_1m = np.array(
-        [
-            fl["FWD_RET_1M"] if fl["FWD_RET_1M"] is not None else np.nan
-            for fl in fwd_labels
-        ],
+        [fl["FWD_RET_1M"] if fl["FWD_RET_1M"] is not None else np.nan for fl in fwd_labels],
         dtype=np.float32,
     )
     fwd_ret_3m = np.array(
-        [
-            fl["FWD_RET_3M"] if fl["FWD_RET_3M"] is not None else np.nan
-            for fl in fwd_labels
-        ],
+        [fl["FWD_RET_3M"] if fl["FWD_RET_3M"] is not None else np.nan for fl in fwd_labels],
         dtype=np.float32,
     )
     fwd_ret_6m = np.array(
-        [
-            fl["FWD_RET_6M"] if fl["FWD_RET_6M"] is not None else np.nan
-            for fl in fwd_labels
-        ],
+        [fl["FWD_RET_6M"] if fl["FWD_RET_6M"] is not None else np.nan for fl in fwd_labels],
         dtype=np.float32,
     )
     fwd_ret_12m = np.array(
-        [
-            fl["FWD_RET_12M"] if fl["FWD_RET_12M"] is not None else np.nan
-            for fl in fwd_labels
-        ],
+        [fl["FWD_RET_12M"] if fl["FWD_RET_12M"] is not None else np.nan for fl in fwd_labels],
         dtype=np.float32,
     )
     fwd_vol_6m = np.array(
-        [
-            fl["FWD_VOL_6M"] if fl["FWD_VOL_6M"] is not None else np.nan
-            for fl in fwd_labels
-        ],
+        [fl["FWD_VOL_6M"] if fl["FWD_VOL_6M"] is not None else np.nan for fl in fwd_labels],
         dtype=np.float32,
     )
     fwd_dd_6m = np.array(
-        [
-            fl["FWD_DD_6M"] if fl["FWD_DD_6M"] is not None else np.nan
-            for fl in fwd_labels
-        ],
+        [fl["FWD_DD_6M"] if fl["FWD_DD_6M"] is not None else np.nan for fl in fwd_labels],
         dtype=np.float32,
     )
     triple_barrier = np.array(
-        [
-            fl["TRIPLE_BARRIER"] if fl["TRIPLE_BARRIER"] is not None else -1
-            for fl in fwd_labels
-        ],
+        [fl["TRIPLE_BARRIER"] if fl["TRIPLE_BARRIER"] is not None else -1 for fl in fwd_labels],
         dtype=np.int64,
     )
-    ceo_change_flag = np.array(
-        [fl["CEO_CHANGE_FLAG"] for fl in fwd_labels], dtype=np.float32
-    )
-    time_since_ceo = np.array(
-        [fl["TIME_SINCE_CEO_CHANGE"] for fl in fwd_labels], dtype=np.float32
-    )
+    ceo_change_flag = np.array([fl["CEO_CHANGE_FLAG"] for fl in fwd_labels], dtype=np.float32)
+    time_since_ceo = np.array([fl["TIME_SINCE_CEO_CHANGE"] for fl in fwd_labels], dtype=np.float32)
 
     # coverage stats
     total_tickers = len(set(tickers))
     total_rows = N
     exec_set_str = {(t, str(fy)) for t, fy in exec_features.keys()}
-    rows_with_neo_precise = sum(
-        1 for t, fy in zip(tickers, fyears, strict=False) if (t, fy) in exec_set_str
-    )
+    rows_with_neo_precise = sum(1 for t, fy in zip(tickers, fyears, strict=False) if (t, fy) in exec_set_str)
     market_hist_tickers = set(market_hist.keys())
     tickers_with_mhist = len(set(tickers) & market_hist_tickers)
     rows_with_mhist = sum(1 for t in tickers if t in market_hist_tickers)
     form4_keys_str = {(t, str(fy)) for t, fy in form4_flat.keys()}
-    rows_with_form4 = sum(
-        1 for t, fy in zip(tickers, fyears, strict=False) if (t, fy) in form4_keys_str
-    )
+    rows_with_form4 = sum(1 for t, fy in zip(tickers, fyears, strict=False) if (t, fy) in form4_keys_str)
 
     # real flags
     real_flags = {}
@@ -1167,9 +1073,7 @@ def build_v5(limit=None):
             "PRICE_VS_52W_HIGH",
             "RSI_14_PROXY",
         ]:
-            real_flags[feat] = (
-                rows_with_mhist / total_rows > 0.5 if total_rows else False
-            )
+            real_flags[feat] = rows_with_mhist / total_rows > 0.5 if total_rows else False
         elif feat in [
             "PE",
             "PB",
@@ -1284,17 +1188,17 @@ def build_v5(limit=None):
         "sources": manifest["sources"],
         "features": ALL_FEATURES,
         "real_flags": real_flags,
-        "notes": "v5 adds continuous market history per FY (10y daily), valuation computed from price at FY-end, forward returns 1M-12M, triple barrier, CEO change flag, time since change",
+        "notes": "v5 adds continuous market history per FY (10y daily), valuation computed from price at FY-end, "
+        "forward returns 1M-12M, triple barrier, CEO change flag, time since change",
     }
     (DATA_DIR / "real_rows_meta.json").write_text(json.dumps(meta, indent=2))
 
     print(f"Saved v5 to {out_v5} — N={N} tickers={total_tickers}")
     print(
-        f"Forward label coverage: 1M {np.isfinite(fwd_ret_1m).sum()}/{N} 3M {np.isfinite(fwd_ret_3m).sum()} 6M {np.isfinite(fwd_ret_6m).sum()} barrier {np.sum(triple_barrier != -1)}"
+        f"Forward label coverage: 1M {np.isfinite(fwd_ret_1m).sum()}/{N} 3M {np.isfinite(fwd_ret_3m).sum()} 6M "
+        f"{np.isfinite(fwd_ret_6m).sum()} barrier {np.sum(triple_barrier != -1)}"
     )
-    print(
-        f"Market hist coverage {rows_with_mhist}/{N} {rows_with_mhist / N * 100:.1f}%"
-    )
+    print(f"Market hist coverage {rows_with_mhist}/{N} {rows_with_mhist / N * 100:.1f}%")
     print(f"Real flags true: {[k for k, v in real_flags.items() if v]}")
 
 

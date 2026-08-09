@@ -60,9 +60,7 @@ print(f"Args {vars(Args)}")
 torch.manual_seed(Args.seed)
 np.random.seed(Args.seed)
 DATA_DIR = Path("pipeline/data")
-Z, mask, Z_raw, tickers, names, fiscal_years, sectors, manifest, fwd, npz_path = (
-    load_bundle()
-)
+Z, mask, Z_raw, tickers, names, fiscal_years, sectors, manifest, fwd, npz_path = load_bundle()
 print(f"Loaded {npz_path} Z {Z.shape}")
 fams, feat_list = family_slices(manifest)
 fam_dims = {fam: len(cols) for fam, cols in fams.items()}
@@ -182,9 +180,7 @@ for epoch in range(Args.epochs):
     nb = 0
     for s in range(0, len(train_seqs), Args.batch):
         batch_list = train_seqs[s : s + Args.batch]
-        xs_seq, ms_seq, te_seq, yn_seq, vm, sector_ids, f6, fvol, fdd, triple = (
-            build_batch(batch_list)
-        )
+        xs_seq, ms_seq, te_seq, yn_seq, vm, sector_ids, f6, fvol, fdd, triple = build_batch(batch_list)
         xs_t = {fam: torch.tensor(xs_seq[fam], device=device) for fam in fams}
         ms_t = {fam: torch.tensor(ms_seq[fam], device=device) for fam in fams}
         te_t = torch.tensor(te_seq, device=device)
@@ -220,9 +216,7 @@ for epoch in range(Args.epochs):
                         target_sign = torch.sign(true_diff[mask_pair])
                         pred_diff = pf[idx1[mask_pair]] - pf[idx2[mask_pair]]
                         margin = 0.02
-                        rank_loss = torch.clamp(
-                            margin - target_sign * pred_diff, min=0
-                        ).mean()
+                        rank_loss = torch.clamp(margin - target_sign * pred_diff, min=0).mean()
                         loss = loss + Args.weight_rank * rank_loss
             if Args.weight_var > 0:
                 pf_valid = out["fwd_ret"][:, :, 2][mask_fwd]
@@ -240,9 +234,7 @@ for epoch in range(Args.epochs):
                 logits_v = logits[valid_e]
                 tgt_v = (tgt[valid_e] == 1).float()
                 pos_weight = torch.tensor([3.5], device=device)
-                bce = F.binary_cross_entropy_with_logits(
-                    logits_v, tgt_v, pos_weight=pos_weight
-                )
+                bce = F.binary_cross_entropy_with_logits(logits_v, tgt_v, pos_weight=pos_weight)
                 loss = loss + Args.weight_entry * bce
                 total_entry += float(bce.detach())
         if "fwd_vol" in out and Args.weight_vol > 0:
@@ -270,7 +262,8 @@ for epoch in range(Args.epochs):
     avg_loss = total_loss / max(1, nb)
     avg_nce = total_nce / max(1, nb)
     print(
-        f"Ep {epoch + 1}/{Args.epochs} loss {avg_loss:.4f} nce {avg_nce:.4f} fwd {total_fwd / max(1, nb):.4f} entry {total_entry / max(1, nb):.4f}"
+        f"Ep {epoch + 1}/{Args.epochs} loss {avg_loss:.4f} nce {avg_nce:.4f} fwd {total_fwd / max(1, nb):.4f} entry "
+        f"{total_entry / max(1, nb):.4f}"
     )
     if (epoch + 1) % Args.val_every == 0:
         model.eval()
@@ -325,7 +318,8 @@ for epoch in range(Args.epochs):
             top20 = true_arr[order[:20]]
             prec20 = (top20 == 1).mean() if len(top20) > 0 else 0
             print(
-                f"  VAL f6 IC {ic_f6:.4f} dd IC {ic_dd:.4f} entry prec20 {prec20:.3f} mean pf {np.mean(pf_all):.3f} std {np.std(pf_all):.3f} mean pd {np.mean(pd_all):.3f} std {np.std(pd_all):.3f}"
+                f"  VAL f6 IC {ic_f6:.4f} dd IC {ic_dd:.4f} entry prec20 {prec20:.3f} mean pf {np.mean(pf_all):.3f} "
+                f"std {np.std(pf_all):.3f} mean pd {np.mean(pd_all):.3f} std {np.std(pd_all):.3f}"
             )
             if ic_f6 > best_ic:
                 best_ic = ic_f6

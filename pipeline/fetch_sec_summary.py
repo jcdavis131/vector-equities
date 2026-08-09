@@ -90,9 +90,7 @@ def get_fact_for_year_fast(facts, tag_names, year):
                     # match year
                     if fy == year and fp == "FY":
                         candidates.append(entry)
-                    elif frame.startswith(f"CY{year}") and (
-                        "Q4" in frame or len(frame) == 6
-                    ):
+                    elif frame.startswith(f"CY{year}") and ("Q4" in frame or len(frame) == 6):
                         candidates.append(entry)
                     elif frame == f"CY{year}":
                         candidates.append(entry)
@@ -117,7 +115,7 @@ def fetch_summary_for_cik(cik: str):
     if out_path.exists() and out_path.stat().st_size > 100:
         try:
             return json.loads(out_path.read_text())
-        except:
+        except Exception:
             out_path.unlink(missing_ok=True)
     url = f"https://data.sec.gov/api/xbrl/companyfacts/CIK{cik_pad}.json"
     data = robust_fetch_json(url)
@@ -140,7 +138,7 @@ def fetch_summary_for_cik(cik: str):
     # save
     try:
         out_path.write_text(json.dumps(summary))
-    except:
+    except Exception:
         pass
     # free
     del data
@@ -172,16 +170,9 @@ if __name__ == "__main__":
         if s:
             ok += 1
             # print yearly revs
-            revs = [
-                f"{yr}:{s.get(str(yr), {}).get('REVENUE', '-')}"
-                for yr in range(2020, 2025)
-            ]
+            revs = [f"{yr}:{s.get(str(yr), {}).get('REVENUE', '-')}" for yr in range(2020, 2025)]
             # print count
-            cnt = sum(
-                1
-                for yr in range(2015, 2025)
-                if s.get(str(yr), {}).get("REVENUE") is not None
-            )
+            cnt = sum(1 for yr in range(2015, 2025) if s.get(str(yr), {}).get("REVENUE") is not None)
             print(f"  -> ok rev years {cnt} {revs[-1]}")
         else:
             print("  -> fail")

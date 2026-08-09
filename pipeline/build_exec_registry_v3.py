@@ -64,14 +64,14 @@ def load_parsed():
     if not IN_JSONL.exists():
         print(f"Input {IN_JSONL} not found!")
         sys.exit(1)
-    with open(IN_JSONL) as f:
+    with Path(IN_JSONL).open() as f:
         for line in f:
             if not line.strip():
                 continue
             try:
                 j = json.loads(line)
                 entries.append(j)
-            except:
+            except Exception:
                 continue
     return entries
 
@@ -83,9 +83,7 @@ def main():
     print(f"Loaded {total_files} files, success {succ} rate {succ / total_files:.3f}")
 
     # Build registry dict: norm_firstlast -> {full_names set, tickers set, timeline list}
-    registry = defaultdict(
-        lambda: {"full_names": set(), "tickers": set(), "timeline": []}
-    )
+    registry = defaultdict(lambda: {"full_names": set(), "tickers": set(), "timeline": []})
 
     unique_execs_full = set()
     for e in entries:
@@ -129,9 +127,7 @@ def main():
         v["tickers"] = sorted(v["tickers"])
 
     unique_firstlast = len(registry)
-    print(
-        f"Unique execs full: {len(unique_execs_full)} unique firstlast: {unique_firstlast}"
-    )
+    print(f"Unique execs full: {len(unique_execs_full)} unique firstlast: {unique_firstlast}")
 
     # Detect moves: same firstlast appears in >=2 tickers
     moves = []
@@ -152,7 +148,8 @@ def main():
         print("Examples moves:")
         for m in moves_sorted[:10]:
             print(
-                f"  {m['norm_firstlast']} tickers={m['tickers']} names={m['full_names']} timeline_len={len(m['timeline'])}"
+                f"  {m['norm_firstlast']} tickers={m['tickers']} names={m['full_names']} "
+                f"timeline_len={len(m['timeline'])}"
             )
 
     # Write registry json (summary)
@@ -177,11 +174,11 @@ def main():
 
     # Write files
     OUT_REGISTRY.parent.mkdir(parents=True, exist_ok=True)
-    with open(OUT_REGISTRY, "w") as out:
+    with Path(OUT_REGISTRY).open("w") as out:
         json.dump(registry_json, out, indent=2)
     print(f"Wrote {OUT_REGISTRY} entries {len(registry_json)}")
 
-    with open(OUT_MOVES, "w") as out:
+    with Path(OUT_MOVES).open("w") as out:
         for m in moves_sorted:
             out.write(json.dumps(m) + "\n")
     print(f"Wrote {OUT_MOVES} moves {len(moves_sorted)}")
@@ -197,7 +194,8 @@ def main():
         print("examples:")
         for ex in moves_sorted[:5]:
             print(
-                f"  {ex['norm_firstlast']} -> {ex['tickers']} timeline: {[(t['ticker'], t['filing_date'], t['comp'], t['role']) for t in ex['timeline'][:3]]}"
+                f"  {ex['norm_firstlast']} -> {ex['tickers']} timeline: "
+                f"{[(t['ticker'], t['filing_date'], t['comp'], t['role']) for t in ex['timeline'][:3]]}"
             )
 
 

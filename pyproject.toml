@@ -27,7 +27,7 @@ build-backend = "hatchling.build"
 
 [tool.ruff]
 target-version = "py311"
-line-length = 88
+line-length = 120
 exclude = [
   "assets/*",
   "data/*",
@@ -48,7 +48,13 @@ ignore = [
   "S603",  # subprocess – internal pipelines
   "S607",  # start process with partial path
   "S110",  # try-except-pass handled via bare-except audit
+  "S112",  # try-except-continue – deliberate skip-on-error in bulk scrapers
+  "S108",  # hardcoded temp paths – deterministic pipeline scratch files
+  "S310",  # urllib open of trusted SEC/EDGAR endpoints (internal fetchers)
+  "S311",  # non-crypto random – research sampling / synthetic fallbacks only
   "N803",  # argument name lower-case override for data scripts
+  "N806",  # non-lowercase locals (matrices/tensors, e.g. X, W, IC)
+  "N812",  # lowercase imported as non-lowercase (e.g. functional as F)
 ]
 fixable = ["ALL"]
 unfixable = []
@@ -58,6 +64,9 @@ unfixable = []
 "pipeline/towers_v6/*" = ["S","N803","TCH"]
 "pipeline/build_*.py" = ["TCH003","TCH002","E402"]  # late imports for CLI
 "pipeline/*_v*.py" = ["E402","TCH"]
+"pipeline/fetch_*.py" = ["E402"]  # sys.path.insert before local imports
+"pipeline/train_*.py" = ["E402"]  # sys.path.insert before local imports
+"pipeline/expand_sp500.py" = ["E402"]  # late import after data load
 "assets/*" = ["ALL"]  # generated / preproc, not linted strictly
 "scripts/*" = ["S"]
 

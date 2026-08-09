@@ -36,7 +36,7 @@ SECTOR_QUERY = {
 }
 
 
-def synthetic_industry_features(years=range(2015, 2025)):
+def synthetic_industry_features(years=range(2015, 2025)):  # noqa: B008 (immutable range default)
     """Fallback synthetic that respects sector priors, for offline development"""
     np.random.seed(42)
     rows = []
@@ -45,32 +45,19 @@ def synthetic_industry_features(years=range(2015, 2025)):
         for year in years:
             # Create correlated features
             news_vol = base_vol + 0.3 * np.sin(year * 0.5) + np.random.normal(0, 0.2)
-            tone = np.random.normal(0, 1.5) + (
-                0.2 if sector == "Technology" else -0.1 if sector == "Energy" else 0
-            )
+            tone = np.random.normal(0, 1.5) + (0.2 if sector == "Technology" else -0.1 if sector == "Energy" else 0)
             neg = max(
                 0,
-                int(
-                    np.random.poisson(
-                        3 + (2 if sector in ["Energy", "Materials"] else 0)
-                    )
-                ),
+                int(np.random.poisson(3 + (2 if sector in ["Energy", "Materials"] else 0))),
             )
             pos = int(np.random.poisson(4 + (1 if sector == "Technology" else 0)))
-            reg = int(
-                np.random.poisson(
-                    2
-                    + (2 if sector in ["Financials", "Healthcare", "Technology"] else 0)
-                )
-            )
+            reg = int(np.random.poisson(2 + (2 if sector in ["Financials", "Healthcare", "Technology"] else 0)))
             ma = int(np.random.poisson(3))
             supply = int(np.random.poisson(2 + (3 if year >= 2020 else 0)))
             # Derived
             earn_breadth = np.random.normal(0.5, 0.15)
             mom_disp = np.random.uniform(0.1, 0.4)
-            vol_spike = np.random.uniform(0.8, 1.5) + (
-                0.3 if year in [2020, 2022] else 0
-            )
+            vol_spike = np.random.uniform(0.8, 1.5) + (0.3 if year in [2020, 2022] else 0)
             rows.append(
                 {
                     "sector": sector,

@@ -28,14 +28,10 @@ def load_universe():
                 seen.add(t)
                 uniq.append(t)
         return uniq
-    except:
+    except Exception:
         # fallback to market dir listing
         mdir = ROOT / "pipeline" / "cache" / "market"
-        return (
-            [p.stem.split("_")[0] for p in mdir.glob("*.json")]
-            if mdir.exists()
-            else ["AAPL"]
-        )
+        return [p.stem.split("_")[0] for p in mdir.glob("*.json")] if mdir.exists() else ["AAPL"]
 
 
 def fetch_one(ticker, period="10y", force=False):
@@ -45,7 +41,7 @@ def fetch_one(ticker, period="10y", force=False):
             j = json.loads(out_file.read_text())
             if "history" in j and len(j["history"]) > 500:
                 return j
-        except:
+        except Exception:
             pass
     try:
         import pandas as pd
@@ -77,9 +73,7 @@ def fetch_one(ticker, period="10y", force=False):
                     "high": float(row["High"]),
                     "low": float(row["Low"]),
                     "close": float(row["Close"]),
-                    "volume": float(row["Volume"])
-                    if not pd.isna(row["Volume"])
-                    else 0.0,
+                    "volume": float(row["Volume"]) if not pd.isna(row["Volume"]) else 0.0,
                 }
             )
         # compute 52w high rolling etc later per FY, but precompute some summary

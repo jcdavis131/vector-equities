@@ -57,11 +57,7 @@ def gen_company_profile(n_companies=1000, n_years=10, start_year=2015, continuit
     for c in range(n_companies):
         sec = company_sectors[c]
         arch = company_arch[c]
-        base = (
-            np.random.normal(0, 0.8, size=D)
-            + sector_bias[sec] * 0.9
-            + archetype_bias[arch] * 0.8
-        )
+        base = np.random.normal(0, 0.8, size=D) + sector_bias[sec] * 0.9 + archetype_bias[arch] * 0.8
         # make some features more sector-predictive: increase sector bias for valuation/market
         company_bases[c] = base
 
@@ -74,15 +70,8 @@ def gen_company_profile(n_companies=1000, n_years=10, start_year=2015, continuit
         for y in range(n_years):
             fy = start_year + y
             macro = np.random.normal(0, 0.12, size=D)
-            noise = np.random.normal(
-                0, 0.45, size=D
-            )  # higher to reduce recall from 1.0 to ~0.9
-            curr = (
-                continuity * prev
-                + (1 - continuity) * company_bases[c]
-                + noise
-                + macro * 0.4
-            )
+            noise = np.random.normal(0, 0.45, size=D)  # higher to reduce recall from 1.0 to ~0.9
+            curr = continuity * prev + (1 - continuity) * company_bases[c] + noise + macro * 0.4
             # Add momentum: REV_YOY correlated with prior
             # keep prev's game profile partially
             Z_raw[idx] = curr
@@ -159,11 +148,10 @@ def save_bundle(bundle, out_path: Path):
         season=bundle["fiscal_years"],
         archetype=bundle["archetypes"],
     )
-    (out_path / "feature_manifest.json").write_text(
-        json.dumps(bundle["feature_manifest"], indent=2)
-    )
+    (out_path / "feature_manifest.json").write_text(json.dumps(bundle["feature_manifest"], indent=2))
     print(
-        f"Saved {len(bundle['Z'])} rows x {bundle['Z'].shape[1]} feats continuity={bundle['feature_manifest']['continuity']} to {out_path}"
+        f"Saved {len(bundle['Z'])} rows x {bundle['Z'].shape[1]} feats "
+        f"continuity={bundle['feature_manifest']['continuity']} to {out_path}"
     )
 
 
