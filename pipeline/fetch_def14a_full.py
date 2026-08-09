@@ -1,7 +1,6 @@
 """Fetch DEF14A HTML for top N using extended submissions (all years 2015-2025)"""
 
 import json
-import os
 import sys
 import time
 from pathlib import Path
@@ -58,12 +57,12 @@ def robust_fetch_html(url, out_path):
                     url,
                 ]
                 subprocess.run(cmd, timeout=95)
-                if os.path.exists(tmp) and os.path.getsize(tmp) > 5000:
-                    out_path.write_bytes(open(tmp, "rb").read())
+                if Path(tmp).exists() and Path(tmp).stat().st_size > 5000:
+                    out_path.write_bytes(Path(tmp).open("rb").read())
                     print(f"  curl OK {out_path.name} {out_path.stat().st_size}")
                     time.sleep(0.25)
                     return True
-            except:
+            except Exception:
                 pass
             time.sleep(1 + attempt)
     return False
@@ -85,13 +84,13 @@ def collect_def14a_entries(cik_pad):
             to_y = int(f.get("filingTo", "2025")[:4])
             if to_y < 2015 or from_y > 2025:
                 continue
-        except:
+        except Exception:
             pass
         extra_path = CACHE_SUB / f"{cik_pad}_{name}"
         if extra_path.exists():
             try:
                 chunks.append(json.loads(extra_path.read_text()))
-            except:
+            except Exception:
                 pass
     entries = []
     for chunk in chunks:
@@ -107,7 +106,7 @@ def collect_def14a_entries(cik_pad):
                 y = int(d[:4]) if d else 0
                 if y < 2015 or y > 2025:
                     continue
-            except:
+            except Exception:
                 continue
             entries.append(
                 (

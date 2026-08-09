@@ -1,50 +1,79 @@
-# Vector Equities — Company Embedding Explorer
+# Vector Equities
 
-Live: [equities.dumbmodel.com](https://equities.dumbmodel.com) · GitHub: [jcdavis131/vector-equities](https://github.com/jcdavis131/vector-equities)
+![CI](https://github.com/jcdavis131/vector-equities/actions/workflows/ci.yml/badge.svg)
+![Python 3.11](https://img.shields.io/badge/python-3.11-blue)
 
-> Solo personal project, no connection to employer, built with public/free-tier only.
+A daily equities "chimera" puzzle over 4,831 company-FYs (500 tickers, 2015-2024) embedding space: guess the ticker blend behind each day's composite.
 
-An interactive PCA map of public companies. Each company fiscal-year is embedded by a multi-tower neural net — 17 residual towers over statement families (income, balance, cashflow, growth, profitability, leverage, efficiency, per-share, market, valuation, management, ownership, disclosure, sector, macro, form, bridge) fused by a 4-layer transformer into a 64-dim L2-normalized vector — and cosine distance in that space is the site's notion of business similarity. Static site (plain HTML/JS/canvas, no framework), hosted on Vercel.
+Live at https://equities.dumbmodel.com
 
-The served dataset currently covers 4831 company-FYs across 500 tickers (2015–2024); exact counts live in `assets/real_data.json` and `assets/eval_sector_coherence.json` and change as the pipeline reruns.
+> Solo personal project, no connection to employer, built with public/free-tier only (free data pipeline, ONNX optional, static Vercel).
 
-- **Data:** SEC EDGAR XBRL CompanyFacts (2015–2024) + market data + 10-K text chunks (Item 1/1A/7, tables included)
-- **Model:** 17× ResidualTower → transformer fusion (d_model 128, 4 layers, 4 heads) → 64-d, plus a 384-d MiniLM wiki-text tower
-- **Training:** same-ticker adjacent-FY contrastive (InfoNCE) with sector hard negatives
-- **Frontend:** `index.html` loads `assets/real_data.json` (points with xyz, 12 skill grades, embeddings) and per-ticker 10-K chunk files
+> **Picking up in-progress work?** Start at [`docs/HANDOFF.md`](docs/HANDOFF.md) — current state, training gates, verification, and open follow-ups.
 
-## Quickstart
+## The embedding
+
+4,831 company-FYs across 500 tickers (2015–2024) from SEC EDGAR XBRL CompanyFacts + market + 10-K text chunks (Item 1/1A/7, tables included). 17 towers over statement families (income, balance, cashflow, growth, profitability, leverage, efficiency, per-share, market, valuation, management, ownership, disclosure, sector, macro, form, bridge) fused by a 4-layer transformer (d_model 128, 4 heads, 4 layers) into 64-d L2-normalized company vector, per-FY z-scored + winsor ±4.
+
+- **Architecture:** 17 × ResidualTower `cat([x·m,m])→96h→24d` skip → transformer fusion → 64-d, plus 384-d MiniLM wiki-text tower.
+- **Skills:** 12 Financial Crafts (Profitability, Growth, Moat, Cash Conversion, Capital Allocation, Balance Health, Efficiency, Valuation Discipline, Momentum, Management Quality, Yield, Disclosure) percentile per FY.
+- **Archetypes:** 8 k-means (Compounder, Cash_Cow, Turnaround, HyperGrowth_SaaS, Heavy_Industrial, Bank_Capital_Heavy, Moonshot_Bio, Serial_Acquirer).
+- **Eval (see `assets/eval_sector_coherence.json`, `assets/eval_scoreboard.json`):**
+  - knn sector purity@10 = 0.7057 (baseline random 0.1117, lift 6.32×, n=4831)
+  - cross-ticker purity@10 = 0.4013 (baseline 0.1117, lift 3.59×, same-ticker excluded)
+  - silhouette cosine = -0.0034 vs perm -0.0204
+  - forward IC>0 gate (IC_rank 3m 0.0064, 12m 0.0062, triple-barrier hit 21.9%)
+  - composite = sector coherence + next-profile R² + market directional
+
+Shipped artifacts (`assets/real_data.json`, `assets/eval_sector_coherence.json`, `assets/real_data.json` points xyz + 12 grades) are committed so site runs static with optional client-side inference.
+
+## The site
+
+Plain HTML/JS/Canvas, no framework or game engine, PWA-capable (`sw.js`, `offline.html`). Pages: daily game (guess the ticker), 3D embedding map, company dossiers (10-K chunks), trends, sector explorer, model lab (`model.html`), methods. `index.html` loads `assets/real_data.json` + per-ticker 10-K chunk files. Cards localStorage-only, optional telemetry `api/telemetry.js` event-name-only.
+
+## Data pipeline
 
 ```bash
-python3 pipeline/fetch_sec_summary.py --limit 300
+python3 pipeline/fetch_sec_summary.py --limit 300      # SEC EDGAR CompanyFacts (free, User-Agent)
 python3 pipeline/build_real_from_summary.py --limit 300
 python3 pipeline/build_skills.py && python3 pipeline/build_archetypes.py
 python3 pipeline/train_mtnn.py --epochs 60 --dim 64 --fusion transformer --d-model 128
-python3 pipeline/regen_assets.py
+python3 pipeline/regen_assets.py                        # writes assets/real_data.json + eval
 ```
 
-## Architecture
+Sources: SEC EDGAR XBRL (free, no key, User-Agent), yfinance market, DEF 14A scaffolds. Every response cached under `pipeline/data/`; `--offline` rebuilds from cache. Gated by `tests/test_eval_sector_coherence.py` (>0.65 purity) + `tests/test_no_ticker_leakage.py`.
 
-- **Towers:** 17 families, `cat([x·m, m]) → 96h → 24d` with skip connections
-- **Fusion:** attention over towers + FY embedding + CLS token → 64-d L2-normalized
-- **Heads:** 8 archetypes, 11 GICS sectors, 14-d profile, next-year profile, 12 skill grades, valuation, market
-- **Skills:** Profitability, Growth, Moat, Cash Conversion, Capital Allocation, Balance Health, Efficiency, Valuation Discipline, Momentum, Management Quality, Yield, Disclosure
+Three dormant data tracks (like hoops) — each cache-ready and gated on committed fixture until residential fetch:
 
-## Evaluation
+- **Neo parser** — DEF 14A management compensation → ownership tower.
 
-`assets/eval_sector_coherence.json` measures label coherence of the published embedding geometry:
+## Training
 
-- **k-NN sector purity@10:** 0.7057 (baseline random 0.1117) — **lift 6.32×**, n=4831 rows / 500 tickers / 11 sectors, 64-d `equities_mtnn_v_rebuild_d64_transformer`
-- **cross-ticker purity@10** (same-ticker neighbors excluded to remove trivial same-ticker inflation from contrastive training): 0.4013 (baseline 0.1117) — lift 3.59×
-- **silhouette cosine:** -0.0034 vs label-permutation -0.0204 (range [-1,1], sector clusters overlap but separate above chance)
-- **forward IC (n=233 trades, isotonic-calibrated):** 1m 0.0051 / 3m 0.0064 / 6m 0.007 / 12m 0.0062, triple-barrier +10% before -7% 63d 0.2189 — gate IC>0 passed (see `assets/eval_forward.json`)
+`train_mtnn.py` drives MTNN training (torch). Training: AdamW, OneCycle 10% warmup, InfoNCE same-ticker adjacent-FY + same-sector hard-negative boost 0.3, masked MSE, grad clip, best-checkpoint on composite (0.5*sector_acc + 0.5*purity). Promotion gated on sector purity >0.65 + cross-ticker >0.35 + forward IC>0 — transparent 14-d contract stays until candidate beats it. Research notes `docs/ARCHITECTURE.md`, `docs/TOWER_V6_DESIGN.md`.
 
-Superseded placeholder: README previously reported 0.174 (cross-ticker 0.167) lift 1.5–1.6× from an older matrix with S&P 500 expansion placeholder rows — see `assets/eval_sector_coherence.json` provenance: diagnostic runs show model-derived and placeholder subsets score similarly, but the served 2026-08-01 matrix is 500 tickers v6 real and scores 0.7057/0.4013. That older 0.174 is kept as a provenance note, not the shipped metric.
+### v6 transformer (shipped 2026-08-05, 500 tickers real)
 
-Regenerate with `python pipeline/eval_sector_coherence.py`; gated by `tests/test_eval_sector_coherence.py` (>0.65 purity threshold) and `tests/test_no_ticker_leakage.py` (FY embedding 12-d excluded from tower inputs, coverage scalar prevents zero-impute bias, year_norm excluded from X). `assets/eval_forward.json` (n=233 trades, isotonic-calibrated `trades_final_ranked_v6.csv`): IC rank 1m 0.0051 / 3m 0.0064 / 6m 0.007 / 12m 0.0062, triple-barrier 0.2189, gate IC>0 passed via `pipeline/eval_forward.py`. This is an engineering metric of the embedding geometry only — not investment advice, and not predictive of returns.
+- 17 towers → CLS + FY embedding 12-d + 17 tokens = 19 tokens transformer 128d 4L 4H → CLS 128→64 L2, shared `towers.py` ResidualTower.
+- Losses: InfoNCE hybrid ticker 0.65 sector 0.35 + CORAL cov λ0.3
+- Shipped eval: purity@10 0.7057, cross-ticker 0.4013, composite 0.65-0.70 range.
+
+## Growth loop
+
+`pipeline/update_dataset.py` growth loop: fetch -> rebuild -> gate -> ledger. Difficulty calibration is embedding-space guessability model targeting 40-80% expected-solve band (model estimate until telemetry qualifies it).
+
+## Running locally
+
+```bash
+python -m http.server 8000   # static, open http://localhost:8000
+python -m pytest pipeline/ -q   # gates (needs dev extras)
+```
+
+## License
+
+MIT. Solo personal project, no connection to employer, built with public/free-tier only.
 
 ## Deploy
 
-Vercel static import; domains `equities.dumbmodel.com` and `equities.jcamd.com` (redirect via `vercel.json`).
+Vercel static import; domains `equities.dumbmodel.com` and `equities.jcamd.com` redirect via `vercel.json` (cleanUrls true).
 
 MIT. Solo personal project, no connection to employer, built with public/free-tier only.

@@ -44,9 +44,7 @@ def load_bundle(path=None):
     tickers = npz["ticker"].astype(str)
     names = npz["name"].astype(str) if "name" in npz else tickers
     fiscal_years = npz["fiscal_year"].astype(str)
-    sectors = (
-        npz["sector"].astype(str) if "sector" in npz else np.array(["Unknown"] * len(Z))
-    )
+    sectors = npz["sector"].astype(str) if "sector" in npz else np.array(["Unknown"] * len(Z))
     # forward labels if exist
     fwd = {}
     for k in [
@@ -63,9 +61,7 @@ def load_bundle(path=None):
     ]:
         if k in npz:
             fwd[k] = npz[k]
-    print(
-        f"Loaded bundle {npz_path} N={len(Z)} D={Z.shape[1]} fwd keys={list(fwd.keys())}"
-    )
+    print(f"Loaded bundle {npz_path} N={len(Z)} D={Z.shape[1]} fwd keys={list(fwd.keys())}")
     return (
         Z,
         mask,
@@ -88,9 +84,7 @@ def family_slices(manifest):
     return dict(fams), manifest["features"]
 
 
-def build_sequences(
-    Z, mask, Z_raw, tickers, fiscal_years, sectors, manifest, fwd, max_seq_len=10
-):
+def build_sequences(Z, mask, Z_raw, tickers, fiscal_years, sectors, manifest, fwd, max_seq_len=10):
     feats = manifest["features"]
     feat_to_idx = {f: i for i, f in enumerate(feats)}
     # time enc sources
@@ -105,7 +99,7 @@ def build_sequences(
     for i, (t, s) in enumerate(zip(tickers, fiscal_years, strict=False)):
         try:
             fy = int(str(s)[:4])
-        except:
+        except Exception:
             fy = 0
         by_ticker[t].append((fy, i))
     sequences = []
@@ -136,9 +130,7 @@ def build_sequences(
         sequences.append(seq)
     # sort by ticker for determinism
     sequences = sorted(sequences, key=lambda x: x["ticker"])
-    print(
-        f"Built {len(sequences)} ticker sequences avg len {np.mean([s['valid_len'] for s in sequences]):.2f}"
-    )
+    print(f"Built {len(sequences)} ticker sequences avg len {np.mean([s['valid_len'] for s in sequences]):.2f}")
     return (
         sequences,
         feat_to_idx,
@@ -170,9 +162,7 @@ def get_time_enc_for_seq(seq, Z_raw, fwd, feat_idx_map):
     ceo_change_seq = np.zeros((max_len,), dtype=np.float32)
     time_since_ceo_seq = np.zeros((max_len,), dtype=np.float32)
 
-    for pos, (fy, orig_idx) in enumerate(
-        zip(seq["fiscal_years"], seq["indices"], strict=False)
-    ):
+    for pos, (fy, orig_idx) in enumerate(zip(seq["fiscal_years"], seq["indices"], strict=False)):
         if pos >= max_len:
             break
         year_norm = (fy - 2015) / 9.0
@@ -185,11 +175,11 @@ def get_time_enc_for_seq(seq, Z_raw, fwd, feat_idx_map):
             if j is None:
                 return 0.0
             try:
-                v = Z_raw[orig_idx, j]
+                v = Z_raw[orig_idx, j]  # noqa: B023 (orig_idx used only within same iteration)
                 if np.isnan(v) or np.isinf(v):
                     return 0.0
                 return float(v)
-            except:
+            except Exception:
                 return 0.0
 
         ceo_tenure = raw_feat("CEO_TENURE")
@@ -203,12 +193,12 @@ def get_time_enc_for_seq(seq, Z_raw, fwd, feat_idx_map):
         if "ceo_change_flag" in fwd:
             try:
                 ceo_change = float(fwd["ceo_change_flag"][orig_idx])
-            except:
+            except Exception:
                 pass
         if "time_since_ceo" in fwd:
             try:
                 time_since = float(fwd["time_since_ceo"][orig_idx])
-            except:
+            except Exception:
                 pass
         # normalize
         ceo_tenure_norm = np.clip(ceo_tenure / 20.0, 0, 1)
@@ -257,19 +247,17 @@ def get_time_enc_for_seq(seq, Z_raw, fwd, feat_idx_map):
             if key_arr in fwd:
                 try:
                     v = fwd[key_arr][orig_idx]
-                    if isinstance(v, (float, np.floating)) and (
-                        np.isnan(v) or np.isinf(v)
-                    ):
+                    if isinstance(v, float | np.floating) and (np.isnan(v) or np.isinf(v)):
                         pass
                     else:
                         out_arr[pos] = float(v)
-                except:
+                except Exception:
                     pass
         if "triple_barrier" in fwd:
             try:
                 tb = int(fwd["triple_barrier"][orig_idx])
                 triple_seq[pos] = tb
-            except:
+            except Exception:
                 pass
         ceo_change_seq[pos] = ceo_change
         time_since_ceo_seq[pos] = time_since
@@ -299,12 +287,8 @@ def collate_batch(batch_seqs, Z, mask, Z_raw, fams, feat_list, max_len=10):
     # family dims
     fam_dims = {fam: len(cols) for fam, cols in fams.items()}
     # init per family
-    xs_seq = {
-        fam: np.zeros((B, max_len, fam_dims[fam]), dtype=np.float32) for fam in fams
-    }
-    ms_seq = {
-        fam: np.zeros((B, max_len, fam_dims[fam]), dtype=np.float32) for fam in fams
-    }
+    xs_seq = {fam: np.zeros((B, max_len, fam_dims[fam]), dtype=np.float32) for fam in fams}
+    ms_seq = {fam: np.zeros((B, max_len, fam_dims[fam]), dtype=np.float32) for fam in fams}
     time_enc_seq = np.zeros((B, max_len, 8), dtype=np.float32)
     year_norm_seq = np.zeros((B, max_len, 1), dtype=np.float32)
     valid_mask = np.zeros((B, max_len), dtype=bool)
@@ -330,7 +314,8 @@ def collate_batch(batch_seqs, Z, mask, Z_raw, fams, feat_list, max_len=10):
             for fam, cols in fams.items():
                 xs_seq[fam][b, pos, :] = Z[orig_idx, cols]
                 ms_seq[fam][b, pos, :] = mask[orig_idx, cols]
-        # time enc is built via helper that needs Z_raw and fwd – we call outside? For simplicity recompute inside using global
+        # time enc is built via helper that needs Z_raw and fwd - we call outside? For simplicity recompute inside
+        # using global
         # placeholder will be overwritten by caller if needed
     return {
         "xs_seq": xs_seq,
@@ -348,13 +333,9 @@ def collate_batch(batch_seqs, Z, mask, Z_raw, fams, feat_list, max_len=10):
 
 # For standalone test
 if __name__ == "__main__":
-    Z, mask, Z_raw, tickers, names, fiscal_years, sectors, manifest, fwd, path = (
-        load_bundle()
-    )
+    Z, mask, Z_raw, tickers, names, fiscal_years, sectors, manifest, fwd, path = load_bundle()
     fams, feat_list = family_slices(manifest)
-    seqs, feat_to_idx, extra_idx = build_sequences(
-        Z, mask, Z_raw, tickers, fiscal_years, sectors, manifest, fwd
-    )
+    seqs, feat_to_idx, extra_idx = build_sequences(Z, mask, Z_raw, tickers, fiscal_years, sectors, manifest, fwd)
     print(f"Example seq {seqs[0]}")
     # test time enc for first
     feat_map = {f: i for i, f in enumerate(feat_list)}

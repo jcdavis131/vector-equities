@@ -42,7 +42,7 @@ def parse_proxy_text(text: str) -> dict:
         m = re.search(r"Age\s*(\d{2})", text)
         if m:
             out["CEO_AGE"] = float(m.group(1))
-    except:
+    except Exception:
         pass
     return out
 

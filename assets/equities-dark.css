@@ -1,0 +1,33 @@
+/* equities-dark.css — adapt hoops paper/ink shell to equities dark but keep neobrutalist tokens */
+:root{
+  --paper:#0b0e14;
+  --ink:#e6e8ef;
+  --paper-ink:#e6e8ef;
+  --bg:#0b0e14;
+  --panel:#151a24;
+  --grid:#1e2433;
+  --muted:#8a90a6;
+  --accent:#6ad345;
+  --blue:#6ea8ff;
+  --yellow:#f0e442;
+  --red:#ff6b6b;
+  --orange:#D55E00;
+}
+html,body{background:var(--bg);color:var(--ink)}
+.site-nav{background:var(--panel);border-bottom:2.5px solid var(--grid);color:var(--ink)}
+.site-nav__brand{color:var(--ink)}
+.site-nav__link{color:var(--muted)}
+.site-nav__link.is-active{color:var(--ink);border-color:var(--ink);background:#0f131c;box-shadow:1.5px 1.5px 0 var(--ink)}
+.site-footer{background:var(--panel);color:var(--ink);border-top:2.5px solid var(--grid)}
+.card{background:var(--panel);border:2.2px solid var(--grid);box-shadow:4px 4px 0 #0a0c12;color:var(--ink)}
+.btn{border-color:var(--ink);box-shadow:3px 3px 0 var(--ink)}
+.pill{background:var(--panel);border-color:var(--grid);color:var(--ink)}
+.small-mono{color:var(--muted)}
+/* map-wrap dark */
+#map-wrap{border-color:var(--grid);box-shadow:6px 6px 0 #0a0c12;background:#080A0F}
+#hover-tip{background:#151a24;color:var(--ink);border-color:var(--grid)}
+/* hero deck */
+.deck{color:var(--muted)}
+.deck b{color:var(--ink)}
+/* trading card void equivalents */
+.trading-card-void-dark{background:#151a24}

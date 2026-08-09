@@ -19,9 +19,7 @@ DATA_DIR = Path("pipeline/data")
 EXT_DIR = DATA_DIR / "external"
 
 # Load v5 bundle
-Z, mask, Z_raw, tickers, names, fy_arr, sectors_arr, manifest_v5, fwd, path = (
-    load_bundle()
-)
+Z, mask, Z_raw, tickers, names, fy_arr, sectors_arr, manifest_v5, fwd, path = load_bundle()
 # But load_bundle now prefers v6 — force v5 load
 npz_v5 = np.load(DATA_DIR / "train_matrix_v5.npz", allow_pickle=True)
 Z_v5 = npz_v5["Z"]
@@ -39,11 +37,7 @@ def load_gpr():
     df = pd.read_excel(path, engine="xlrd")
     df["month_dt"] = pd.to_datetime(df["month"])
     df["year"] = df["month_dt"].dt.year
-    yearly = (
-        df.groupby("year")
-        .agg(GPR=("GPR", "mean"), GPRT=("GPRT", "mean"), GPRA=("GPRA", "mean"))
-        .reset_index()
-    )
+    yearly = df.groupby("year").agg(GPR=("GPR", "mean"), GPRT=("GPRT", "mean"), GPRA=("GPRA", "mean")).reset_index()
     yearly["GPR_YOY"] = yearly["GPR"].pct_change()
     yearly["GPRA_YOY"] = yearly["GPRA"].pct_change()
     return yearly
@@ -78,12 +72,7 @@ def parse_commodity_file(fname):
         close_col = df.columns[1]
         df[close_col] = pd.to_numeric(df[close_col], errors="coerce")
         df["year"] = df["Date"].dt.year
-        yearly = (
-            df.groupby("year")[close_col]
-            .mean()
-            .reset_index()
-            .rename(columns={close_col: "avg"})
-        )
+        yearly = df.groupby("year")[close_col].mean().reset_index().rename(columns={close_col: "avg"})
         yearly["yoy"] = yearly["avg"].pct_change()
         yearly["ticker"] = fname
         return yearly
@@ -109,11 +98,7 @@ for f in [
     yt = parse_commodity_file(f)
     if yt is not None:
         key = (
-            f.replace("_monthly.csv", "")
-            .replace("_eq_F", "")
-            .replace("_eq_X", "")
-            .replace(".NYB", "")
-            .replace("_", "")
+            f.replace("_monthly.csv", "").replace("_eq_F", "").replace("_eq_X", "").replace(".NYB", "").replace("_", "")
         )
         # normalize keys: CL, BZ, HG, SLX, LBS, NG, DXY, CNY, BDRY, GC
         kmap = {
@@ -191,9 +176,7 @@ for _, row in gpr_yearly.iterrows():
     y = int(row["year"])
     gpr_dict[y] = {
         "GPR": float(row["GPR"]) if not pd.isna(row["GPR"]) else 0,
-        "GPR_YOY": float(row["GPR_YOY"])
-        if "GPR_YOY" in row and not pd.isna(row["GPR_YOY"])
-        else 0,
+        "GPR_YOY": float(row["GPR_YOY"]) if "GPR_YOY" in row and not pd.isna(row["GPR_YOY"]) else 0,
         "GPRA": float(row["GPRA"]) if "GPRA" in row and not pd.isna(row["GPRA"]) else 0,
     }
 # Fill missing years with interpolation or 0
@@ -202,12 +185,8 @@ for _, row in epu_yearly.iterrows():
     y = int(row["year"])
     epu_dict[y] = {
         "EPU_US": float(row["EPU_US"]) if not pd.isna(row["EPU_US"]) else 0,
-        "EPU_YOY": float(row["EPU_YOY"])
-        if "EPU_YOY" in row and not pd.isna(row["EPU_YOY"])
-        else 0,
-        "EPU_STD": float(row["EPU_US_STD"])
-        if "EPU_US_STD" in row and not pd.isna(row["EPU_US_STD"])
-        else 0,
+        "EPU_YOY": float(row["EPU_YOY"]) if "EPU_YOY" in row and not pd.isna(row["EPU_YOY"]) else 0,
+        "EPU_STD": float(row["EPU_US_STD"]) if "EPU_US_STD" in row and not pd.isna(row["EPU_US_STD"]) else 0,
     }
 
 comm_dict = {}
@@ -220,9 +199,7 @@ for k, yt in commodities.items():
         y = int(row["year"])
         if y in years:
             comm_dict[y][k] = float(row["avg"]) if not pd.isna(row["avg"]) else 0
-            comm_dict[y][k + "_YOY"] = (
-                float(row["yoy"]) if not pd.isna(row["yoy"]) else 0
-            )
+            comm_dict[y][k + "_YOY"] = float(row["yoy"]) if not pd.isna(row["yoy"]) else 0
 
 print("\nCommodity dict sample 2022")
 print(comm_dict[2022])
@@ -370,10 +347,7 @@ for i in range(N):
     )
     ind_pos = max(
         0,
-        4
-        + (1 if sector == "Technology" else 0)
-        + np.random.normal(0, 0.5)
-        - 0.5 * epu.get("EPU_YOY", 0),
+        4 + (1 if sector == "Technology" else 0) + np.random.normal(0, 0.5) - 0.5 * epu.get("EPU_YOY", 0),
     )
     ind_reg = (
         2
@@ -381,49 +355,21 @@ for i in range(N):
         + 0.5 * epu.get("EPU_YOY", 0)
         + np.random.normal(0, 0.4)
     )
-    ind_ma = (
-        3
-        + np.random.normal(0, 0.5)
-        - 0.3 * epu.get("EPU_YOY", 0)
-        + (0.5 if fy in [2021, 2022] else 0)
-    )
-    ind_supply = (
-        2
-        + (3 if fy >= 2020 else 0)
-        + 0.8 * bdry_yoy
-        + 0.4 * gpr.get("GPR_YOY", 0)
-        + np.random.normal(0, 0.4)
-    )
-    ind_earn = (
-        0.5 + 0.1 * oil_yoy + np.random.normal(0, 0.1) + (-0.1 if fy == 2020 else 0)
-    )
+    ind_ma = 3 + np.random.normal(0, 0.5) - 0.3 * epu.get("EPU_YOY", 0) + (0.5 if fy in [2021, 2022] else 0)
+    ind_supply = 2 + (3 if fy >= 2020 else 0) + 0.8 * bdry_yoy + 0.4 * gpr.get("GPR_YOY", 0) + np.random.normal(0, 0.4)
+    ind_earn = 0.5 + 0.1 * oil_yoy + np.random.normal(0, 0.1) + (-0.1 if fy == 2020 else 0)
     ind_disp = 0.25 + 0.1 * abs(oil_yoy) + np.random.normal(0, 0.05)
     ind_vol_spike = (
-        1.0
-        + (0.5 if fy in [2020, 2022] else 0)
-        + 0.3 * abs(gpr.get("GPR_YOY", 0))
-        + np.random.normal(0, 0.1)
+        1.0 + (0.5 if fy in [2020, 2022] else 0) + 0.3 * abs(gpr.get("GPR_YOY", 0)) + np.random.normal(0, 0.1)
     )
 
     # Political raw
-    elec_us = (
-        1.0 if fy in [2016, 2020, 2024] else 0.7 if fy in [2015, 2019, 2023] else 0.2
-    )
+    elec_us = 1.0 if fy in [2016, 2020, 2024] else 0.7 if fy in [2015, 2019, 2023] else 0.2
     elec_global = 0.5 + (0.3 if fy % 2 == 0 else 0) + 0.1 * epu.get("EPU_YOY", 0)
-    tariff_risk = (
-        50
-        + (100 if fy in [2018, 2019, 2024, 2025] else 0)
-        + 50 * usdcny_yoy
-        + 20 * bdry_yoy
-    )
+    tariff_risk = 50 + (100 if fy in [2018, 2019, 2024, 2025] else 0) + 50 * usdcny_yoy + 20 * bdry_yoy
     wgi = 0.5 + np.random.normal(0, 0.1) - 0.1 * gpr.get("GPR_YOY", 0)
     gov_shutdown = 1.0 if fy in [2018, 2023] else 0.2
-    rate_vol = (
-        0.5
-        + (1.5 if fy in [2022, 2023] else 0.2)
-        + 0.5 * abs(dxy_yoy)
-        + 0.3 * abs(epu.get("EPU_STD", 20) / 100)
-    )
+    rate_vol = 0.5 + (1.5 if fy in [2022, 2023] else 0.2) + 0.5 * abs(dxy_yoy) + 0.3 * abs(epu.get("EPU_STD", 20) / 100)
 
     # Store
     idx = 0
@@ -538,5 +484,6 @@ for y in range(2015, 2025):
     sub = df_tower[df_tower.fy == str(y)]
     if len(sub) > 0:
         print(
-            f"FY {y} GPR {sub['GPR_GLOBAL_AVG_FY'].mean():.2f} EPU {sub['EPU_US_AVG_FY'].mean():.2f} OIL_YOY {sub['OIL_WTI_YOY'].mean():.2f} COPPER {sub['COPPER_YOY'].mean():.2f} BDRY {sub['BDRY_YOY'].mean():.2f}"
+            f"FY {y} GPR {sub['GPR_GLOBAL_AVG_FY'].mean():.2f} EPU {sub['EPU_US_AVG_FY'].mean():.2f} OIL_YOY "
+            f"{sub['OIL_WTI_YOY'].mean():.2f} COPPER {sub['COPPER_YOY'].mean():.2f} BDRY {sub['BDRY_YOY'].mean():.2f}"
         )

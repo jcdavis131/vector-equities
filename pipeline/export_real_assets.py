@@ -38,9 +38,9 @@ def main() -> int:
     skill_pred = d["skill_pred"].astype(np.float32)
     skill_keys = [str(k) for k in d["skill_keys"]]
 
-    with open(DATA_DIR / "feature_manifest.json") as f:
+    with (DATA_DIR / "feature_manifest.json").open() as f:
         manifest = json.load(f)
-    with open(DATA_DIR / "mtnn_report.json") as f:
+    with (DATA_DIR / "mtnn_report.json").open() as f:
         report = json.load(f)
 
     norms = np.linalg.norm(E, axis=1)
@@ -54,25 +54,33 @@ def main() -> int:
     # Canonical order/naming from build_archetypes.py -- must match exactly,
     # cluster ids are assigned against this list at build time.
     archetype_names = [
-        "Compounder", "Cash_Cow", "Turnaround", "HyperGrowth_SaaS",
-        "Heavy_Industrial", "Bank_Capital_Heavy", "Moonshot_Bio", "Serial_Acquirer",
+        "Compounder",
+        "Cash_Cow",
+        "Turnaround",
+        "HyperGrowth_SaaS",
+        "Heavy_Industrial",
+        "Bank_Capital_Heavy",
+        "Moonshot_Bio",
+        "Serial_Acquirer",
     ]
 
     points = []
     for i in range(len(tickers)):
         arch_id = int(clusters[i]) if not np.isnan(clusters[i]) else 0
-        points.append({
-            "ticker": str(tickers[i]),
-            "name": str(names[i]),
-            "year": str(fiscal_years[i]),
-            "sector": str(sectors[i]),
-            "archetype": archetype_names[arch_id % len(archetype_names)],
-            "x": round(float(xyz[i, 0]), 5),
-            "y": round(float(xyz[i, 1]), 5),
-            "z": round(float(xyz[i, 2]), 5),
-            "skills": [round(float(s), 4) for s in skill_pred[i]],
-            "emb": [round(float(v), 5) for v in E[i]],
-        })
+        points.append(
+            {
+                "ticker": str(tickers[i]),
+                "name": str(names[i]),
+                "year": str(fiscal_years[i]),
+                "sector": str(sectors[i]),
+                "archetype": archetype_names[arch_id % len(archetype_names)],
+                "x": round(float(xyz[i, 0]), 5),
+                "y": round(float(xyz[i, 1]), 5),
+                "z": round(float(xyz[i, 2]), 5),
+                "skills": [round(float(s), 4) for s in skill_pred[i]],
+                "emb": [round(float(v), 5) for v in E[i]],
+            }
+        )
     points.sort(key=lambda p: (p["ticker"], p["year"]))
 
     provenance = {
@@ -88,7 +96,8 @@ def main() -> int:
         "fields": {
             "embeddings": {
                 "classification": "REAL",
-                "detail": "Model forward-pass 64-d embeddings from train_mtnn.py, all rows real SEC/market data, no placeholder rows.",
+                "detail": "Model forward-pass 64-d embeddings from train_mtnn.py, all rows real SEC/market data, no "
+                "placeholder rows.",
             },
             "skills": {
                 "classification": "REAL",
@@ -107,7 +116,7 @@ def main() -> int:
         "fusion": "transformer",
         "rows": len(points),
         "tickers": len(set(tickers.tolist())),
-        "years": sorted(set(str(y) for y in fiscal_years)),
+        "years": sorted({str(y) for y in fiscal_years}),
         "features": len(manifest["features"]),
         "cqs": report.get("composite", {}).get("cqs"),
         "recall_at_10": report.get("composite", {}).get("recall_at_10"),
@@ -124,9 +133,14 @@ def main() -> int:
     out_path.write_text(json.dumps(real_data_obj), encoding="utf-8")
 
     print(f"exported {out_path}  points={len(points)}  tickers={real_data_obj['tickers']}")
-    print(f"PCA(3) explained variance: {real_data_obj['proj']['explained_variance']} "
-          f"(sum {sum(real_data_obj['proj']['explained_variance']):.3f})")
-    print(f"CQS={real_data_obj['cqs']}  recall@10={real_data_obj['recall_at_10']}  purity@20={real_data_obj['purity_at_20']}")
+    print(
+        f"PCA(3) explained variance: {real_data_obj['proj']['explained_variance']} "
+        f"(sum {sum(real_data_obj['proj']['explained_variance']):.3f})"
+    )
+    print(
+        f"CQS={real_data_obj['cqs']}  recall@10={real_data_obj['recall_at_10']}  "
+        f"purity@20={real_data_obj['purity_at_20']}"
+    )
     return 0
 
 

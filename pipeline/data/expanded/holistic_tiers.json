@@ -1,0 +1,39 @@
+{
+  "tiers": {
+    "tier_1_sec_full": {
+      "source": "SEC EDGAR company_tickers.json + companyfacts + submissions",
+      "count_est": 10398,
+      "count_actual": 10398,
+      "coverage": "US public + ADRs foreign filers on US exchanges",
+      "api": "https://www.sec.gov/files/company_tickers.json + https://data.sec.gov/api/xbrl/companyfacts/CIK##########.json + bulk https://www.sec.gov/Archives/edgar/daily-index/xbrl/companyfacts.zip + submissions.zip",
+      "fields_rich": "503 us-gaap concepts (Revenues, Assets, NetIncomeLoss, etc) + dei, 10-K 10-Q 8-K filing history",
+      "credibility": "Highest - regulatory mandated, audited, XBRL structured",
+      "current_stored": "/tmp/company_tickers.json verified 795660 bytes"
+    },
+    "tier_2_global_public": {
+      "source": "Yahoo Finance / MSCI ACWI IMI ~8000-9000 + Dimensional ~13000 investable universe",
+      "count_est": 13000,
+      "coverage": "Developed ex-US + emerging markets public listings, Bloomberg global 33k listed 1995-2016 growth",
+      "api": "yfinance + OpenCorporates jurisdiction mapping, SEC foreign 20-F for cross-listed",
+      "fields": "price ret_1M/3M/6M/12M vol_30D market_cap (limited XBRL via ifrs-full taxonomy)",
+      "credibility": "High for price, Medium for fundamentals (IFRS varies by country)"
+    },
+    "tier_3_private_firmographics": {
+      "source": "OpenCorporates 84M+ companies 100+ jurisdictions + GLEIF LEI 2.5M + Companies House UK 5M",
+      "count_est": 84000000,
+      "coverage": "Private companies world - name, address, incorporation date, status, officers, SIC/NAICS where available",
+      "api": "opencorporates.com API (ODbL share-alike) + GLEIF LEI v2 golden copy + companydatacom/public-datasets city samples",
+      "fields": "firmographic only: revenue USD est (sparse), employees, founding_year, headquarter linkage, industry code",
+      "credibility": "Medium - scraped from national registries, structured but not audited",
+      "use": "Sector embedding, address geo, size proxy, private co coverage for holistic map"
+    },
+    "tier_4_gov_stats": {
+      "source": "US Census Bureau CBP, BLS QCEW, BEA, FRED, World Bank",
+      "count_est": "sector x county level",
+      "coverage": "Sector baselines - employment, payroll, establishment counts, macro scaffolding",
+      "use": "Fill gaps where firm-level sparse, provide sector anchor for normalization"
+    }
+  },
+  "total_addressable": "SEC 10,398 + Global 13k + Private 84M + gov sectors",
+  "holistic_goal": "From 500 tickers (4831 FYs) to 10k SEC full (est 70k-100k FYs 2015-2024) to 23k investable public global to 84M entity graph for map context"
+}

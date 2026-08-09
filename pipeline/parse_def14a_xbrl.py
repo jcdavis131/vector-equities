@@ -66,9 +66,7 @@ NEO_AVG_RE = re.compile(r'name="ecd:NonPeoNeoAvgTotalCompAmt"[^>]*>([^<]*)<')
 # The bare-text form found 834 of the 913 filings carrying the tag; the missing 79 all look
 # like the above. Matching the whole ix:nonNumeric element and stripping markup afterwards
 # reaches them, and also tolerates `name=` appearing anywhere in the attribute list.
-PEO_NAME_RE = re.compile(
-    r'<ix:nonNumeric[^>]*name="ecd:PeoName"[^>]*>(.*?)</ix:nonNumeric>',
-    re.DOTALL | re.IGNORECASE)
+PEO_NAME_RE = re.compile(r'<ix:nonNumeric[^>]*name="ecd:PeoName"[^>]*>(.*?)</ix:nonNumeric>', re.DOTALL | re.IGNORECASE)
 PEO_PAID_RE = re.compile(r'name="ecd:PeoActuallyPaidCompAmt"[^>]*>([^<]*)<')
 NEO_PAID_RE = re.compile(r'name="ecd:NonPeoNeoAvgCompActuallyPaidAmt"[^>]*>([^<]*)<')
 TSR_RE = re.compile(r'name="ecd:TotalShareholderRtnAmt"[^>]*>([^<]*)<')
@@ -76,7 +74,7 @@ PEER_TSR_RE = re.compile(r'name="ecd:PeerGroupTotalShareholderRtnAmt"[^>]*>([^<]
 
 # Inline XBRL wraps values in nested spans and escapes entities; a name grabbed raw can
 # arrive as "John&#160;Smith" or with stray markup. Normalised here, once.
-_WS = re.compile(r"[\s ]+")
+_WS = re.compile(r"[\s ]+")  # noqa: RUF001 (NBSP intentional in whitespace class)
 _TAGS = re.compile(r"<[^>]+>")
 
 
@@ -156,8 +154,7 @@ def parse_one(html_path: Path) -> dict | None:
         # Company TSR minus its OWN stated peer group, both indexed to $100 by SEC rule.
         # This is the filer's declared peer set, not a sector bucket I chose, which makes it
         # a better relative-return measure than SECTOR_REL_RET_12M would have been.
-        "TSR_VS_PEER": (round(tsr_v - peer_v, 4)
-                        if tsr_v is not None and peer_v is not None else None),
+        "TSR_VS_PEER": (round(tsr_v - peer_v, 4) if tsr_v is not None and peer_v is not None else None),
     }
 
 
@@ -185,9 +182,16 @@ def main() -> None:
     # the case that matters: records written with the new fields all None, which looks like
     # success and delivers nothing. This is the same defect the estate keeps finding — a
     # real number answering a different question than the one it appears to answer.
-    fields = ("CEO_TOTAL_COMP", "AVG_NEO_COMP", "CEO_NAME", "CEO_COMP_ACTUALLY_PAID",
-              "AVG_NEO_COMP_ACTUALLY_PAID", "TSR_INDEXED", "PEER_TSR_INDEXED",
-              "TSR_VS_PEER")
+    fields = (
+        "CEO_TOTAL_COMP",
+        "AVG_NEO_COMP",
+        "CEO_NAME",
+        "CEO_COMP_ACTUALLY_PAID",
+        "AVG_NEO_COMP_ACTUALLY_PAID",
+        "TSR_INDEXED",
+        "PEER_TSR_INDEXED",
+        "TSR_VS_PEER",
+    )
     n = max(1, len(by_key))
     print("\n  per-field yield over the written records:")
     for f_ in fields:

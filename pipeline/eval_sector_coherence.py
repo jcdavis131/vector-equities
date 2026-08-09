@@ -127,9 +127,7 @@ def random_purity_expectation(labels):
 def permutation_purity(neighbors, labels, n_perm=N_PERMUTATIONS, seed=PERMUTATION_SEED):
     """Empirical purity baseline: mean purity over label permutations."""
     rng = np.random.default_rng(seed)
-    scores = [
-        purity_from_neighbors(neighbors, rng.permutation(labels)) for _ in range(n_perm)
-    ]
+    scores = [purity_from_neighbors(neighbors, rng.permutation(labels)) for _ in range(n_perm)]
     return float(np.mean(scores))
 
 
@@ -156,10 +154,7 @@ def compute_report(real_data_path):
     purity = purity_from_neighbors(nn_all, sectors)
     nn_cross = knn_indices(emb, k=K, tickers=tickers)
     purity_cross = purity_from_neighbors(nn_cross, sectors)
-    print(
-        f"purity@{K} {purity:.4f} cross-ticker {purity_cross:.4f} "
-        f"({time.time() - t0:.1f}s)"
-    )
+    print(f"purity@{K} {purity:.4f} cross-ticker {purity_cross:.4f} " f"({time.time() - t0:.1f}s)")
 
     baseline_purity = random_purity_expectation(sectors)
     baseline_perm = permutation_purity(nn_all, sectors)
@@ -167,9 +162,7 @@ def compute_report(real_data_path):
     t0 = time.time()
     sil = silhouette_cosine(emb, sectors)
     sil_perm = permutation_silhouette(emb, sectors)
-    print(
-        f"silhouette {sil:.4f} perm-baseline {sil_perm:.4f} ({time.time() - t0:.1f}s)"
-    )
+    print(f"silhouette {sil:.4f} perm-baseline {sil_perm:.4f} ({time.time() - t0:.1f}s)")
 
     return {
         "eval": "sector_coherence",
@@ -182,10 +175,7 @@ def compute_report(real_data_path):
         "n_rows_excluded_bad_sector": meta["n_rows_excluded_bad_sector"],
         "n_companies": len(np.unique(tickers)),
         "n_sectors": len(sector_names),
-        "sector_sizes": {
-            s: int(c)
-            for s, c in zip(sector_names.tolist(), sector_counts.tolist(), strict=True)
-        },
+        "sector_sizes": {s: int(c) for s, c in zip(sector_names.tolist(), sector_counts.tolist(), strict=True)},
         "baseline": {
             "name": "random-assignment expectation given sector sizes",
             "why": (

@@ -12,7 +12,6 @@ Run:  python pipeline/fetch_def14a_recent.py --limit 500 --start 0 --n 2
 from __future__ import annotations
 
 import json
-import os
 import subprocess
 import sys
 import time
@@ -56,13 +55,19 @@ def robust_fetch_html(url, out_path):
             try:
                 tmp = str(ROOT / "pipeline" / "cache" / "_def14a_tmp.html")
                 cmd = [
-                    "curl", "-sL", "--max-time", "90",
-                    "-H", f"User-Agent: {USER_AGENT}",
-                    "-o", tmp, url,
+                    "curl",
+                    "-sL",
+                    "--max-time",
+                    "90",
+                    "-H",
+                    f"User-Agent: {USER_AGENT}",
+                    "-o",
+                    tmp,
+                    url,
                 ]
                 subprocess.run(cmd, timeout=95)
-                if os.path.exists(tmp) and os.path.getsize(tmp) > 5000:
-                    out_path.write_bytes(open(tmp, "rb").read())
+                if Path(tmp).exists() and Path(tmp).stat().st_size > 5000:
+                    out_path.write_bytes(Path(tmp).open("rb").read())
                     print(f"  curl OK {out_path.name} {out_path.stat().st_size}")
                     time.sleep(0.25)
                     return True

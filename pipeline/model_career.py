@@ -27,9 +27,7 @@ class _ResBlock(nn.Module):
 
 
 class ResidualTower(nn.Module):
-    def __init__(
-        self, d_in: int, d_out: int = 24, d_hidden: int = 96, n_blocks: int = 1
-    ):
+    def __init__(self, d_in: int, d_out: int = 24, d_hidden: int = 96, n_blocks: int = 1):
         super().__init__()
         d_cat = d_in * 2
         self.fc1 = nn.Linear(d_cat, d_hidden)
@@ -37,9 +35,7 @@ class ResidualTower(nn.Module):
         self.fc2 = nn.Linear(d_hidden, d_out)
         self.ln2 = nn.LayerNorm(d_out)
         self.skip = nn.Linear(d_cat, d_out) if d_cat != d_out else nn.Identity()
-        self.blocks = nn.ModuleList(
-            [_ResBlock(d_out, d_hidden) for _ in range(max(0, n_blocks - 1))]
-        )
+        self.blocks = nn.ModuleList([_ResBlock(d_out, d_hidden) for _ in range(max(0, n_blocks - 1))])
 
     def forward(self, x, m):
         h = torch.cat([x * m, m], dim=-1)
@@ -69,9 +65,7 @@ class ContinuousFusion(nn.Module):
             nn.Linear(d_time_emb, d_time_emb),
         )
         self.gate = nn.Linear(d_tower, 1)
-        self.attn = nn.Sequential(
-            nn.Linear(d_tower, d_tower), nn.Tanh(), nn.Linear(d_tower, 1)
-        )
+        self.attn = nn.Sequential(nn.Linear(d_tower, d_tower), nn.Tanh(), nn.Linear(d_tower, 1))
         self.fuse = nn.Sequential(
             nn.Linear(d_tower + d_time_emb, d_hidden),
             nn.GELU(),
@@ -89,9 +83,7 @@ class ContinuousFusion(nn.Module):
             scores = self.attn(tower_stack).squeeze(-1)  # B, n_towers
             weights = torch.softmax(scores, dim=-1)
             gates = torch.sigmoid(self.gate(tower_stack).squeeze(-1))
-            mixed = (tower_stack * weights.unsqueeze(-1) * gates.unsqueeze(-1)).sum(
-                1
-            )  # B, d_tower
+            mixed = (tower_stack * weights.unsqueeze(-1) * gates.unsqueeze(-1)).sum(1)  # B, d_tower
             t_emb = self.time_proj(time_enc)  # B, d_time_emb
             out = self.fuse(torch.cat([mixed, t_emb], dim=-1))
             return F.normalize(out, dim=-1)
@@ -121,9 +113,7 @@ class CausalCareerTransformer(nn.Module):
             batch_first=True,
             norm_first=True,
         )
-        self.encoder = nn.TransformerEncoder(
-            layer, num_layers=n_layers, enable_nested_tensor=False
-        )
+        self.encoder = nn.TransformerEncoder(layer, num_layers=n_layers, enable_nested_tensor=False)
         self.out_proj = nn.Linear(d_model, d_emb)
         self.d_model = d_model
 
@@ -137,9 +127,7 @@ class CausalCareerTransformer(nn.Module):
         _B, L, _ = z_seq.shape
         x = self.input_proj(z_seq) + self.pos_proj(year_norm_seq)
         # causal mask: prevent attending to future
-        causal = torch.triu(
-            torch.ones(L, L, device=z_seq.device, dtype=torch.bool), diagonal=1
-        )
+        causal = torch.triu(torch.ones(L, L, device=z_seq.device, dtype=torch.bool), diagonal=1)
         # src_key_padding_mask: True where padded (should be ignored)
         key_pad = None
         if mask_seq is not None:
@@ -154,12 +142,7 @@ class SkillTowers(nn.Module):
     def __init__(self, d_emb: int, n_skills: int, d_hidden: int = 16):
         super().__init__()
         self.towers = nn.ModuleList(
-            [
-                nn.Sequential(
-                    nn.Linear(d_emb, d_hidden), nn.GELU(), nn.Linear(d_hidden, 1)
-                )
-                for _ in range(n_skills)
-            ]
+            [nn.Sequential(nn.Linear(d_emb, d_hidden), nn.GELU(), nn.Linear(d_hidden, 1)) for _ in range(n_skills)]
         )
 
     def forward(self, emb):
@@ -241,17 +224,13 @@ class EquitiesCareerMTNN(nn.Module):
         self.payout_head = nn.Linear(d_emb, 1)
         self.mgmt_head = nn.Linear(d_emb, 1)
         self.own_head = nn.Linear(d_emb, 1)
-        self.skill_towers = (
-            SkillTowers(d_emb, n_skills, d_hidden=d_skill_hidden) if n_skills else None
-        )
+        self.skill_towers = SkillTowers(d_emb, n_skills, d_hidden=d_skill_hidden) if n_skills else None
 
         # new trading heads
         self.fwd_ret_head = head(4)  # 1M,3M,6M,12M excess
         self.fwd_vol_head = nn.Linear(d_emb, 1)
         self.fwd_dd_head = nn.Linear(d_emb, 1)
-        self.entry_head = nn.Linear(
-            d_emb, 1
-        )  # logit for triple barrier +10% before -7% 63d
+        self.entry_head = nn.Linear(d_emb, 1)  # logit for triple barrier +10% before -7% 63d
         self.turnaround_head = nn.Linear(d_emb, 1)
         self.distress_head = nn.Linear(d_emb, 1)
 
@@ -262,14 +241,10 @@ class EquitiesCareerMTNN(nn.Module):
         time_enc: (B, d_time) or (B*L, d_time)
         Returns: z (B, d_emb)
         """
-        parts = torch.stack(
-            [self.towers[fam](xs[fam], ms[fam]) for fam in self.families], dim=1
-        )  # B, n_fams, d_tower
+        parts = torch.stack([self.towers[fam](xs[fam], ms[fam]) for fam in self.families], dim=1)  # B, n_fams, d_tower
         return self.fusion(parts, time_enc)
 
-    def forward_sequence(
-        self, xs_seq, ms_seq, time_enc_seq, year_norm_seq, mask_seq=None
-    ):
+    def forward_sequence(self, xs_seq, ms_seq, time_enc_seq, year_norm_seq, mask_seq=None):
         """
         xs_seq: dict fam -> (B, L, d_in)
         ms_seq: dict fam -> (B, L, d_in)
@@ -321,11 +296,7 @@ class EquitiesCareerMTNN(nn.Module):
         z = self.encode_timestep(xs, ms, time_enc)
         # dummy career with L=1
         z_seq = z.unsqueeze(1)
-        yn_seq = (
-            year_norm.unsqueeze(1)
-            if year_norm is not None
-            else torch.zeros(z.size(0), 1, 1, device=z.device)
-        )
+        yn_seq = year_norm.unsqueeze(1) if year_norm is not None else torch.zeros(z.size(0), 1, 1, device=z.device)
         if yn_seq.dim() == 2:
             yn_seq = yn_seq.unsqueeze(-1)
         c_seq = self.career_transformer(z_seq, yn_seq)

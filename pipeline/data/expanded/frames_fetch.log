@@ -1,0 +1,20 @@
+{
+  "timestamp": "2026-08-09T00:54:52Z",
+  "ts": "2026-08-09T00:54:52Z",
+  "nodeId": "frames_fetch",
+  "agentId": "operator",
+  "attempt": 1,
+  "latency_ms": 1631,
+  "latency": 1631,
+  "tokens_est": 1670,
+  "tokens": 1670,
+  "status": "success",
+  "errorClass": "none",
+  "output": "SEC frames bulk pipeline demo: Revenues CY2023 2673 entities, Assets CY2023Q4I 6428 entities, wrote 6682 bytes to pipeline/data/expanded/frames_sample.json zero-deps curl UA VectorEquities research jcdavis131@gmail.com",
+  "zero_deps": true,
+  "frames": [
+    "us-gaap/Revenues/USD/CY2023.json 200",
+    "us-gaap/Assets/USD/CY2023Q4I 200"
+  ],
+  "path": "/home/hatch/workspace/vector-equities/pipeline/data/expanded/frames_sample.json"
+}

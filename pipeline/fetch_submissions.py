@@ -18,7 +18,7 @@ def fetch_sub(cik_pad):
     if out.exists() and out.stat().st_size > 5000:
         try:
             return json.loads(out.read_text())
-        except:
+        except Exception:
             out.unlink(missing_ok=True)
     url = f"https://data.sec.gov/submissions/CIK{cik_pad}.json"
     print(f"Fetching submissions CIK {cik_pad} {url}")
@@ -57,9 +57,7 @@ if __name__ == "__main__":
             # count DEF14A and Form4
             def14a = [f for f in forms if "DEF 14A" in f or "DEF14A" in f]
             form4 = [f for f in forms if f == "4"]
-            print(
-                f"  {ticker} {cik} DEF14A:{len(def14a)} Form4:{len(form4)} recent total {len(forms)}"
-            )
+            print(f"  {ticker} {cik} DEF14A:{len(def14a)} Form4:{len(form4)} recent total {len(forms)}")
         else:
             print(f"  {ticker} FAIL")
     print(f"Done {ok}/{len(subset)}")

@@ -64,13 +64,21 @@ def main() -> None:
         obs = M[:, j] > 0
         cov = float(obs.mean())
         if obs.sum() < MIN_OVERLAP:
-            dead.append({"feature": f, "family": fam_of[f], "coverage": round(cov, 4),
-                         "why": "coverage below usable threshold"})
+            dead.append(
+                {"feature": f, "family": fam_of[f], "coverage": round(cov, 4), "why": "coverage below usable threshold"}
+            )
             continue
         sd = float(Z[obs, j].std())
         if sd < NEAR_CONST_STD:
-            dead.append({"feature": f, "family": fam_of[f], "coverage": round(cov, 4),
-                         "sd": round(sd, 6), "why": "near-constant where observed"})
+            dead.append(
+                {
+                    "feature": f,
+                    "family": fam_of[f],
+                    "coverage": round(cov, 4),
+                    "sd": round(sd, 6),
+                    "why": "near-constant where observed",
+                }
+            )
     report["dead_or_constant"] = dead
 
     # 2. redundant pairs
@@ -79,8 +87,16 @@ def main() -> None:
         for k in range(j + 1, len(feats)):
             r, n = masked_corr(Z[:, j], Z[:, k], M[:, j], M[:, k])
             if abs(r) >= DUP_R:
-                dups.append({"a": feats[j], "b": feats[k], "family_a": fam_of[feats[j]],
-                             "family_b": fam_of[feats[k]], "r": round(r, 4), "n": n})
+                dups.append(
+                    {
+                        "a": feats[j],
+                        "b": feats[k],
+                        "family_a": fam_of[feats[j]],
+                        "family_b": fam_of[feats[k]],
+                        "r": round(r, 4),
+                        "n": n,
+                    }
+                )
     dups.sort(key=lambda d: -abs(d["r"]))
     report["redundant_pairs"] = dups
 
@@ -90,8 +106,7 @@ def main() -> None:
     fam_cov = {}
     cliffs = []
     for fam, cols in sorted(fam_cols.items()):
-        cov = {name: (round(float(M[msk][:, cols].mean()), 4) if msk.any() else None)
-               for name, msk in eras.items()}
+        cov = {name: (round(float(M[msk][:, cols].mean()), 4) if msk.any() else None) for name, msk in eras.items()}
         fam_cov[fam] = cov
         older = cov["older"] or 0.0
         newest_cov = cov[f"{newest}_newest"]
@@ -113,8 +128,11 @@ def main() -> None:
                 if n >= MIN_OVERLAP:
                     rs.append(abs(r))
         if rs:
-            fam_red[fam] = {"n_features": len(cols), "mean_abs_r": round(float(np.mean(rs)), 4),
-                            "max_abs_r": round(float(np.max(rs)), 4)}
+            fam_red[fam] = {
+                "n_features": len(cols),
+                "mean_abs_r": round(float(np.mean(rs)), 4),
+                "max_abs_r": round(float(np.max(rs)), 4),
+            }
     report["within_family_redundancy"] = fam_red
 
     OUT.write_text(json.dumps(report, indent=1), encoding="utf-8")

@@ -13,7 +13,7 @@ CACHE_DEF.mkdir(parents=True, exist_ok=True)
 def html_to_text(html_bytes):
     try:
         html = html_bytes.decode("utf-8", errors="ignore")
-    except:
+    except Exception:
         html = str(html_bytes)
     # Remove scripts/styles
     html = re.sub(r"<script.*?</script>", " ", html, flags=re.DOTALL | re.IGNORECASE)
@@ -48,7 +48,7 @@ def parse_neos_heuristic(html_path):
     """Very heuristic: find names near CEO/CFO and dollar amounts $"""
     try:
         raw = html_path.read_bytes().decode("utf-8", errors="ignore")
-    except:
+    except Exception:
         return []
     # Find tables containing $ and Total and Name
     # Use regex to find rows with name pattern + dollar
@@ -60,9 +60,7 @@ def parse_neos_heuristic(html_path):
     candidate_tables = []
     for tbl in tables:
         low = tbl.lower()
-        if "summary compensation" in low or (
-            "name" in low and "total" in low and "$" in tbl
-        ):
+        if "summary compensation" in low or ("name" in low and "total" in low and "$" in tbl):
             candidate_tables.append(tbl)
     # If found candidate tables, parse first 2
     for tbl in candidate_tables[:2]:
@@ -70,9 +68,7 @@ def parse_neos_heuristic(html_path):
         rows = re.findall(r"<tr.*?</tr>", tbl, flags=re.DOTALL | re.IGNORECASE)
         for row in rows[1:10]:  # skip header, take up to 9 rows
             # extract cells
-            cells = re.findall(
-                r"<t[dh][^>]*>(.*?)</t[dh]>", row, flags=re.DOTALL | re.IGNORECASE
-            )
+            cells = re.findall(r"<t[dh][^>]*>(.*?)</t[dh]>", row, flags=re.DOTALL | re.IGNORECASE)
             if len(cells) < 3:
                 continue
             # Clean cells
@@ -117,7 +113,7 @@ def parse_neos_heuristic(html_path):
                                 "cells": clean_cells[:4],
                             }
                         )
-                except:
+                except Exception:
                     pass
     # Dedupe by name
     seen = set()
@@ -142,15 +138,11 @@ def parse_def14a_file(html_path):
     neos = parse_neos_heuristic(html_path)
     # Board size heuristic: search "board of directors ... consists of X"
     board_size = None
-    m = (
-        re.search(r"board.*consists of (\d+)", full_text[:20000], re.IGNORECASE)
-        if snippet
-        else None
-    )
+    m = re.search(r"board.*consists of (\d+)", full_text[:20000], re.IGNORECASE) if snippet else None
     if m:
         try:
             board_size = int(m.group(1))
-        except:
+        except Exception:
             pass
     if not board_size:
         m = re.search(r"(\d+)\s*directors", full_text[:10000], re.IGNORECASE)
@@ -159,7 +151,7 @@ def parse_def14a_file(html_path):
                 board_size = int(m.group(1))
                 if board_size > 20 or board_size < 3:
                     board_size = None
-            except:
+            except Exception:
                 pass
     result = {
         "ticker": ticker,
@@ -190,12 +182,13 @@ if __name__ == "__main__":
         res = parse_def14a_file(hf)
         parsed.append(res)
         print(
-            f"{hf.name}: neos {res['neo_count']} success {res['parse_success']} board {res['board_size']} names {[n['name'][:20] for n in res['neos'][:3]]}"
+            f"{hf.name}: neos {res['neo_count']} success {res['parse_success']} board {res['board_size']} names "
+            f"{[n['name'][:20] for n in res['neos'][:3]]}"
         )
     # Save master
     out = ROOT / "pipeline" / "data" / "def14a_parsed.jsonl"
     out.parent.mkdir(parents=True, exist_ok=True)
-    with open(out, "w") as f:
+    with Path(out).open("w") as f:
         for p in parsed:
             f.write(json.dumps(p) + "\n")
     print(

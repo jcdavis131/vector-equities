@@ -7,9 +7,12 @@ Expand real_data.json to include ALL S&P 500 tickers (503) minimum
 - Writes new real_data.json + real_data_latest.json + updates manifest
 """
 
-import json, pathlib, random, math
+import json
+import pathlib
+import random
+from collections import Counter, defaultdict
+
 import numpy as np
-from collections import defaultdict, Counter
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 ASSETS = ROOT / "assets"
@@ -23,7 +26,7 @@ print(f"Universe {len(universe)}")
 real_data_path = ASSETS / "real_data.json"
 real = json.loads(real_data_path.read_text())
 points = real["points"]
-print(f"Existing points {len(points)} tickers {len(set(p['ticker'] for p in points))}")
+print(f"Existing points {len(points)} tickers {len({p['ticker'] for p in points})}")
 
 # Sector mapping for SP500
 sp_tickers = {}
@@ -31,7 +34,7 @@ for u in universe:
     sp_tickers[u["ticker"]] = u  # ticker -> {company, sector, cik}
 
 # Existing tickers set
-existing_tickers = set(p["ticker"] for p in points)
+existing_tickers = {p["ticker"] for p in points}
 
 # Group existing by sector for centroids
 by_sector = defaultdict(list)
@@ -50,12 +53,14 @@ for sector, pts in by_sector.items():
     arch_counter = Counter(p["archetype"] for p in pts)
     most_common_arch = arch_counter.most_common(1)[0][0]
     sector_stats[sector] = {
-        "x": xs, "y": ys, "z": zs,
+        "x": xs,
+        "y": ys,
+        "z": zs,
         "emb_mean": embs,
         "skills_mean": skills,
         "arch": most_common_arch,
         "arch_dist": arch_counter,
-        "count": len(pts)
+        "count": len(pts),
     }
 
 # Global stats fallback
@@ -66,7 +71,8 @@ global_emb = np.mean([np.array(p["emb"]) for p in points], axis=0)
 global_skills = np.mean([np.array(p["skills"]) for p in points], axis=0)
 
 # Map SP500 sector raw to our internal sector names
-# Our internal sectors: Technology, Healthcare, Financials, Energy, Industrials, ConsStaples, ConsDisc, Utilities, Materials, RealEstate, Communication
+# Our internal sectors: Technology, Healthcare, Financials, Energy, Industrials, ConsStaples, ConsDisc,
+# Utilities, Materials, RealEstate, Communication
 # But manifest uses similar; points use values like Industrials etc; need map from universe sector
 sector_map = {
     "Information Technology": "Technology",
@@ -122,7 +128,8 @@ for ticker in sp_tickers:
     sector = sector_map.get(raw_sector, raw_sector)
     # Normalize sector name to match existing points sectors
     # Existing sectors list: check distinct
-    # Let's map to our internal: Technology, Healthcare, Financials, Energy, Industrials, Consumer Discretionary etc, but points use slightly different sometimes
+    # Let's map to our internal: Technology, Healthcare, Financials, Energy, Industrials, Consumer Discretionary
+    # etc, but points use slightly different sometimes
     # We'll try to keep sector as mapped, but ensure it exists in sector_stats else fallback
     if sector not in sector_stats:
         # try alternative mapping: Communication -> Communication etc
@@ -188,7 +195,7 @@ for ticker in sp_tickers:
         skills_noise = np.random.normal(0, 6, size=base_skills.shape)
         skills = base_skills + skills_noise
         # Boost some skills for known mega caps
-        if ticker in ["META","GOOGL","MSFT","NVDA","AAPL"]:
+        if ticker in ["META", "GOOGL", "MSFT", "NVDA", "AAPL"]:
             # boost growth, moat, profitability
             skills[1] = min(100, skills[1] + 15)  # Growth
             skills[2] = min(100, skills[2] + 10)  # Moat
@@ -220,8 +227,8 @@ all_points_sorted = sorted(all_points, key=lambda p: (p["ticker"], p["year"]))
 # Update real object
 real["points"] = all_points_sorted
 real["rows"] = len(all_points_sorted)
-real["tickers"] = len(set(p["ticker"] for p in all_points_sorted))
-real["years"] = sorted(set(p["year"] for p in all_points_sorted))
+real["tickers"] = len({p["ticker"] for p in all_points_sorted})
+real["years"] = sorted({p["year"] for p in all_points_sorted})
 real["built"] = "2026-07-20 expanded SP500"
 
 # Write
@@ -230,10 +237,11 @@ out_path.write_text(json.dumps(real))
 print(f"Wrote {out_path} rows {real['rows']} tickers {real['tickers']} size {out_path.stat().st_size/1024/1024:.2f} MB")
 
 # Also create latest only
-latest_points = [p for p in all_points_sorted if p["year"]=="2024"]
+latest_points = [p for p in all_points_sorted if p["year"] == "2024"]
 # If some tickers don't have 2024? we generated 2024 for all missing, and existing should have 2024 for many but not all
 # For existing tickers missing 2024, take max year
 from collections import defaultdict
+
 latest_by_ticker = {}
 for p in sorted(all_points_sorted, key=lambda x: (x["ticker"], x["year"])):
     latest_by_ticker[p["ticker"]] = p
@@ -261,7 +269,7 @@ flat_path.write_text(json.dumps({"points": all_points_sorted[:5000]}))  # not ne
 manifest_path = ASSETS / "manifest.json"
 manifest = json.loads(manifest_path.read_text())
 manifest["rows"] = len(all_points_sorted)
-manifest["tickers"] = len(set(p["ticker"] for p in all_points_sorted))
+manifest["tickers"] = len({p["ticker"] for p in all_points_sorted})
 manifest["built"] = real["built"]
 manifest["years"] = real["years"]
 manifest_path.write_text(json.dumps(manifest, indent=2))

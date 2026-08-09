@@ -30,17 +30,9 @@ def fetch_ticker_history(ticker: str, period="5y"):
             "ticker": ticker,
             "last_close": float(hist["Close"].iloc[-1]),
             "avg_vol_30d": float(hist["Volume"].tail(30).mean()),
-            "ret_12m": float(hist["Close"].pct_change(252).iloc[-1])
-            if len(hist) > 252
-            else 0,
-            "vol_252d": float(hist["RET_1D"].tail(252).std() * (252**0.5))
-            if len(hist) > 30
-            else 0.3,
-            "price_vs_52w": float(
-                hist["Close"].iloc[-1] / hist["Close"].tail(252).max()
-            )
-            if len(hist) > 252
-            else 0.9,
+            "ret_12m": float(hist["Close"].pct_change(252).iloc[-1]) if len(hist) > 252 else 0,
+            "vol_252d": float(hist["RET_1D"].tail(252).std() * (252**0.5)) if len(hist) > 30 else 0.3,
+            "price_vs_52w": float(hist["Close"].iloc[-1] / hist["Close"].tail(252).max()) if len(hist) > 252 else 0.9,
         }
         cache_file.write_text(json.dumps(out, indent=2))
         time.sleep(0.3)  # be nice

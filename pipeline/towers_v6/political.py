@@ -10,27 +10,17 @@ import pandas as pd
 DATA_DIR = Path("pipeline/data/external")
 
 
-def synthetic_political(years=range(2015, 2025)):
+def synthetic_political(years=range(2015, 2025)):  # noqa: B008 (immutable range default)
     np.random.seed(123)
     # US presidential elections: 2016, 2020, 2024
     rows = []
     for year in years:
         # GPR - higher in 2022 Russia-Ukraine, 2020, 2024
-        gpr = (
-            100
-            + (50 if year == 2022 else 20 if year in [2020, 2024] else 0)
-            + np.random.normal(0, 10)
-        )
+        gpr = 100 + (50 if year == 2022 else 20 if year in [2020, 2024] else 0) + np.random.normal(0, 10)
         gpr_yoy = gpr - (100 + np.random.normal(0, 5))
-        epu_us = (
-            100 + (80 if year in [2020, 2016, 2024] else 0) + np.random.normal(0, 15)
-        )
+        epu_us = 100 + (80 if year in [2020, 2016, 2024] else 0) + np.random.normal(0, 15)
         epu_global = epu_us * 0.8 + np.random.normal(0, 10)
-        tariff = (
-            50
-            + (100 if year in [2018, 2019, 2024, 2025] else 0)
-            + np.random.normal(0, 10)
-        )
+        tariff = 50 + (100 if year in [2018, 2019, 2024, 2025] else 0) + np.random.normal(0, 10)
         # election proximity US: 1/(months to election)
         if year in [2016, 2020, 2024]:
             elec_us = 1.0
@@ -41,9 +31,7 @@ def synthetic_political(years=range(2015, 2025)):
         elec_global = np.random.uniform(0.3, 0.8) + (0.2 if year % 2 == 0 else 0)
         wgi = np.random.normal(0.5, 0.1)
         gov_shutdown = 1.0 if year in [2018, 2023] else np.random.uniform(0, 0.3)
-        rate_vol = (
-            0.5 + (1.5 if year in [2022, 2023] else 0.2) + np.random.normal(0, 0.2)
-        )
+        rate_vol = 0.5 + (1.5 if year in [2022, 2023] else 0.2) + np.random.normal(0, 0.2)
         rows.append(
             {
                 "year": year,

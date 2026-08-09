@@ -6,8 +6,8 @@
 - Same-ticker adjacent-FY contrastive is honest only if year_norm excluded from X (career model pos_proj gated).
 - No ticker string in feature spec (hoops player-split leak-free pattern reference).
 """
+
 import ast
-import json
 import sys
 from pathlib import Path
 
@@ -47,6 +47,7 @@ def test_coverage_scalar_present():
 def test_no_ticker_in_feature_spec():
     sys.path.insert(0, str(PIPELINE_DIR))
     from feature_spec import ALL_FEATURES
+
     # ticker should never be a training feature
     assert "TICKER" not in ALL_FEATURES
     assert "ticker" not in [f.lower() for f in ALL_FEATURES]
@@ -65,10 +66,12 @@ def test_career_year_norm_gated_not_in_tower_x():
     assert "self.pos_proj(year_norm_seq)" in text
     # tower inputs are xs[fam], ms[fam] only, no year_norm in encode_timestep xs
     assert "def encode_timestep(self, xs, ms, time_enc)" in text
-    assert "year_norm" not in (PIPELINE_DIR / "model.py").read_text().split("class EquitiesMTNN")[0]  # base MTNN has no year_norm
+    assert (
+        "year_norm" not in (PIPELINE_DIR / "model.py").read_text().split("class EquitiesMTNN")[0]
+    )  # base MTNN has no year_norm
 
 
-def test_train_mtnn_same_ticker_adjacent_FY_honest():
+def test_train_mtnn_same_ticker_adjacent_FY_honest():  # noqa: N802 (FY = fiscal year, domain casing)
     text = (PIPELINE_DIR / "train_mtnn.py").read_text()
     # adjacent_pairs groups by ticker then FY diff ==1 — honest contrastive positive, not leak
     assert "def adjacent_pairs" in text

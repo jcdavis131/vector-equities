@@ -13,7 +13,7 @@ CACHE_DEF = ROOT / "pipeline" / "cache" / "sec_def14a"
 def parse_one(html_path):
     try:
         raw = html_path.read_bytes().decode("utf-8", errors="ignore")
-    except:
+    except Exception:
         return {"error": "read fail"}
     ticker = html_path.name.split("_")[0]
     fdate = html_path.name.split("_")[1] if "_" in html_path.name else ""
@@ -27,11 +27,7 @@ def parse_one(html_path):
         low = txt.lower()
         if "summary compensation table" in low:
             candidates.append((tbl, "title match"))
-        elif (
-            ("salary" in low and "bonus" in low and "total" in low)
-            and len(txt) > 200
-            and len(txt) < 20000
-        ):
+        elif ("salary" in low and "bonus" in low and "total" in low) and len(txt) > 200 and len(txt) < 20000:
             # Likely SCT
             # Additional filter: contains name pattern
             candidates.append((tbl, "salary+bonus+total"))
@@ -93,7 +89,7 @@ def parse_one(html_path):
                                 break
                             else:
                                 comp = None
-                        except:
+                        except Exception:
                             pass
                 if comp and comp > 500000:
                     neos.append(
@@ -125,7 +121,7 @@ def parse_one(html_path):
             bs = int(m.group(1))
             if 3 <= bs <= 20:
                 board_size = bs
-        except:
+        except Exception:
             pass
     result = {
         "ticker": ticker,
@@ -149,17 +145,13 @@ if __name__ == "__main__":
         r = parse_one(f)
         results.append(r)
         if results.__len__() % 20 == 0:
-            print(
-                f"{len(results)}/{len(files)} {f.name} neos {r['neo_count']} cand {r['candidates_found']}"
-            )
+            print(f"{len(results)}/{len(files)} {f.name} neos {r['neo_count']} cand {r['candidates_found']}")
         else:
             # print only successes
             if r["parse_success"]:
-                print(
-                    f"OK {f.name} neos {r['neo_count']} {[n['name'] for n in r['neos'][:2]]}"
-                )
+                print(f"OK {f.name} neos {r['neo_count']} {[n['name'] for n in r['neos'][:2]]}")
     out = Path("pipeline/data/def14a_parsed_v2.jsonl")
-    with open(out, "w") as outf:
+    with Path(out).open("w") as outf:
         for r in results:
             outf.write(json.dumps(r) + "\n")
     succ = sum(1 for r in results if r["parse_success"])

@@ -69,17 +69,15 @@ def test_embedding_status_is_recorded_in_meta():
     honest behaviour is indistinguishable from the dishonest one downstream."""
     src = SRC.read_text(encoding="utf-8")
     assert "embedding_status" in src, "the status variable is gone"
-    assert '"embedding_npz": embedding_status' in src, (
-        "real_rows_meta no longer records embedding presence"
-    )
+    assert '"embedding_npz": embedding_status' in src, "real_rows_meta no longer records embedding presence"
 
 
 def test_the_status_has_both_values():
     """Anti-vacuity. A status hardcoded to one string reports nothing."""
     src = SRC.read_text(encoding="utf-8")
-    assert '"present" if embed_path.exists() else "absent (not fabricated)"' in src, (
-        "embedding_status is no longer a conditional over the file's existence"
-    )
+    assert (
+        '"present" if embed_path.exists() else "absent (not fabricated)"' in src
+    ), "embedding_status is no longer a conditional over the file's existence"
 
 
 def test_the_missing_branch_warns_and_does_not_write():

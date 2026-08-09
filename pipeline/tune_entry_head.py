@@ -10,6 +10,7 @@ import torch
 
 sys.path.insert(0, "pipeline")
 import torch.nn.functional as F
+from _torch_safe import safe_torch_load
 from dataset_career import (
     build_sequences,
     family_slices,
@@ -23,17 +24,13 @@ Z, mask, Z_raw, tickers_b, names, fy_arr, sectors_arr, manifest, fwd, _ = load_b
 fams, feat_list = family_slices(manifest)
 feat_to_idx = {f: i for i, f in enumerate(feat_list)}
 fam_dims = {fam: len(cols) for fam, cols in fams.items()}
-seqs, _, _ = build_sequences(
-    Z, mask, Z_raw, tickers_b, fy_arr, sectors_arr, manifest, fwd
-)
+seqs, _, _ = build_sequences(Z, mask, Z_raw, tickers_b, fy_arr, sectors_arr, manifest, fwd)
 
 device = "cpu"
 ckpt_path = DATA_DIR / "mtnn_career_best.pt"
-ckpt = torch.load(ckpt_path, map_location=device, weights_only=False)
+ckpt = safe_torch_load(ckpt_path, map_location=device)
 args = ckpt.get("args", {})
-print(
-    f"Loaded best checkpoint args {args} ic {ckpt.get('ic')} prec {ckpt.get('prec20')}"
-)
+print(f"Loaded best checkpoint args {args} ic {ckpt.get('ic')} prec {ckpt.get('prec20')}")
 
 
 def build_model():
@@ -182,9 +179,7 @@ for cfg in configs:
         import torch.nn as nn
 
         d_emb = args.get("dim", 64)
-        model.entry_head = nn.Sequential(
-            nn.Linear(d_emb, 32), nn.ReLU(), nn.Linear(32, 1)
-        ).to(device)
+        model.entry_head = nn.Sequential(nn.Linear(d_emb, 32), nn.ReLU(), nn.Linear(32, 1)).to(device)
         # re-init deeper
     # freeze all except entry_head
     for name, param in model.named_parameters():
@@ -192,9 +187,7 @@ for cfg in configs:
     # check trainable count
     trainable = sum(p.numel() for p in model.parameters() if p.requires_grad)
     print(f"Trainable params {trainable}")
-    opt = torch.optim.Adam(
-        filter(lambda p: p.requires_grad, model.parameters()), lr=cfg["lr"]
-    )
+    opt = torch.optim.Adam(filter(lambda p: p.requires_grad, model.parameters()), lr=cfg["lr"])
     best_prec = 0
     for epoch in range(cfg["epochs"]):
         model.train()
@@ -221,9 +214,7 @@ for cfg in configs:
             if cfg["gamma"] == 0:
                 loss = F.binary_cross_entropy_with_logits(logit, target, pos_weight=pw)
             else:
-                bce = F.binary_cross_entropy_with_logits(
-                    logit, target, pos_weight=pw, reduction="none"
-                )
+                bce = F.binary_cross_entropy_with_logits(logit, target, pos_weight=pw, reduction="none")
                 prob = torch.sigmoid(logit)
                 pt = torch.where(target == 1, prob, 1 - prob)
                 focal_w = (1 - pt).pow(cfg["gamma"])
@@ -235,7 +226,8 @@ for cfg in configs:
             n_batches += 1
         mean, spread, std, prec = evaluate(model)
         print(
-            f"Ep {epoch + 1}/{cfg['epochs']} loss {total_loss / max(1, n_batches):.4f} -> entry mean {mean:.3f} spread {spread:.3f} std {std:.4f} prec@20 {prec:.3f}"
+            f"Ep {epoch + 1}/{cfg['epochs']} loss {total_loss / max(1, n_batches):.4f} -> entry mean {mean:.3f} "
+            f"spread {spread:.3f} std {std:.4f} prec@20 {prec:.3f}"
         )
         if prec > best_prec:
             best_prec = prec

@@ -5,6 +5,7 @@ from pathlib import Path
 
 import numpy as np
 import torch
+from _torch_safe import safe_torch_load
 from dataset_career import (
     build_sequences,
     family_slices,
@@ -14,19 +15,13 @@ from dataset_career import (
 from model_career import EquitiesCareerMTNN
 
 DATA_DIR = Path("pipeline/data")
-Z, mask, Z_raw, tickers, names, fiscal_years, sectors, manifest, fwd, npz_path = (
-    load_bundle()
-)
+Z, mask, Z_raw, tickers, names, fiscal_years, sectors, manifest, fwd, npz_path = load_bundle()
 fams, _ = family_slices(manifest)
 fam_dims = {fam: len(cols) for fam, cols in fams.items()}
 
-ckpt = torch.load(
-    DATA_DIR / "mtnn_career_v6_best.pt", map_location="cpu", weights_only=False
-)
+ckpt = safe_torch_load(DATA_DIR / "mtnn_career_v6_best.pt", map_location="cpu")
 args = ckpt["args"]
-print(
-    f"Loaded best epoch {ckpt.get('epoch')} IC {ckpt.get('ic')} prec20 {ckpt.get('prec20')} args {args}"
-)
+print(f"Loaded best epoch {ckpt.get('epoch')} IC {ckpt.get('ic')} prec20 {ckpt.get('prec20')} args {args}")
 model = EquitiesCareerMTNN(
     fam_dims=fam_dims,
     d_tower=args.get("d_tower", 24),
@@ -121,9 +116,7 @@ pf_arr = np.array(pf_list)
 tf_arr = np.array(tf_list)
 pd_arr = np.array(pd_list)
 td_arr = np.array(td_list)
-print(
-    f"PF mean {pf_arr.mean():.4f} std {pf_arr.std():.4f} min {pf_arr.min():.4f} max {pf_arr.max():.4f}"
-)
+print(f"PF mean {pf_arr.mean():.4f} std {pf_arr.std():.4f} min {pf_arr.min():.4f} max {pf_arr.max():.4f}")
 print(f"TF mean {np.nanmean(tf_arr):.4f} std {np.nanstd(tf_arr):.4f}")
 print(f"PD mean {pd_arr.mean():.4f} std {pd_arr.std():.4f}")
 print(f"TD mean {np.nanmean(td_arr):.4f} std {np.nanstd(td_arr):.4f}")

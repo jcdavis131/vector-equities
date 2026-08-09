@@ -23,9 +23,7 @@ ind_df = synthetic_industry_features()
 pol_df = synthetic_political()
 trade_df = synthetic_trade()
 
-Z2, mask2, Z_raw, tickers, names, fy_arr, sectors_arr, manifest2, fwd, path = (
-    load_bundle()
-)
+Z2, mask2, Z_raw, tickers, names, fy_arr, sectors_arr, manifest2, fwd, path = load_bundle()
 N = Z.shape[0]
 
 ind_lookup = {(row.sector, row.year): row for row in ind_df.itertuples()}
@@ -132,9 +130,7 @@ npz_v5["mask"] = mask_v6
 np.savez_compressed(out_path, **npz_v5)
 print(f"Saved {out_path}")
 
-(Path(DATA_DIR) / "feature_manifest_v6.json").write_text(
-    json.dumps(manifest_v6, indent=2)
-)
+(Path(DATA_DIR) / "feature_manifest_v6.json").write_text(json.dumps(manifest_v6, indent=2))
 print(f"Saved manifest v6 {len(manifest_v6['features'])}")
 
 from collections import Counter

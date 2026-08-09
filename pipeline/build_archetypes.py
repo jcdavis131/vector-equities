@@ -68,9 +68,7 @@ def build(k=8):
 
     # save
     out = ROOT / "pipeline" / "data" / "archetype_model.npz"
-    np.savez_compressed(
-        out, centroids=centroids, labels=labels, names=np.array(ARCHETYPE_NAMES)
-    )
+    np.savez_compressed(out, centroids=centroids, labels=labels, names=np.array(ARCHETYPE_NAMES))
     print(f"Archetypes k={k}: built, inertia {km.inertia_:.1f}")
     # overwrite cluster in train_matrix? We'll keep but report
     # update train_matrix.npz cluster field

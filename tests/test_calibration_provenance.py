@@ -72,9 +72,9 @@ def test_the_verdict_is_a_conjunction_not_a_copy():
     rule cannot silently degrade into `passed = bias_within_tolerance` (the
     original defect) or into a constant."""
     src = SRC.read_text(encoding="utf-8")
-    assert '"passed": bool(abs(metrics["bias_after"]) < BIAS_TOLERANCE and is_real)' in src, (
-        "the passed expression no longer conjoins is_real"
-    )
+    assert (
+        '"passed": bool(abs(metrics["bias_after"]) < BIAS_TOLERANCE and is_real)' in src
+    ), "the passed expression no longer conjoins is_real"
     assert '"bias_within_tolerance"' in src, "the measurement field was dropped"
 
 
@@ -83,9 +83,7 @@ def test_console_does_not_claim_pass_on_synthetic():
     Two surfaces, one fact."""
     src = SRC.read_text(encoding="utf-8")
     assert "NOT A PASS" in src, "the synthetic branch no longer disclaims a pass"
-    assert "PASS: bias <1% achieved on REAL data" in src, (
-        "the real branch no longer prints an unambiguous pass"
-    )
+    assert "PASS: bias <1% achieved on REAL data" in src, "the real branch no longer prints an unambiguous pass"
 
 
 def test_synthetic_targets_are_still_the_tautology_they_were():

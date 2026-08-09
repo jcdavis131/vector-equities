@@ -1,0 +1,185 @@
+{
+  "fetched_at": "2026-08-09T00:54:49Z",
+  "pipeline": "tier_1_sec_full bulk frames demonstration - zero-deps curl",
+  "user_agent": "VectorEquities research jcdavis131@gmail.com",
+  "taxonomy": "us-gaap",
+  "method": "curl -H 'User-Agent: VectorEquities research jcdavis131@gmail.com' https://data.sec.gov/api/xbrl/frames/{taxonomy}/{tag}/{uom}/{ccp}.json --compressed",
+  "frames_attempted": [
+    "https://data.sec.gov/api/xbrl/frames/us-gaap/Revenues/USD/CY2023.json",
+    "https://data.sec.gov/api/xbrl/frames/us-gaap/Assets/USD/CY2023Q4I.json"
+  ],
+  "frames_success": [
+    "https://data.sec.gov/api/xbrl/frames/us-gaap/Revenues/USD/CY2023.json",
+    "https://data.sec.gov/api/xbrl/frames/us-gaap/Assets/USD/CY2023Q4I.json"
+  ],
+  "frames": {
+    "Revenues_CY2023": {
+      "url": "https://data.sec.gov/api/xbrl/frames/us-gaap/Revenues/USD/CY2023.json",
+      "http_code": "200",
+      "latency_ms": 975,
+      "taxonomy": "us-gaap",
+      "tag": "Revenues",
+      "ccp": "CY2023",
+      "uom": "USD",
+      "label": "Revenues",
+      "description": "Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).",
+      "pts": 2673,
+      "count": 2673,
+      "sample": [
+        {
+          "accn": "0000950170-25-034843",
+          "cik": 2098,
+          "entityName": "ACME UNITED CORP",
+          "loc": "US-CT",
+          "start": "2023-01-01",
+          "end": "2023-12-31",
+          "val": 191500947
+        },
+        {
+          "accn": "0000002178-24-000035",
+          "cik": 2178,
+          "entityName": "ADAMS RESOURCES & ENERGY, INC.",
+          "loc": "US-TX",
+          "start": "2023-01-01",
+          "end": "2023-12-31",
+          "val": 2745293000
+        },
+        {
+          "accn": "0001654954-24-003098",
+          "cik": 2186,
+          "entityName": "BK TECHNOLOGIES CORPORATION",
+          "loc": "US-FL",
+          "start": "2023-01-01",
+          "end": "2023-12-31",
+          "val": 74094000
+        },
+        {
+          "accn": "0000002969-25-000055",
+          "cik": 2969,
+          "entityName": "AIR PRODUCTS AND CHEMICALS, INC.",
+          "loc": "US-PA",
+          "start": "2022-10-01",
+          "end": "2023-09-30",
+          "val": 12600000000
+        },
+        {
+          "accn": "0000003499-26-000005",
+          "cik": 3499,
+          "entityName": "ALEXANDERS INC",
+          "loc": "US-NJ",
+          "start": "2023-01-01",
+          "end": "2023-12-31",
+          "val": 224962000
+        },
+        {
+          "accn": "0000003570-26-000005",
+          "cik": 3570,
+          "entityName": "CHENIERE ENERGY, INC.",
+          "loc": "US-TX",
+          "start": "2023-01-01",
+          "end": "2023-12-31",
+          "val": 20394000000
+        },
+        {
+          "accn": "0000004127-25-000085",
+          "cik": 4127,
+          "entityName": "Skyworks Solutions, Inc.",
+          "loc": "US-CA",
+          "start": "2022-10-01",
+          "end": "2023-09-29",
+          "val": 4772400000
+        }
+      ]
+    },
+    "Assets_CY2023Q4I": {
+      "url": "https://data.sec.gov/api/xbrl/frames/us-gaap/Assets/USD/CY2023Q4I.json",
+      "http_code": "200",
+      "latency_ms": 656,
+      "taxonomy": "us-gaap",
+      "tag": "Assets",
+      "ccp": "CY2023Q4I",
+      "uom": "USD",
+      "label": "Assets",
+      "description": "Sum of the carrying amounts as of the balance sheet date of all assets that are recognized. Assets are probable future economic benefits obtained or controlled by an entity as a result of past transactions or events.",
+      "pts": 6428,
+      "count": 6428,
+      "sample": [
+        {
+          "accn": "0001104659-23-128321",
+          "cik": 1750,
+          "entityName": "AAR CORP",
+          "loc": "US-IL",
+          "end": "2023-11-30",
+          "val": 1965600000
+        },
+        {
+          "accn": "0001628280-25-007110",
+          "cik": 1800,
+          "entityName": "Abbott Laboratories",
+          "loc": "US-IL",
+          "end": "2023-12-31",
+          "val": 73214000000
+        },
+        {
+          "accn": "0001264931-25-000008",
+          "cik": 1961,
+          "entityName": "WORLDS INC.",
+          "loc": "US-MA",
+          "end": "2023-12-31",
+          "val": 265401
+        },
+        {
+          "accn": "0000950170-25-034843",
+          "cik": 2098,
+          "entityName": "ACME UNITED CORP",
+          "loc": "US-CT",
+          "end": "2023-12-31",
+          "val": 149241316
+        },
+        {
+          "accn": "0000002178-24-000096",
+          "cik": 2178,
+          "entityName": "ADAMS RESOURCES & ENERGY, INC.",
+          "loc": "US-TX",
+          "end": "2023-12-31",
+          "val": 361334000
+        },
+        {
+          "accn": "0001437749-25-009464",
+          "cik": 2186,
+          "entityName": "BK Technologies Corp",
+          "loc": "US-FL",
+          "end": "2023-12-31",
+          "val": 49408000
+        },
+        {
+          "accn": "0000002488-25-000012",
+          "cik": 2488,
+          "entityName": "ADVANCED MICRO DEVICES, INC.",
+          "loc": "US-CA",
+          "end": "2023-12-30",
+          "val": 67885000000
+        }
+      ]
+    }
+  },
+  "holistic_tiers_link": "SEC 10,398 CIKs via frames bulk replaces per-CIK companyfacts loop. Demonstrates: Revenues = duration CY2023 (income stmt), Assets = instant CY2023Q4I (balance sheet). Same pattern extends to 503 us-gaap concepts.",
+  "bulk_design": {
+    "problem": "per-CIK companyfacts 10k * 1 sec = ~3h + rate limit 10 req/s",
+    "solution": "Frames API = one call returns ALL filers for a concept/period. 2673 entities Revenues CY2023, 6428 entities Assets CY2023Q4I in two calls.",
+    "next_steps": [
+      "Enumerate 503 us-gaap concepts from taxonomy JSON",
+      "Loop ccp CY2020-CY2024, CY2023Q1-Q4, Q4I for instant vs duration",
+      "Store in /pipeline/data/expanded/frames/*.json -> parquet -> train_matrix.npz",
+      "Join to existing towers_v6 via cik->ticker mapping from company_tickers.json"
+    ],
+    "coverage": "Tier1 SEC full 10,398 + Tier2 global 13k + Tier3 private 84M (firmographics) + Tier4 gov stats sectors. This frames sample proves Tier1 bulk path.",
+    "provenance": "SEC EDGAR XBRL Frames - audited, regulatory mandated, highest credibility",
+    "zero_deps": true
+  },
+  "storage_path": "/home/hatch/workspace/vector-equities/pipeline/data/expanded/frames_sample.json",
+  "sample_stats": {
+    "revenues_CY2023_entities": 2673,
+    "assets_CY2023Q4I_entities": 6428
+  }
+}

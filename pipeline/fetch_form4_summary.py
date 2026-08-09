@@ -24,13 +24,13 @@ def get_all_form4(cik_pad, since_year=2015, max_per_ticker=200):
             to_y = int(f.get("filingTo", "2025")[:4])
             if to_y < since_year:
                 continue
-        except:
+        except Exception:
             pass
         extra = CACHE_SUB / f"{cik_pad}_{f['name']}"
         if extra.exists():
             try:
                 chunks.append(json.loads(extra.read_text()))
-            except:
+            except Exception:
                 pass
     entries = []
     for chunk in chunks:
@@ -46,7 +46,7 @@ def get_all_form4(cik_pad, since_year=2015, max_per_ticker=200):
                 y = int(d[:4])
                 if y < since_year:
                     continue
-            except:
+            except Exception:
                 continue
             entries.append(
                 (
@@ -78,9 +78,7 @@ if __name__ == "__main__":
         cik_pad = str(entry["cik"]).zfill(10)
         ticker = entry["ticker"]
         f4 = get_all_form4(cik_pad, since_year=args.since, max_per_ticker=300)
-        print(
-            f"{ticker} {cik_pad} Form4 since {args.since}: {len(f4)} example {f4[:2]}"
-        )
+        print(f"{ticker} {cik_pad} Form4 since {args.since}: {len(f4)} example {f4[:2]}")
         for d, a, doc in f4:
             master.append(
                 {
@@ -92,7 +90,7 @@ if __name__ == "__main__":
                 }
             )
     out = Path("pipeline/data/form4_index.jsonl")
-    with open(out, "w") as f:
+    with Path(out).open("w") as f:
         for rec in master:
             f.write(json.dumps(rec) + "\n")
     print(f"Wrote {out} {len(master)} Form4 index records")

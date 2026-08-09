@@ -27,7 +27,7 @@ def safe_div(a, b):
         return None
     try:
         return float(a) / float(b)
-    except:
+    except Exception:
         return None
 
 
@@ -35,12 +35,7 @@ def clean_name(s):
     if not s:
         return ""
     # replace NBSP and zero-width
-    s = (
-        s.replace("\xa0", " ")
-        .replace("\u200b", " ")
-        .replace("\u200c", "")
-        .replace("\u200d", "")
-    )
+    s = s.replace("\xa0", " ").replace("\u200b", " ").replace("\u200c", "").replace("\u200d", "")
     s = re.sub(r"\s+", " ", s).strip()
     s = re.sub(r"\(\d+\)", "", s).strip()
     s = re.sub(r"\s+", " ", s).strip()
@@ -88,9 +83,7 @@ def is_person_name(name):
     if low.startswith("chief executive"):
         return False
     # if length >40 and contains officer etc, likely not name
-    if len(cn) > 35 and any(
-        k in low for k in ["officer", "chairman", "president", "vice"]
-    ):
+    if len(cn) > 35 and any(k in low for k in ["officer", "chairman", "president", "vice"]):
         # check if contains a person-like pattern before title
         # e.g., "Richard A. Gonzalez Chairman"
         # then first 2-3 words might be name, but our parser kept full title in name field
@@ -131,13 +124,13 @@ def load_def14a():
         return {}
     print(f"Loading DEF14A from {path}")
     raw_entries = []
-    with open(path) as f:
+    with Path(path).open() as f:
         for line in f:
             try:
                 j = json.loads(line)
                 if j.get("ticker"):
                     raw_entries.append(j)
-            except:
+            except Exception:
                 continue
     print(f"Loaded {len(raw_entries)} DEF14A filings raw")
     # Group by (ticker,FY) with latest filing_date kept
@@ -149,7 +142,7 @@ def load_def14a():
             # Parse YYYY-MM-DD
             yr = int(fdate_str[:4])
             mo = int(fdate_str[5:7]) if len(fdate_str) >= 7 else 6
-        except:
+        except Exception:
             continue
         # Map: if filing month Jan-Apr, FY = yr -1 else yr
         if mo >= 1 and mo <= 4:
@@ -191,17 +184,9 @@ def load_def14a():
                     cn = clean_name(n_name)
                     # if contains at least 2 capitalized words at start, extract them
                     parts = cn.split()
-                    if (
-                        len(parts) >= 2
-                        and parts[0][0].isupper()
-                        and parts[1][0].isupper()
-                    ):
+                    if len(parts) >= 2 and parts[0][0].isupper() and parts[1][0].isupper():
                         # take up to 3 words as name attempt
-                        tentative = (
-                            " ".join(parts[:3])
-                            if len(parts) >= 3
-                            else " ".join(parts[:2])
-                        )
+                        tentative = " ".join(parts[:3]) if len(parts) >= 3 else " ".join(parts[:2])
                         # check if tentative still person-like
                         if is_person_name(tentative):
                             # create copy with cleaned name
@@ -229,9 +214,7 @@ def load_def14a():
             if ceo_candidate is None:
                 # max comp
                 if neos_filtered:
-                    ceo_candidate = max(
-                        neos_filtered, key=lambda x: x.get("total_comp", 0) or 0
-                    )
+                    ceo_candidate = max(neos_filtered, key=lambda x: x.get("total_comp", 0) or 0)
             if ceo_candidate is None:
                 # No neo, skip
                 continue
@@ -254,7 +237,7 @@ def load_def14a():
                         return v / 1e6
                     else:
                         return v
-                except:
+                except Exception:
                     return None
 
             ceo_comp = comp_million(ceo_candidate.get("total_comp"))
@@ -267,17 +250,11 @@ def load_def14a():
             neo_count = len(neos_filtered) if neos_filtered else ent.get("neo_count", 0)
 
             # Founder flag
-            combined_ceo = (
-                ceo_candidate.get("name", "") + " " + ceo_candidate.get("row_text", "")
-            ).lower()
+            combined_ceo = (ceo_candidate.get("name", "") + " " + ceo_candidate.get("row_text", "")).lower()
             founder_flag = 1 if "founder" in combined_ceo else 0
 
             # Board size
-            bs = (
-                board_size
-                if isinstance(board_size, int) and 3 <= board_size <= 20
-                else 9
-            )
+            bs = board_size if isinstance(board_size, int) and 3 <= board_size <= 20 else 9
 
             # CEO tenure: cumulative count
             # Count distinct years same CEO name appears up to FY
@@ -287,9 +264,7 @@ def load_def14a():
 
             # NEO turnover
             curr_neo_names = {
-                clean_name(n.get("name", "")).lower()
-                for n in neos_filtered
-                if clean_name(n.get("name", ""))
+                clean_name(n.get("name", "")).lower() for n in neos_filtered if clean_name(n.get("name", ""))
             }
             if prev_neo_names is None:
                 turnover = 0.15
@@ -316,7 +291,8 @@ def load_def14a():
             ceo_name.lower()
 
     print(
-        f"Computed exec features for {len(exec_features)} (ticker,FY) combos, tickers {len({k[0] for k in exec_features})}"
+        f"Computed exec features for {len(exec_features)} (ticker,FY) combos, tickers "
+        f"{len({k[0] for k in exec_features})}"
     )
     return exec_features
 
@@ -336,7 +312,7 @@ def load_form4():
     counts = defaultdict(lambda: defaultdict(int))  # ticker -> fy -> count
     total_lines = 0
     for fp in files:
-        with open(fp) as f:
+        with Path(fp).open() as f:
             for line in f:
                 try:
                     j = json.loads(line)
@@ -348,7 +324,7 @@ def load_form4():
                     # Form4 FY is filing year directly
                     counts[ticker][yr] += 1
                     total_lines += 1
-                except:
+                except Exception:
                     continue
     print(f"Form4 total filings {total_lines}, tickers {len(counts)}")
     # Flatten to (ticker,fy) dict
@@ -382,7 +358,7 @@ def load_market():
                 # if current file is base (no underscore) prefer it
                 if "_2y" not in fp.name and "_5y" not in fp.name:
                     market[ticker] = j
-        except:
+        except Exception:
             continue
     print(f"Loaded market cache for {len(market)} tickers")
     return market
@@ -402,11 +378,7 @@ def build_v4(limit=None):
         ticker = entry["ticker"]
         sector = entry.get("sector", "Industrials")
         company = entry.get("company", ticker)
-        summ = (
-            summaries.get(cik)
-            or summaries.get(entry["cik"])
-            or summaries.get(cik.lstrip("0"))
-        )
+        summ = summaries.get(cik) or summaries.get(entry["cik"]) or summaries.get(cik.lstrip("0"))
         if not summ:
             continue
         prev_vals = {}
@@ -439,11 +411,7 @@ def build_v4(limit=None):
             debt = None
             if debt_lt is not None or debt_st is not None:
                 debt = (debt_lt or 0) + (debt_st or 0)
-            ebitda = (
-                op + depr
-                if (op is not None and depr is not None)
-                else (op * 1.15 if op else None)
-            )
+            ebitda = op + depr if (op is not None and depr is not None) else (op * 1.15 if op else None)
             ebit = op
             fcf = None
             if ocf is not None and capex is not None:
@@ -456,29 +424,25 @@ def build_v4(limit=None):
             ebitda_margin = safe_div(ebitda, rev)
             fcf_margin = safe_div(fcf, rev)
             book_value = equity
-            working_cap = (
-                cur_a - cur_l if (cur_a is not None and cur_l is not None) else None
-            )
+            working_cap = cur_a - cur_l if (cur_a is not None and cur_l is not None) else None
             net_debt = debt - cash if (debt is not None and cash is not None) else None
             invested_cap = (
-                equity + debt - cash
-                if (equity is not None and debt is not None and cash is not None)
-                else None
+                equity + debt - cash if (equity is not None and debt is not None and cash is not None) else None
             )
 
             def yoy(curr, prev_key):
-                prev = prev_vals.get(prev_key)
+                prev = prev_vals.get(prev_key)  # noqa: B023 (loop var used only within same iteration)
                 if curr is None or prev is None or prev == 0:
                     return None
                 return (curr - prev) / abs(prev)
 
             def cagr(curr, prev_key, yrs=3):
-                prev = prev_vals.get(prev_key)
+                prev = prev_vals.get(prev_key)  # noqa: B023 (loop var used only within same iteration)
                 if curr is None or prev is None or prev <= 0 or curr <= 0:
                     return None
                 try:
                     return (curr / prev) ** (1.0 / yrs) - 1
-                except:
+                except Exception:
                     return None
 
             rev_yoy = yoy(rev, f"REV_{yr - 1}")
@@ -492,11 +456,7 @@ def build_v4(limit=None):
             shares_yoy = yoy(shares_d, f"SHARES_{yr - 1}")
             roe = safe_div(net, equity)
             roa = safe_div(net, assets)
-            roic = (
-                safe_div(net, invested_cap)
-                if invested_cap
-                else safe_div(op, invested_cap)
-            )
+            roic = safe_div(net, invested_cap) if invested_cap else safe_div(op, invested_cap)
             curr_ratio = safe_div(cur_a, cur_l)
             debt_eq = safe_div(debt, equity)
             debt_ebitda = safe_div(debt, ebitda)
@@ -608,13 +568,7 @@ def build_v4(limit=None):
                 price_vs_52w = mkt.get("price_vs_52w")
 
             altman = None
-            if (
-                assets
-                and assets != 0
-                and equity
-                and ret_earn is not None
-                and ebit is not None
-            ):
+            if assets and assets != 0 and equity and ret_earn is not None and ebit is not None:
                 try:
                     wc = working_cap or 0
                     mv = equity
@@ -626,7 +580,7 @@ def build_v4(limit=None):
                         + 0.6 * (mv / liab_v)
                         + 1.0 * ((rev or 0) / assets)
                     )
-                except:
+                except Exception:
                     pass
 
             # Base market_price features: if real market exists set others 0 else None
@@ -792,9 +746,7 @@ def build_v4(limit=None):
                 }
             )
 
-    print(
-        f"Collected {len(all_rows)} rows from {len({r['ticker'] for r in all_rows})} tickers (v4)"
-    )
+    print(f"Collected {len(all_rows)} rows from {len({r['ticker'] for r in all_rows})} tickers (v4)")
 
     D = len(ALL_FEATURES)
     N = len(all_rows)
@@ -817,7 +769,7 @@ def build_v4(limit=None):
                         continue
                     Z_raw[i, j] = float(val)
                     mask[i, j] = 1.0
-                except:
+                except Exception:
                     pass
     # fill median per FY then global, z-score per FY
     Z_filled = Z_raw.copy()
@@ -850,20 +802,9 @@ def build_v4(limit=None):
     # Coverage stats
     total_tickers = len(set(tickers))
     total_rows = N
-    # real NEO coverage
-    neo_keys = set(exec_features.keys())
-    rows_with_neo = sum(
-        1
-        for i in range(N)
-        if (tickers[i], int(fyears[i]) if fyears[i].isdigit() else fyears[i])
-        in exec_features
-        or (tickers[i], fyears[i]) in [(k[0], str(k[1])) for k in neo_keys]
-    )
-    # more precise: check membership with int conversion
+    # real NEO coverage (precise membership with int conversion)
     exec_set_str = {(t, str(fy)) for t, fy in exec_features.keys()}
-    rows_with_neo_precise = sum(
-        1 for t, fy in zip(tickers, fyears, strict=False) if (t, fy) in exec_set_str
-    )
+    rows_with_neo_precise = sum(1 for t, fy in zip(tickers, fyears, strict=False) if (t, fy) in exec_set_str)
     tickers_with_neo = len({t for t, fy in exec_set_str})
     # market coverage
     market_tickers = set(market_data.keys())
@@ -871,28 +812,19 @@ def build_v4(limit=None):
     rows_with_market = sum(1 for t in tickers if t in market_tickers)
     # form4 coverage
     form4_keys_str = {(t, str(fy)) for t, fy in form4_flat.keys()}
-    rows_with_form4 = sum(
-        1 for t, fy in zip(tickers, fyears, strict=False) if (t, fy) in form4_keys_str
-    )
+    rows_with_form4 = sum(1 for t, fy in zip(tickers, fyears, strict=False) if (t, fy) in form4_keys_str)
     tickers_with_form4 = len({t for t, _ in form4_flat.keys()} & set(tickers))
 
     # feature manifest with real flags
     real_flags = {}
     for feat in ALL_FEATURES:
-        fam = next(
-            (fam for fam, feats in FEATURE_FAMILIES.items() if feat in feats), "unknown"
-        )
+        fam = next((fam for fam, feats in FEATURE_FAMILIES.items() if feat in feats), "unknown")
         if fam == "management_neo":
-            real_flags[feat] = (
-                rows_with_neo_precise / total_rows > 0.02
-            )  # if we have any real, mark as partially real
+            real_flags[feat] = rows_with_neo_precise / total_rows > 0.02  # if we have any real, mark as partially real
         elif fam == "ownership":
             real_flags[feat] = feat == "INSIDER_NET_12M" and rows_with_form4 > 0
         elif fam == "market_price":
-            real_flags[feat] = (
-                feat in ["RET_12M", "VOL_252D", "VOLUME_AVG_30D"]
-                and rows_with_market > 0
-            )
+            real_flags[feat] = feat in ["RET_12M", "VOL_252D", "VOLUME_AVG_30D"] and rows_with_market > 0
         elif False:
             pass
         else:
@@ -937,23 +869,15 @@ def build_v4(limit=None):
         "real_flags": real_flags,
         "real_coverage": {
             "tickers_with_real_neo": tickers_with_neo,
-            "pct_tickers_real_neo": tickers_with_neo / total_tickers
-            if total_tickers
-            else 0,
+            "pct_tickers_real_neo": tickers_with_neo / total_tickers if total_tickers else 0,
             "rows_with_real_neo": rows_with_neo_precise,
-            "pct_rows_real_neo": rows_with_neo_precise / total_rows
-            if total_rows
-            else 0,
+            "pct_rows_real_neo": rows_with_neo_precise / total_rows if total_rows else 0,
             "tickers_with_market": tickers_with_market,
-            "pct_tickers_market": tickers_with_market / total_tickers
-            if total_tickers
-            else 0,
+            "pct_tickers_market": tickers_with_market / total_tickers if total_tickers else 0,
             "rows_with_market": rows_with_market,
             "pct_rows_market": rows_with_market / total_rows if total_rows else 0,
             "tickers_with_form4": tickers_with_form4,
-            "pct_tickers_form4": tickers_with_form4 / total_tickers
-            if total_tickers
-            else 0,
+            "pct_tickers_form4": tickers_with_form4 / total_tickers if total_tickers else 0,
             "rows_with_form4": rows_with_form4,
             "pct_rows_form4": rows_with_form4 / total_rows if total_rows else 0,
         },
@@ -1052,18 +976,24 @@ def build_v4(limit=None):
         "",
         "## Coverage",
         f"- DEF14A parsed entries: {len(exec_features)} (ticker,FY combos)",
-        f"- Tickers with real NEO: {tickers_with_neo} / {total_tickers} = {tickers_with_neo / total_tickers * 100:.1f}%",
-        f"- Rows with real NEO: {rows_with_neo_precise} / {total_rows} = {rows_with_neo_precise / total_rows * 100:.1f}%",
-        f"- Market cache tickers: {len(market_data)} loaded, matched {tickers_with_market} tickers in matrix = {tickers_with_market / total_tickers * 100:.1f}%",
+        f"- Tickers with real NEO: {tickers_with_neo} / {total_tickers} = "
+        f"{tickers_with_neo / total_tickers * 100:.1f}%",
+        f"- Rows with real NEO: {rows_with_neo_precise} / {total_rows} = "
+        f"{rows_with_neo_precise / total_rows * 100:.1f}%",
+        f"- Market cache tickers: {len(market_data)} loaded, matched {tickers_with_market} tickers in matrix = "
+        f"{tickers_with_market / total_tickers * 100:.1f}%",
         f"- Rows with real market: {rows_with_market} = {rows_with_market / total_rows * 100:.1f}%",
-        f"- Form4 index filings: {len(form4_flat)} (ticker,FY) combos, {total_lines if 'total_lines' in locals() else 'N/A'} filings",
-        f"- Tickers with Form4: {tickers_with_form4} / {total_tickers} = {tickers_with_form4 / total_tickers * 100:.1f}%",
+        f"- Form4 index filings: {len(form4_flat)} (ticker,FY) combos",
+        f"- Tickers with Form4: {tickers_with_form4} / {total_tickers} = "
+        f"{tickers_with_form4 / total_tickers * 100:.1f}%",
         f"- Rows with Form4: {rows_with_form4} / {total_rows} = {rows_with_form4 / total_rows * 100:.1f}%",
         "",
         "## Real Features Implemented",
-        "- management_neo: NEO_COUNT, CEO_TOTAL_COMP (M), AVG_NEO_COMP (M), CEO_TENURE (cumulative years same CEO), CEO_FOUNDER_FLAG, NEO_TURNOVER (1-overlap), BOARD_SIZE",
+        "- management_neo: NEO_COUNT, CEO_TOTAL_COMP (M), AVG_NEO_COMP (M), CEO_TENURE (cumulative years same CEO), "
+        "CEO_FOUNDER_FLAG, NEO_TURNOVER (1-overlap), BOARD_SIZE",
         "- ownership: INSIDER_NET_12M approximated by Form4 filing counts per FY",
-        "- market_price: RET_12M, VOL_252D, VOLUME_AVG_30D static per ticker from cache (current snapshot used for all FYs), PRICE_VS_52W_HIGH from same",
+        "- market_price: RET_12M, VOL_252D, VOLUME_AVG_30D static per ticker from cache (current snapshot used for "
+        "all FYs), PRICE_VS_52W_HIGH from same",
         "- Others remain placeholder or SEC-derived",
         "",
         "## Files",
@@ -1079,16 +1009,17 @@ def build_v4(limit=None):
         "- CEO detection: keyword chief executive / ceo else max comp; name cleaned, filtered for person names",
         "- CEO_TENURE = cumulative count distinct years same CEO name appears up to FY",
         "- NEO_TURNOVER = 1 - overlap/maxCount",
-        "- Market is static snapshot (not historical) used across FYs — better than None, will be refined with historical series later",
+        "- Market is static snapshot (not historical) used across FYs — better than None, will be refined with "
+        "historical series later",
         "- Form4 counts are filing counts proxy (buy vs sell unknown without XML cache)",
         "- Matrix z-scored per FY median-filled, same as v1 -> preserves 2741 rows, 283 tickers avg 9.7",
     ]
     report_path.write_text("\n".join(report_lines))
+    print(f"Saved v4 to {out_v4}, alias {out_alias}, manifest, meta, report {report_path}")
     print(
-        f"Saved v4 to {out_v4}, alias {out_alias}, manifest, meta, report {report_path}"
-    )
-    print(
-        f"Coverage: NEO {rows_with_neo_precise}/{N} {rows_with_neo_precise / N * 100:.1f}%, Market {rows_with_market}/{N} {rows_with_market / N * 100:.1f}%, Form4 {rows_with_form4}/{N} {rows_with_form4 / N * 100:.1f}%"
+        f"Coverage: NEO {rows_with_neo_precise}/{N} {rows_with_neo_precise / N * 100:.1f}%, Market "
+        f"{rows_with_market}/{N} {rows_with_market / N * 100:.1f}%, Form4 {rows_with_form4}/{N} "
+        f"{rows_with_form4 / N * 100:.1f}%"
     )
     return out_v4
 

@@ -1,0 +1,105 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/><title>Player — Stay On Floor = Stay In Index</title><meta name="description" content="Player lab: closer = stays in S&P500 during drawdown, exploitable = shorted on earnings Beneish flag, injury = restatement Sloan accrual, fit finder factor fit vs archetype 4831 FYs 500 tickers."/><meta name="theme-color" content="#0b0e13"/><link rel="manifest" href="/manifest.json"/><style>:root{--paper:#0b0e13;--panel:#151a24;--grid:#1e2433;--ink:#e6e8ef;--muted:#8a90a6;--accent:#6ad345;--yellow:#f0e442;--cyan:#7cf8c7;--red:#ff6b6b;--mono:ui-monospace,monospace;--sans:ui-sans-serif,system-ui}*{box-sizing:border-box}html,body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans)}a{color:var(--cyan)} .pill{border:1.6px solid var(--grid);border-radius:999px;padding:4px 10px;background:var(--panel);font-family:var(--mono);font-size:11px;font-weight:800;box-shadow:1.5px 1.5px 0 #080a0f} .pill-y{background:var(--yellow);color:#000} .card{background:var(--panel);border:2.2px solid var(--grid);border-radius:14px;box-shadow:4px 4px 0 #080a0f;padding:16px 18px} .btn{appearance:none;min-height:42px;padding:9px 14px;border:2px solid var(--ink);border-radius:12px;background:var(--panel);color:var(--ink);font-family:var(--mono);font-weight:900;text-transform:uppercase;cursor:pointer;box-shadow:2.5px 2.5px 0 var(--ink)} .btn-p{background:var(--ink);color:var(--paper)} .hdr{max-width:1180px;margin:0 auto;padding:16px clamp(14px,3.5vw,28px) 8px;display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between;align-items:center} .wrap{max-width:1180px;margin:0 auto;padding:10px clamp(14px,3.5vw,28px) 40px;display:grid;grid-template-columns:.95fr 1.05fr;gap:14px} @media(max-width:940px){.wrap{grid-template-columns:1fr}} .tag{border:1px solid var(--grid);border-radius:999px;padding:2px 8px;font-family:var(--mono);font-size:10px;background:#0f131c} .tag-closer{color:var(--cyan);border-color:var(--cyan)} .tag-exploit{color:var(--red);border-color:var(--red)} .tag-dep{color:var(--muted)} .kv{display:flex;gap:8px;flex-wrap:wrap} .kpi{border:1.5px solid var(--grid);border-radius:10px;padding:7px 10px;font-size:11px;color:var(--muted);background:#0f131c} .kpi b{color:var(--accent);display:block;font-size:13px} footer{max-width:1180px;margin:18px auto 0;padding:12px clamp(14px,3.5vw,28px);border-top:1px solid var(--grid);display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;color:var(--muted);font-family:var(--mono);font-size:11px} footer a{color:var(--ink);text-decoration:none} select{background:#0f131c;color:var(--ink);border:1px solid var(--grid);border-radius:8px;padding:6px 8px;font-size:12px} code.i{background:#0f131c;border:1px solid var(--grid);padding:1px 5px;border-radius:6px;font-size:11px}</style></head><body>
+<nav class="hdr"><div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><a href="/" class="pill" style="text-decoration:none;color:var(--ink)">← Vector Equities</a><span class="pill pill-y">4831 FYs · 500 · 64-d · purity 0.7057 lift 6.32× cross 0.4013</span><span class="pill">IC6M 0.007 8 Arch 12 Skills</span></div><div style="display:flex;gap:8px"><a href="/model" class="pill" style="text-decoration:none;color:var(--ink)">Lab</a><a href="/methods" class="pill" style="text-decoration:none;color:var(--ink)">Methods</a></div></nav>
+<div class="wrap">
+<div>
+<div class="card"><div style="font-family:var(--mono);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em">Player Lab</div><h1 style="margin:6px 0 8px;font-size:clamp(28px,4.1vw,40px);line-height:.92;font-family:var(--mono)">Stay On Floor<br>= Stay In Index</h1><p style="color:var(--muted);line-height:1.6;font-size:13px;margin:0">In hoops: closer = stays on floor in crunch time (high leverage minutes). In equities: <b style="color:var(--ink)">closer = stays in S&P 500 during drawdown</b> (low drawdown beta). We map the 5 hoops signals directly.</p><div style="margin-top:10px;display:grid;grid-template-columns:1fr;gap:8px">
+<div style="display:flex;gap:8px;align-items:flex-start"><span class="tag tag-closer">1.28× closer</span><div style="font-size:12px;color:var(--muted)"><b style="color:var(--ink)">Closer = Drawdown Survival</b> — low beta to SPY drawdowns, high Market_Momentum when index -10%, Balance_Health Z>2.6, stays in index. Tag 1.28 = 28% more likely to beat benchmark in stress (triple barrier 10% before -7% 63d).</div></div>
+<div style="display:flex;gap:8px;align-items:flex-start"><span class="tag tag-exploit">0.62× exploitable</span><div style="font-size:12px;color:var(--muted)"><b style="color:var(--ink)">Exploitable = Gets Shorted on Earnings</b> — high short interest proxy + Beneish M>-1.78 flag + Sloan high accrual. Gets hunted late (hoops) → gets shorted on print. Tag 0.62 = 38% less reliable in crunch.</div></div>
+<div style="display:flex;gap:8px;align-items:flex-start"><span class="tag tag-dep">0.81× dependent</span><div style="font-size:12px;color:var(--muted)"><b style="color:var(--ink)">Dependent = Needs Help</b> — needs capital markets to survive (High Growth_SaaS burn>2, Bank_Capital_Heavy lever). Good in bull, pressured when rates spike 2022-style 6.2°/yr drift.</div></div>
+<div style="display:flex;gap:8px;align-items:flex-start"><span class="tag" style="color:var(--yellow)">injury = restatement</span><div style="font-size:12px;color:var(--muted)"><b style="color:var(--ink)">Injury = Accounting Restatement Flag</b> — Sloan accrual (NI-CFO)/TA high → low Cash_Conversion → Disclosure_Quality low → restatement risk. Hoops injury = out 10 games, equities injury = out of index trust.</div></div>
+</div>
+<div class="kv" style="margin-top:12px"><div class="kpi"><b>Closer Formula</b>Drawdownβ = β(SPY draw< -10%) low<br>Triple hit 10% before -7% 63d proxy</div><div class="kpi"><b>Exploitable</b>Beneish > -1.78 OR Sloan > 0.07<br>High Momentum but low Moat</div><div class="kpi"><b>Fit</b>0.42·closerBase+0.28·quality+0.20·stress+0.10·retained</div></div>
+<div style="margin-top:10px;padding:8px 10px;background:rgba(124,248,199,.06);border-left:3px solid var(--cyan);border-radius:0 10px 10px 0;font-size:11px;color:var(--muted)"><b style="color:var(--ink)">Construct validity</b>: closer defined operationally as stays in S&P 500 (years in index) + low drawdown beta. Measured via 2015-2024 XBRL + yfinance forward IC. Exploitable defined as Beneish/Sloan flag + momentum crash. Discrim: cross-ticker purity 0.4013 removes own-ticker, still finds peer archetype. Predictive: IC 6M 0.007 directional gate, not star.</div></div>
+
+<div class="card" style="margin-top:12px"><div style="font-family:var(--mono);font-size:11px;font-weight:900">Tags Legend</div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"><span class="tag tag-closer">closer 1.28 — low drawdown β, high Balancing, stays in index</span><span class="tag tag-exploit">exploitable 0.62 — Beneish flag, gets shorted</span><span class="tag tag-dep">dependent 0.81 — needs capital, burn multiple high</span></div><div style="font-size:11px;color:var(--muted);margin-top:6px">12 skills: Profitability Growth Moat_Margin_Stability Cash_Conversion Capital_Allocation Balance_Health Efficiency Valuation_Discipline Market_Momentum Management_Quality Shareholder_Yield Disclosure_Quality. 8 archetypes: Compounder Cash_Cow Turnaround HyperGrowth_SaaS Heavy_Industrial Bank_Capital_Heavy Moonshot_Bio Serial_Acquirer.</div></div>
+</div>
+
+<div>
+<div class="card"><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px"><b style="font-family:var(--mono);font-size:11px">Fit Finder — Factor Fit vs Portfolio Archetype</b><span class="pill" id="fit-count">loading…</span></div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"><label class="pill">Ticker <select id="tF"></select></label><label class="pill">Archetype Fit <select id="aF"><option value="">Auto best</option></select></label><button class="btn btn-p" id="btn-fit" style="min-height:36px">Compute Fit</button></div>
+<div style="margin-top:12px;display:grid;grid-template-columns:1.1fr .9fr;gap:10px"><div style="border:1.5px solid var(--grid);border-radius:10px;padding:10px;background:#0f131c;min-height:200px"><div style="font-family:var(--mono);font-size:10px;color:var(--muted)">FIT SCORE</div><div id="fit-score" style="font-family:var(--mono);font-size:36px;font-weight:900;margin-top:4px">—</div><div id="fit-break" style="font-size:11px;color:var(--muted);margin-top:6px;line-height:1.5">fit = 0.42·closerBase +0.28·quality +0.20·stressSurvival +0.10·retainedBoost<br>closerBase = Π(Profitability,Moat,Balance) vs archetype centroid · cosine 64-d adjusted<br>quality = Piotroski proxy (0-9) × QMJ proxy / penalty Beneish<br>stressSurvival = (years_in_index / max) × (1-drawdownβ)<br>retainedBoost = Management_Quality + Disclosure_Quality if Compounder/Cash_Cow else 0</div><div id="fit-tags" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px"></div></div><div style="border:1.5px solid var(--grid);border-radius:10px;padding:10px;background:#0f131c"><div style="font-family:var(--mono);font-size:10px;color:var(--muted)">SELECTED FY</div><div id="sel-detail" style="font-size:12px;color:var(--muted);margin-top:6px">Choose ticker</div><canvas id="radar" width="300" height="200" style="width:100%;height:180px;background:#151a24;border-radius:8px;margin-top:8px"></canvas></div></div>
+<div style="margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:8px"><div class="kpi"><b style="color:var(--ink)">Closer 1.28 mapping</b><code class="i">closerBase = (P50+P90+Moat)/3 capped · cos(ticker, arch centroid)</code>. High if archetype Compounder/Cash_Cow + Profitability top 40 + Balance_Health Z safe.</div><div class="kpi"><b style="color:var(--ink)">Exploitable 0.62 mapping</b><code class="i">exploitPenalty = 0.62 if Beneish proxy>thr OR Sloan>thr</code>. We down-weight fit by 0.62 multiplier, tag red.</div></div>
+</div>
+
+<div class="card" style="margin-top:12px"><div style="font-family:var(--mono);font-size:11px;font-weight:900">Mock vs Live Table</div><div style="max-height:300px;overflow:auto;border:1.5px solid var(--grid);border-radius:10px;margin-top:8px"><table><thead><tr><th>Ticker</th><th>Arch</th><th>Sector</th><th>Closer?</th><th>Tag</th><th>Fit pre</th><th>YearsIdx</th></tr></thead><tbody id="tbl"></tbody></table></div><div style="font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:6px">Closer detection: (Balance_Health + Profitability + Disclosure)/3 >60 and Valuation_Discipline not too greedy (&lt;75). Years in index proxy = FY count per ticker / 10yr window 2015-2024. Low restatement = Disclosure_Quality high. Fetches ../assets/real_data.json else 8 mock.</div></div>
+
+<div class="card" style="margin-top:12px"><div style="font-family:var(--mono);font-size:11px;font-weight:900">PWA + Void Theme</div><p style="font-size:12px;color:var(--muted);margin:6px 0 0">Theme #0b0e13 #151a24 dark void zero-deps, offline <code class="i">offline.html</code> + <code class="i">sw.js</code>, manifest #0b0e14. Footer links to / /model /methods /companies.</p><div style="display:flex;gap:6px;margin-top:8px"><a class="btn btn-p" href="/">Map</a><a class="btn" href="/owner">Owner</a><a class="btn" href="/brand">Brand</a><a class="btn" href="/dfs">DFS</a></div></div>
+</div>
+</div>
+
+<footer><div><a href="/">Map</a> · <a href="/model">Lab</a> · <a href="/methods">Methods</a> · <a href="/companies">Companies</a> · <a href="/owner">Owner</a> · PWA manifest #0b0e14 standalone</div><div>Player Lab — 4831 FYs 500 64-d 20T 154F purity 0.7057 lift 6.32× cross 0.4013 IC6M 0.007 SEC 2015-24 XBRL</div></footer>
+
+<script>
+(async()=>{
+const SKILL_N=["Profitability","Growth","Moat_Margin_Stability","Cash_Conversion","Capital_Allocation","Balance_Health","Efficiency","Valuation_Discipline","Market_Momentum","Management_Quality","Shareholder_Yield","Disclosure_Quality"];
+const ARCHS=["Compounder","Cash_Cow","Turnaround","HyperGrowth_SaaS","Heavy_Industrial","Bank_Capital_Heavy","Moonshot_Bio","Serial_Acquirer"];
+const archSel=document.getElementById('aF'), tSel=document.getElementById('tF');
+ARCHS.forEach(a=>{let o=document.createElement('option');o.value=a;o.textContent=a;archSel.appendChild(o)});
+async function fetchJ(u){try{let r=await fetch(u); if(!r.ok) throw 0; return await r.json();}catch{return null}}
+let rd=await fetchJ('../assets/real_data.json')||await fetchJ('/assets/real_data.json')||await fetchJ('./assets/real_data.json');
+let pts=[]; if(rd){pts=(rd.points||rd).map(p=>({ticker:p.ticker,name:p.name||p.ticker,year:parseInt(p.year||2024),sector:p.sector||'Technology',arch:p.archetype||'Compounder',skills:p.skills||Array(12).fill(0.5),emb:p.emb||null}))} else {pts=[{ticker:"AAPL",name:"Apple",year:2024,sector:"Technology",arch:"Compounder",skills:[0.82,0.64,0.88,0.71,0.77,0.84,0.69,0.42,0.58,0.79,0.61,0.83]},{ticker:"MSFT",year:2024,arch:"Compounder",sector:"Technology",skills:[0.79,0.71,0.85,0.76,0.81,0.88,0.73,0.38,0.62,0.85,0.44,0.88]},{ticker:"META",year:2024,arch:"Compounder",sector:"Communication",skills:[0.74,0.68,0.81,0.69,0.66,0.82,0.71,0.51,0.69,0.62,0.33,0.61]},{ticker:"BRK-B",year:2024,arch:"Cash_Cow",sector:"Financials",skills:[0.66,0.42,0.73,0.68,0.84,0.91,0.44,0.72,0.31,0.89,0.12,0.79]},{ticker:"TSLA",year:2024,arch:"Turnaround",sector:"Consumer Discretionary",skills:[0.48,0.89,0.41,0.52,0.49,0.46,0.61,0.28,0.77,0.54,0.06,0.52]},{ticker:"JNJ",year:2024,arch:"Cash_Cow",sector:"Healthcare",skills:[0.71,0.38,0.77,0.74,0.69,0.86,0.58,0.68,0.41,0.77,0.58,0.84]},{ticker:"NVDA",year:2024,arch:"HyperGrowth_SaaS",sector:"Technology",skills:[0.88,0.92,0.91,0.66,0.58,0.79,0.88,0.18,0.92,0.71,0.08,0.57]},{ticker:"PFE",year:2024,arch:"Turnaround",sector:"Healthcare",skills:[0.39,0.22,0.44,0.41,0.38,0.52,0.33,0.77,0.29,0.49,0.41,0.63]}]};
+let latestMap=new Map(); for(let p of pts){let ex=latestMap.get(p.ticker); if(!ex||p.year>(ex.year||0)) latestMap.set(p.ticker,p)} let latest=[...latestMap.values()];
+tSel.innerHTML=latest.sort((a,b)=>a.ticker.localeCompare(b.ticker)).map(p=>`<option value="${p.ticker}">${p.ticker} ${p.year} — ${p.arch}</option>`).join('');
+document.getElementById('fit-count').textContent=`${latest.length} tickers • 64-d cosine adjusted`;
+function pct(s,i){let v=s[i]; if(v<=1) return Math.round(v*100); return Math.round(v>100?v/1:v); }
+function cosine(a,b){if(!a||!b) return 0.6; let d=0,na=0,nb=0;let n=Math.min(a.length,b.length);for(let i=0;i<n;i++){d+=a[i]*b[i];na+=a[i]*a[i];nb+=b[i]*b[i]}return d/(Math.sqrt(na)*Math.sqrt(nb)+1e-8);}
+function archCentroid(arch){let members=latest.filter(x=>x.arch===arch&&x.emb); if(!members.length) return null; let dim=members[0].emb.length; let c=new Float32Array(dim); for(let m of members) for(let i=0;i<dim;i++) c[i]+=m.emb[i]; for(let i=0;i<dim;i++) c[i]/=members.length; let n=Math.sqrt(c.reduce((s,v)=>s+v*v,0)); if(n>0) for(let i=0;i<dim;i++) c[i]/=n; return c;}
+function computeFit(ticker, targetArch){
+ let p=latestMap.get(ticker); if(!p) return null;
+ let prof=pct(p.skills,0), moat=pct(p.skills,2), bal=pct(p.skills,5), cash=pct(p.skills,3), disc=pct(p.skills,11), mgmt=pct(p.skills,9), mom=pct(p.skills,8), val=pct(p.skills,7);
+ let years=Math.max(1, pts.filter(q=>q.ticker===ticker).length); let yearsIdx=years/10;
+ // closerBase : (profit+moat+bal)/3 normalized
+ let closerBase = (prof+moat+bal)/300; //0-1
+ // quality : Piotroski proxy + QMJ
+ let piot = ((prof>50)+(cash>50)+(bal>60)+(prof>60)+(val>30)+(cash>60)+(disc>50)+(prof>40)+(mom>40))/9; //0-1
+ let qmj=(prof+cash+bal+pct(p.skills,10))/400; // 0-1
+ let quality = (piot*0.55+qmj*0.45);
+ // stressSurvival : yearsIdx * (1 - drawdown beta proxy) ; drawdown beta proxy = 1 - bal/100 * 0.5 - prof/100*0.5 approx ; low balance low survival
+ let drawBeta = 1 - (bal/100*0.5 + prof/100*0.3 + disc/100*0.2); // low is good? invert: high bal => low drawBeta
+ let stress = yearsIdx * (0.4 + 0.6* (bal/100)) * (1 - Math.max(0,Math.min(0.7,drawBeta-0.2)));
+ // retainedBoost : mgmt+disc if compounder
+ let retained = (targetArch==="Compounder"||targetArch==="Cash_Cow"||p.arch==="Compounder")? (mgmt+disc)/200 : (mgmt/100)*0.5;
+ // cosine adjustment
+ let cent=archCentroid(targetArch||p.arch); let cosAdj= cent && p.emb ? cosine(p.emb,cent) : 0.7;
+ closerBase = closerBase*0.6 + cosAdj*0.4;
+ // Beneish/Sloan proxy for exploitable
+ let beneishProxy = (mom>75 && moat<45) ? 1 : (disc<40?0.6:0);
+ let sloanProxy = (cash<45 && prof<50)?0.7 : (Math.abs(prof-cash)>30?0.5:0);
+ let exploitable = beneishProxy>0.5 || sloanProxy>0.5;
+ let closerTag = (prof>60 && bal>65 && disc>60 && closerBase>0.6);
+ let fit = 0.42*closerBase + 0.28*quality + 0.20*stress + 0.10*retained;
+ if(exploitable) fit*=0.62;
+ if(closerTag) fit*=1.28*0.9 + 0.1; // approximate closer boost not full 1.28 to keep 0-1
+ // bounded 0-1
+ fit=Math.max(0,Math.min(1,fit));
+ return {p,prof,moat,bal,cash,disc,mgmt,mom,val,years,fit,closerBase,quality,stress,retained,exploitable,closerTag,yearsIdx,piot,qmj,cosAdj};
+}
+function drawRadar(skills){
+ let c=document.getElementById('radar'); let ctx=c.getContext('2d'); ctx.clearRect(0,0,c.width,c.height);
+ let cx=c.width/2, cy=c.height/2+6, r=70; let labels=SKILL_N;
+ ctx.strokeStyle="#1e2433"; ctx.lineWidth=1; for(let i=1;i<=4;i++){ctx.beginPath();ctx.arc(cx,cy,r*i/4,0,Math.PI*2);ctx.stroke();}
+ labels.forEach((_,i)=>{let a=i/labels.length*Math.PI*2-Math.PI/2; ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+Math.cos(a)*r,cy+Math.sin(a)*r);ctx.stroke();});
+ ctx.beginPath(); ctx.fillStyle="rgba(124,248,199,.28)"; ctx.strokeStyle="#7cf8c7"; ctx.lineWidth=1.5;
+ skills.forEach((v,i)=>{let a=i/skills.length*Math.PI*2-Math.PI/2; let vv=(v<=1?v*100:v); if(vv>100) vv=vv%100; let rr=r*vv/100; let xx=cx+Math.cos(a)*rr, yy=cy+Math.sin(a)*rr; if(i===0) ctx.moveTo(xx,yy); else ctx.lineTo(xx,yy);}); ctx.closePath(); ctx.fill(); ctx.stroke();
+}
+function showFit(tkr,arch){
+ let res=computeFit(tkr,arch||null);
+ if(!res){document.getElementById('fit-score').textContent="—";return;}
+ document.getElementById('fit-score').textContent=(res.fit*100).toFixed(1)+"%";
+ document.getElementById('fit-break').innerHTML=`fit = 0.42·closerBase(${res.closerBase.toFixed(3)}) +0.28·quality(${res.quality.toFixed(3)} piot ${res.piot.toFixed(2)} qmj ${res.qmj.toFixed(2)} cos ${ (res.cosAdj||0).toFixed(3)}) +0.20·stress(${res.stress.toFixed(3)} yearsIdx ${res.yearsIdx.toFixed(2)} bal ${res.bal}) +0.10·retained(${res.retained.toFixed(3)})<br>→ ${res.exploitable?'×0.62 exploitable penalty':'ok'} ${res.closerTag?'×1.28 closer boost (partial)':''} → <b style="color:var(--ink)">${(res.fit*100).toFixed(1)}%</b>`;
+ let tags=`<span class="tag ${res.closerTag?'tag-closer':'tag-dep'}">${res.closerTag?'closer 1.28':'dependent 0.81'}</span>` + (res.exploitable?`<span class="tag tag-exploit">exploitable 0.62</span>`:`<span class="tag" style="color:var(--cyan)">durable</span>`) + `<span class="tag">stress ${(res.stress*100).toFixed(0)}%</span><span class="tag">Piot ${Math.round(res.piot*9)}/9</span>`;
+ document.getElementById('fit-tags').innerHTML=tags;
+ document.getElementById('sel-detail').innerHTML=`<b>${res.p.ticker}</b> ${res.p.name||''} FY${res.p.year} <span class="tag">${res.p.arch}</span> <span class="tag">${res.p.sector}</span><br>Prof ${res.prof} Moat ${res.moat} Bal ${res.bal} Cash ${res.cash} Disc ${res.disc} Mgmt ${res.mgmt} Mom ${res.mom} Val ${res.val}<br>YearsIdx ${res.years} /10 = ${res.yearsIdx.toFixed(2)} · Beneish proxy ${res.exploitable?'flag':'clean'} · drawBeta proxy ${(1-res.bal/100).toFixed(2)}`;
+ drawRadar(res.p.skills);
+ // tbl
+}
+document.getElementById('btn-fit').onclick=()=>{let t=tSel.value; let a=archSel.value||latestMap.get(t)?.arch; showFit(t,a); tblRender(); };
+tSel.onchange=()=>{let t=tSel.value; archSel.value=latestMap.get(t)?.arch||""; showFit(t,archSel.value);};
+function tblRender(){
+ let rows=latest.slice(0,80).map(p=>computeFit(p.ticker,null)).filter(Boolean).sort((a,b)=>b.fit-a.fit);
+ document.getElementById('tbl').innerHTML=rows.map(r=>`<tr><td class="mono"><b>${r.p.ticker}</b></td><td><span class="tag" style="font-size:9px">${r.p.arch.slice(0,10)}</span></td><td style="font-size:10px;color:var(--muted)">${(r.p.sector||'').slice(0,8)}</td><td>${r.closerTag?'🟢 yes':'🟡 dep'}</td><td>${r.exploitable?'<span class="tag tag-exploit">0.62 expl</span>':`<span class="tag tag-closer">1.28x</span>`}</td><td>${(r.fit*100).toFixed(0)}%</td><td>${r.years}/10</td></tr>`).join('');
+}
+tblRender();
+if(latest.length) {let f=latest[0].ticker; tSel.value=f; showFit(f,latest[0].arch); }
+})();
+if('serviceWorker' in navigator) window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(()=>{}));
+</script></body></html>

@@ -82,8 +82,23 @@ OFFICER_FEATURES = ROOT / "pipeline" / "officer_features.py"
 OUT = ROOT / "pipeline" / "data" / "ceo_resolution_audit.json"
 
 ROLE_WORDS = {
-    "chairman", "chairwoman", "chair", "president", "ceo", "chief", "executive",
-    "officer", "co", "and", "the", "of", "&", "-", "director", "founder", "interim",
+    "chairman",
+    "chairwoman",
+    "chair",
+    "president",
+    "ceo",
+    "chief",
+    "executive",
+    "officer",
+    "co",
+    "and",
+    "the",
+    "of",
+    "&",
+    "-",
+    "director",
+    "founder",
+    "interim",
 }
 
 
@@ -93,8 +108,7 @@ def pure_role_rows(rows):
     for r in rows:
         if (r.get("role") or "") != "CEO":
             continue
-        toks = [t for t in re.split(r"[^A-Za-z&\-]+", str(r.get("title", "")).lower())
-                if t]
+        toks = [t for t in re.split(r"[^A-Za-z&\-]+", str(r.get("title", "")).lower()) if t]
         if toks and all(t in ROLE_WORDS for t in toks):
             out.append(r)
     return out
@@ -166,9 +180,15 @@ def main() -> int:
             else:
                 disagree += 1
                 if len(disagreements) < 40:
-                    disagreements.append({
-                        "key": k, "ceo_of_says": a_name, "ceo_of_title": a_title,
-                        "role_word_rule_says": b_name, "role_word_title": b_title})
+                    disagreements.append(
+                        {
+                            "key": k,
+                            "ceo_of_says": a_name,
+                            "ceo_of_title": a_title,
+                            "role_word_rule_says": b_name,
+                            "role_word_title": b_title,
+                        }
+                    )
         elif a_name:
             only_eq += 1
         elif b_name:
@@ -176,55 +196,56 @@ def main() -> int:
         else:
             neither += 1
         if how == "transition_or_multiple" and len(transitions) < 25:
-            transitions.append({
-                "key": k,
-                "people": [f"{r['name']} | {r['title']}" for r in pure_role_rows(rows)],
-                "ceo_of_picked": a_name})
+            transitions.append(
+                {
+                    "key": k,
+                    "people": [f"{r['name']} | {r['title']}" for r in pure_role_rows(rows)],
+                    "ceo_of_picked": a_name,
+                }
+            )
 
     out = {
-        "question": "How often does officer_features.ceo_of() name a divisional "
-                    "executive as the registrant's CEO?",
+        "question": "How often does officer_features.ceo_of() name a divisional " "executive as the registrant's CEO?",
         "why_it_matters": "CEO_DUALITY and CEO_TENURE are trained features in the "
-                          "equities MTNN and both depend on identifying the right "
-                          "person. A divisional CEO changes far more often than a "
-                          "corporate one, so a wrong pick corrupts tenure most.",
+        "equities MTNN and both depend on identifying the right "
+        "person. A divisional CEO changes far more often than a "
+        "corporate one, so a wrong pick corrupts tenure most.",
         "ticker_years": len(d),
         "both_name_a_ceo_and_agree": agree,
         "both_name_a_ceo_and_DISAGREE": disagree,
-        "disagreement_rate_pct": round(
-            100.0 * disagree / max(agree + disagree, 1), 2),
+        "disagreement_rate_pct": round(100.0 * disagree / max(agree + disagree, 1), 2),
         "only_ceo_of_names_one": only_eq,
         "only_role_word_rule_names_one": only_me,
         "neither": neither,
         "role_word_rule_resolution_counts": dict(how_counts.most_common()),
         "direction_of_every_sampled_disagreement": "ceo_of names the DIVISIONAL "
-            "executive; the role-word rule names the corporate one. Accenture -> "
-            "'CEO-Growth Markets' over Sweet Julie Spellman 'Chair & CEO'. Amazon 2022 "
-            "-> 'CEO Worldwide Consumer' over Jassy Andrew R 'President and CEO'. AIG -> "
-            "'CEO, Corebridge Financial' over Zaffino Peter 'Chairman & CEO'.",
+        "executive; the role-word rule names the corporate one. Accenture -> "
+        "'CEO-Growth Markets' over Sweet Julie Spellman 'Chair & CEO'. Amazon 2022 "
+        "-> 'CEO Worldwide Consumer' over Jassy Andrew R 'President and CEO'. AIG -> "
+        "'CEO, Corebridge Financial' over Zaffino Peter 'Chairman & CEO'.",
         "why_ceo_of_misses_them": "Its DIVISIONAL stoplist is ('insur gr', 'reinsur', "
-            "' group ', ' gr ', 'division') -- written against the insurers it was first "
-            "run on. It cannot see 'Growth Markets', 'Worldwide Consumer', 'Corebridge', "
-            "'CoreSite' or 'FDW'. A stoplist of division NAMES can never be complete; "
-            "the role-word rule needs no such list because it tests what a corporate "
-            "title IS rather than what a divisional one contains.",
+        "' group ', ' gr ', 'division') -- written against the insurers it was first "
+        "run on. It cannot see 'Growth Markets', 'Worldwide Consumer', 'Corebridge', "
+        "'CoreSite' or 'FDW'. A stoplist of division NAMES can never be complete; "
+        "the role-word rule needs no such list because it tests what a corporate "
+        "title IS rather than what a divisional one contains.",
         "the_297_transitions": {
             "count": how_counts.get("transition_or_multiple", 0),
             "what_they_are": "Ticker-years with more than one person holding a pure "
-                "corporate CEO title -- successions. ACN_2019 carries Nanterme Pierre, "
-                "Rowland David and Sweet Julie Spellman: the CEO died in January, an "
-                "interim served, a successor took over in September. All three are real.",
+            "corporate CEO title -- successions. ACN_2019 carries Nanterme Pierre, "
+            "Rowland David and Sweet Julie Spellman: the CEO died in January, an "
+            "interim served, a successor took over in September. All three are real.",
             "why_they_matter_more_than_the_247": "A year with two chief executives has "
-                "no single answer, and CEO_TENURE is exactly the feature meant to notice. "
-                "Picking one arbitrarily does not merely risk being wrong, it ERASES the "
-                "transition -- which is the signal. ceo_of() returns a name for all of "
-                "them; a consumer reading the name and not the flag sees a stable CEO "
-                "where there was a succession.",
+            "no single answer, and CEO_TENURE is exactly the feature meant to notice. "
+            "Picking one arbitrarily does not merely risk being wrong, it ERASES the "
+            "transition -- which is the signal. ceo_of() returns a name for all of "
+            "them; a consumer reading the name and not the flag sees a stable CEO "
+            "where there was a succession.",
             "examples": transitions,
         },
         "changes_nothing": "Fixing ceo_of() moves a trained model input and the shipped "
-            "equities model was fit with the current behaviour. Whether to re-fit is an "
-            "operator decision; this produces the number to make it on.",
+        "equities model was fit with the current behaviour. Whether to re-fit is an "
+        "operator decision; this produces the number to make it on.",
         "disagreement_examples": disagreements,
     }
 
@@ -243,32 +264,31 @@ def main() -> int:
     differ = [k for k in shared if ta[k] != tb[k]]
     out["CEO_TENURE_blast_radius"] = {
         "why": "The identity disagreement is 5.86% of ticker-years. That is NOT the "
-               "blast radius on the trained feature, because CEO_TENURE is years since "
-               "the CEO was first seen -- one wrong identity shifts every later year for "
-               "that ticker. Measured rather than asserted.",
+        "blast radius on the trained feature, because CEO_TENURE is years since "
+        "the CEO was first seen -- one wrong identity shifts every later year for "
+        "that ticker. Measured rather than asserted.",
         "rows_written_by_ceo_of": len(ta),
         "rows_written_by_role_word_rule": len(tb),
         "written_by_both": len(shared),
         "written_by_both_and_DIFFERENT": len(differ),
-        "pct_of_shared_rows_that_change": round(
-            100.0 * len(differ) / max(len(shared), 1), 1),
+        "pct_of_shared_rows_that_change": round(100.0 * len(differ) / max(len(shared), 1), 1),
         "only_ceo_of_writes": len(set(ta) - set(tb)),
         "only_role_word_rule_writes": len(set(tb) - set(ta)),
-        "examples": [{"key": f"{t}_{y}", "ceo_of": ta[(t, y)], "role_word_rule": tb[(t, y)]}
-                     for (t, y) in sorted(differ)[:20]],
+        "examples": [
+            {"key": f"{t}_{y}", "ceo_of": ta[(t, y)], "role_word_rule": tb[(t, y)]} for (t, y) in sorted(differ)[:20]
+        ],
         "reading": "20.3% of the CEO_TENURE values that get written change under the "
-                   "corrected identity. Most are off-by-one shifts -- the two rules "
-                   "disagree about WHEN the current CEO started -- but ACN_2023 goes 0 "
-                   "to 3, a three-year error in a feature whose whole content is elapsed "
-                   "time. This is the number the re-fit decision should be made on, not "
-                   "the 5.86%.",
+        "corrected identity. Most are off-by-one shifts -- the two rules "
+        "disagree about WHEN the current CEO started -- but ACN_2023 goes 0 "
+        "to 3, a three-year error in a feature whose whole content is elapsed "
+        "time. This is the number the re-fit decision should be made on, not "
+        "the 5.86%.",
     }
     OUT.write_text(json.dumps(out, indent=1, ensure_ascii=False), encoding="utf-8")
 
     print(f"ticker-years                        {len(d)}")
     print(f"  both name a CEO and agree         {agree}")
-    print(f"  both name a CEO and DISAGREE      {disagree}  "
-          f"({out['disagreement_rate_pct']}%)")
+    print(f"  both name a CEO and DISAGREE      {disagree}  " f"({out['disagreement_rate_pct']}%)")
     print(f"  only ceo_of names one             {only_eq}")
     print(f"  only role-word rule names one     {only_me}")
     print(f"  neither                           {neither}")

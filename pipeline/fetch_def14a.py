@@ -1,7 +1,6 @@
 """Fetch DEF14A HTML for top N tickers based on submissions.json"""
 
 import json
-import os
 import sys
 import time
 from pathlib import Path
@@ -57,8 +56,8 @@ def fetch_url_to_file(url, out_path, max_retries=3):
                 import subprocess
 
                 subprocess.run(cmd, timeout=95, capture_output=True)
-                if os.path.exists(tmp) and os.path.getsize(tmp) > 5000:
-                    out_path.write_bytes(open(tmp, "rb").read())
+                if Path(tmp).exists() and Path(tmp).stat().st_size > 5000:
+                    out_path.write_bytes(Path(tmp).open("rb").read())
                     print(f"  curl fetched {url} {out_path.stat().st_size}")
                     time.sleep(0.3)
                     return True
@@ -94,7 +93,7 @@ def process_ticker(entry):
                 year = int(fdate[:4])
                 if year < 2015 or year > 2025:
                     continue
-            except:
+            except Exception:
                 pass
         acc = accession[i]
         acc_nodash = acc.replace("-", "")

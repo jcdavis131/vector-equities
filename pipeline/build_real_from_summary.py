@@ -14,9 +14,9 @@ CACHE_SUM = ROOT / "pipeline" / "cache" / "sec" / "sec_summary"
 import sys
 
 sys.path.insert(0, str(ROOT / "pipeline"))
+from def14a_features import get_def14a_row
 from feature_spec import ALL_FEATURES, FEATURE_FAMILIES, GAME_PROFILE_FEATURES, SECTORS
 from market_features import get_market_row, valuation_row
-from def14a_features import get_def14a_row
 
 
 def safe_div(a, b):
@@ -24,7 +24,7 @@ def safe_div(a, b):
         return None
     try:
         return float(a) / float(b)
-    except:
+    except Exception:
         return None
 
 
@@ -35,7 +35,7 @@ def load_summaries():
             j = json.loads(p.read_text())
             cik = j.get("_meta", {}).get("cik") or p.stem.replace("summary_", "")
             out[cik] = j
-        except:
+        except Exception:
             pass
     return out
 
@@ -51,11 +51,7 @@ def build_from_summary(limit=None):
         ticker = entry["ticker"]
         sector = entry.get("sector", "Industrials")
         company = entry.get("company", ticker)
-        summ = (
-            summaries.get(cik)
-            or summaries.get(entry["cik"])
-            or summaries.get(cik.lstrip("0"))
-        )
+        summ = summaries.get(cik) or summaries.get(entry["cik"]) or summaries.get(cik.lstrip("0"))
         if not summ:
             # try find file with same cik padded? summaries keys are padded
             continue
@@ -110,34 +106,26 @@ def build_from_summary(limit=None):
             ebitda_margin = safe_div(ebitda, rev)
             fcf_margin = safe_div(fcf, rev)
             book_value = equity
-            tangible_book = (
-                equity - (goodwill or 0) - (intangibles or 0)
-                if equity is not None
-                else None
-            )
-            working_cap = (
-                cur_a - cur_l if (cur_a is not None and cur_l is not None) else None
-            )
+            tangible_book = equity - (goodwill or 0) - (intangibles or 0) if equity is not None else None
+            working_cap = cur_a - cur_l if (cur_a is not None and cur_l is not None) else None
             net_debt = debt - cash if (debt is not None and cash is not None) else None
             invested_cap = (
-                equity + debt - cash
-                if (equity is not None and debt is not None and cash is not None)
-                else None
+                equity + debt - cash if (equity is not None and debt is not None and cash is not None) else None
             )
 
             def yoy(curr, prev_key):
-                prev = prev_vals.get(prev_key)
+                prev = prev_vals.get(prev_key)  # noqa: B023 (loop var used only within same iteration)
                 if curr is None or prev is None or prev == 0:
                     return None
                 return (curr - prev) / abs(prev)
 
             def cagr(curr, prev_key, yrs=3):
-                prev = prev_vals.get(prev_key)
+                prev = prev_vals.get(prev_key)  # noqa: B023 (loop var used only within same iteration)
                 if curr is None or prev is None or prev <= 0 or curr <= 0:
                     return None
                 try:
                     return (curr / prev) ** (1.0 / yrs) - 1
-                except:
+                except Exception:
                     return None
 
             rev_yoy = yoy(rev, f"REV_{yr - 1}")
@@ -151,16 +139,10 @@ def build_from_summary(limit=None):
             shares_yoy = yoy(shares_d, f"SHARES_{yr - 1}")
             roe = safe_div(net, equity)
             roa = safe_div(net, assets)
-            roic = (
-                safe_div(net, invested_cap)
-                if invested_cap
-                else safe_div(op, invested_cap)
-            )
+            roic = safe_div(net, invested_cap) if invested_cap else safe_div(op, invested_cap)
             curr_ratio = safe_div(cur_a, cur_l)
             quick_ratio = (
-                safe_div(cur_a - inventory, cur_l)
-                if (cur_a is not None and inventory is not None and cur_l)
-                else None
+                safe_div(cur_a - inventory, cur_l) if (cur_a is not None and inventory is not None and cur_l) else None
             )
             inventory_turn = safe_div(cogs, inventory) if inventory else None
             receivable_turn = safe_div(rev, receivables) if receivables else None
@@ -177,8 +159,15 @@ def build_from_summary(limit=None):
             # for all 21 of these -- see docs/rebuild notes 2026-07-30).
             mkt = get_market_row(ticker, yr)
             val = valuation_row(
-                price=mkt["_price"], shares=shares_d, eps=eps, bvps=bvps,
-                rev=rev, ebitda=ebitda, fcf=fcf, debt=debt, cash=cash,
+                price=mkt["_price"],
+                shares=shares_d,
+                eps=eps,
+                bvps=bvps,
+                rev=rev,
+                ebitda=ebitda,
+                fcf=fcf,
+                debt=debt,
+                cash=cash,
                 dividends_paid=dividends_paid,
             )
 
@@ -268,13 +257,7 @@ def build_from_summary(limit=None):
                 2024: 2.2,
             }.get(yr, 2)
             altman = None
-            if (
-                assets
-                and assets != 0
-                and equity
-                and ret_earn is not None
-                and ebit is not None
-            ):
+            if assets and assets != 0 and equity and ret_earn is not None and ebit is not None:
                 try:
                     wc = working_cap or 0
                     mv = equity
@@ -286,7 +269,7 @@ def build_from_summary(limit=None):
                         + 0.6 * (mv / liab_v)
                         + 1.0 * ((rev or 0) / assets)
                     )
-                except:
+                except Exception:
                     pass
 
             row_feat = {
@@ -451,9 +434,7 @@ def build_from_summary(limit=None):
                 }
             )
 
-    print(
-        f"Collected {len(all_rows)} rows from {len({r['ticker'] for r in all_rows})} tickers"
-    )
+    print(f"Collected {len(all_rows)} rows from {len({r['ticker'] for r in all_rows})} tickers")
 
     D = len(ALL_FEATURES)
     N = len(all_rows)
@@ -476,7 +457,7 @@ def build_from_summary(limit=None):
                         continue
                     Z_raw[i, j] = float(val)
                     mask[i, j] = 1.0
-                except:
+                except Exception:
                     pass
     # fill median per FY then global, z-score per FY
     Z_filled = Z_raw.copy()

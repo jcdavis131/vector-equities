@@ -11,6 +11,7 @@ import torch
 
 sys.path.insert(0, "pipeline")
 
+from _torch_safe import safe_torch_load
 from dataset_career import (
     build_sequences,
     family_slices,
@@ -24,13 +25,11 @@ Z, mask, Z_raw, tickers_b, names, fy_arr, sectors_arr, manifest, fwd, _ = load_b
 fams, feat_list = family_slices(manifest)
 feat_to_idx = {f: i for i, f in enumerate(feat_list)}
 fam_dims = {fam: len(cols) for fam, cols in fams.items()}
-seqs, _, _ = build_sequences(
-    Z, mask, Z_raw, tickers_b, fy_arr, sectors_arr, manifest, fwd
-)
+seqs, _, _ = build_sequences(Z, mask, Z_raw, tickers_b, fy_arr, sectors_arr, manifest, fwd)
 
 device = "cpu"
 ckpt_path = DATA_DIR / "mtnn_career_best.pt"
-ckpt = torch.load(ckpt_path, map_location=device, weights_only=False)
+ckpt = safe_torch_load(ckpt_path, map_location=device)
 args = ckpt.get("args", {})
 model = EquitiesCareerMTNN(
     fam_dims=fam_dims,
@@ -88,9 +87,7 @@ for s in range(0, len(seqs), 32):
         fwd_pred = out["fwd_ret"][:, :, 2].cpu().numpy()
         entry = torch.sigmoid(out["entry"]).cpu().numpy()
         dd = out["fwd_dd"].cpu().numpy()
-        fwd_vol = (
-            out["fwd_vol"].cpu().numpy() if "fwd_vol" in out else np.zeros_like(entry)
-        )
+        fwd_vol = out["fwd_vol"].cpu().numpy() if "fwd_vol" in out else np.zeros_like(entry)
         for b_idx, seq in enumerate(batch_list):
             for seq_pos in range(seq["valid_len"]):
                 fy = int(seq["fiscal_years"][seq_pos])
@@ -126,24 +123,16 @@ import numpy as np
 entries = np.array([p["entry"] for p in latest])
 fwd6s = np.array([p["fwd6"] for p in latest])
 dds = np.array([p["dd"] for p in latest])
-print(
-    f"Entry mean {entries.mean():.3f} std {entries.std():.3f} min {entries.min():.3f} max {entries.max():.3f}"
-)
-print(
-    f"Fwd6 mean {fwd6s.mean():.3f} std {fwd6s.std():.3f} min {fwd6s.min():.3f} max {fwd6s.max():.3f}"
-)
+print(f"Entry mean {entries.mean():.3f} std {entries.std():.3f} min {entries.min():.3f} max {entries.max():.3f}")
+print(f"Fwd6 mean {fwd6s.mean():.3f} std {fwd6s.std():.3f} min {fwd6s.min():.3f} max {fwd6s.max():.3f}")
 print(f"DD mean {dds.mean():.3f} min {dds.min():.3f} max {dds.max():.3f}")
 
 # Strict original filter
-strict = [
-    p for p in latest if p["entry"] > 0.7 and p["fwd6"] > 0.05 and p["dd"] > -0.10
-]
+strict = [p for p in latest if p["entry"] > 0.7 and p["fwd6"] > 0.05 and p["dd"] > -0.10]
 print(f"Strict filter 0.7/5%/-10% count {len(strict)}")
 
 # Relaxed filters
-relax1 = [
-    p for p in latest if p["entry"] > 0.5 and p["fwd6"] > 0.03 and p["dd"] > -0.15
-]
+relax1 = [p for p in latest if p["entry"] > 0.5 and p["fwd6"] > 0.03 and p["dd"] > -0.15]
 print(f"Relaxed 0.5/3%/-15% count {len(relax1)}")
 relax2 = [p for p in latest if p["fwd6"] > 0.02 and p["dd"] > -0.20]
 print(f"Relaxed fwd>2% dd>-20% count {len(relax2)}")
@@ -154,7 +143,8 @@ top20 = sorted(filtered, key=lambda x: x["score"], reverse=True)[:20]
 print("Top20")
 for i, p in enumerate(top20, 1):
     print(
-        f"{i}. {p['ticker']} FY{p['fy']} entry {p['entry']:.3f} fwd6 {p['fwd6']:.3f} dd {p['dd']:.3f} score {p['score']:.3f} sector {p['sector']}"
+        f"{i}. {p['ticker']} FY{p['fy']} entry {p['entry']:.3f} fwd6 {p['fwd6']:.3f} dd {p['dd']:.3f} score "
+        f"{p['score']:.3f} sector {p['sector']}"
     )
 
 # Save
@@ -173,7 +163,8 @@ md = [
 ]
 for i, p in enumerate(top20, 1):
     md.append(
-        f"| {i} | {p['ticker']} | {p['fy']} | {p['entry']:.3f} | {p['fwd6']:.3f} | {p['dd']:.3f} | {p['score']:.3f} | {p['sector']} |"
+        f"| {i} | {p['ticker']} | {p['fy']} | {p['entry']:.3f} | {p['fwd6']:.3f} | {p['dd']:.3f} | {p['score']:.3f} | "
+        f"{p['sector']} |"
     )
 Path("pipeline/data/trades_career_relaxed.md").write_text("\n".join(md))
 print("Saved relaxed")

@@ -11,7 +11,8 @@ ROOT = Path(__file__).resolve().parents[1]
 CACHE_DEF = ROOT / "pipeline" / "cache" / "sec_def14a"
 OUT_JSONL = ROOT / "pipeline" / "data" / "def14a_parsed_v3.jsonl"
 
-# Import parse function from v3 module without re-importing BS heavy? We'll duplicate minimal logic here to avoid circular.
+# Import parse function from v3 module without re-importing BS heavy? We'll duplicate minimal logic here to
+# avoid circular.
 # Instead import parse_one_file_fast from parse_def14a_v3
 sys.path.insert(0, str(ROOT / "pipeline"))
 from parse_def14a_v3 import parse_one_file_fast
@@ -28,9 +29,7 @@ def parse_batch(file_list):
             results.append(
                 {
                     "ticker": fp_path.name.split("_")[0],
-                    "filing_date": fp_path.name.split("_")[1]
-                    if "_" in fp_path.name
-                    else "",
+                    "filing_date": fp_path.name.split("_")[1] if "_" in fp_path.name else "",
                     "file": f"pipeline/cache/sec_def14a/{fp_path.name}",
                     "neo_count": 0,
                     "neos": [],
@@ -61,21 +60,18 @@ if __name__ == "__main__":
     already = set()
     if args.resume and OUT_JSONL.exists():
         try:
-            with open(OUT_JSONL) as f:
+            with Path(OUT_JSONL).open() as f:
                 for line in f:
                     try:
                         j = json.loads(line)
                         already.add(j.get("file", ""))
                         already.add(Path(j.get("file", "")).name)
-                    except:
+                    except Exception:
                         pass
             print(f"Resume already {len(already)}", flush=True)
             orig = len(files)
             files = [
-                fl
-                for fl in files
-                if fl.name not in already
-                and f"pipeline/cache/sec_def14a/{fl.name}" not in already
+                fl for fl in files if fl.name not in already and f"pipeline/cache/sec_def14a/{fl.name}" not in already
             ]
             print(f"Remaining {len(files)} of {orig}", flush=True)
         except Exception as e:
@@ -88,7 +84,7 @@ if __name__ == "__main__":
     # We'll use executor.submit for each file but with buffering
 
     mode = "a" if args.resume else "w"
-    out_f = open(OUT_JSONL, mode)
+    out_f = Path(OUT_JSONL).open(mode)
     total = 0
     succ = 0
 
@@ -103,9 +99,7 @@ if __name__ == "__main__":
                 fp_path = Path(fp)
                 r = {
                     "ticker": fp_path.name.split("_")[0],
-                    "filing_date": fp_path.name.split("_")[1]
-                    if "_" in fp_path.name
-                    else "",
+                    "filing_date": fp_path.name.split("_")[1] if "_" in fp_path.name else "",
                     "file": f"pipeline/cache/sec_def14a/{fp_path.name}",
                     "neo_count": 0,
                     "neos": [],
@@ -122,7 +116,8 @@ if __name__ == "__main__":
             if idx % 25 == 0 or r["parse_success"]:
                 names = [n["name"] for n in r["neos"][:3]]
                 print(
-                    f"{idx}/{len(files)} {'OK' if r['parse_success'] else 'FAIL'} {Path(fp).name} neos {r['neo_count']} cand {r['candidates_found']} {r['method']} {names}",
+                    f"{idx}/{len(files)} {'OK' if r['parse_success'] else 'FAIL'} {Path(fp).name} neos "
+                    f"{r['neo_count']} cand {r['candidates_found']} {r['method']} {names}",
                     flush=True,
                 )
             if idx % 100 == 0:
@@ -131,8 +126,8 @@ if __name__ == "__main__":
     out_f.close()
     # final stats
     try:
-        with open(OUT_JSONL) as fin:
-            all_lines = [json.loads(l) for seq_pos in fin if l.strip()]
+        with Path(OUT_JSONL).open() as fin:
+            all_lines = [json.loads(line) for line in fin if line.strip()]
         succ = sum(1 for r in all_lines if r["parse_success"])
         total = len(all_lines)
         print(
@@ -143,9 +138,7 @@ if __name__ == "__main__":
 
         print(
             "Methods:",
-            Counter([r["method"] for r in all_lines if r["parse_success"]]).most_common(
-                15
-            ),
+            Counter([r["method"] for r in all_lines if r["parse_success"]]).most_common(15),
             flush=True,
         )
     except Exception as e:
