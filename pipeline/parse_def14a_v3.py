@@ -26,12 +26,12 @@ try:
 
     warnings.filterwarnings("ignore", category=XMLParsedAsHTMLWarning)
     HAS_BS4 = True
-except:
+except Exception:
     try:
         from bs4 import BeautifulSoup
 
         HAS_BS4 = True
-    except:
+    except Exception:
         HAS_BS4 = False
 
 BLACKLIST_STRICT = [
@@ -92,9 +92,7 @@ TITLE_RE = re.compile(
     r"(?:\s+[A-Z][a-zA-Z'\-]*)?)?"
     r"(?:,\s*(?:Jr\.?|Sr\.?|II|III|IV))?\s*$"
 )
-ALLCAPS_RE = re.compile(
-    r"^[A-Z]{2,}(?:\s+[A-Z]\.?)?(?:\s+[A-Z]{2,}){1,3}(?:\s+(?:Jr\.?|Sr\.?|II|III|IV))?$"
-)
+ALLCAPS_RE = re.compile(r"^[A-Z]{2,}(?:\s+[A-Z]\.?)?(?:\s+[A-Z]{2,}){1,3}(?:\s+(?:Jr\.?|Sr\.?|II|III|IV))?$")
 SUFFIX_RE = re.compile(r",?\s*(Jr\.?|Sr\.?|II|III|IV)\.?$", re.I)
 
 
@@ -155,7 +153,8 @@ def is_blacklisted(name):
         if b in low:
             return True
     # if contains board etc as whole token
-    # reject if any blacklist token as separate word? Use simple contains for now for director compensation etc already strict
+    # reject if any blacklist token as separate word? Use simple contains for now for director compensation etc
+    # already strict
     # broader but only for longish phrase? We'll keep minimal to avoid false positives
     return False
 
@@ -226,7 +225,7 @@ def extract_comp(cells):
                 v = float(m.replace(",", ""))
                 if 500_000 <= v < 300_000_000:
                     return v, ct
-            except:
+            except Exception:
                 continue
     return None, None
 
@@ -313,9 +312,7 @@ def parse_table_snippet(tbl_html):
                     second_raw = texts[1]
                     second_clean = clean_name(second_raw)
                     if is_plausible_name(second_clean) and (
-                        re.match(r"^\d{4}$", first_raw)
-                        or first_raw == ""
-                        or first_raw in ["—", "-"]
+                        re.match(r"^\d{4}$", first_raw) or first_raw == "" or first_raw in ["—", "-"]
                     ):
                         name_candidate = second_clean
                         comp_val, comp_raw_txt = extract_comp(texts[2:])
@@ -350,10 +347,7 @@ def parse_table_snippet(tbl_html):
             if key not in dedup:
                 dedup[key] = n
             else:
-                if n["total_comp"] and (
-                    dedup[key]["total_comp"] is None
-                    or n["total_comp"] > dedup[key]["total_comp"]
-                ):
+                if n["total_comp"] and (dedup[key]["total_comp"] is None or n["total_comp"] > dedup[key]["total_comp"]):
                     dedup[key] = n
         uniq = list(dedup.values())
         uniq_sorted = sorted(uniq, key=lambda x: x["total_comp"] or 0, reverse=True)
@@ -364,7 +358,7 @@ def parse_table_snippet(tbl_html):
         # free memory
         try:
             soup.decompose()
-        except:
+        except Exception:
             pass
 
 
@@ -405,7 +399,7 @@ def parse_xbrl_names(raw_html):
                 seen.add(k)
                 uniq.append(n)
         return uniq[:10]
-    except:
+    except Exception:
         return []
 
 
@@ -415,9 +409,7 @@ def parse_one_file_fast(html_path: Path):
     except Exception as e:
         return {
             "ticker": html_path.name.split("_")[0],
-            "filing_date": html_path.name.split("_")[1]
-            if "_" in html_path.name
-            else "",
+            "filing_date": html_path.name.split("_")[1] if "_" in html_path.name else "",
             "file": f"pipeline/cache/sec_def14a/{html_path.name}",
             "neo_count": 0,
             "neos": [],
@@ -430,7 +422,7 @@ def parse_one_file_fast(html_path: Path):
     ticker = html_path.name.split("_")[0]
     try:
         fdate = html_path.name.split("_")[1]
-    except:
+    except Exception:
         fdate = ""
     board_size = None
     # board via regex (fast)
@@ -442,13 +434,11 @@ def parse_one_file_fast(html_path: Path):
             bs = int(m.group(1))
             if 3 <= bs <= 25:
                 board_size = bs
-        except:
+        except Exception:
             pass
 
     # Find tables via regex (avoid full soup)
-    tables_raw = re.findall(
-        r"<table[^>]*>.*?</table>", raw, flags=re.DOTALL | re.IGNORECASE
-    )
+    tables_raw = re.findall(r"<table[^>]*>.*?</table>", raw, flags=re.DOTALL | re.IGNORECASE)
     scored = []
     for tbl_html in tables_raw:
         # quick pre-filter: must contain salary and bonus and total or summary compensation
@@ -469,7 +459,7 @@ def parse_one_file_fast(html_path: Path):
     method = "v3-table-fast"
 
     # Try top scored tables with BS snippet parsing - increased to 25 to handle footnote table high scores
-    for score, tbl_html, txt in scored[:25]:
+    for score, tbl_html, _txt in scored[:25]:
         parsed = parse_table_snippet(tbl_html)
         if len(parsed) >= 2:
             neos_final = parsed
@@ -499,17 +489,14 @@ def parse_one_file_fast(html_path: Path):
         xbrl_names = parse_xbrl_names(raw)
         if len(xbrl_names) >= 2:
             # try lower scored tables - extended range
-            for score, tbl_html, txt in scored[25:60]:
+            for score, tbl_html, _txt in scored[25:60]:
                 parsed = parse_table_snippet(tbl_html)
                 if len(parsed) >= 2:
                     neos_final = parsed
                     method = f"v3-xbrl+table-{score}"
                     break
             if len(neos_final) < 2:
-                neos_final = [
-                    {"name": n, "role": None, "total_comp": None, "comp_raw": None}
-                    for n in xbrl_names[:8]
-                ]
+                neos_final = [{"name": n, "role": None, "total_comp": None, "comp_raw": None} for n in xbrl_names[:8]]
                 method = "v3-xbrl-names-only"
 
     # Final fallback line scan (light)
@@ -548,14 +535,10 @@ def parse_one_file_fast(html_path: Path):
             dedup = {}
             for n in temp:
                 k = n["name"].lower()
-                if k not in dedup or (
-                    n["total_comp"] and n["total_comp"] > (dedup[k]["total_comp"] or 0)
-                ):
+                if k not in dedup or (n["total_comp"] and n["total_comp"] > (dedup[k]["total_comp"] or 0)):
                     dedup[k] = n
             uniq = list(dedup.values())
-            uniq_sorted = sorted(
-                uniq, key=lambda x: x["total_comp"] or 0, reverse=True
-            )[:10]
+            uniq_sorted = sorted(uniq, key=lambda x: x["total_comp"] or 0, reverse=True)[:10]
             if len(uniq_sorted) >= 2:
                 neos_final = uniq_sorted
                 method = "v3-line-scan"
@@ -623,29 +606,26 @@ if __name__ == "__main__":
     already = set()
     if args.resume and out.exists():
         try:
-            with open(out) as f:
+            with Path(out).open() as f:
                 for line in f:
                     try:
                         j = json.loads(line)
                         already.add(j.get("file", ""))
                         already.add(Path(j.get("file", "")).name)
                         already.add(j.get("file", "").split("/")[-1])
-                    except:
+                    except Exception:
                         pass
             print(f"Resume: already {len(already)}", flush=True)
             orig_len = len(files)
             files = [
-                fl
-                for fl in files
-                if fl.name not in already
-                and f"pipeline/cache/sec_def14a/{fl.name}" not in already
+                fl for fl in files if fl.name not in already and f"pipeline/cache/sec_def14a/{fl.name}" not in already
             ]
             print(f"Remaining {len(files)} of {orig_len}", flush=True)
         except Exception as e:
             print(f"Resume read fail {e}", flush=True)
 
     mode = "a" if args.resume else "w"
-    out_f = open(out, mode)
+    out_f = Path(out).open(mode)
     total = 0
     succ = 0
     for i, f in enumerate(files, 1):
@@ -671,7 +651,8 @@ if __name__ == "__main__":
         if i % 25 == 0 or r["parse_success"]:
             names = [n["name"] for n in r["neos"][:3]]
             print(
-                f"{i}/{len(files)} {'OK' if r['parse_success'] else 'FAIL'} {f.name} neos {r['neo_count']} cand {r['candidates_found']} {r['method']} {names}",
+                f"{i}/{len(files)} {'OK' if r['parse_success'] else 'FAIL'} {f.name} neos {r['neo_count']} cand "
+                f"{r['candidates_found']} {r['method']} {names}",
                 flush=True,
             )
         if i % 100 == 0:
@@ -679,8 +660,8 @@ if __name__ == "__main__":
     out_f.close()
     # final stats
     try:
-        with open(out) as fin:
-            all_lines = [json.loads(l) for seq_pos in fin if l.strip()]
+        with Path(out).open() as fin:
+            all_lines = [json.loads(line) for line in fin if line.strip()]
         succ = sum(1 for r in all_lines if r["parse_success"])
         total = len(all_lines)
         print(
@@ -691,9 +672,7 @@ if __name__ == "__main__":
 
         print(
             "Methods:",
-            Counter([r["method"] for r in all_lines if r["parse_success"]]).most_common(
-                15
-            ),
+            Counter([r["method"] for r in all_lines if r["parse_success"]]).most_common(15),
             flush=True,
         )
     except Exception as e:

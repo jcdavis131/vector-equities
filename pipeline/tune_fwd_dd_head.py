@@ -10,9 +10,10 @@ Usage:
     python pipeline/tune_fwd_dd_head.py --real  # try to load real fwd ret from bundle if available
 """
 
-from pathlib import Path
 import json
 import sys
+from pathlib import Path
+
 import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -25,10 +26,15 @@ PRED_MEAN_TARGET = 0.1137
 TRUE_MEAN_TARGET = 0.0561
 BIAS_TOLERANCE = 0.01  # <1%
 
+
 def try_load_real_fwd():
     """Attempt to load real forward returns from train matrix bundle."""
     try:
-        for p in [DATA_DIR / "train_matrix_v6.npz", DATA_DIR / "train_matrix_real_v6.npz", DATA_DIR / "train_matrix_real.npz"]:
+        for p in [
+            DATA_DIR / "train_matrix_v6.npz",
+            DATA_DIR / "train_matrix_real_v6.npz",
+            DATA_DIR / "train_matrix_real.npz",
+        ]:
             if not p.exists():
                 continue
             npz = np.load(p, allow_pickle=True)
@@ -41,11 +47,15 @@ def try_load_real_fwd():
                     noise = np.random.randn(len(true)).astype(np.float32) * 0.025
                     pred = 0.7 * true + offset + noise
                     pred = pred - float(np.mean(pred[mask])) + PRED_MEAN_TARGET
-                    print(f"Loaded real true from {p.name}: N={len(true)} mean true {np.mean(true[mask]):.4f}, synthetic pred mean {np.mean(pred[mask]):.4f}")
+                    print(
+                        f"Loaded real true from {p.name}: N={len(true)} mean true {np.mean(true[mask]):.4f}, "
+                        f"synthetic pred mean {np.mean(pred[mask]):.4f}"
+                    )
                     return pred[mask], true[mask], True
     except Exception as e:
         print(f"real fwd load failed: {e}")
     return None, None, False
+
 
 def synthetic_data():
     """Generate synthetic data matching spec: pred 11.37% vs true 5.61%, IC ~0.5"""
@@ -60,6 +70,7 @@ def synthetic_data():
     true = true - float(np.mean(true)) + TRUE_MEAN_TARGET
     return pred.astype(np.float32), true.astype(np.float32), False
 
+
 def isotonic_regression_fit(pred, true):
     """Fit isotonic regression pred -> true. Uses sklearn if available, else fallback PAVA."""
     sort_idx = np.argsort(pred)
@@ -68,20 +79,23 @@ def isotonic_regression_fit(pred, true):
 
     try:
         from sklearn.isotonic import IsotonicRegression
-        ir = IsotonicRegression(y_min=-1.0, y_max=1.0, increasing=True, out_of_bounds='clip')
+
+        ir = IsotonicRegression(y_min=-1.0, y_max=1.0, increasing=True, out_of_bounds="clip")
         ir.fit(x_sorted, y_sorted)
         x_thresh = ir.X_thresholds_.astype(np.float32)
         # sklearn 1.4+ stores f_ as interpolation function values
-        if hasattr(ir, 'f_'):
+        if hasattr(ir, "f_"):
             # f_ may be callable or array; get transformed thresholds
             try:
                 y_thresh = ir.f_.astype(np.float32)
-            except:
+            except Exception:
                 y_thresh = ir.transform(x_thresh).astype(np.float32)
         else:
             y_thresh = ir.transform(x_thresh).astype(np.float32)
+
         def transform(x):
             return ir.transform(x)
+
         print(f"Isotonic sklearn fitted: thresholds {len(x_thresh)}")
         return {
             "x_thresholds": x_thresh,
@@ -132,9 +146,13 @@ def isotonic_regression_fit(pred, true):
         order = np.argsort(stack_x)
         x_thresh = np.array([stack_x[i] for i in order], dtype=np.float32)
         y_thresh = np.array([stack_vals[i] for i in order], dtype=np.float32)
+
         def transform(x_arr):
             x_arr = np.asarray(x_arr, dtype=np.float64)
-            return np.interp(x_arr, x_thresh, y_thresh, left=float(y_thresh[0]), right=float(y_thresh[-1])).astype(np.float32)
+            return np.interp(x_arr, x_thresh, y_thresh, left=float(y_thresh[0]), right=float(y_thresh[-1])).astype(
+                np.float32
+            )
+
         return {
             "x_thresholds": x_thresh,
             "y_thresholds": y_thresh,
@@ -144,14 +162,16 @@ def isotonic_regression_fit(pred, true):
             "increasing": True,
         }
 
+
 def compute_metrics(pred, true, calibrated):
     try:
         from scipy.stats import spearmanr
+
         ic_before = float(spearmanr(pred, true)[0])
         ic_after = float(spearmanr(calibrated, true)[0])
-    except:
-        ic_before = float(np.corrcoef(pred, true)[0,1])
-        ic_after = float(np.corrcoef(calibrated, true)[0,1])
+    except Exception:
+        ic_before = float(np.corrcoef(pred, true)[0, 1])
+        ic_after = float(np.corrcoef(calibrated, true)[0, 1])
     bias_before = float(np.mean(pred) - np.mean(true))
     bias_after = float(np.mean(calibrated) - np.mean(true))
     return {
@@ -170,6 +190,7 @@ def compute_metrics(pred, true, calibrated):
         "rows": len(pred),
     }
 
+
 def main():
     print("=== V6 Isotonic Calibration tune_fwd_dd_head ===")
     print(f"Manifest {MANIFEST_PATH} exists={MANIFEST_PATH.exists()}")
@@ -184,25 +205,33 @@ def main():
     else:
         print(f"Using {'real' if is_real else 'synthetic'} data N={len(pred)}")
 
-    print(f"Before: pred mean {np.mean(pred):.5f} true mean {np.mean(true):.5f} bias {np.mean(pred)-np.mean(true):.5f} ({(np.mean(pred)-np.mean(true))*100:.2f}%)")
+    print(
+        f"Before: pred mean {np.mean(pred):.5f} true mean {np.mean(true):.5f} bias {np.mean(pred)-np.mean(true):.5f} "
+        f"({(np.mean(pred)-np.mean(true))*100:.2f}%)"
+    )
     print(f"Pred std {np.std(pred):.4f} true std {np.std(true):.4f}")
 
     model = isotonic_regression_fit(pred, true)
     calibrated = model["transform"](pred)
 
     metrics = compute_metrics(pred, true, calibrated)
-    print(f"After: pred_mean {metrics['pred_mean_after']:.5f} true {metrics['true_mean']:.5f} bias {metrics['bias_after']:.5f} ({metrics['bias_after']*100:.3f}%)")
+    print(
+        f"After: pred_mean {metrics['pred_mean_after']:.5f} true {metrics['true_mean']:.5f} bias "
+        f"{metrics['bias_after']:.5f} ({metrics['bias_after']*100:.3f}%)"
+    )
     print(f"IC before {metrics['ic_before']:.4f} after {metrics['ic_after']:.4f}")
     print(f"Bias abs before {metrics['bias_before_abs']*100:.2f}% after {metrics['bias_after_abs']*100:.3f}%")
 
-    if abs(metrics['bias_after']) >= BIAS_TOLERANCE:
+    if abs(metrics["bias_after"]) >= BIAS_TOLERANCE:
         print(f"WARNING: bias after {metrics['bias_after_abs']*100:.3f}% still >=1% — applying shift fix")
-        shift = metrics['true_mean'] - metrics['pred_mean_after']
+        shift = metrics["true_mean"] - metrics["pred_mean_after"]
         model["y_thresholds"] = model["y_thresholds"] + np.float32(shift)
         if model.get("sklearn") and model.get("model_obj") is not None:
             orig_transform = model["transform"]
+
             def shifted_transform(x, _orig=orig_transform, _shift=shift):
                 return _orig(x) + np.float32(_shift)
+
             model["transform"] = shifted_transform
             calibrated = shifted_transform(pred)
         else:
@@ -210,16 +239,18 @@ def main():
         metrics = compute_metrics(pred, true, calibrated)
         print(f"After shift fix: bias {metrics['bias_after']*100:.4f}%")
 
-    assert abs(metrics['bias_after']) < BIAS_TOLERANCE, f"Bias after {metrics['bias_after']} not < {BIAS_TOLERANCE}"
+    assert abs(metrics["bias_after"]) < BIAS_TOLERANCE, f"Bias after {metrics['bias_after']} not < {BIAS_TOLERANCE}"
     # Say the same thing the artifact says. This line used to print a bare "PASS"
     # on synthetic input, so the console asserted something the JSON did not.
     if is_real:
         print(f"PASS: bias <1% achieved on REAL data: {metrics['bias_after_abs']*100:.3f}%")
     else:
-        print(f"bias <1% achieved: {metrics['bias_after_abs']*100:.3f}% "
-              "-- NOT A PASS: fitted to synthetic data manufactured to hit "
-              f"PRED_MEAN_TARGET={PRED_MEAN_TARGET} / TRUE_MEAN_TARGET={TRUE_MEAN_TARGET}. "
-              "Re-run with --real and a real bundle to earn a verdict.")
+        print(
+            f"bias <1% achieved: {metrics['bias_after_abs']*100:.3f}% "
+            "-- NOT A PASS: fitted to synthetic data manufactured to hit "
+            f"PRED_MEAN_TARGET={PRED_MEAN_TARGET} / TRUE_MEAN_TARGET={TRUE_MEAN_TARGET}. "
+            "Re-run with --real and a real bundle to earn a verdict."
+        )
 
     if not MANIFEST_PATH.exists():
         print(f"Manifest not found at {MANIFEST_PATH}, creating minimal")
@@ -227,7 +258,7 @@ def main():
             "built": "2026-07-23 12:00 UTC V6 refresh isotonic calibrated",
             "rows": EXPECTED_ROWS,
             "tickers": 283,
-            "years": [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024],
+            "years": [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024],
             "features": 154,
             "feature_names": [],
         }
@@ -238,7 +269,7 @@ def main():
     x_t = model["x_thresholds"]
     y_t = model["y_thresholds"]
     if len(x_t) > 256:
-        idx = np.linspace(0, len(x_t)-1, 256).astype(int)
+        idx = np.linspace(0, len(x_t) - 1, 256).astype(int)
         x_t_sub = x_t[idx]
         y_t_sub = y_t[idx]
     else:
@@ -251,7 +282,8 @@ def main():
     calibration_entry = {
         "method": "isotonic_regression",
         "script": "pipeline/tune_fwd_dd_head.py",
-        "description": f"Isotonic calibration to fix forward bias pred {PRED_MEAN_TARGET*100:.2f}% vs true {TRUE_MEAN_TARGET*100:.2f}% down to <1%",
+        "description": f"Isotonic calibration to fix forward bias pred {PRED_MEAN_TARGET*100:.2f}% vs true "
+        f"{TRUE_MEAN_TARGET*100:.2f}% down to <1%",
         "trained_on": "real" if is_real else "synthetic matching 11.37% vs 5.61% spec + real bundle if available",
         "pred_mean_before": round(metrics["pred_mean_before"], 6),
         "true_mean": round(metrics["true_mean"], 6),
@@ -297,7 +329,8 @@ def main():
             "y_min": -1.0,
             "y_max": 1.0,
         },
-        "calibration_formula": "calibrated = isotonic_transform(raw_pred) = np.interp(raw_pred, x_thresh, y_thresh, left=y0, right=y_last)",
+        "calibration_formula": "calibrated = isotonic_transform(raw_pred) = np.interp(raw_pred, x_thresh, y_thresh, "
+        "left=y0, right=y_last)",
         "verification": {
             "pred_11_37_before": f"{PRED_MEAN_TARGET*100:.2f}%",
             "true_5_61": f"{TRUE_MEAN_TARGET*100:.2f}%",
@@ -315,7 +348,10 @@ def main():
     base_manifest.setdefault("tickers", 283)
 
     MANIFEST_PATH.write_text(json.dumps(base_manifest, indent=2))
-    print(f"Saved manifest {MANIFEST_PATH} rows={base_manifest.get('rows')} with isotonic calibration n={len(x_list)} bias after {metrics['bias_after_abs']*100:.4f}%")
+    print(
+        f"Saved manifest {MANIFEST_PATH} rows={base_manifest.get('rows')} with isotonic calibration n={len(x_list)} "
+        f"bias after {metrics['bias_after_abs']*100:.4f}%"
+    )
 
     cal_path = ASSETS_DIR / "forward_calibration_isotonic.json"
     cal_path.write_text(json.dumps(calibration_entry, indent=2))
@@ -323,9 +359,17 @@ def main():
 
     full_path = DATA_DIR / "forward_calibration_isotonic_full.npz"
     full_path.parent.mkdir(parents=True, exist_ok=True)
-    np.savez_compressed(full_path, x_thresholds=model["x_thresholds"], y_thresholds=model["y_thresholds"], pred=pred, true=true, calibrated=calibrated)
+    np.savez_compressed(
+        full_path,
+        x_thresholds=model["x_thresholds"],
+        y_thresholds=model["y_thresholds"],
+        pred=pred,
+        true=true,
+        calibrated=calibrated,
+    )
     print(f"Saved full npz {full_path}")
     print("DONE isotonic calibration <1% bias")
+
 
 if __name__ == "__main__":
     main()

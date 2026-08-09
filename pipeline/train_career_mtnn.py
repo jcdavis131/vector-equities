@@ -30,9 +30,7 @@ from feature_spec import SECTORS
 from model_career import EquitiesCareerMTNN
 
 
-def temporal_info_nce(
-    c_seq, valid_mask, sector_ids, temp=0.08, hard_boost=0.3, delta_decay=3.0
-):
+def temporal_info_nce(c_seq, valid_mask, sector_ids, temp=0.08, hard_boost=0.3, delta_decay=3.0):
     """
     c_seq: (B, L, D) normalized
     valid_mask: (B, L) bool
@@ -62,7 +60,7 @@ def temporal_info_nce(
                 flat_counter += 1
                 all_valid_embs.append(c_seq[b, seq_pos])
                 all_valid_sector.append(sector_ids[b])
-                all_valid_coords.append((b, l))
+                all_valid_coords.append((b, seq_pos))
 
     if flat_counter < 2:
         return c_seq.sum() * 0.0, 0, 0
@@ -73,14 +71,12 @@ def temporal_info_nce(
     # Build positive pairs: for each b, for each l where l and l+1 valid
     for b in range(B):
         for seq_pos in range(L - 1):
-            if valid_mask[b, seq_pos] and valid_mask[b, l + 1]:
+            if valid_mask[b, seq_pos] and valid_mask[b, seq_pos + 1]:
                 # anchor = (b,l), positive = (b,l+1)
                 anchors.append(c_seq[b, seq_pos])
-                positives.append(c_seq[b, l + 1])
+                positives.append(c_seq[b, seq_pos + 1])
                 anchor_sector.append(sector_ids[b])
-                anchor_pos_index.append(
-                    int(valid_flat_idx[b, l + 1])
-                )  # index in all_valid
+                anchor_pos_index.append(int(valid_flat_idx[b, seq_pos + 1]))  # index in all_valid
 
     if len(anchors) == 0:
         return c_seq.sum() * 0.0, 0, flat_counter
@@ -100,7 +96,7 @@ def temporal_info_nce(
     idx = 0
     for b in range(B):
         for seq_pos in range(L - 1):
-            if valid_mask[b, seq_pos] and valid_mask[b, l + 1]:
+            if valid_mask[b, seq_pos] and valid_mask[b, seq_pos + 1]:
                 anchor_b.append(b)
                 idx += 1
 
@@ -108,13 +104,11 @@ def temporal_info_nce(
     # For each anchor pair i, for each valid j, if sector same and ticker different => hard
     # ticker different means all_valid_coords[j][0] != anchor_b[i]
     # Create matrix (N_pairs, N_valid) bool
-    all_valid_b = torch.tensor(
-        [c[0] for c in all_valid_coords], device=device
-    )  # (N_valid)
+    all_valid_b = torch.tensor([c[0] for c in all_valid_coords], device=device)  # (N_valid)
     # sector match
-    sector_match = torch.tensor(anchor_sector, device=device).unsqueeze(
-        1
-    ) == all_valid_sector.unsqueeze(0)  # (N_pairs, N_valid)
+    sector_match = torch.tensor(anchor_sector, device=device).unsqueeze(1) == all_valid_sector.unsqueeze(
+        0
+    )  # (N_pairs, N_valid)
     diff_ticker = anchor_b_t.unsqueeze(1) != all_valid_b.unsqueeze(0)
     hard_mask = sector_match & diff_ticker
     logits = logits + hard_mask.float() * hard_boost
@@ -124,9 +118,11 @@ def temporal_info_nce(
 
     loss = F.cross_entropy(logits, target)
 
-    # Also add symmetric? For simplicity, also compute reverse (positive as anchor, anchor as negative) could help, but keep one direction.
+    # Also add symmetric? For simplicity, also compute reverse (positive as anchor, anchor as negative) could
+    # help, but keep one direction.
 
-    # Optional: weight by temporal distance (all adjacent => same weight). If we also include longer deltas, weighting would matter.
+    # Optional: weight by temporal distance (all adjacent => same weight). If we also include longer deltas,
+    # weighting would matter.
     return loss, len(anchors), flat_counter
 
 
@@ -210,8 +206,10 @@ def main():
     sector_to_idx = {s: i for i, s in enumerate(SECTORS)}
     # For unknown sectors map to -1
 
-    # Split sequences into train/val/test by ticker? We want time-based split for validation but also ticker split for generalization.
-    # Simplest: 70% train tickers, 15% val, 15% test for career-level split, then within each, temporal split for forward labels:
+    # Split sequences into train/val/test by ticker? We want time-based split for validation but also ticker split
+    # for generalization.
+    # Simplest: 70% train tickers, 15% val, 15% test for career-level split, then within each, temporal split for
+    # forward labels:
     # Train: FY <=2021, Val: 2022-2023, Test: 2024. That matches old logic eval_split.
     # We'll split tickers randomly but keep same temporal eval inside training loss.
     np.random.seed(Args.seed)
@@ -278,12 +276,8 @@ def main():
         B = len(batch_seq_list)
         L = Args.max_seq_len
         # xs_seq dict
-        xs_seq = {
-            fam: np.zeros((B, L, fam_dims[fam]), dtype=np.float32) for fam in fams
-        }
-        ms_seq = {
-            fam: np.zeros((B, L, fam_dims[fam]), dtype=np.float32) for fam in fams
-        }
+        xs_seq = {fam: np.zeros((B, L, fam_dims[fam]), dtype=np.float32) for fam in fams}
+        ms_seq = {fam: np.zeros((B, L, fam_dims[fam]), dtype=np.float32) for fam in fams}
         time_enc_seq = np.zeros((B, L, 8), dtype=np.float32)
         year_norm_seq = np.zeros((B, L, 1), dtype=np.float32)
         valid_mask = np.zeros((B, L), dtype=bool)
@@ -344,12 +338,8 @@ def main():
 
     def to_torch(batch_np):
         out = {}
-        out["xs_seq"] = {
-            fam: torch.tensor(batch_np["xs_seq"][fam], device=device) for fam in fams
-        }
-        out["ms_seq"] = {
-            fam: torch.tensor(batch_np["ms_seq"][fam], device=device) for fam in fams
-        }
+        out["xs_seq"] = {fam: torch.tensor(batch_np["xs_seq"][fam], device=device) for fam in fams}
+        out["ms_seq"] = {fam: torch.tensor(batch_np["ms_seq"][fam], device=device) for fam in fams}
         out["time_enc_seq"] = torch.tensor(batch_np["time_enc_seq"], device=device)
         out["year_norm_seq"] = torch.tensor(batch_np["year_norm_seq"], device=device)
         out["valid_mask"] = torch.tensor(batch_np["valid_mask"], device=device)
@@ -385,9 +375,7 @@ def main():
             # apply dropout to xs
             for fam in batch_t["xs_seq"]:
                 if Args.drop_p > 0:
-                    drop_mask = (
-                        torch.rand_like(batch_t["ms_seq"][fam]) > Args.drop_p
-                    ).float()
+                    drop_mask = (torch.rand_like(batch_t["ms_seq"][fam]) > Args.drop_p).float()
                     batch_t["xs_seq"][fam] = batch_t["xs_seq"][fam] * drop_mask
                     batch_t["ms_seq"][fam] = batch_t["ms_seq"][fam] * drop_mask
 
@@ -418,15 +406,11 @@ def main():
                 # target per (b,l) = sector_ids[b]
                 B, L, _ = sector_logits.shape
                 sector_target = batch_t["sector_ids"].unsqueeze(1).expand(B, L)  # B,L
-                valid = batch_t["valid_mask"] & (
-                    batch_t["sector_ids"].unsqueeze(1).expand(B, L) >= 0
-                )
+                valid = batch_t["valid_mask"] & (batch_t["sector_ids"].unsqueeze(1).expand(B, L) >= 0)
                 if valid.any():
                     logits_valid = sector_logits[valid]
                     target_valid = sector_target[valid]
-                    loss = loss + Args.weight_sector * F.cross_entropy(
-                        logits_valid, target_valid
-                    )
+                    loss = loss + Args.weight_sector * F.cross_entropy(logits_valid, target_valid)
 
             # Forward return heads: 4
             # fwd_ret_head outputs (B,L,4) -> 1M,3M,6M,12M
@@ -460,9 +444,7 @@ def main():
                 target = (triple_target[valid_entry] == 1).float()
                 logits = entry_pred[valid_entry]
                 pos_weight = torch.tensor([1.5], device=logits.device)
-                bce_raw = F.binary_cross_entropy_with_logits(
-                    logits, target, pos_weight=pos_weight, reduction="none"
-                )
+                bce_raw = F.binary_cross_entropy_with_logits(logits, target, pos_weight=pos_weight, reduction="none")
                 prob = torch.sigmoid(logits)
                 pt = torch.where(target == 1, prob, 1 - prob)
                 focal_w = (1 - pt).pow(2.0)
@@ -474,16 +456,12 @@ def main():
             if "fwd_vol" in out and Args.weight_vol > 0:
                 valid_vol = torch.isfinite(batch_t["fwd_vol"]) & batch_t["valid_mask"]
                 if valid_vol.any():
-                    loss_vol = F.mse_loss(
-                        out["fwd_vol"][valid_vol], batch_t["fwd_vol"][valid_vol]
-                    )
+                    loss_vol = F.mse_loss(out["fwd_vol"][valid_vol], batch_t["fwd_vol"][valid_vol])
                     loss = loss + Args.weight_vol * loss_vol
             if "fwd_dd" in out and Args.weight_dd > 0:
                 valid_dd = torch.isfinite(batch_t["fwd_dd"]) & batch_t["valid_mask"]
                 if valid_dd.any():
-                    loss_dd = F.mse_loss(
-                        out["fwd_dd"][valid_dd], batch_t["fwd_dd"][valid_dd]
-                    )
+                    loss_dd = F.mse_loss(out["fwd_dd"][valid_dd], batch_t["fwd_dd"][valid_dd])
                     loss = loss + Args.weight_dd * loss_dd
 
             # Backward
@@ -494,15 +472,14 @@ def main():
             sched.step()
 
             total_loss += float(loss.detach())
-            total_nce += (
-                float(nce_loss.detach()) if isinstance(nce_loss, torch.Tensor) else 0
-            )
+            total_nce += float(nce_loss.detach()) if isinstance(nce_loss, torch.Tensor) else 0
             n_batches += 1
 
         avg_loss = total_loss / max(1, n_batches)
         avg_nce = total_nce / max(1, n_batches)
         print(
-            f"Ep {epoch + 1}/{Args.epochs} loss {avg_loss:.4f} nce {avg_nce:.4f} fwd {total_fwd / max(1, n_batches):.4f} entry {total_entry / max(1, n_batches):.4f}"
+            f"Ep {epoch + 1}/{Args.epochs} loss {avg_loss:.4f} nce {avg_nce:.4f} fwd "
+            f"{total_fwd / max(1, n_batches):.4f} entry {total_entry / max(1, n_batches):.4f}"
         )
 
         if (epoch + 1) % Args.val_every == 0 or epoch == Args.epochs - 1:
@@ -540,16 +517,8 @@ def main():
                     all_entry_true.append((triple[mask_entry] == 1).astype(int))
 
                 if all_pred_ret:
-                    pred_concat = (
-                        np.concatenate(all_pred_ret)
-                        if len(all_pred_ret) > 0
-                        else np.array([])
-                    )
-                    true_concat = (
-                        np.concatenate(all_true_ret)
-                        if len(all_true_ret) > 0
-                        else np.array([])
-                    )
+                    pred_concat = np.concatenate(all_pred_ret) if len(all_pred_ret) > 0 else np.array([])
+                    true_concat = np.concatenate(all_true_ret) if len(all_true_ret) > 0 else np.array([])
                     ic = compute_ic(pred_concat, true_concat)
                 else:
                     ic = None
@@ -631,9 +600,7 @@ def main():
             fiscal_year=fys_out,
             sector=sectors_out,
         )
-        print(
-            f"Saved career embedding {DATA_DIR / 'embedding_career.npz'} shape {embs.shape}"
-        )
+        print(f"Saved career embedding {DATA_DIR / 'embedding_career.npz'} shape {embs.shape}")
 
 
 if __name__ == "__main__":

@@ -12,6 +12,7 @@ DATA_DIR = ROOT / "pipeline" / "data"
 ASSETS_DIR = ROOT / "assets"
 ASSETS_DIR.mkdir(exist_ok=True)
 
+from _torch_safe import safe_torch_load
 from dataset_career import (
     build_sequences,
     family_slices,
@@ -19,8 +20,6 @@ from dataset_career import (
     load_bundle,
 )
 from model_career import EquitiesCareerMTNN
-
-from _torch_safe import safe_torch_load
 
 print("Loading bundle v6...")
 (
@@ -35,9 +34,7 @@ print("Loading bundle v6...")
     fwd,
     bundle_path,
 ) = load_bundle()
-print(
-    f"Z {Z.shape} features {len(manifest['features'])} families {len(set(manifest['families']))}"
-)
+print(f"Z {Z.shape} features {len(manifest['features'])} families {len(set(manifest['families']))}")
 fams, feat_list = family_slices(manifest)
 fam_dims = {fam: len(cols) for fam, cols in fams.items()}
 print(f"Fam dims {fam_dims}")
@@ -57,9 +54,7 @@ if ckpt_path is None:
 
 ckpt = safe_torch_load(ckpt_path, map_location="cpu")
 args = ckpt.get("args", {})
-print(
-    f"Checkpoint {ckpt_path} epoch {ckpt.get('epoch')} IC {ckpt.get('ic')} args {args}"
-)
+print(f"Checkpoint {ckpt_path} epoch {ckpt.get('epoch')} IC {ckpt.get('ic')} args {args}")
 
 d_tower = args.get("d_tower", 24)
 d_tower_hidden = args.get("d_tower_hidden", 64)
@@ -144,9 +139,7 @@ with torch.no_grad():
                     "ticker": tickers_arr[orig_idx],
                     "name": names_arr[orig_idx],
                     "year": str(fy_arr[orig_idx]),
-                    "fy": int(str(fy_arr[orig_idx])[:4])
-                    if str(fy_arr[orig_idx])[:4].isdigit()
-                    else 0,
+                    "fy": int(str(fy_arr[orig_idx])[:4]) if str(fy_arr[orig_idx])[:4].isdigit() else 0,
                     "sector": sectors_arr[orig_idx],
                     "orig_idx": int(orig_idx),
                     # REAL archetype: argmax of the model's archetype head for this row
@@ -157,9 +150,7 @@ with torch.no_grad():
 embs = np.stack(all_embs).astype(np.float32)
 print(f"Full embs {embs.shape} meta {len(all_meta)}")
 # Save full embedding
-np.savez_compressed(
-    DATA_DIR / "embedding_full_v6_2741.npz", embedding=embs, meta=all_meta
-)
+np.savez_compressed(DATA_DIR / "embedding_full_v6_2741.npz", embedding=embs, meta=all_meta)
 print("Saved embedding_full_v6_2741.npz")
 
 # PCA to 3D for x,y,z
@@ -285,15 +276,11 @@ provenance = {
         },
         "ic": {
             "classification": "REAL-but-irreproducible",
-            "detail": (
-                "Real IC from the training checkpoint; no checkpoint committed to repo."
-            ),
+            "detail": ("Real IC from the training checkpoint; no checkpoint committed to repo."),
         },
         "prec20": {
             "classification": "REAL-but-irreproducible",
-            "detail": (
-                "Real precision@20 from the checkpoint; no committed checkpoint."
-            ),
+            "detail": ("Real precision@20 from the checkpoint; no committed checkpoint."),
         },
     },
 }
@@ -338,9 +325,7 @@ real_data_obj = {
 }
 out_path = ASSETS_DIR / "real_data.json"
 out_path.write_text(json.dumps(real_data_obj))
-print(
-    f"Wrote {out_path} {len(points)} points dim {dim} size {out_path.stat().st_size / 1024 / 1024:.2f} MB"
-)
+print(f"Wrote {out_path} {len(points)} points dim {dim} size {out_path.stat().st_size / 1024 / 1024:.2f} MB")
 
 # Also update manifest.json
 manifest_out = {

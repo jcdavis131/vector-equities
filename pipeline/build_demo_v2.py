@@ -1,6 +1,7 @@
 """
 Improved synthetic generator v2 — strong company identity for high recall
-Company base vector persists + AR1 drift, ensuring same-ticker adjacent FY pairs are close in feature space before z-scoring.
+Company base vector persists + AR1 drift, ensuring same-ticker adjacent FY pairs are close in feature space
+before z-scoring.
 
 This mirrors hoops: same-player adjacent seasons should be similar but evolving.
 """
@@ -65,15 +66,8 @@ def gen_company_profile(n_companies=800, n_years=10, start_year=2015, continuity
             fy = start_year + y
             # AR1: 0.85*prev + 0.15*base + small noise + macro
             macro = np.random.normal(0, 0.08, size=D)
-            noise = np.random.normal(
-                0, 0.25, size=D
-            )  # yearly idiosyncratic, small vs base
-            curr = (
-                continuity * prev
-                + (1 - continuity) * company_bases[c]
-                + noise
-                + macro * 0.3
-            )
+            noise = np.random.normal(0, 0.25, size=D)  # yearly idiosyncratic, small vs base
+            curr = continuity * prev + (1 - continuity) * company_bases[c] + noise + macro * 0.3
             # Enforce realistic constraints on key features via transformation
             # Map some dims to financial ranges but keep z-score identity
             # Example: make REV_YOY somewhat persistent: blend previous REV_YOY
@@ -158,11 +152,10 @@ def save_bundle(bundle, out_path: Path):
         season=bundle["fiscal_years"],
         archetype=bundle["archetypes"],
     )
-    (out_path / "feature_manifest.json").write_text(
-        json.dumps(bundle["feature_manifest"], indent=2)
-    )
+    (out_path / "feature_manifest.json").write_text(json.dumps(bundle["feature_manifest"], indent=2))
     print(
-        f"Saved {len(bundle['Z'])} rows x {bundle['Z'].shape[1]} feats continuity={bundle['feature_manifest']['continuity']} to {out_path}"
+        f"Saved {len(bundle['Z'])} rows x {bundle['Z'].shape[1]} feats "
+        f"continuity={bundle['feature_manifest']['continuity']} to {out_path}"
     )
 
 
@@ -173,7 +166,5 @@ if __name__ == "__main__":
     ap.add_argument("--continuity", type=float, default=0.85)
     ap.add_argument("--out", type=str, default="pipeline/data")
     args = ap.parse_args()
-    bundle = gen_company_profile(
-        n_companies=args.companies, n_years=args.years, continuity=args.continuity
-    )
+    bundle = gen_company_profile(n_companies=args.companies, n_years=args.years, continuity=args.continuity)
     save_bundle(bundle, Path(args.out))

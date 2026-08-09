@@ -14,12 +14,12 @@ OUT = ROOT / "pipeline/data/def14a_parsed_v3.jsonl"
 def load_already():
     already = set()
     if OUT.exists():
-        for line in open(OUT, errors="ignore"):
+        for line in Path(OUT).open(errors="ignore"):
             try:
                 j = json.loads(line)
                 already.add(Path(j["file"]).name)
                 already.add(j["file"].split("/")[-1])
-            except:
+            except Exception:
                 pass
     return already
 
@@ -41,7 +41,16 @@ for fp in files:
         r=parse_one_file_fast(fp)
         results.append(r)
     except Exception as e:
-        results.append({{"ticker": fp.name.split('_')[0], "filing_date": fp.name.split('_')[1] if '_' in fp.name else "", "file": f"pipeline/cache/sec_def14a/{{fp.name}}", "neo_count":0, "neos":[], "board_size":None, "candidates_found":0, "parse_success": False, "method": f"crash {{e}}"}})
+        results.append(
+            {{
+                "ticker": fp.name.split('_')[0],
+                "filing_date": fp.name.split('_')[1] if '_' in fp.name else "",
+                "file": f"pipeline/cache/sec_def14a/{{fp.name}}",
+                "neo_count": 0, "neos": [], "board_size": None,
+                "candidates_found": 0, "parse_success": False,
+                "method": f"crash {{e}}",
+            }}
+        )
 for r in results:
     print(json.dumps(r))
 """
@@ -61,13 +70,18 @@ for fp in files:
         r=parse_one_file_fast(fp)
         print(json.dumps(r), flush=True)
     except Exception as e:
-        r={{"ticker": fp.name.split('_')[0], "filing_date": fp.name.split('_')[1] if '_' in fp.name else "", "file": f"pipeline/cache/sec_def14a/{{fp.name}}", "neo_count":0, "neos":[], "board_size":None, "candidates_found":0, "parse_success": False, "method": f"crash {{e}}"}}
+        r = {{
+            "ticker": fp.name.split('_')[0],
+            "filing_date": fp.name.split('_')[1] if '_' in fp.name else "",
+            "file": f"pipeline/cache/sec_def14a/{{fp.name}}",
+            "neo_count": 0, "neos": [], "board_size": None,
+            "candidates_found": 0, "parse_success": False,
+            "method": f"crash {{e}}",
+        }}
         print(json.dumps(r), flush=True)
 """
     cmd = [sys.executable, "-c", script2]
-    proc = subprocess.run(
-        cmd, cwd=str(ROOT), capture_output=True, text=True, timeout=120
-    )
+    proc = subprocess.run(cmd, cwd=str(ROOT), capture_output=True, text=True, timeout=120)
     if proc.returncode != 0:
         print(
             f"Chunk failed returncode {proc.returncode} stderr {proc.stderr[:1000]}",
@@ -81,7 +95,7 @@ for fp in files:
             continue
         try:
             out_lines.append(json.loads(line))
-        except:
+        except Exception:
             print(f"Bad line {line[:200]}", file=sys.stderr)
     return out_lines
 
@@ -90,18 +104,17 @@ def main():
     already = load_already()
     files = sorted(CACHE.glob("*.html"))
     remaining = [f for f in files if f.name not in already]
-    print(
-        f"Found {len(files)} total, already {len(already)} remaining {len(remaining)}"
-    )
+    print(f"Found {len(files)} total, already {len(already)} remaining {len(remaining)}")
     chunk_size = 20
     total = 0
     succ = 0
     # open output in append
-    out_f = open(OUT, "a")
+    out_f = Path(OUT).open("a")
     for i in range(0, len(remaining), chunk_size):
         chunk = remaining[i : i + chunk_size]
         print(
-            f"Processing chunk {i // chunk_size + 1}/{(len(remaining) + chunk_size - 1) // chunk_size} files {len(chunk)}",
+            f"Processing chunk {i // chunk_size + 1}/{(len(remaining) + chunk_size - 1) // chunk_size} files "
+            f"{len(chunk)}",
             flush=True,
         )
         results = process_chunk(chunk)
@@ -123,12 +136,10 @@ def main():
             break
     out_f.close()
     # final stats
-    with open(OUT) as f:
-        lines = [json.loads(l) for seq_pos in f if l.strip()]
-    succ_all = sum(1 for seq_pos in lines if l["parse_success"])
-    print(
-        f"Final {OUT} total={len(lines)} succ={succ_all} rate={succ_all / len(lines):.3f}"
-    )
+    with Path(OUT).open() as f:
+        lines = [json.loads(line) for line in f if line.strip()]
+    succ_all = sum(1 for rec in lines if rec["parse_success"])
+    print(f"Final {OUT} total={len(lines)} succ={succ_all} rate={succ_all / len(lines):.3f}")
 
 
 if __name__ == "__main__":

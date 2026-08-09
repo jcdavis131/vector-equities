@@ -80,9 +80,7 @@ def gen_company_profile(n_companies=800, n_years=10, start_year=2015):
     comp_idx_per_row = np.repeat(np.arange(n_companies), n_years)
 
     # Generate year effects (macro regime)
-    year_effects = {
-        fy: np.random.normal(0, 0.2) for fy in range(start_year, start_year + n_years)
-    }
+    year_effects = {fy: np.random.normal(0, 0.2) for fy in range(start_year, start_year + n_years)}
 
     for row in range(N):
         c = comp_idx_per_row[row]
@@ -106,9 +104,7 @@ def gen_company_profile(n_companies=800, n_years=10, start_year=2015):
         }[arch]
 
         # Income
-        rev_yoy = np.random.normal(
-            0.08 + grow_bias * 0.05 + arch_adj["growth"] * 0.05 + y_effect * 0.02, 0.18
-        )
+        rev_yoy = np.random.normal(0.08 + grow_bias * 0.05 + arch_adj["growth"] * 0.05 + y_effect * 0.02, 0.18)
         gross_margin = np.clip(
             np.random.normal(0.40 + qual * 0.08 + arch_adj["margin"] * 0.1, 0.18),
             0.05,
@@ -141,15 +137,11 @@ def gen_company_profile(n_companies=800, n_years=10, start_year=2015):
         current_ratio = np.clip(np.random.normal(1.8 - lev_bias * 0.2, 0.6), 0.5, 5.0)
 
         # Cashflow
-        fcf_margin = np.clip(
-            np.random.normal(net_margin + np.random.normal(0.03, 0.05), 0.10), -0.5, 0.6
-        )
+        fcf_margin = np.clip(np.random.normal(net_margin + np.random.normal(0.03, 0.05), 0.10), -0.5, 0.6)
         ocf_to_net = np.random.normal(1.1, 0.3)
 
         # Market
-        ret_12m = np.random.normal(
-            0.10 + qual * 0.08 + rev_yoy * 0.3 + y_effect * 0.05, 0.40
-        )
+        ret_12m = np.random.normal(0.10 + qual * 0.08 + rev_yoy * 0.3 + y_effect * 0.05, 0.40)
         ret_6m = ret_12m * 0.6 + np.random.normal(0, 0.15)
         ret_3m = ret_12m * 0.3 + np.random.normal(0, 0.10)
         ret_1m = ret_12m * 0.08 + np.random.normal(0, 0.08)
@@ -310,15 +302,11 @@ def save_bundle(bundle, out_path: Path):
         fiscal_year=bundle["fiscal_years"],
         sector=bundle["sectors"],
         cluster=bundle["archetypes"],
-        player_id=np.array(
-            [hash(t) % 100000 for t in bundle["tickers"]]
-        ),  # hoops compat
+        player_id=np.array([hash(t) % 100000 for t in bundle["tickers"]]),  # hoops compat
         season=bundle["fiscal_years"],  # hoops compat
         archetype=bundle["archetypes"],
     )
-    (out_path / "feature_manifest.json").write_text(
-        json.dumps(bundle["feature_manifest"], indent=2)
-    )
+    (out_path / "feature_manifest.json").write_text(json.dumps(bundle["feature_manifest"], indent=2))
     print(f"Saved {len(bundle['Z'])} rows x {bundle['Z'].shape[1]} feats to {out_path}")
 
 

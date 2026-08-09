@@ -49,17 +49,38 @@ MATRIX = ROOT / "pipeline" / "data" / "train_matrix.npz"
 MANIFEST = ROOT / "pipeline" / "data" / "feature_manifest.json"
 
 FILLS = ("NEO_COUNT", "NEO_TURNOVER", "CEO_DUALITY", "CEO_TENURE")
-CANNOT = ("CEO_AGE", "CEO_FOUNDER_FLAG", "CEO_EQUITY_PCT", "CEO_PAY_RATIO",
-          "BOARD_INDEP_PCT", "BOARD_SIZE", "INSIDER_OWN_PCT", "CEO_PAY_VS_SECTOR")
+CANNOT = (
+    "CEO_AGE",
+    "CEO_FOUNDER_FLAG",
+    "CEO_EQUITY_PCT",
+    "CEO_PAY_RATIO",
+    "BOARD_INDEP_PCT",
+    "BOARD_SIZE",
+    "INSIDER_OWN_PCT",
+    "CEO_PAY_VS_SECTOR",
+)
 
 
 # Divisional/subsidiary CEO titles. Form 345 reports officers of the FILER, and large
 # groups file for unit heads too: "Chairman & CEO Arch Insur Gr", "Reinsur. Group Chairman
 # & CEO". Those people are not the company's chief executive, and counting them as such
 # corrupts both tenure and duality.
-DIVISIONAL = ("insur gr", "reinsur", " group ", " gr ", "division", "divisional",
-              "subsidiary", " unit", "segment", "americas", "international",
-              " emea", " apac", " na ")
+DIVISIONAL = (
+    "insur gr",
+    "reinsur",
+    " group ",
+    " gr ",
+    "division",
+    "divisional",
+    "subsidiary",
+    " unit",
+    "segment",
+    "americas",
+    "international",
+    " emea",
+    " apac",
+    " na ",
+)
 
 
 def _is_divisional(title: str) -> bool:
@@ -103,8 +124,7 @@ def main() -> int:
     off = json.loads(OFFICERS.read_text(encoding="utf-8"))
     z = np.load(MATRIX, allow_pickle=True)
     man = json.loads(MANIFEST.read_text(encoding="utf-8"))
-    names = [x if isinstance(x, str) else (x.get("feature") or x.get("name"))
-             for x in man["features"]]
+    names = [x if isinstance(x, str) else (x.get("feature") or x.get("name")) for x in man["features"]]
     Z, M = z["Z"].copy(), z["mask"].copy()
     tick = z["ticker"].tolist()
     year = [int(y) for y in z["fiscal_year"].tolist()]
@@ -116,7 +136,7 @@ def main() -> int:
     col = {f: names.index(f) for f in FILLS}
 
     first_year = {}
-    for t, y in zip(tick, year):
+    for t, y in zip(tick, year, strict=False):
         first_year[t] = min(y, first_year.get(t, y))
 
     # first year each (ticker, ceo) pair is seen, across the whole panel
@@ -131,7 +151,7 @@ def main() -> int:
             ceo_first[key] = min(int(ys), ceo_first.get(key, int(ys)))
 
     filled = {f: 0 for f in FILLS}
-    for i, (t, y) in enumerate(zip(tick, year)):
+    for i, (t, y) in enumerate(zip(tick, year, strict=False)):
         rows = off.get(f"{t}_{y}")
         if not rows:
             continue
@@ -172,10 +192,12 @@ def main() -> int:
         elif f == "NEO_TURNOVER":
             note = "needs a prior year"
         print(f"  {f:16} {filled[f]:>7} {100*filled[f]/n:>8.1f}%   {note}")
-    print(f"\n  still zero-coverage and NOT fillable from Form 345 reporting owners:")
+    print("\n  still zero-coverage and NOT fillable from Form 345 reporting owners:")
     print(f"    {', '.join(CANNOT)}")
-    print(f"    (BOARD_INDEP_PCT / BOARD_SIZE need DIRECTORS, excluded from this source "
-          f"by design — not a gap this route can ever close)")
+    print(
+        "    (BOARD_INDEP_PCT / BOARD_SIZE need DIRECTORS, excluded from this source "
+        "by design — not a gap this route can ever close)"
+    )
 
     dead_before = int((z["mask"].mean(axis=0) == 0).sum())
     dead_after = int((M.mean(axis=0) == 0).sum())

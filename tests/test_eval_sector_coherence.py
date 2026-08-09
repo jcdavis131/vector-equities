@@ -33,9 +33,7 @@ REAL_DATA_PATH = ROOT / "assets" / "real_data.json"
 def _synthetic_clusters(n_per=40, dim=16, n_clusters=3, sep=8.0, seed=7):
     rng = np.random.default_rng(seed)
     centers = rng.normal(0, 1, size=(n_clusters, dim)) * sep
-    emb = np.concatenate(
-        [c + rng.normal(0, 0.3, size=(n_per, dim)) for c in centers]
-    ).astype(np.float32)
+    emb = np.concatenate([c + rng.normal(0, 0.3, size=(n_per, dim)) for c in centers]).astype(np.float32)
     labels = np.repeat([f"c{i}" for i in range(n_clusters)], n_per)
     return emb, labels
 
@@ -100,10 +98,7 @@ def test_emitted_report_schema_and_consistency():
     assert report["n_sectors"] == len(report["sector_sizes"])
     assert set(report["sector_sizes"]) <= CANONICAL_SECTORS
     assert sum(report["sector_sizes"].values()) == report["n_rows_evaluated"]
-    assert (
-        report["n_rows_evaluated"] + report["n_rows_excluded_bad_sector"]
-        == report["n_rows_total"]
-    )
+    assert report["n_rows_evaluated"] + report["n_rows_excluded_bad_sector"] == report["n_rows_total"]
     # Shipped metric gate: v6_real 500 tickers should be >0.65 purity, >0.35 cross
     assert purity["score"] >= 0.65, f"purity {purity['score']} < 0.65 - regression from v6_real 0.7057"
     assert cross["score"] >= 0.35, f"cross-ticker {cross['score']} < 0.35"

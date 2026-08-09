@@ -136,15 +136,11 @@ def robust_fetch(url):
 
     for attempt in range(3):
         try:
-            req = urllib.request.Request(
-                url, headers={"User-Agent": USER_AGENT, "Accept": "*/*"}
-            )
+            req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT, "Accept": "*/*"})
             with urllib.request.urlopen(req, timeout=60) as r:
                 return r.read()
         except http.client.IncompleteRead as e:
-            print(
-                f"IncompleteRead for {url}: got {len(e.partial)} bytes, using partial"
-            )
+            print(f"IncompleteRead for {url}: got {len(e.partial)} bytes, using partial")
             return e.partial
         except Exception as e:
             print(f"Fetch attempt {attempt} fail {url}: {e}")
@@ -159,7 +155,7 @@ def fetch_sec_tickers():
             data = json.loads(cache.read_text())
             print(f"Loaded cached SEC {len(data)} tickers")
             return data
-        except:
+        except Exception:
             pass
     for url in [
         "https://www.sec.gov/files/company_tickers.json",
@@ -248,7 +244,7 @@ def build_universe(limit=500):
                         "title": v.get("title", ""),
                         "exchange": v.get("exchange", ""),
                     }
-            except:
+            except Exception:
                 continue
     print(f"SEC map {len(ticker_to_cik)} tickers")
 

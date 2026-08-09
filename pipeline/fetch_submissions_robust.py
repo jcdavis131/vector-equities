@@ -1,7 +1,6 @@
 """Robust single-threaded fetcher for SEC submissions, avoids tmp collision and uses -u logging"""
 
 import json
-import os
 import random
 import subprocess
 import time
@@ -19,9 +18,9 @@ def curl_fetch(cik_pad):
     tmp = f"/tmp/sec_fetch_{cik_pad}.json"
     # remove stale
     try:
-        if os.path.exists(tmp):
-            os.remove(tmp)
-    except:
+        if Path(tmp).exists():
+            Path(tmp).unlink()
+    except Exception:
         pass
     cmd = [
         "curl",
@@ -41,21 +40,21 @@ def curl_fetch(cik_pad):
     try:
         res = subprocess.run(cmd, capture_output=True, text=True, timeout=70)
         code = res.stdout.strip()[-3:]
-        if os.path.exists(tmp) and os.path.getsize(tmp) > 5000:
+        if Path(tmp).exists() and Path(tmp).stat().st_size > 5000:
             try:
-                with open(tmp) as f:
+                with Path(tmp).open() as f:
                     data = json.load(f)
                 return data, code
             except Exception as e:
                 # try read raw
                 print(
-                    f"  parse fail cik {cik_pad} size {os.path.getsize(tmp)} err {e}",
+                    f"  parse fail cik {cik_pad} size {Path(tmp).stat().st_size} err {e}",
                     flush=True,
                 )
                 return None, code
         else:
             # check why
-            size = os.path.getsize(tmp) if os.path.exists(tmp) else 0
+            size = Path(tmp).stat().st_size if Path(tmp).exists() else 0
             print(
                 f"  curl no file or small cik {cik_pad} code {code} size {size} stderr {res.stderr[:200]}",
                 flush=True,
@@ -75,10 +74,10 @@ def fetch_sub(cik_pad, max_retries=4):
             # ensure key cik exists
             if "cik" in data or "filings" in data:
                 return data, True
-        except:
+        except Exception:
             try:
                 out.unlink()
-            except:
+            except Exception:
                 pass
     # need fetch
     for attempt in range(max_retries):
@@ -131,7 +130,8 @@ if __name__ == "__main__":
             def14a = len([f for f in forms if "DEF 14A" in f or "DEF14A" in f])
             form4 = len([f for f in forms if f == "4"])
             print(
-                f"[{idx + 1}/{len(subset)}] {ticker} {cik} OK DEF14A:{def14a} Form4:{form4} total:{len(forms)}  running ok {ok}",
+                f"[{idx + 1}/{len(subset)}] {ticker} {cik} OK DEF14A:{def14a} Form4:{form4} total:{len(forms)}  "
+                f"running ok {ok}",
                 flush=True,
             )
             results.append(

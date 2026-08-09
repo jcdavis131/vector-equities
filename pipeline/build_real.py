@@ -39,7 +39,7 @@ try:
         GAME_PROFILE_FEATURES,
         SECTORS,
     )
-except:
+except Exception:
     from pipeline.feature_spec import (
         ALL_FEATURES,
         ARCHETYPE_NAMES,
@@ -100,11 +100,7 @@ def get_fact_for_year(facts_data, tag_options, year):
                     m_frame = re.search(r"(CY|FY)(\d{4})", frame) if frame else None
                     frame_year = int(m_frame.group(2)) if m_frame else None
                     # end date year
-                    end_year = (
-                        int(end[:4])
-                        if end and len(end) >= 4 and end[:4].isdigit()
-                        else None
-                    )
+                    end_year = int(end[:4]) if end and len(end) >= 4 and end[:4].isdigit() else None
                     # Accept if frame_year==year OR (fy == year and fp=="FY") OR end_year==year
                     match = False
                     score = 0
@@ -128,14 +124,14 @@ def get_fact_for_year(facts_data, tag_options, year):
                         score += 1
                     # Prefer latest filed
                     candidates.append((score, entry.get("filed", ""), entry.get("val")))
-                except:
+                except Exception:
                     continue
         if candidates:
             candidates.sort(key=lambda x: (x[0], x[1]), reverse=True)
             val = candidates[0][2]
             try:
                 return float(val)
-            except:
+            except Exception:
                 continue
     return None
 
@@ -217,7 +213,7 @@ def fetch_spy_history():
             import json as js
 
             return js.loads(cache.read_text())
-    except:
+    except Exception:
         pass
     return None
 
@@ -236,7 +232,7 @@ def get_yfinance_history(ticker):
                 # check age <7 days
                 if time.time() - cache_file.stat().st_mtime < 7 * 86400:
                     return json.loads(cache_file.read_text())
-            except:
+            except Exception:
                 pass
         t = yf.Ticker(ticker)
         hist = t.history(period="10y", auto_adjust=True)
@@ -245,30 +241,27 @@ def get_yfinance_history(ticker):
         # Save compact
         # Convert to list of dict for cache
         hist_reset = hist.reset_index()
-        # store as json with date -> close etc but large; we store simplified file with price dict for fast lookup, but also keep full for market features calc via function that re-fetches?
+        # store as json with date -> close etc but large; we store simplified file with price dict for fast lookup,
+        # but also keep full for market features calc via function that re-fetches?
         # For performance we will compute market features on the fly and cache result
         data = {
             "ticker": ticker,
-            "rows": hist_reset.tail(3000).to_dict(
-                "records"
-            ),  # too big? Convert Timestamp to string
+            "rows": hist_reset.tail(3000).to_dict("records"),  # too big? Convert Timestamp to string
         }
         # Simplify: convert Timestamp to string
         for r in data["rows"]:
             if "Date" in r:
                 try:
                     r["Date"] = str(r["Date"])[:10]
-                except:
+                except Exception:
                     pass
             if "Datetime" in r:
                 try:
                     r["Date"] = str(r.pop("Datetime"))[:10]
-                except:
+                except Exception:
                     pass
         # To avoid huge file, only save last 10y daily close/vol
-        cache_file.write_text(
-            json.dumps({"ticker": ticker, "last_rows": data["rows"][-3000:]})
-        )
+        cache_file.write_text(json.dumps({"ticker": ticker, "last_rows": data["rows"][-3000:]}))
         # Return DataFrame for immediate use
         return {"df": hist, "ticker": ticker}
     except Exception:
@@ -298,36 +291,18 @@ def compute_market_features_at_yearend(hist_df, year, spy_df=None):
         if len(df) <= days:
             return 0.0
         return (
-            float(df["Close"].iloc[-1] / df["Close"].iloc[-days - 1] - 1)
-            if df["Close"].iloc[-days - 1] != 0
-            else 0.0
+            float(df["Close"].iloc[-1] / df["Close"].iloc[-days - 1] - 1) if df["Close"].iloc[-days - 1] != 0 else 0.0
         )
 
     ret_1m = ret_n(21)
     ret_3m = ret_n(63)
     ret_6m = ret_n(126)
     ret_12m = ret_n(252)
-    vol_30d = (
-        float(df["Close"].pct_change().tail(30).std() * (252**0.5))
-        if len(df) > 30
-        else 0.3
-    )
-    vol_90d = (
-        float(df["Close"].pct_change().tail(90).std() * (252**0.5))
-        if len(df) > 90
-        else 0.3
-    )
-    vol_252d = (
-        float(df["Close"].pct_change().tail(252).std() * (252**0.5))
-        if len(df) > 252
-        else 0.35
-    )
+    vol_30d = float(df["Close"].pct_change().tail(30).std() * (252**0.5)) if len(df) > 30 else 0.3
+    vol_90d = float(df["Close"].pct_change().tail(90).std() * (252**0.5)) if len(df) > 90 else 0.3
+    vol_252d = float(df["Close"].pct_change().tail(252).std() * (252**0.5)) if len(df) > 252 else 0.35
     vol_avg_30d = float(df["Volume"].tail(30).mean()) if "Volume" in df else 1e6
-    price_52w_high = (
-        float(df["Close"].tail(252).max())
-        if len(df) >= 252
-        else float(df["Close"].max())
-    )
+    price_52w_high = float(df["Close"].tail(252).max()) if len(df) >= 252 else float(df["Close"].max())
     price_vs_52w = last_close / price_52w_high if price_52w_high != 0 else 0.9
     momentum_12_1 = ret_12m - ret_1m  # 12-1 momentum
     # Beta 1Y vs SPY
@@ -338,9 +313,7 @@ def compute_market_features_at_yearend(hist_df, year, spy_df=None):
             # Align dates
             common = pd.merge(
                 df.tail(252)[["Close"]].pct_change().rename(columns={"Close": "ret"}),
-                spy_cut.tail(252)[["Close"]]
-                .pct_change()
-                .rename(columns={"Close": "spy_ret"}),
+                spy_cut.tail(252)[["Close"]].pct_change().rename(columns={"Close": "spy_ret"}),
                 left_index=True,
                 right_index=True,
                 how="inner",
@@ -373,7 +346,7 @@ def safe_div(a, b):
         return None
     try:
         return float(a) / float(b)
-    except:
+    except Exception:
         return None
 
 
@@ -390,7 +363,7 @@ def build_real_matrix(limit=300, years_range=(2015, 2024), use_yfinance=True):
 
             spy = yf.Ticker("SPY").history(period="10y", auto_adjust=True)
             spy_df = spy
-        except:
+        except Exception:
             spy_df = None
 
     all_rows = []
@@ -524,9 +497,7 @@ def build_real_matrix(limit=300, years_range=(2015, 2024), use_yfinance=True):
 
             fcf = None
             if ocf is not None and capex is not None:
-                fcf = (
-                    ocf - abs(capex) if capex > 0 else ocf + capex
-                )  # capex negative sometimes, handle
+                fcf = ocf - abs(capex) if capex > 0 else ocf + capex  # capex negative sometimes, handle
                 # Actually PaymentsToAcquire is positive outflow, so OCF - CAPEX
                 if capex > 0:
                     fcf = ocf - capex
@@ -555,7 +526,7 @@ def build_real_matrix(limit=300, years_range=(2015, 2024), use_yfinance=True):
 
             # Growth (need prev)
             def yoy(curr, prev_key):
-                prev = prev_vals.get(prev_key)
+                prev = prev_vals.get(prev_key)  # noqa: B023 (loop var used only within same iteration)
                 if curr is None or prev is None or prev == 0:
                     return None
                 return (curr - prev) / abs(prev)
@@ -564,12 +535,12 @@ def build_real_matrix(limit=300, years_range=(2015, 2024), use_yfinance=True):
 
             # For 3Y CAGR need 3y ago
             def cagr(curr, prev_3key, years=3):
-                prev = prev_vals.get(prev_3key)
+                prev = prev_vals.get(prev_3key)  # noqa: B023 (loop var used only within same iteration)
                 if curr is None or prev is None or prev <= 0 or curr <= 0:
                     return None
                 try:
                     return (curr / prev) ** (1.0 / years) - 1
-                except:
+                except Exception:
                     return None
 
             rev_3y_cagr = cagr(rev, f"REV_{yr - 3}", 3)
@@ -587,18 +558,12 @@ def build_real_matrix(limit=300, years_range=(2015, 2024), use_yfinance=True):
             # Profitability
             roe = safe_div(net, equity)
             roa = safe_div(net, assets)
-            roic = (
-                safe_div(net, invested_cap)
-                if invested_cap
-                else safe_div(op, invested_cap)
-            )
+            roic = safe_div(net, invested_cap) if invested_cap else safe_div(op, invested_cap)
             # Leverage
             current_ratio = safe_div(cur_assets, cur_liab)
             debt_to_equity = safe_div(debt, equity)
             debt_to_ebitda = safe_div(debt, ebitda)
-            interest_coverage = (
-                safe_div(op, interest) if interest and interest != 0 else None
-            )
+            interest_coverage = safe_div(op, interest) if interest and interest != 0 else None
             debt_to_assets = safe_div(debt, assets)
             net_debt_to_ebitda = safe_div(net_debt, ebitda)
 
@@ -645,14 +610,9 @@ def build_real_matrix(limit=300, years_range=(2015, 2024), use_yfinance=True):
             ceo_age = 55 + np.random.normal(0, 6)
             ceo_tenure = max(
                 0.5,
-                np.random.normal(6, 3)
-                + (0.5 if net_margin and net_margin > 0.15 else 0),
+                np.random.normal(6, 3) + (0.5 if net_margin and net_margin > 0.15 else 0),
             )
-            ceo_founder = (
-                1.0
-                if (yr - years[0] < 7 and rev and rev < 5e9) and np.random.rand() < 0.3
-                else 0.0
-            )
+            ceo_founder = 1.0 if (yr - years[0] < 7 and rev and rev < 5e9) and np.random.rand() < 0.3 else 0.0
             ceo_total_comp = log_mcap * 0.15 + np.random.normal(2, 0.5)  # log scale
             ceo_equity_pct = max(0, np.random.normal(1.5, 1.2) - (log_mcap * 0.02))
             avg_neo_comp = ceo_total_comp - 0.5
@@ -666,19 +626,11 @@ def build_real_matrix(limit=300, years_range=(2015, 2024), use_yfinance=True):
 
             # Disclosure placeholders
             mda_length = math.log1p(assets or 1e9) * 0.5 + np.random.normal(5, 0.5)
-            mda_sentiment = (
-                0.05
-                + (net_margin * 0.5 if net_margin else 0)
-                + np.random.normal(0, 0.1)
-            )
-            risk_factor_count = int(
-                20 + np.random.normal(0, 5) + (0 if roe and roe > 0.15 else 5)
-            )
+            mda_sentiment = 0.05 + (net_margin * 0.5 if net_margin else 0) + np.random.normal(0, 0.1)
+            risk_factor_count = int(20 + np.random.normal(0, 5) + (0 if roe and roe > 0.15 else 5))
             risk_change_yoy = np.random.normal(0, 0.1)
             fog_index = 18 + np.random.normal(0, 2)
-            tone_uncertainty = max(
-                0, np.random.normal(0.15, 0.05) - (0.05 if roe and roe > 0.15 else 0)
-            )
+            tone_uncertainty = max(0, np.random.normal(0.15, 0.05) - (0.05 if roe and roe > 0.15 else 0))
 
             # Sector context
             sector_rel_ret = (mkt.get("RET_12M", 0) if mkt else 0) - np.random.normal(
@@ -735,20 +687,15 @@ def build_real_matrix(limit=300, years_range=(2015, 2024), use_yfinance=True):
                     np.random.normal(1, 1.5) + (1 if net_yoy and net_yoy > 0.1 else 0),
                 )
             )
-            guidance_raise = float(
-                np.random.rand() < (0.4 + (0.2 if rev_yoy and rev_yoy > 0.1 else 0))
-            )
+            guidance_raise = float(np.random.rand() < (0.4 + (0.2 if rev_yoy and rev_yoy > 0.1 else 0)))
             eps_revision_up = max(
                 0,
                 min(
                     1,
-                    np.random.normal(0.5, 0.15)
-                    + (0.1 if rev_yoy and rev_yoy > 0 else 0),
+                    np.random.normal(0.5, 0.15) + (0.1 if rev_yoy and rev_yoy > 0 else 0),
                 ),
             )
-            rsi_proxy = (
-                50 + (mkt.get("RET_1M", 0) * 100 if mkt else 0) + np.random.normal(0, 8)
-            )
+            rsi_proxy = 50 + (mkt.get("RET_1M", 0) * 100 if mkt else 0) + np.random.normal(0, 8)
             price_vs_52w_high = mkt.get("PRICE_VS_52W_HIGH", 0.9) if mkt else 0.9
             accident_disclosure = float(np.random.rand() < 0.05)
 
@@ -778,12 +725,8 @@ def build_real_matrix(limit=300, years_range=(2015, 2024), use_yfinance=True):
                         else None
                     )
                 elif assets:
-                    altman = (
-                        (roe or 0) * 0.5
-                        + (current_ratio or 1) * 0.3
-                        + (2 - (debt_to_assets or 0.5))
-                    )
-            except:
+                    altman = (roe or 0) * 0.5 + (current_ratio or 1) * 0.3 + (2 - (debt_to_assets or 0.5))
+            except Exception:
                 altman = None
 
             piotroski_proxy = (
@@ -816,9 +759,7 @@ def build_real_matrix(limit=300, years_range=(2015, 2024), use_yfinance=True):
                 "CASH": cash,
                 "DEBT": debt,
                 "BOOK_VALUE": book_value,
-                "TANGIBLE_BOOK": (equity - (raw.get("RET_EARN") or 0) * 0.2)
-                if equity
-                else None,
+                "TANGIBLE_BOOK": (equity - (raw.get("RET_EARN") or 0) * 0.2) if equity else None,
                 "WORKING_CAPITAL": working_cap,
                 "NET_DEBT": net_debt,
                 "INVESTED_CAPITAL": invested_cap,
@@ -844,11 +785,7 @@ def build_real_matrix(limit=300, years_range=(2015, 2024), use_yfinance=True):
                 "FCF_ROIC": safe_div(fcf, invested_cap),
                 "ROIC_WACC_SPREAD": (roic - 0.08) if roic else None,
                 "CURRENT_RATIO": current_ratio,
-                "QUICK_RATIO": (
-                    safe_div((cash or 0) + (cur_assets or 0) * 0.5, cur_liab)
-                    if cur_liab
-                    else None
-                ),
+                "QUICK_RATIO": (safe_div((cash or 0) + (cur_assets or 0) * 0.5, cur_liab) if cur_liab else None),
                 "DEBT_TO_EQUITY": debt_to_equity,
                 "DEBT_TO_EBITDA": debt_to_ebitda,
                 "INTEREST_COVERAGE": interest_coverage,
@@ -969,9 +906,7 @@ def build_real_matrix(limit=300, years_range=(2015, 2024), use_yfinance=True):
         for j, feat_name in enumerate(ALL_FEATURES):
             # Handle duplicate names in ALL_FEATURES (e.g., GROSS_MARGIN appears twice, we keep first)
             val = row["features"].get(feat_name)
-            if val is not None and not (
-                isinstance(val, float) and (math.isnan(val) or math.isinf(val))
-            ):
+            if val is not None and not (isinstance(val, float) and (math.isnan(val) or math.isinf(val))):
                 Z_raw[i, j] = float(val)
                 mask[i, j] = 1.0
 
@@ -1065,6 +1000,4 @@ if __name__ == "__main__":
     ap.add_argument("--no-yfinance", action="store_true")
     args = ap.parse_args()
     y0, y1 = map(int, args.years.split("-"))
-    build_real_matrix(
-        limit=args.limit, years_range=(y0, y1), use_yfinance=not args.no_yfinance
-    )
+    build_real_matrix(limit=args.limit, years_range=(y0, y1), use_yfinance=not args.no_yfinance)

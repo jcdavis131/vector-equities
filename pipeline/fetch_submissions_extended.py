@@ -19,7 +19,7 @@ def fetch_json_file(cik_pad, file_name):
     if out.exists() and out.stat().st_size > 5000:
         try:
             return json.loads(out.read_text())
-        except:
+        except Exception:
             pass
     url = (
         f"https://data.sec.gov/submissions/{cik_pad}_{file_name}"
@@ -29,7 +29,8 @@ def fetch_json_file(cik_pad, file_name):
     # Actually format: https://data.sec.gov/submissions/CIK0000066740-submissions-001.json -> need full name, url base https://data.sec.gov/submissions/
     if not url.startswith("https://data.sec.gov/submissions/CIK"):
         url = f"https://data.sec.gov/submissions/{file_name}"
-    # The correct URL is https://data.sec.gov/submissions/CIK{pad}-submissions-001.json? No, API says /submissions/{file}
+    # The correct URL is https://data.sec.gov/submissions/CIK{pad}-submissions-001.json? No, API says
+    # /submissions/{file}
     # filings.files name already includes CIK prefix, so URL is https://data.sec.gov/submissions/{name}
     url = f"https://data.sec.gov/submissions/{file_name}"
     print(f"Fetching additional {url}")
@@ -60,7 +61,7 @@ def get_all_def14a_for_cik(cik_pad):
             to_y = int(f["filingTo"][:4])
             if to_y < 2015 or from_y > 2025:
                 continue
-        except:
+        except Exception:
             pass
         extra_path = CACHE / f"{cik_pad}_{name}"
         if not extra_path.exists():
@@ -68,7 +69,7 @@ def get_all_def14a_for_cik(cik_pad):
         else:
             try:
                 data = json.loads(extra_path.read_text())
-            except:
+            except Exception:
                 data = None
         if data:
             all_filings.append(data)
@@ -85,7 +86,7 @@ def get_all_def14a_for_cik(cik_pad):
                     yr = int(dates[i][:4]) if i < len(dates) else 0
                     if yr < 2015 or yr > 2025:
                         continue
-                except:
+                except Exception:
                     continue
                 results.append(
                     (

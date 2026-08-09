@@ -24,9 +24,7 @@ class _ResBlock(nn.Module):
 
 
 class ResidualTower(nn.Module):
-    def __init__(
-        self, d_in: int, d_out: int = 24, d_hidden: int = 96, n_blocks: int = 1
-    ):
+    def __init__(self, d_in: int, d_out: int = 24, d_hidden: int = 96, n_blocks: int = 1):
         super().__init__()
         d_cat = d_in * 2
         self.fc1 = nn.Linear(d_cat, d_hidden)
@@ -34,9 +32,7 @@ class ResidualTower(nn.Module):
         self.fc2 = nn.Linear(d_hidden, d_out)
         self.ln2 = nn.LayerNorm(d_out)
         self.skip = nn.Linear(d_cat, d_out) if d_cat != d_out else nn.Identity()
-        self.blocks = nn.ModuleList(
-            [_ResBlock(d_out, d_hidden) for _ in range(max(0, n_blocks - 1))]
-        )
+        self.blocks = nn.ModuleList([_ResBlock(d_out, d_hidden) for _ in range(max(0, n_blocks - 1))])
 
     def forward(self, x: torch.Tensor, m: torch.Tensor) -> torch.Tensor:
         h = torch.cat([x * m, m], dim=-1)
@@ -70,9 +66,7 @@ class GatedFusion(nn.Module):
         d_in_tower = d_tower + 1
         self.season_emb = nn.Embedding(n_seasons, d_season)
         self.gate = nn.Linear(d_in_tower, 1)
-        self.attn = nn.Sequential(
-            nn.Linear(d_in_tower, d_in_tower), nn.Tanh(), nn.Linear(d_in_tower, 1)
-        )
+        self.attn = nn.Sequential(nn.Linear(d_in_tower, d_in_tower), nn.Tanh(), nn.Linear(d_in_tower, 1))
         self.fuse = nn.Sequential(
             nn.Linear(d_in_tower + d_season, d_hidden),
             nn.GELU(),
@@ -180,12 +174,7 @@ class SkillTowers(nn.Module):
     def __init__(self, d_emb: int, n_skills: int, d_hidden: int = 16):
         super().__init__()
         self.towers = nn.ModuleList(
-            [
-                nn.Sequential(
-                    nn.Linear(d_emb, d_hidden), nn.GELU(), nn.Linear(d_hidden, 1)
-                )
-                for _ in range(n_skills)
-            ]
+            [nn.Sequential(nn.Linear(d_emb, d_hidden), nn.GELU(), nn.Linear(d_hidden, 1)) for _ in range(n_skills)]
         )
 
     def forward(self, emb: torch.Tensor) -> torch.Tensor:
@@ -279,21 +268,15 @@ class EquitiesMTNN(nn.Module):
         self.payout_head = nn.Linear(d_emb, 1)  # Div growth
         self.mgmt_head = nn.Linear(d_emb, 1)  # Comp efficiency
         self.own_head = nn.Linear(d_emb, 1)
-        self.skill_towers = (
-            SkillTowers(d_emb, n_skills, d_hidden=d_skill_hidden) if n_skills else None
-        )
+        self.skill_towers = SkillTowers(d_emb, n_skills, d_hidden=d_skill_hidden) if n_skills else None
 
     def encode(self, xs, ms, season_ids):
-        parts = torch.stack(
-            [self.towers[fam](xs[fam], ms[fam]) for fam in self.families], dim=1
-        )
+        parts = torch.stack([self.towers[fam](xs[fam], ms[fam]) for fam in self.families], dim=1)
         # Per-family coverage: mean mask value over that family's columns for
         # each row, so fusion can see how much of this token is real vs
         # masked-zero rather than treating every family's output as equally
         # trustworthy regardless of how sparse or temporally-skewed it is.
-        coverage = torch.stack(
-            [ms[fam].mean(dim=-1) for fam in self.families], dim=1
-        )
+        coverage = torch.stack([ms[fam].mean(dim=-1) for fam in self.families], dim=1)
         return self.fusion(parts, season_ids, coverage)
 
     def forward(self, xs, ms, season_ids):

@@ -3,7 +3,8 @@ Vector Equities MTNN Training — cloned from vector-hoops train_mtnn.py v4 Phas
 
 Train 48-d company embedding from holistic SEC + NEO + market + ownership + text families.
 
-Multi-task: InfoNCE same-ticker adjacent FY + archetype 8 + sector 11 + next FY profile + 12 skill towers + valuation + market + health etc.
+Multi-task: InfoNCE same-ticker adjacent FY + archetype 8 + sector 11 + next FY profile + 12 skill towers +
+valuation + market + health etc.
 
 Usage:
  python pipeline/train_mtnn.py --epochs 40 --dim 48 --fusion gated
@@ -23,7 +24,6 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-
 from _torch_safe import safe_torch_load
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -62,11 +62,7 @@ def load_bundle():
     names = npz["name"].astype(str)
     fiscal_years = npz["fiscal_year"].astype(str)
     sectors = npz["sector"].astype(str)
-    clusters = (
-        npz["cluster"].astype(np.int64)
-        if "cluster" in npz
-        else np.zeros(len(Z), dtype=np.int64)
-    )
+    clusters = npz["cluster"].astype(np.int64) if "cluster" in npz else np.zeros(len(Z), dtype=np.int64)
     return Z, mask, tickers, names, fiscal_years, sectors, clusters, manifest
 
 
@@ -117,10 +113,7 @@ def load_skills(names, fiscal_years):
         )
     npz = np.load(path, allow_pickle=False)
     keys = [str(k) for k in npz["keys"]]
-    lookup = {
-        (str(n), str(s)): g
-        for n, s, g in zip(npz["name"], npz["season"], npz["grades"], strict=False)
-    }
+    lookup = {(str(n), str(s)): g for n, s, g in zip(npz["name"], npz["season"], npz["grades"], strict=False)}
     G = np.zeros((len(names), len(keys)), dtype=np.float32)
     M = np.zeros((len(names), len(keys)), dtype=np.float32)
     for i, (n, s) in enumerate(zip(names, fiscal_years, strict=False)):
@@ -171,9 +164,7 @@ def info_nce(za, zb, temp=0.08, pos_a=None, pos_b=None, hard_boost=0.0):
     if hard_boost > 0 and pos_a is not None and pos_b is not None:
         b = logits.shape[0]
         idx = torch.arange(b, device=logits.device)
-        hard = (pos_a.unsqueeze(1) == pos_b.unsqueeze(0)) & (
-            idx.unsqueeze(0) != idx.unsqueeze(1)
-        )
+        hard = (pos_a.unsqueeze(1) == pos_b.unsqueeze(0)) & (idx.unsqueeze(0) != idx.unsqueeze(1))
         logits = logits + hard.float() * hard_boost
     target = torch.arange(len(za), device=za.device)
     return 0.5 * (F.cross_entropy(logits, target) + F.cross_entropy(logits.T, target))
@@ -182,11 +173,7 @@ def info_nce(za, zb, temp=0.08, pos_a=None, pos_b=None, hard_boost=0.0):
 def recall_at_k(E, pairs, k=10):
     if len(pairs) == 0:
         return None
-    sample = (
-        pairs[np.random.choice(len(pairs), min(500, len(pairs)), replace=False)]
-        if len(pairs) > 500
-        else pairs
-    )
+    sample = pairs[np.random.choice(len(pairs), min(500, len(pairs)), replace=False)] if len(pairs) > 500 else pairs
     hits = 0
     for a, b in sample:
         sims = E @ E[a]
@@ -252,9 +239,7 @@ def main():
     ap.add_argument("--nce-temp", type=float, default=0.08)
     ap.add_argument("--drop-p", type=float, default=0.12)
     ap.add_argument("--hard-neg-boost", type=float, default=0.2)
-    ap.add_argument(
-        "--fusion", choices=("gated", "concat", "transformer"), default="gated"
-    )
+    ap.add_argument("--fusion", choices=("gated", "concat", "transformer"), default="gated")
     ap.add_argument("--tower-blocks", type=int, default=1)
     ap.add_argument("--mlp-heads", action="store_true")
     ap.add_argument("--d-head-hidden", type=int, default=64)
@@ -276,9 +261,7 @@ def main():
     season_ids_arr, uniq_years = season_index(fiscal_years)
     n_seasons = len(uniq_years)
     gcols = game_cols(manifest)
-    print(
-        f"{len(Z)} rows, {Z.shape[1]} feats, {len(fams)} towers, {n_seasons} FYs, device={device}"
-    )
+    print(f"{len(Z)} rows, {Z.shape[1]} feats, {len(fams)} towers, {n_seasons} FYs, device={device}")
     print(f"families: { {k: len(v) for k, v in fams.items()} }")
     print(f"game profile cols {gcols} -> {len(gcols)} dims")
 
@@ -304,13 +287,11 @@ def main():
         return str(s).strip().replace(" ", "_")
 
     sector_to_idx = {s: i for i, s in enumerate(SECTORS)}
-    sector_idx_arr = np.array(
-        [sector_to_idx.get(_norm_sector(s), -1) for s in sectors], dtype=np.int64
-    )
+    sector_idx_arr = np.array([sector_to_idx.get(_norm_sector(s), -1) for s in sectors], dtype=np.int64)
     # REFUSE RATHER THAN SILENTLY DEGRADE. An unmapped sector is not a missing value, it is
     # a name this code does not recognise, and the failure mode is invisible: training
     # proceeds, the metric still prints, and 22.7% of the corpus is quietly one blob.
-    unmapped = sorted({str(s) for s, i in zip(sectors, sector_idx_arr) if i < 0})
+    unmapped = sorted({str(s) for s, i in zip(sectors, sector_idx_arr, strict=False) if i < 0})
     if unmapped:
         raise SystemExit(
             f"{len(unmapped)} sector value(s) do not match feature_spec.SECTORS even after "
@@ -337,35 +318,15 @@ def main():
     arch_t = torch.tensor(clusters, device=device)
     seas_t = torch.tensor(season_ids_arr, device=device)
     # valuation proxy = EV_EBITDA z
-    ev_idx = (
-        manifest["features"].index("EV_EBITDA")
-        if "EV_EBITDA" in manifest["features"]
-        else None
-    )
-    ev_z, ev_m = (
-        tensor_col(Z, mask, ev_idx, device) if ev_idx is not None else (None, None)
-    )
-    ret_idx = (
-        manifest["features"].index("RET_12M")
-        if "RET_12M" in manifest["features"]
-        else None
-    )
-    ret_z, ret_m = (
-        tensor_col(Z, mask, ret_idx, device) if ret_idx is not None else (None, None)
-    )
-    alt_idx = (
-        manifest["features"].index("ALTMAN_Z")
-        if "ALTMAN_Z" in manifest["features"]
-        else None
-    )
+    ev_idx = manifest["features"].index("EV_EBITDA") if "EV_EBITDA" in manifest["features"] else None
+    ev_z, ev_m = tensor_col(Z, mask, ev_idx, device) if ev_idx is not None else (None, None)
+    ret_idx = manifest["features"].index("RET_12M") if "RET_12M" in manifest["features"] else None
+    ret_z, ret_m = tensor_col(Z, mask, ret_idx, device) if ret_idx is not None else (None, None)
+    alt_idx = manifest["features"].index("ALTMAN_Z") if "ALTMAN_Z" in manifest["features"] else None
     # fallback: use roe as health proxy if altman not present
     if alt_idx is None:
-        alt_idx = (
-            manifest["features"].index("ROE") if "ROE" in manifest["features"] else None
-        )
-    health_z, health_m = (
-        tensor_col(Z, mask, alt_idx, device) if alt_idx is not None else (None, None)
-    )
+        alt_idx = manifest["features"].index("ROE") if "ROE" in manifest["features"] else None
+    health_z, health_m = tensor_col(Z, mask, alt_idx, device) if alt_idx is not None else (None, None)
 
     skill_t = torch.tensor(skill_g, device=device)
     skillm_t = torch.tensor(skill_m, device=device)
@@ -375,7 +336,8 @@ def main():
     fit_mask = split_of == "train"
     fit_idx = np.where(fit_mask)[0]
     print(
-        f"fit rows train {len(fit_idx)}/{len(Z)} holdout val {int((split_of == 'val').sum())} test {int((split_of == 'test').sum())}"
+        f"fit rows train {len(fit_idx)}/{len(Z)} holdout val {int((split_of == 'val').sum())} test "
+        f"{int((split_of == 'test').sum())}"
     )
 
     # model
@@ -465,18 +427,14 @@ def main():
                 pos_b=sector_t[partner_t],
                 hard_boost=args.hard_neg_boost,
             )
-            loss = loss + DEFAULT_WEIGHTS["archetype"] * F.cross_entropy(
-                out_a["archetype"], arch_t[idx_t]
-            )
+            loss = loss + DEFAULT_WEIGHTS["archetype"] * F.cross_entropy(out_a["archetype"], arch_t[idx_t])
             valid_sec = sector_t[idx_t] >= 0
             if valid_sec.any():
                 loss = loss + DEFAULT_WEIGHTS["sector"] * F.cross_entropy(
                     out_a["sector"][valid_sec], sector_t[idx_t][valid_sec]
                 )
             if game_z is not None:
-                loss = loss + DEFAULT_WEIGHTS["profile"] * F.mse_loss(
-                    out_a["profile"], game_z[idx_t]
-                )
+                loss = loss + DEFAULT_WEIGHTS["profile"] * F.mse_loss(out_a["profile"], game_z[idx_t])
                 # next profile
                 nxt_batch = next_idx_arr[idx]
                 valid_next = nxt_batch >= 0
@@ -498,9 +456,7 @@ def main():
                     out_a["valuation"], ev_z[idx_t], ev_m[idx_t]
                 )
             if ret_z is not None:
-                loss = loss + DEFAULT_WEIGHTS["market"] * masked_scalar_mse(
-                    out_a["market"], ret_z[idx_t], ret_m[idx_t]
-                )
+                loss = loss + DEFAULT_WEIGHTS["market"] * masked_scalar_mse(out_a["market"], ret_z[idx_t], ret_m[idx_t])
             if health_z is not None:
                 loss = loss + DEFAULT_WEIGHTS["health"] * masked_scalar_mse(
                     out_a["health"], health_z[idx_t], health_m[idx_t]
@@ -535,11 +491,10 @@ def main():
             test_r = recall_at_k(E_val, test_pairs, k=10)
             val_pur = cross_cycle_purity(E_val, clusters, fiscal_years)
             # composite proxy like hoops partial_cqs
-            comp_proxy = (
-                (0.5 * (val_r or 0) + 0.5 * (val_pur or 0)) if val_r is not None else 0
-            )
+            comp_proxy = (0.5 * (val_r or 0) + 0.5 * (val_pur or 0)) if val_r is not None else 0
             print(
-                f"epoch {epoch:3d} loss {avg:.4f} val_recall@10={val_r} test_recall@10={test_r} purity={val_pur} comp={comp_proxy:.3f} lr {sched.get_last_lr()[0]:.2e}"
+                f"epoch {epoch:3d} loss {avg:.4f} val_recall@10={val_r} test_recall@10={test_r} purity={val_pur} "
+                f"comp={comp_proxy:.3f} lr {sched.get_last_lr()[0]:.2e}"
             )
             # checkpoint on composite proxy (better than recall-only which picks epoch 0)
             if comp_proxy is not None and comp_proxy > best_composite:
@@ -566,7 +521,8 @@ def main():
         ckpt = safe_torch_load(BEST_CKPT, map_location=device)
         model.load_state_dict(ckpt["model"])
         print(
-            f"restored best epoch {ckpt['epoch']} recall {ckpt.get('val_recall')} purity {ckpt.get('val_purity')} comp {ckpt.get('composite')}"
+            f"restored best epoch {ckpt['epoch']} recall {ckpt.get('val_recall')} purity {ckpt.get('val_purity')} "
+            f"comp {ckpt.get('composite')}"
         )
 
     # final export
@@ -580,9 +536,7 @@ def main():
     arch_logits = heads["archetype"].cpu().numpy().astype(np.float32)
     sector_logits = heads["sector"].cpu().numpy().astype(np.float32)
     skill_pred = (
-        heads["skills"].cpu().numpy().astype(np.float32)
-        if "skills" in heads
-        else np.zeros((len(E), 0), np.float32)
+        heads["skills"].cpu().numpy().astype(np.float32) if "skills" in heads else np.zeros((len(E), 0), np.float32)
     )
     next_pred = (
         heads["next_profile"].cpu().numpy().astype(np.float32)
@@ -608,11 +562,7 @@ def main():
     # metrics
     held = {}
     for split in ("train", "val", "test", "all"):
-        sub = (
-            pair_arr
-            if split == "all"
-            else filter_pairs_by_split(pair_arr, fiscal_years, split)
-        )
+        sub = pair_arr if split == "all" else filter_pairs_by_split(pair_arr, fiscal_years, split)
         held[split] = {
             "pairs": len(sub),
             "recall_at_10_mtnn": recall_at_k(E, sub, k=10),
@@ -621,9 +571,7 @@ def main():
     # next profile r2 per split
     next_report = {}
     for split in ("val", "test"):
-        np.where((next_idx_arr >= 0) & (split_of == split))[
-            0
-        ] if split != "all" else np.where(next_idx_arr >= 0)[0]
+        np.where((next_idx_arr >= 0) & (split_of == split))[0] if split != "all" else np.where(next_idx_arr >= 0)[0]
         # but we need target split = target fy split, not source? use filter_pairs
         sub = filter_pairs_by_split(pair_arr, fiscal_years, split)
         if len(sub) == 0:
@@ -637,9 +585,7 @@ def main():
         mse = float((resid**2).mean()) if len(resid) else 0
         rmse = float(np.sqrt(mse)) if mse else 0
         # R2
-        ss_tot = (
-            float(((y - y.mean(axis=0, keepdims=True)) ** 2).sum()) if len(y) else 1
-        )
+        ss_tot = float(((y - y.mean(axis=0, keepdims=True)) ** 2).sum()) if len(y) else 1
         r2 = 1.0 - float((resid**2).sum()) / max(ss_tot, 1e-9)
         next_report[split] = {
             "rows": len(sub),
@@ -653,11 +599,7 @@ def main():
     # sector acc
     sector_pred = sector_logits.argmax(1)
     valid = sector_idx_arr >= 0
-    sector_acc = (
-        float((sector_pred[valid] == sector_idx_arr[valid]).mean())
-        if valid.sum()
-        else None
-    )
+    sector_acc = float((sector_pred[valid] == sector_idx_arr[valid]).mean()) if valid.sum() else None
 
     # market directional acc (proxy: sign of predicted vs actual ret)
     market_acc = None

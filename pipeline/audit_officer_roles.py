@@ -52,17 +52,21 @@ OUT = ROOT / "pipeline" / "data" / "officer_role_audit.json"
 PLACEHOLDER = re.compile(
     r"^(see\s+remarks?( below)?\.?|please\s+see\s+remarks?\.?|see\s+attached\.?|"
     r"n/?a|none|officer|executive officer|"
-    r"see\s+footnotes?\.?|\*+|-+)$", re.I)
+    r"see\s+footnotes?\.?|\*+|-+)$",
+    re.I,
+)
 
 # A role at a subsidiary or unit rather than at the registrant. Detected by the presence
 # of a scoping phrase, NOT by a list of company names -- a name list would be tuned
 # against the filers it was written from.
 DIVISIONAL = re.compile(
     r"\bsubsidiar|\bdivision\b|\bsegment\b|\bunit\b|\bgroup\b|"
-    r"\bof\s+[A-Z]{2,}\b|"                      # "Pres. of MPS Asia Operations"
+    r"\bof\s+[A-Z]{2,}\b|"  # "Pres. of MPS Asia Operations"
     r"\b(pres|president|chief exec|ceo|gm|general manager|vp)\b[^,]*[-,]\s*\S|"
     r"\b(asia|europe|americas|emea|apac|eastern hemisphere|western hemisphere|"
-    r"international|north america|latin america)\b", re.I)
+    r"international|north america|latin america)\b",
+    re.I,
+)
 
 # Real titles the shipped classifier does not recognise. Kept to abbreviations and
 # canonical office names -- anything requiring judgement about which unit it belongs to
@@ -122,8 +126,7 @@ def main() -> int:
     # (none should -- MAPPABLE deliberately contains no CEO or PRESIDENT target)
     promotes_to_leadership = [r for r in role_would_be if r in ("CEO", "PRESIDENT")]
 
-    tickers_touched = {k.rpartition("_")[0] for k, r in roleless
-                       if classify(r.get("title"))[0] == "MAPPABLE"}
+    tickers_touched = {k.rpartition("_")[0] for k, r in roleless if classify(r.get("title"))[0] == "MAPPABLE"}
 
     out = {
         "question": "Of the role-less officer rows, how many are classifiable at all?",
@@ -131,20 +134,19 @@ def main() -> int:
         "roleless_rows": len(roleless),
         "roleless_pct": round(100.0 * len(roleless) / total_rows, 2),
         "split": dict(buckets),
-        "split_pct_of_roleless": {k: round(100.0 * v / len(roleless), 1)
-                                  for k, v in buckets.items()},
+        "split_pct_of_roleless": {k: round(100.0 * v / len(roleless), 1) for k, v in buckets.items()},
         "roles_that_would_be_assigned": dict(role_would_be.most_common()),
         "tickers_touched_by_a_MAPPABLE_relabel": len(tickers_touched),
-        "would_any_row_become_CEO_or_PRESIDENT": promotes_to_leadership or
-            "NO -- MAPPABLE contains no CEO or PRESIDENT target, deliberately. Promoting "
-            "a divisional title into CEO is the bug that made officer_features.ceo_of() "
-            "return FedEx Dataworks' CEO for FDX.",
-        "examples": {k: v for k, v in examples.items()},
+        "would_any_row_become_CEO_or_PRESIDENT": promotes_to_leadership
+        or "NO -- MAPPABLE contains no CEO or PRESIDENT target, deliberately. Promoting "
+        "a divisional title into CEO is the bug that made officer_features.ceo_of() "
+        "return FedEx Dataworks' CEO for FDX.",
+        "examples": dict(examples.items()),
         "why_this_changes_nothing_yet": "officers.json feeds officer_features.py, which "
-            "fills trained NEO features (NEO_COUNT, NEO_TURNOVER, CEO_DUALITY, "
-            "CEO_TENURE) in the equities MTNN. Relabelling rows moves a model input. "
-            "This script produces the number that decides whether that is worth doing; "
-            "it does not do it.",
+        "fills trained NEO features (NEO_COUNT, NEO_TURNOVER, CEO_DUALITY, "
+        "CEO_TENURE) in the equities MTNN. Relabelling rows moves a model input. "
+        "This script produces the number that decides whether that is worth doing; "
+        "it does not do it.",
         "unclassified_tail_shape": None,
         "verdict": None,
         "headline": None,
@@ -156,14 +158,13 @@ def main() -> int:
     out["unclassified_tail_shape"] = {
         "rows": buckets.get("UNCLASSIFIED", 0),
         "distinct_titles": len(unc_titles),
-        "rows_per_distinct_title": round(
-            buckets.get("UNCLASSIFIED", 0) / max(len(unc_titles), 1), 2),
+        "rows_per_distinct_title": round(buckets.get("UNCLASSIFIED", 0) / max(len(unc_titles), 1), 2),
         "reading": "A long tail of idiosyncratic abbreviations -- 'CVP, Critical Care', "
-                   "'Chf Rsch, Dev & Innov Officer', 'Sr MD Gl Hd Commodity & Option' -- "
-                   "not a missing rule. A handful are mappable with more patterns "
-                   "('CVP PRIN ACCT OFFICER' -> CAO, 'E.V.P. Finance & C.F.O.' -> CFO, "
-                   "'Senior Executive VicePresident' -> EVP), worth perhaps another 50 "
-                   "rows. Each new pattern after that buys single-digit row counts.",
+        "'Chf Rsch, Dev & Innov Officer', 'Sr MD Gl Hd Commodity & Option' -- "
+        "not a missing rule. A handful are mappable with more patterns "
+        "('CVP PRIN ACCT OFFICER' -> CAO, 'E.V.P. Finance & C.F.O.' -> CFO, "
+        "'Senior Executive VicePresident' -> EVP), worth perhaps another 50 "
+        "rows. Each new pattern after that buys single-digit row counts.",
     }
     out["verdict"] = (
         "DO NOT RELABEL. The best case is roughly 250 of 56,257 rows (0.44%) across 27 "
@@ -174,7 +175,8 @@ def main() -> int:
         "that and would force a re-run of the shipped model to find out. The 828 "
         "DIVISIONAL rows are the genuinely interesting population and they should stay "
         "role-less -- promoting a subsidiary title into CEO or PRESIDENT is the bug that "
-        "made officer_features.ceo_of() return FedEx Dataworks' CEO for FDX.")
+        "made officer_features.ceo_of() return FedEx Dataworks' CEO for FDX."
+    )
     ph = buckets.get("PLACEHOLDER", 0)
     mp = buckets.get("MAPPABLE", 0)
     out["headline"] = (
@@ -182,7 +184,8 @@ def main() -> int:
         f"{ph} ({round(100.0*ph/len(roleless),1)}%) carry no title at all -- the filer "
         f"wrote 'See Remarks' or similar and the title lives in a free-text block the "
         f"parser never sees. {mp} are real titles the classifier does not recognise. "
-        f"The rest are divisional or genuinely unclassified.")
+        f"The rest are divisional or genuinely unclassified."
+    )
     OUT.write_text(json.dumps(out, indent=1, ensure_ascii=False), encoding="utf-8")
 
     print(f"total officer rows      {total_rows}")

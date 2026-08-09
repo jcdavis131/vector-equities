@@ -2,7 +2,6 @@
 
 import http.client
 import json
-import os
 import subprocess
 import tempfile
 import time
@@ -18,7 +17,7 @@ USER_AGENT = "VectorEquities research jcdavis131@gmail.com"
 
 def curl_fetch_json(url, timeout=90):
     # use curl for robustness
-    tmp = os.path.join(tempfile.gettempdir(), "sec_fetch_tmp.json")
+    tmp = str(Path(tempfile.gettempdir()) / "sec_fetch_tmp.json")
     try:
         cmd = [
             "curl",
@@ -39,16 +38,16 @@ def curl_fetch_json(url, timeout=90):
         res.stdout.strip()[-3:] if res.stdout.strip() else ""
         # Actually curl -w outputs after, but we wrote file; check http code via separate?
         # We'll just check file exists and size
-        if os.path.exists(tmp) and os.path.getsize(tmp) > 5000:
+        if Path(tmp).exists() and Path(tmp).stat().st_size > 5000:
             try:
-                with open(tmp) as f:
+                with Path(tmp).open() as f:
                     return json.load(f)
             except Exception:
                 # try partial?
                 try:
-                    txt = open(tmp).read()
+                    txt = Path(tmp).open().read()
                     return json.loads(txt)
-                except:
+                except Exception:
                     return None
     except Exception:
         pass
@@ -59,9 +58,7 @@ def robust_fetch_json(url, max_retries=5):
     for attempt in range(max_retries):
         # try urllib first quick
         try:
-            req = urllib.request.Request(
-                url, headers={"User-Agent": USER_AGENT, "Accept": "application/json"}
-            )
+            req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT, "Accept": "application/json"})
             with urllib.request.urlopen(req, timeout=90) as r:
                 data = r.read()
                 return json.loads(data.decode("utf-8"))
@@ -94,17 +91,17 @@ def fetch_company_facts(cik: str):
         try:
             if cache_file.stat().st_size > 1000:
                 return json.loads(cache_file.read_text()[:20000000])
-        except:
+        except Exception:
             try:
                 cache_file.unlink()
-            except:
+            except Exception:
                 pass
     url = f"https://data.sec.gov/api/xbrl/companyfacts/CIK{cik_pad}.json"
     data = robust_fetch_json(url)
     if data:
         try:
             cache_file.write_text(json.dumps(data))
-        except:
+        except Exception:
             pass
     time.sleep(0.2)
     return data
