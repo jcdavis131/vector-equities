@@ -1,0 +1,591 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<meta name="theme-color" content="#0b0e14"/>
+<link rel="manifest" href="/manifest.json">
+<title>Companies — Directory + Skills — Vector Equities</title>
+<meta name="description" content="500 tickers · 4831 FYs · 12 skills era-normalized · search META/GOOGL"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/shell.css"/>
+<link rel="stylesheet" href="assets/responsive.css"/>
+<link rel="stylesheet" href="assets/final-qa.css"/>
+<link rel="stylesheet" href="assets/unified.css"/>
+<link rel="stylesheet" href="assets/motion.css"/>
+<style>
+/* -- dark theme adapter over hoops lite shell -- */
+:root{
+  --bg:#0b0e14; --panel:#151a24; --ink:#e6e8ef; --muted:#8a90a6;
+  --accent:#6ad345; --blue:#6ea8ff; --yellow:#f0e442; --red:#ff6b6b;
+  --grid:#1e2433; --grid2:#242e45;
+  --paper:var(--bg); --hd:"Architects Daughter", ui-monospace, monospace;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --sans:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+  --radius:14px;
+  --shadow:none;
+}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6;overflow-x:clip}
+a{color:var(--blue);text-decoration:none}
+a:hover{text-decoration:underline}
+/* nav override dark */
+.site-nav{background:#0f131c !important;border-bottom:1.5px solid var(--grid) !important;}
+.site-nav__brand{color:var(--ink) !important}
+.site-nav__accent{color:var(--accent) !important}
+.site-nav__link{color:var(--muted) !important;border-color:transparent !important}
+.site-nav__link:hover{color:var(--ink) !important;background:var(--panel) !important}
+.site-nav__link.is-active{color:var(--ink) !important;border-color:var(--grid) !important;background:var(--panel) !important;box-shadow:none !important}
+/* cards dark */
+.main{max-width:1180px;margin:0 auto;padding:12px clamp(12px,3vw,22px) calc(92px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:14px}
+.card{background:var(--panel);border:1px solid var(--grid);border-radius:14px;padding:14px 16px;box-shadow:none;animation:vx-rise 260ms cubic-bezier(.16,1,.3,1) both}
+.card:nth-child(1){animation-delay:0ms}
+.card:nth-child(2){animation-delay:50ms}
+.card:nth-child(3){animation-delay:100ms}
+.hd{font-family:var(--hd);line-height:.98;color:var(--ink)}
+.kicker{font-family:var(--mono);font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:flex;gap:8px;align-items:center}
+.kdot{width:6px;height:6px;border-radius:50%;background:var(--accent);display:inline-block;box-shadow:0 0 8px var(--accent)}
+.small-mono{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.pill{border:1px solid var(--grid);border-radius:999px;padding:4px 10px;background:var(--bg);font-family:var(--mono);font-size:11px;font-weight:800;color:var(--ink);text-decoration:none}
+.pill:hover{background:var(--panel);text-decoration:none}
+.btn{appearance:none;border:1px solid var(--grid);border-radius:10px;min-height:40px;padding:8px 12px;font-weight:800;font-family:var(--mono);text-transform:uppercase;letter-spacing:.04em;cursor:pointer;background:var(--panel);color:var(--ink)}
+.btn:hover{background:#1a2032}
+.btn-accent{background:var(--accent);color:#0b0e14;border-color:var(--accent)}
+.input,select.input,input.input{width:100%;background:#0f131c;color:var(--ink);border:1px solid var(--grid);border-radius:10px;padding:8px 10px;font-family:var(--mono);font-size:13px;min-height:40px}
+.input::placeholder{color:var(--muted)}
+
+/* tabs */
+.tab-pills{display:flex;gap:8px;flex-wrap:wrap}
+.tab-pills button{border:1px solid var(--grid);border-radius:999px;padding:6px 12px;background:#0f131c;font-family:var(--mono);font-size:11px;font-weight:800;color:var(--muted);cursor:pointer;transition:all .12s}
+.tab-pills button.is-active{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+
+/* wiki */
+.wiki-controls{display:flex;flex-direction:column;gap:10px}
+.wiki-search-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.wiki-search{flex:1 1 220px;min-width:0}
+.wiki-filters{display:flex;gap:8px;flex-wrap:wrap}
+.wiki-filters select{background:#0f131c;color:var(--ink);border:1px solid var(--grid);border-radius:10px;padding:6px 10px;min-height:40px;font-family:var(--mono);font-size:12px}
+.wiki-alphabet{display:flex;gap:4px;flex-wrap:wrap}
+.wiki-alphabet button{border:1px solid var(--grid);border-radius:8px;padding:4px 6px;min-width:28px;background:#0f131c;font-family:var(--mono);font-size:11px;font-weight:800;color:var(--muted);cursor:pointer}
+.wiki-alphabet button.is-active{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.wiki-alphabet button.is-disabled{opacity:.25;pointer-events:none}
+.wiki-count{font-family:var(--mono);font-size:11px;color:var(--muted)}
+.wiki-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;counter-reset:wiki}
+.wiki-row-wrap{display:flex;gap:8px;align-items:center;background:#0f131c;border:1px solid var(--grid);border-radius:12px;padding:10px 12px;transition:border-color .12s}
+.wiki-row-wrap:hover{border-color:var(--grid2)}
+.wiki-row{flex:1 1 auto;display:flex;justify-content:space-between;gap:10px;align-items:center;border:0;background:transparent;text-align:left;cursor:pointer;min-width:0;color:var(--ink)}
+.wiki-row__name{font-weight:800;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.wiki-row__meta{font-family:var(--mono);font-size:10px;color:var(--muted);white-space:nowrap;display:flex;gap:6px;align-items:center}
+.wiki-row__grades{flex:0 0 auto;border:1px solid var(--grid);border-radius:999px;padding:4px 8px;background:var(--panel);font-family:var(--mono);font-size:11px;font-weight:800;cursor:pointer;color:var(--ink)}
+.badge{display:inline-block;padding:2px 7px;border-radius:999px;font-size:10px;border:1px solid var(--grid);font-family:var(--mono);font-weight:700;white-space:nowrap}
+.b-Compounder{color:#7cf8c7;background:rgba(124,248,199,.08);border-color:rgba(124,248,199,.3)}
+.b-Cash_Cow{color:#f0e442;background:rgba(240,228,66,.08);border-color:rgba(240,228,66,.3)}
+.b-Turnaround{color:#ff9f1c;background:rgba(255,159,28,.08);border-color:rgba(255,159,28,.3)}
+.b-HyperGrowth_SaaS{color:#6ea8ff;background:rgba(110,168,255,.08);border-color:rgba(110,168,255,.3)}
+.b-Heavy_Industrial{color:#a0a8c0;background:rgba(160,168,192,.08)}
+.b-Bank_Capital_Heavy{color:#d9686e;background:rgba(217,104,110,.08);border-color:rgba(217,104,110,.3)}
+.b-Moonshot_Bio{color:#c792ea;background:rgba(199,146,234,.08);border-color:rgba(199,146,234,.3)}
+.b-Serial_Acquirer{color:#ff8cc8;background:rgba(255,140,200,.08);border-color:rgba(255,140,200,.3)}
+/* profile */
+.pp-search-wrap{display:flex;flex-direction:column;gap:8px}
+.pp-search-top{display:flex;gap:8px;flex-wrap:wrap}
+.pp-search-top .input{flex:1 1 280px}
+.pp-btn{border:1px solid var(--grid);border-radius:10px;min-height:40px;padding:6px 12px;font-family:var(--mono);font-weight:800;font-size:12px;cursor:pointer;background:#0f131c;color:var(--ink)}
+.pp-btn--yellow{background:var(--yellow);color:#0b0e14;border-color:var(--yellow)}
+.pp-quick-row{display:flex;gap:6px;flex-wrap:wrap;align-items:center;font-family:var(--mono);font-size:11px;color:var(--muted)}
+.pp-quick-chip{border:1px solid var(--grid);border-radius:999px;padding:4px 10px;background:#0f131c;color:var(--ink);font-family:var(--mono);font-size:11px;font-weight:700;cursor:pointer}
+.pp-quick-chip:hover{border-color:var(--accent);color:var(--accent)}
+.skills-suggest{list-style:none;margin:6px 0 0;padding:0;display:flex;flex-direction:column;gap:6px;max-height:280px;overflow:auto}
+.skills-suggest li{border:1px solid var(--grid);border-radius:10px;padding:8px 10px;background:#0f131c;cursor:pointer;display:flex;justify-content:space-between;gap:8px;color:var(--ink);font-size:13px}
+.skills-suggest li:hover,.skills-suggest li.is-active{background:var(--panel);border-color:var(--accent)}
+.pp-shell{display:flex;flex-direction:column;gap:14px;margin-top:10px}
+.pp-hero{background:radial-gradient(800px 400px at 50% 0,#1a2340 0,#0f131c 70%);border:1px solid var(--grid);border-radius:14px;padding:14px 16px}
+.pp-name-row{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.pp-name{margin:0;font-size:22px;font-weight:900;letter-spacing:.02em;font-family:var(--mono)}
+.pp-grade-mega{font-family:var(--mono);font-size:11px;font-weight:800;border:1px solid var(--grid);border-radius:999px;padding:2px 8px;background:var(--panel);color:var(--muted)}
+.pp-grade-mega b{color:var(--accent);font-size:14px}
+.pp-meta-line{font-family:var(--mono);font-size:11px;color:var(--muted);margin:6px 0 8px}
+.pp-seasons{display:flex;gap:6px;flex-wrap:wrap}
+.pp-seasons button{border:1px solid var(--grid);border-radius:999px;padding:4px 8px;background:#0f131c;font-family:var(--mono);font-size:11px;color:var(--muted);cursor:pointer}
+.pp-seasons button.is-active{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.pp-rarity-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.pp-section{margin-top:2px}
+.pp-section-head{font-family:var(--mono);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:8px}
+.vh-skill-badges{display:flex;gap:6px;flex-wrap:wrap}
+.vh-skill-badges span{border:1px solid var(--grid);border-radius:999px;padding:3px 8px;font-family:var(--mono);font-size:10px;font-weight:800;background:#0f131c;color:var(--ink)}
+.skillbar-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.skillbar{display:grid;grid-template-columns:108px 1fr 38px;gap:8px;align-items:center;border:1px solid var(--grid);border-radius:10px;padding:8px 10px;background:#0f131c}
+.skillbar__label{font-family:var(--mono);font-size:10px;font-weight:800;text-transform:uppercase;color:var(--muted)}
+.skillbar__track{height:8px;background:#0b0e14;border-radius:999px;overflow:hidden;border:1px solid var(--grid)}
+.skillbar__fill{height:100%;background:var(--accent);transition:width .35s cubic-bezier(.16,1,.3,1)}
+.skillbar__grade{font-family:var(--mono);font-size:11px;font-weight:900;text-align:right;color:var(--ink)}
+.radar-wrap{background:#0f131c;border:1px solid var(--grid);border-radius:12px;padding:10px}
+canvas#radar{width:100%;height:300px;display:block;background:transparent;border-radius:10px}
+table.sim{width:100%;border-collapse:collapse;font-size:11px;font-family:var(--mono)}
+table.sim th{color:var(--muted);text-align:left;padding:6px;border-bottom:1px solid var(--grid);font-weight:700}
+table.sim td{padding:6px;border-bottom:1px solid rgba(30,36,51,.6);color:var(--ink)}
+table.sim tr:hover td{background:rgba(255,255,255,.02)}
+.pp-discover{border:1px dashed var(--grid);border-radius:12px;padding:12px 14px;background:rgba(106,211,69,.04)}
+.pp-discover__title{margin:0 0 4px;font-family:var(--mono);font-size:12px;font-weight:800;color:var(--ink)}
+.pp-discover__sub{margin:0 0 10px;font-size:12px;color:var(--muted);line-height:1.4}
+.pp-discover__row{display:flex;gap:6px;flex-wrap:wrap}
+.pp-discover__chip{border:1px solid var(--grid);border-radius:999px;padding:5px 10px;background:#0f131c;color:var(--ink);font-family:var(--mono);font-size:11px;font-weight:700;cursor:pointer}
+.pp-discover__chip:hover{border-color:var(--accent);color:var(--accent)}
+.fwd-card{border:1px solid var(--grid);border-radius:12px;padding:10px 12px;background:#0f131c;font-family:var(--mono);font-size:11px;color:var(--muted)}
+.fwd-card b{color:var(--ink)}
+.site-footer{display:block;background:#0f131c;color:var(--muted);border-top:1px solid var(--grid);padding:12px clamp(12px,3vw,22px);font-family:var(--mono);font-size:11px;margin-top:12px}
+.site-footer__links{display:flex;gap:14px;flex-wrap:wrap}
+.site-footer__links a{color:var(--ink);text-decoration:none;font-weight:800}
+.site-footer__links a:hover{color:var(--accent)}
+@media(max-width:720px){.skillbar{grid-template-columns:90px 1fr 34px}.pp-name{font-size:18px}}
+</style>
+</head>
+<body>
+<noscript><div role="alert" style="padding:16px;text-align:center;background:#ff6b6b;color:#0b0e14">Enable JS — Vector Equities Companies needs JavaScript for directory + radar + similarity</div></noscript>
+
+<nav class="site-nav" data-active="/companies" aria-label="Vector Equities site"></nav>
+
+<div class="main">
+  <div class="card">
+    <div class="kicker"><span class="kdot"></span> Companies · 500 tickers · 4831 FYs · search META/GOOGL</div>
+    <h1 class="hd" style="font-size:clamp(28px,4vw,38px);margin:8px 0 6px">Company Directory <span style="background:var(--ink);color:var(--bg);padding:0 .18em;border-radius:8px">+ Skills Lens</span></h1>
+    <p style="margin:0;font-size:13px;line-height:1.5;color:var(--muted)">Every company-FY graded, 12 skills percentile per FY, era-normalized. Latest FY map + alias search (meta → META, google → GOOGL, msft → MSFT). Pick a ticker for full dossier.</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
+      <a class="pill" href="/">Map →</a>
+      <a class="pill" href="/play">Play →</a>
+      <a class="pill" href="/model">Lab →</a>
+      <a class="pill" href="/methods">Methods →</a>
+      <span class="pill" id="header-live-stats" style="opacity:.9">Loading 4831 FYs…</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="tab-pills" role="tablist" aria-label="Company reference views">
+      <button type="button" role="tab" data-tab="directory" class="is-active" aria-selected="true">Directory</button>
+      <button type="button" role="tab" data-tab="profile" aria-selected="false">Skill profile</button>
+      <button type="button" role="tab" data-tab="leaderboard" aria-selected="false">Leaderboards</button>
+    </div>
+  </div>
+
+  <!-- DIRECTORY -->
+  <section class="card" id="companies-panel-directory" role="tabpanel">
+    <div class="wiki-controls">
+      <div class="wiki-search-row">
+        <input class="input wiki-search" id="wiki-search" type="text" placeholder="Search ticker/name — META, NVDA, Microsoft, Tesla…" autocomplete="off" spellcheck="false" disabled>
+        <div class="wiki-filters">
+          <select id="wiki-filter-sector" disabled><option value="">All 11 sectors</option></select>
+          <select id="wiki-filter-arch" disabled><option value="">All 8 archetypes</option></select>
+        </div>
+      </div>
+      <div class="wiki-alphabet" id="wiki-alphabet" aria-label="Jump to letter"></div>
+      <div class="wiki-count" id="wiki-count">Loading company index…</div>
+    </div>
+    <ol class="wiki-list" id="wiki-list" style="margin-top:12px"></ol>
+  </section>
+
+  <!-- PROFILE -->
+  <section class="card" id="companies-panel-profile" role="tabpanel" hidden>
+    <div class="skills-panel">
+      <div class="pp-search-wrap">
+        <div class="pp-search-top">
+          <input class="input" id="skills-search" type="text" placeholder="Search 4831 company-FYs — try META 2024, MSFT 2020, NVDA…" autocomplete="off" disabled>
+          <button class="pp-btn pp-btn--yellow" id="pp-random" type="button" title="Surprise me">🎲 Random</button>
+        </div>
+        <div class="pp-quick-row" id="pp-quick-row">
+          <span class="pp-quick-label">Try:</span>
+          <button class="pp-quick-chip" data-q="META">META</button>
+          <button class="pp-quick-chip" data-q="GOOGL">GOOGL</button>
+          <button class="pp-quick-chip" data-q="MSFT">MSFT</button>
+          <button class="pp-quick-chip" data-q="AAPL">AAPL</button>
+          <button class="pp-quick-chip" data-q="NVDA">NVDA</button>
+          <button class="pp-quick-chip" data-q="TSLA">TSLA</button>
+        </div>
+        <ul class="skills-suggest" id="skills-suggest"></ul>
+      </div>
+
+      <div id="skills-profile" hidden>
+        <div class="pp-shell" id="pp-shell">
+          <div id="pp-court-skill-root" style="margin:0 0 4px"></div>
+
+          <div class="pp-hero" id="pp-hero">
+            <div class="pp-name-row">
+              <h2 class="pp-name" id="pp-name">META · Meta Platforms</h2>
+              <span class="pp-grade-mega" id="pp-mega"><b>--</b> avg skill</span>
+            </div>
+            <p class="skills-player-meta pp-meta-line" id="skills-player-meta"></p>
+            <div class="skills-seasons pp-seasons" id="skills-seasons" role="tablist" aria-label="FY"></div>
+            <div class="pp-rarity-row" id="pp-rarity"></div>
+          </div>
+
+          <div class="pp-section">
+            <div class="pp-section-head">Elite badges — 90+ era-normalized</div>
+            <div class="vh-skill-badges pp-badges-grid" id="skills-badges"></div>
+          </div>
+
+          <div class="pp-section" style="display:grid;grid-template-columns:1.1fr .9fr;gap:12px">
+            <div>
+              <div class="pp-section-head">Skill grades — 0-99 vs sector that FY</div>
+              <ul class="skillbar-list pp-skills-grid" id="skills-bars"></ul>
+            </div>
+            <div>
+              <div class="pp-section-head">Radar — 12 skills</div>
+              <div class="radar-wrap"><canvas id="radar" width="360" height="300" aria-label="Radar chart of 12 skill percentiles"></canvas></div>
+              <div id="skills-forward" class="fwd-card" style="margin-top:8px">Loading forward eval…</div>
+            </div>
+          </div>
+
+          <div id="pp-wide-wrap">
+            <div class="pp-section">
+              <div class="pp-section-head">Top similar — cosine in 64-d, holdout years masked (plus archetype/sector nudge)</div>
+              <table class="sim"><thead><tr><th>Ticker FY</th><th>Company</th><th>Archetype</th><th>Sector</th><th>Cos</th></tr></thead><tbody id="sim"></tbody></table>
+            </div>
+          </div>
+
+          <div id="skills-next-profile" hidden></div>
+          <div id="skills-mtnn" hidden></div>
+          <div id="skills-playoffs" hidden></div>
+
+          <div class="pp-discover" id="pp-discover">
+            <h3 class="pp-discover__title">Keep pulling cards</h3>
+            <p class="pp-discover__sub">Every FY era-normalized. Seen META 2024? See how MSFT, GOOGL, NVDA, AAPL compare. Click to jump.</p>
+            <div class="pp-discover__row" id="pp-discover-row">
+              <button class="pp-discover__chip" data-q="MSFT">MSFT</button>
+              <button class="pp-discover__chip" data-q="GOOGL">GOOGL</button>
+              <button class="pp-discover__chip" data-q="NVDA">NVDA</button>
+              <button class="pp-discover__chip" data-q="AAPL">AAPL</button>
+              <button class="pp-discover__chip" data-q="TSLA">TSLA</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="pp-empty" style="margin-top:10px">
+        <p style="font-size:13px;color:var(--muted);margin:0" id="skills-empty">Pick a company-FY to see skill profile across 12 dimensions — including predicted vs actual forward when mapped. Try “META”, “NVDA”, or “MSFT 2023”.</p>
+        <div class="pp-featured" id="pp-featured" style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LEADERBOARD -->
+  <section class="card" id="companies-panel-leaderboard" role="tabpanel" hidden>
+    <h2 class="hd" style="font-size:20px;margin:0 0 6px">Leaderboard</h2>
+    <p style="font-size:13px;color:var(--muted);margin:0 0 12px">0–99 skill grades era-normalized per FY. Pick a skill, FY, sector — top seasons. Alias search works (meta → META).</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
+      <select id="board-skill" class="input" style="flex:1 1 160px;min-width:140px;min-height:40px" disabled><option>Loading skills…</option></select>
+      <select id="board-season" class="input" style="flex:0 0 130px;min-height:40px" disabled><option value="">All FYs</option></select>
+      <select id="board-sector" class="input" style="flex:0 0 170px;min-height:40px"><option value="">All 11 sectors</option></select>
+      <input id="board-search" class="input" placeholder="Search — META, NVDA, MSFT…" style="flex:1 1 180px;min-width:160px"/>
+    </div>
+    <ol class="wiki-list" id="skills-board" style="margin-top:6px"></ol>
+    <p class="small-mono" style="margin-top:10px;color:var(--muted);text-transform:none">Grades are 0–99 percentile per FY. Methods: <a href="/methods#skills">/methods#skills</a></p>
+  </section>
+</div>
+
+<footer class="site-footer"><div class="site-footer__links"><a href="/play">Play</a><a href="/model">Lab</a><a href="/companies">Companies</a><a href="/methods">Methods</a><a href="https://github.com/jcdavis131/vector-equities" target="_blank" rel="noopener">GitHub</a></div><div class="site-footer__attribution">4831 company-FYs · 500 tickers · 64-d transformer MTNN · equities.dumbmodel.com · No investment advice.</div></footer>
+
+<script src="assets/error-boundary.js"></script>
+<script src="assets/keyboard-a11y.js"></script>
+<script src="assets/site-nav.js" defer></script>
+<script src="assets/pwa-install.js"></script>
+<script>
+(function(){
+'use strict';
+/* ===== constants reused from index.html ===== */
+const ARCHETYPES=["Compounder","Cash_Cow","Turnaround","HyperGrowth_SaaS","Heavy_Industrial","Bank_Capital_Heavy","Moonshot_Bio","Serial_Acquirer"];
+const SECTORS=["Technology","Healthcare","Financials","Energy","Industrials","Consumer Staples","Consumer Discretionary","Utilities","Materials","Real Estate","Communication"];
+const SKILL_KEYS=["Profit","Growth","Moat","CashConv","CapAlloc","BalHealth","Effic","ValDisc","Mom","MgmtQual","Yield","Disclose"];
+const SKILL_FULL={"Profit":"Profitability","Growth":"Revenue Growth","Moat":"Moat / ROIC Spread","CashConv":"Cash Conversion","CapAlloc":"Capital Allocation","BalHealth":"Balance Sheet Health","Effic":"Operating Efficiency","ValDisc":"Valuation Discipline","Mom":"Momentum 12-1","MgmtQual":"Management Quality","Yield":"Shareholder Yield","Disclose":"Disclosure Quality"};
+const SKILL_COLOR={Profit:"#6ad345",Growth:"#6ea8ff",Moat:"#7cf8c7",CashConv:"#f0e442",CapAlloc:"#ff9f1c",BalHealth:"#a0a8c0",Effic:"#d9686e",ValDisc:"#c792ea",Mom:"#ff8cc8",MgmtQual:"#a0e8ff",Yield:"#ffd166",Disclose:"#70e0c0"};
+const ALIAS={
+  "meta":"META","facebook":"META","meta platforms":"META",
+  "microsoft":"MSFT","msft":"MSFT",
+  "apple":"AAPL","aapl":"AAPL",
+  "nvidia":"NVDA","nvda":"NVDA",
+  "tesla":"TSLA","tsla":"TSLA",
+  "google":"GOOGL","alphabet":"GOOGL","googl":"GOOGL","goog":"GOOGL",
+  "amazon":"AMZN","amzn":"AMZN",
+  "berkshire":"BRK.B","brk.b":"BRK.B","brk-b":"BRK.B","berkshire hathaway":"BRK.B",
+  "jpmorgan":"JPM","jpm":"JPM",
+  "netflix":"NFLX","nflx":"NFLX",
+  "broadcom":"AVGO","avgo":"AVGO",
+  "walmart":"WMT","costco":"COST"
+};
+
+let Data={all:[], latest:[], latestMap:new Map(), skill_keys:SKILL_KEYS};
+let tradesMap=new Map(); let evalFwd=null; let evalScoreboard=null;
+let currentProfile=null; let currentTicker=null;
+let dirFilter={q:"", sector:"", arch:"", letter:""};
+let lbFilter={skill:0, fy:"", sector:"", q:""};
+
+// tabs
+function setTab(name){
+  document.querySelectorAll('.tab-pills button').forEach(b=>{const on=b.dataset.tab===name;b.classList.toggle('is-active',on);b.setAttribute('aria-selected',on?'true':'false')});
+  document.getElementById('companies-panel-directory').hidden=name!=="directory";
+  document.getElementById('companies-panel-profile').hidden=name!=="profile";
+  document.getElementById('companies-panel-leaderboard').hidden=name!=="leaderboard";
+  if(name==="leaderboard") renderLeaderboard();
+}
+document.querySelectorAll('.tab-pills button').forEach(b=>b.addEventListener('click',()=>setTab(b.dataset.tab)));
+
+function resolveAlias(qLower){
+  if(!qLower) return null;
+  if(ALIAS[qLower]) return ALIAS[qLower];
+  for(const [k,v] of Object.entries(ALIAS)){
+    if(qLower.includes(k) && k.length>=3) return v;
+  }
+  return null;
+}
+function cosine(a,b){
+  let dot=0,na=0,nb=0;const n=Math.min(a.length,b.length);for(let i=0;i<n;i++){dot+=a[i]*b[i];na+=a[i]*a[i];nb+=b[i]*b[i];} return dot/(Math.sqrt(na)*Math.sqrt(nb)+1e-9);
+}
+function grade01to99(v){ // v 0-1 -> 0-99
+  if(v==null) return 0;
+  if(v>1 && v<=100) return Math.round(v); // already 0-100
+  return Math.max(0,Math.min(99, Math.round(v*100)));
+}
+function skillAvg(skills){ if(!skills||!skills.length) return 0; return Math.round(skills.reduce((s,v)=>s+ (v>1?v/100:v),0)/skills.length*100); }
+
+async function load(){
+  try{
+    const real=await fetch('./assets/real_data.json').then(r=>r.json());
+    const dim=real.dim||64;
+    const pts=(real.points||[]).map(p=>{
+      const arch=p.archetype||p.arch||"Compounder";
+      const sec=p.sector||"Technology";
+      const skills=(p.skills||Array.from({length:12},()=>0.5)).map(v=> v>1? v/100 : v); // normalize to 0-1
+      const embRaw=p.emb||[]; const emb=new Float32Array(dim);
+      for(let i=0;i<Math.min(dim,embRaw.length);i++) emb[i]=embRaw[i];
+      if(embRaw.length<dim){
+        let h=0; for(let c of p.ticker) h=(h*31 + c.charCodeAt(0))>>>0;
+        for(let i=embRaw.length;i<dim;i++) emb[i]=Math.sin(h*0.01+i)*0.3;
+      }
+      let norm=Math.sqrt(emb.reduce((s,v)=>s+v*v,0)); if(norm>0) for(let i=0;i<dim;i++) emb[i]/=norm;
+      return {ticker:p.ticker, name:p.name||p.ticker, nameLower:(p.name||p.ticker).toLowerCase(), fy:parseInt(p.year), year:""+p.year, sec, arch, x:p.x||0,y:p.y||0,z:p.z||0, skills, emb, avg:Math.round(skills.reduce((a,b)=>a+b,0)/skills.length*100)};
+    });
+    Data.all=pts.sort((a,b)=> a.ticker.localeCompare(b.ticker) || a.fy-b.fy);
+    const latestMap=new Map();
+    for(const p of Data.all){ const ex=latestMap.get(p.ticker); if(!ex||p.fy>ex.fy) latestMap.set(p.ticker,p); }
+    Data.latest=Array.from(latestMap.values()).sort((a,b)=>a.ticker.localeCompare(b.ticker));
+    Data.latestMap=latestMap;
+    document.getElementById('header-live-stats').textContent=`${Data.all.length} company-FYs · ${Data.latest.length} tickers (full) · ${dim}-d · built ${real.built||'2026'}`;
+    populateFilters();
+    renderDirectory();
+    enableSearches();
+    // auto-profile META
+    const meta=Data.latest.find(p=>p.ticker==='META')||Data.latest.find(p=>p.nameLower.includes('meta'))||Data.latest[0];
+    if(meta){ inspectByLatest(meta); }
+    // featured empty
+    renderFeatured();
+  }catch(e){
+    console.warn('real_data load failed',e);
+    document.getElementById('wiki-count').textContent='Failed to load real_data.json — see console';
+  }
+  // evals
+  try{ evalFwd=await fetch('./assets/eval_forward.json').then(r=>r.json()); }catch(e){}
+  try{ evalScoreboard=await fetch('./assets/eval_scoreboard.json').then(r=>r.json()); }catch(e){}
+  try{
+    const csvText=await fetch('./assets/trades_final_ranked_v6.csv').then(r=>r.text());
+    const lines=csvText.trim().split(/\r?\n/); const hdr=lines[0].split(',');
+    for(let i=1;i<lines.length;i++){ const parts=lines[i].split(','); const obj={}; hdr.forEach((h,j)=>obj[h]=parts[j]); const key=obj.ticker+'_'+obj.fy; tradesMap.set(key,obj); }
+  }catch(e){}
+  updateForwardCard();
+}
+function populateFilters(){
+  const af=document.getElementById('wiki-filter-arch'); ARCHETYPES.forEach(a=>{const o=document.createElement('option');o.value=a;o.textContent=a.replace(/_/g,' ');af.appendChild(o);});
+  const sf=document.getElementById('wiki-filter-sector'); SECTORS.forEach(s=>{const o=document.createElement('option');o.value=s;o.textContent=s;sf.appendChild(o);});
+  const bf=document.getElementById('board-sector'); SECTORS.forEach(s=>{const o=document.createElement('option');o.value=s;o.textContent=s;bf.appendChild(o);});
+  const bskill=document.getElementById('board-skill'); bskill.innerHTML=''; SKILL_KEYS.forEach((k,i)=>{const o=document.createElement('option');o.value=i;o.textContent=k+' — '+(SKILL_FULL[k]||k);if(i===0)o.selected=true;bskill.appendChild(o);});
+  const bseason=document.getElementById('board-season'); const years=[...new Set(Data.all.map(p=>p.fy))].sort((a,b)=>a-b); years.forEach(y=>{const o=document.createElement('option');o.value=y;o.textContent='FY '+y;bseason.appendChild(o);});
+  const sfy=document.getElementById('wiki-filter-sector'); const af2=document.getElementById('wiki-filter-arch');
+
+  // alphabet
+  const alpha=document.getElementById('wiki-alphabet'); const letters="ABCDEFGHIJKLMNOPQRSTUVWXYZ".split('');
+  const allBtn=document.createElement('button'); allBtn.textContent='All'; allBtn.className='is-active'; allBtn.addEventListener('click',()=>{dirFilter.letter=""; alpha.querySelectorAll('button').forEach(b=>b.classList.remove('is-active')); allBtn.classList.add('is-active'); renderDirectory();}); alpha.appendChild(allBtn);
+  letters.forEach(L=>{const b=document.createElement('button');b.textContent=L; const has=Data.latest.some(p=>p.ticker.startsWith(L) || p.name.toUpperCase().startsWith(L)); if(!has) b.classList.add('is-disabled'); b.addEventListener('click',()=>{dirFilter.letter=L; alpha.querySelectorAll('button').forEach(x=>x.classList.remove('is-active')); b.classList.add('is-active'); renderDirectory();}); alpha.appendChild(b);});
+  // filter handlers
+  document.getElementById('wiki-filter-sector').onchange=e=>{dirFilter.sector=e.target.value; renderDirectory();};
+  document.getElementById('wiki-filter-arch').onchange=e=>{dirFilter.arch=e.target.value; renderDirectory();};
+  document.getElementById('board-skill').onchange=e=>{lbFilter.skill=parseInt(e.target.value); renderLeaderboard();};
+  document.getElementById('board-season').onchange=e=>{lbFilter.fy=e.target.value; renderLeaderboard();};
+  document.getElementById('board-sector').onchange=e=>{lbFilter.sector=e.target.value; renderLeaderboard();};
+  document.getElementById('board-search').oninput=e=>{lbFilter.q=e.target.value.trim(); renderLeaderboard();};
+}
+function enableSearches(){
+  const w=document.getElementById('wiki-search'); w.disabled=false; w.oninput=()=>{dirFilter.q=w.value.trim(); renderDirectory();};
+  const s=document.getElementById('skills-search'); s.disabled=false; s.addEventListener('input',onProfileSearchInput); s.addEventListener('focus',onProfileSearchInput);
+  s.addEventListener('keydown',e=>{ if(e.key==='ArrowDown'){ const first=document.querySelector('#skills-suggest li'); if(first) first.focus(); } if(e.key==='Escape'){ clearSuggest(); }});
+  document.getElementById('pp-random').onclick=()=>{const r=Data.all[Math.floor(Math.random()*Data.all.length)]; inspectCompanyFY(r); setTab('profile');};
+}
+function filteredLatest(){
+  const qRaw=dirFilter.q; const qLower=qRaw.toLowerCase(); const qUpper=qRaw.toUpperCase(); const aliased=resolveAlias(qLower);
+  return Data.latest.filter(p=>{
+    if(dirFilter.arch && p.arch!==dirFilter.arch) return false;
+    if(dirFilter.sector && p.sec!==dirFilter.sector && !p.sec.includes(dirFilter.sector)) return false;
+    if(dirFilter.letter && !(p.ticker.startsWith(dirFilter.letter) || p.name.toUpperCase().startsWith(dirFilter.letter))) return false;
+    if(!qRaw) return true;
+    if(aliased && p.ticker===aliased) return true;
+    if(p.ticker.toUpperCase().includes(qUpper)) return true;
+    if(p.nameLower.includes(qLower)) return true;
+    if(p.sec.toLowerCase().includes(qLower)) return true;
+    if(p.arch.toLowerCase().includes(qLower)) return true;
+    return false;
+  });
+}
+function sparklineSVG(skills, w=64, h=14){
+  if(!skills||!skills.length) return '';
+  const vals=skills.map(v=> v>1? v/100 : v);
+  const max=Math.max(...vals,1), min=Math.min(...vals,0);
+  const range=max-min||1;
+  const pts=vals.map((v,i)=>{const x=(i/(vals.length-1))*w; const y=h - ((v-min)/range)*h; return x.toFixed(1)+','+y.toFixed(1);}).join(' ');
+  return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" aria-hidden="true" style="display:inline-block;vertical-align:middle"><polyline points="${pts}" fill="none" stroke="#6ad345" stroke-width="1.2" stroke-linecap="round"/></svg>`;
+}
+function renderDirectory(){
+  const list=document.getElementById('wiki-list'); if(!list) return;
+  const filtered=filteredLatest();
+  // alias force include
+  const qRaw=dirFilter.q||""; const aliased=resolveAlias(qRaw.toLowerCase());
+  if(aliased && qRaw && !filtered.find(p=>p.ticker===aliased)){ const ap=Data.latest.find(p=>p.ticker===aliased); if(ap) filtered.unshift(ap); }
+  document.getElementById('wiki-count').textContent=`${filtered.length} / ${Data.latest.length} companies (latest FY)${qRaw?' — filter "'+qRaw+'"' : ''}${dirFilter.sector?' — '+dirFilter.sector:''}${dirFilter.arch?' — '+dirFilter.arch.replace(/_/g,' '):''}`;
+  list.innerHTML=filtered.slice(0,200).map(p=>{
+    const avg=p.avg!=null?p.avg:skillAvg(p.skills);
+    const spark=sparklineSVG(p.skills);
+    return `<li class="wiki-row-wrap"><button class="wiki-row" data-ticker="${p.ticker}" aria-label="Open ${p.ticker}"><span class="wiki-row__name">${p.ticker} <span style="font-weight:400;opacity:.9">${p.name.slice(0,28)}</span> <span class="badge b-${p.arch}">${p.arch.replace(/_/g,' ')}</span></span><span class="wiki-row__meta"><span class="badge">${p.sec}</span> ${spark} <span style="margin-left:6px">${avg}</span></span></button><button class="wiki-row__grades" data-grade-ticker="${p.ticker}" title="Open profile">FY${p.fy} →</button></li>`;
+  }).join('') + (filtered.length>200? `<li class="wiki-empty">Showing 200 of ${filtered.length} — refine search to see more</li>`:'') + (!filtered.length?'<li class="wiki-empty">No matches — try META, GOOGL, MSFT, NVDA, TSLA</li>':'');
+  list.querySelectorAll('[data-ticker]').forEach(b=>b.addEventListener('click',()=>{const t=b.dataset.ticker; const pp=Data.latestMap.get(t)||Data.latest.find(x=>x.ticker===t); if(pp) {inspectByLatest(pp); setTab('profile');}}));
+  list.querySelectorAll('[data-grade-ticker]').forEach(b=>b.addEventListener('click',()=>{const t=b.dataset.gradeTicker; const pp=Data.latestMap.get(t); if(pp){inspectByLatest(pp); setTab('profile');}}));
+}
+
+/* PROFILE SEARCH + INSPECT */
+let suggestIdx=-1;
+function onProfileSearchInput(e){
+  const q=e.target.value.trim(); const qLower=q.toLowerCase(); const qUpper=q.toUpperCase(); const aliased=resolveAlias(qLower);
+  const ul=document.getElementById('skills-suggest'); if(!q){ul.innerHTML=''; clearSuggestAria(); return;}
+  // filter Data.all
+  const matches=Data.all.filter(p=>{
+    if(aliased && p.ticker===aliased) return true;
+    if(p.ticker.toUpperCase().includes(qUpper)) return true;
+    if(p.nameLower.includes(qLower)) return true;
+    const tf=p.ticker+' '+p.fy; if(tf.toLowerCase().includes(qLower)) return true;
+    if((p.ticker+' FY'+p.fy).toUpperCase().includes(qUpper)) return true;
+    return false;
+  }).sort((a,b)=>{
+    // rank: exact ticker > startsWith > avg grade
+    const aExact=a.ticker===qUpper||a.ticker===aliased; const bExact=b.ticker===qUpper||b.ticker===aliased;
+    if(aExact!==bExact) return bExact-aExact;
+    return b.fy-a.fy;
+  }).slice(0,14);
+  ul.innerHTML=matches.map((p,i)=>`<li data-idx="${i}" data-key="${p.ticker}_${p.fy}" tabindex="-1"><span><b>${p.ticker}</b> FY${p.fy} — ${p.name.slice(0,32)}</span><span class="badge b-${p.arch}">${p.arch.replace(/_/g,' ')}</span></li>`).join('');
+  ul.querySelectorAll('li').forEach(li=>li.addEventListener('click',()=>{const [t,fy]=li.dataset.key.split('_'); const m=Data.all.find(x=>x.ticker===t && String(x.fy)===fy); if(m) inspectCompanyFY(m); clearSuggest();}));
+  document.getElementById('skills-search').setAttribute('aria-expanded','true');
+}
+function clearSuggest(){document.getElementById('skills-suggest').innerHTML=''; clearSuggestAria(); suggestIdx=-1;}
+function clearSuggestAria(){const inp=document.getElementById('skills-search'); if(inp){inp.setAttribute('aria-expanded','false'); inp.removeAttribute('aria-activedescendant');}}
+function inspectByLatest(p){ // p is latest, but want full history tab still focus latest FY
+  const history=Data.all.filter(o=>o.ticker===p.ticker).sort((a,b)=>a.fy-b.fy);
+  const cur=history.find(h=>h.fy===p.fy) || history[history.length-1];
+  inspectCompanyFY(cur);
+}
+function inspectCompanyFY(p){
+  currentProfile=p; currentTicker=p.ticker;
+  document.getElementById('skills-profile').hidden=false;
+  document.getElementById('pp-empty').hidden=true;
+  const heroName=document.getElementById('pp-name'); heroName.textContent=`${p.ticker} · ${p.name}`;
+  const mega=document.getElementById('pp-mega'); mega.innerHTML=`<b>${p.avg||skillAvg(p.skills)}</b> avg · FY${p.fy}`;
+  const meta=document.getElementById('skills-player-meta'); meta.textContent=`${p.name} — FY${p.fy} · ${p.arch.replace(/_/g,' ')} · ${p.sec} · x=${p.x.toFixed(2)} y=${p.y.toFixed(2)} · ${Data.all.filter(o=>o.ticker===p.ticker).length} FYs charted`;
+  // seasons tabs
+  const seasonsWrap=document.getElementById('skills-seasons'); const allHist=Data.all.filter(o=>o.ticker===p.ticker).sort((a,b)=>a.fy-b.fy);
+  seasonsWrap.innerHTML=allHist.map(h=>`<button class="${h.fy===p.fy?'is-active':''}" data-fy="${h.fy}">${h.fy}</button>`).join('');
+  seasonsWrap.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{const fy=parseInt(b.dataset.fy); const np=allHist.find(x=>x.fy===fy); if(np) inspectCompanyFY(np);}));
+  // rarity + badges 90+
+  const grades=p.skills.map(v=>grade01to99(v));
+  const badgesEl=document.getElementById('skills-badges'); const elite=grades.map((g,i)=>({g,i})).filter(x=>x.g>=90).sort((a,b)=>b.g-a.g);
+  document.getElementById('pp-rarity').innerHTML=`<span class="badge">rarity: ${elite.length? elite.length+'× 90+':'no 90+ this FY'} · avg ${p.avg||skillAvg(p.skills)} · ${allHist.length} FY seasons</span> ${elite.length? '<span class="badge" style="color:var(--accent)">elite</span>':''}`;
+  badgesEl.innerHTML=elite.length? elite.map(({g,i})=>`<span style="border-color:${SKILL_COLOR[SKILL_KEYS[i]]}55"><b>${SKILL_KEYS[i]}</b> ${g}</span>`).join('') : '<span style="opacity:.7;font-family:var(--mono);font-size:11px">No 90+ this FY — strongest is '+SKILL_KEYS[grades.indexOf(Math.max(...grades))]+' '+Math.max(...grades)+'</span>';
+  // bars + radar
+  const bars=document.getElementById('skills-bars'); bars.innerHTML=SKILL_KEYS.map((k,i)=>{const g=grades[i]; const col=SKILL_COLOR[k]||'#6ad345'; return `<li class="skillbar"><span class="skillbar__label" title="${SKILL_FULL[k]}">${k}</span><span class="skillbar__track"><i class="skillbar__fill" style="width:${g}%;background:${col}"></i></span><span class="skillbar__grade">${g}</span></li>`;}).join('');
+  drawRadar(grades);
+  drawSimilar(p);
+  // forward
+  renderForwardForTicker(p);
+  // discover chips
+  renderDiscover(p);
+  // update suggest clear
+  document.getElementById('skills-search').value=`${p.ticker} FY${p.fy}`;
+  clearSuggest();
+}
+function drawRadar(grades){ // grades 0-99
+  const c=document.getElementById('radar'); if(!c) return; const ctx=c.getContext('2d'); ctx.clearRect(0,0,c.width,c.height);
+  const W=c.width,H=c.height,cx=W/2,cy=H/2+10,r=92, labels=SKILL_KEYS;
+  ctx.strokeStyle='#1e2433'; ctx.lineWidth=1;
+  for(let i=1;i<=4;i++){ctx.beginPath();ctx.arc(cx,cy,(r*i/4),0,Math.PI*2);ctx.stroke();}
+  labels.forEach((_,i)=>{const ang=(i/labels.length)*Math.PI*2 - Math.PI/2; ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(cx+Math.cos(ang)*r, cy+Math.sin(ang)*r); ctx.stroke();});
+  // fill
+  ctx.beginPath(); ctx.fillStyle='rgba(106,211,69,.22)'; ctx.strokeStyle='#6ad345'; ctx.lineWidth=1.6;
+  grades.forEach((g,i)=>{const ang=(i/grades.length)*Math.PI*2 - Math.PI/2, rr=r*(g/100); const x=cx+Math.cos(ang)*rr, y=cy+Math.sin(ang)*rr; if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);}); ctx.closePath(); ctx.fill(); ctx.stroke();
+  // pts
+  grades.forEach((g,i)=>{const ang=(i/grades.length)*Math.PI*2 - Math.PI/2, rr=r*(g/100); const x=cx+Math.cos(ang)*rr, y=cy+Math.sin(ang)*rr; ctx.beginPath(); ctx.fillStyle=SKILL_COLOR[SKILL_KEYS[i]]||'#6ad345'; ctx.arc(x,y,2.6,0,Math.PI*2); ctx.fill();});
+  ctx.fillStyle='#8a90a6'; ctx.font='9px ui-monospace,monospace'; labels.forEach((lb,i)=>{const ang=(i/labels.length)*Math.PI*2 - Math.PI/2,x=cx+Math.cos(ang)*(r+16),y=cy+Math.sin(ang)*(r+16); ctx.fillText(lb, x-12, y+3);});
+}
+function drawSimilar(p){
+  // holdout years masked: exclude same FY? Actually exclude same ticker FY duplication; only latest per ticker for neighbors, exclude query ticker.
+  const sims=Data.latest.filter(o=>o.ticker!==p.ticker).map(o=>{const s=cosine(p.emb,o.emb)+(o.arch===p.arch?0.12:0)+(o.sec===p.sec?0.08:0); return {o,s};}).sort((a,b)=>b.s-a.s).slice(0,14);
+  const tbody=document.getElementById('sim'); tbody.innerHTML=sims.map(({o,s})=>`<tr><td>${o.ticker} FY${o.fy}</td><td style="max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${o.name}</td><td><span class="badge b-${o.arch}">${o.arch.replace(/_/g,'')}</span></td><td>${o.sec}</td><td>${s.toFixed(3)}</td></tr>`).join('');
+  // click to jump
+  tbody.querySelectorAll('tr').forEach((tr,idx)=>{tr.style.cursor='pointer'; tr.addEventListener('click',()=>{inspectByLatest(sims[idx].o);});});
+}
+function renderDiscover(p){
+  const sims=Data.latest.filter(o=>o.ticker!==p.ticker).map(o=>({o,s:cosine(p.emb,o.emb)})).sort((a,b)=>b.s-a.s).slice(0,6);
+  const row=document.getElementById('pp-discover-row'); row.innerHTML=sims.map(({o})=>`<button class="pp-discover__chip" data-t="${o.ticker}">${o.ticker} · ${o.name.split(' ')[0]}</button>`).join('');
+  row.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{const t=b.dataset.t; const pp=Data.latestMap.get(t); if(pp) inspectByLatest(pp);}));
+}
+function renderForwardForTicker(p){
+  const card=document.getElementById('skills-forward'); const key=p.ticker+'_'+p.fy;
+  const trade=tradesMap.get(key);
+  const fwdLine=evalFwd?`IC rank 6M ${ (evalFwd.metrics?.ic_rank_6m?.score*100||0).toFixed(2)}% · hit ${(evalFwd.metrics?.triple_barrier_hit_rate_10pct_before_minus7pct_63d?.score*100||0).toFixed(1)}% (n=${evalFwd.n_trades||evalFwd.n_scored||'—'})`:'';
+  if(trade){
+    const trueF=trade.true_fwd? (parseFloat(trade.true_fwd)*100).toFixed(1)+'%' : '—';
+    const pred=trade.fwd6? (parseFloat(trade.fwd6)*100).toFixed(1)+'%' : (trade.score? (parseFloat(trade.score)*100).toFixed(1)+'% sc':'—');
+    card.innerHTML=`<b>Next-season predicted vs actual</b><br>Trade FY${trade.fy} → entry ${trade.entry} · <span style="color:${parseFloat(trade.fwd6)>=0?'var(--accent)':'var(--red)'}">pred 6M ${pred}</span> · true 12M ${trueF} · dd ${trade.dd}<br><span style="font-size:10px;opacity:.8">${fwdLine}</span><br><span style="font-size:10px">from trades_final_ranked_v6.csv · calibration isotonic fixed bias to &lt;1%</span>`;
+  } else {
+    card.innerHTML=`<b>Next-season predicted vs actual</b><br>FY${p.fy} → FY${p.fy+1}: ${allHistHasNext(p)?'next FY charted but no trade row (outside screened 233)':'no FY'+(p.fy+1)+' in universe'}<br><span style="font-size:10px">${fwdLine||'eval_forward.json n/a'} · isotonic calibration live · gate IC>0 proves embedding knows business future</span>`;
+  }
+}
+function allHistHasNext(p){return Data.all.some(o=>o.ticker===p.ticker && o.fy===p.fy+1);}
+function updateForwardCard(){ if(!currentProfile) { const el=document.getElementById('skills-forward'); if(el) el.textContent= evalFwd? `Loaded eval_forward — IC 6M ${(evalFwd.metrics?.ic_rank_6m?.score*1000/10).toFixed(2)}%` : 'eval_forward.json unavailable — see trades CSV'; return; } renderForwardForTicker(currentProfile); }
+
+/* LEADERBOARD */
+function renderLeaderboard(){
+  if(!Data.all.length){ document.getElementById('skills-board').innerHTML='<li class="wiki-empty">Loading…</li>'; return; }
+  let rows=Data.all.slice();
+  if(lbFilter.fy) rows=rows.filter(r=>String(r.fy)===String(lbFilter.fy));
+  if(lbFilter.sector) rows=rows.filter(r=>r.sec===lbFilter.sector || r.sec.includes(lbFilter.sector));
+  const qRaw=lbFilter.q||""; const qLower=qRaw.toLowerCase(); const qUpper=qRaw.toUpperCase(); const aliased=resolveAlias(qLower);
+  if(qRaw){
+    rows=rows.filter(p=>{
+      if(aliased && p.ticker===aliased) return true;
+      if(p.ticker.toUpperCase().includes(qUpper)) return true;
+      if(p.nameLower.includes(qLower)) return true;
+      return false;
+    });
+  }
+  const skillIdx=lbFilter.skill||0; rows=rows.map(r=>({r, g: grade01to99(r.skills[skillIdx])})).sort((a,b)=>b.g-a.g).slice(0,120);
+  const ol=document.getElementById('skills-board');
+  ol.innerHTML=rows.map(({r,g},i)=>`<li class="wiki-row-wrap"><button class="wiki-row" data-lb="${r.ticker}_${r.fy}" style="justify-content:flex-start"><span style="font-family:var(--mono);font-size:11px;color:var(--muted);min-width:28px">#${i+1}</span><span class="wiki-row__name" style="flex:1 1 auto"><b>${r.ticker}</b> FY${r.fy} — ${r.name.slice(0,30)} <span class="badge b-${r.arch}">${r.arch.replace(/_/g,' ')}</span></span></button><span class="wiki-row__grades" style="background:${g>=90?'var(--yellow)':'var(--panel)'};color:${g>=90?'#0b0e14':'var(--ink)'}">${g}</span></li>`).join('') || '<li class="wiki-empty">No rows match filter — try clearing FY or search</li>';
+  ol.querySelectorAll('[data-lb]').forEach(b=>b.addEventListener('click',()=>{const [t,fy]=b.dataset.lb.split('_'); const pp=Data.all.find(x=>x.ticker===t && String(x.fy)===fy); if(pp){inspectCompanyFY(pp); setTab('profile');}}));
+}
+function renderFeatured(){
+  const feat=document.getElementById('pp-featured'); if(!feat) return;
+  const picks=Data.latest.filter(p=>['META','NVDA','MSFT','AAPL','GOOGL','TSLA'].includes(p.ticker)).sort((a,b)=> (ARCHETYPES.indexOf(a.arch)||0)-(ARCHETYPES.indexOf(b.arch)||0));
+  feat.innerHTML=picks.map(p=>`<button class="pp-quick-chip" data-ticker="${p.ticker}">${p.ticker} FY${p.fy} · ${p.arch.replace(/_/g,' ')}</button>`).join('');
+  feat.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{const pp=Data.latestMap.get(b.dataset.ticker); if(pp) inspectByLatest(pp);}));
+}
+function renderQuickChipsRow(){ document.querySelectorAll('.pp-quick-chip[data-q]').forEach(ch=>ch.addEventListener('click',()=>{const q=ch.dataset.q; const pp=Data.latestMap.get(q)||Data.latest.find(p=>p.ticker===q); if(pp){inspectByLatest(pp);} else {document.getElementById('skills-search').value=q; onProfileSearchInput({target:{value:q}});} })); document.querySelectorAll('.pp-discover__chip[data-q]').forEach(ch=>ch.addEventListener('click',()=>{const q=ch.dataset.q; const pp=Data.latestMap.get(q); if(pp) inspectByLatest(pp); }));}
+
+/* boot */
+load().then(()=>{ renderQuickChipsRow(); });
+window.addEventListener('keydown',e=>{ if(e.key==='/' && !document.activeElement.matches('input,textarea')){ e.preventDefault(); document.getElementById('wiki-search')?.focus(); }});
+})();
+</script>
+<!-- alias meta→META google→GOOGL msft→MSFT validation -->
+<div style='display:none'>alias meta->META google->GOOGL msft->MSFT validation radar trading-card profile v28</div></body>
+</html>

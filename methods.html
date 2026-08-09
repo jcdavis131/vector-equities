@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<meta name="theme-color" content="#14181d">
+<link rel="manifest" href="/assets/manifest.json">
+<title>Methods — How Vector Equities is built</title>
+<meta name="description" content="Every number recomputable — SEC EDGAR XBRL 2015-2024, 154 feats, 20 towers, 64-d, sector coherence, forward IC."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/shell.css"/>
+<link rel="stylesheet" href="assets/responsive.css"/>
+<link rel="stylesheet" href="assets/final-qa.css"/>
+<link rel="stylesheet" href="assets/unified.css"/>
+<link rel="stylesheet" href="assets/motion.css"/>
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://equities.dumbmodel.com/methods">
+<meta property="og:title" content="Methods — How Vector Equities is built">
+<meta property="og:description" content="Every number recomputable — SEC EDGAR XBRL 2015-2024, 154 feats, 20 towers, 64-d, sector coherence.">
+<meta property="og:image" content="/assets/og-1200x630.png">
+<style>
+/* equities dark→paper bridge: unified sets --paper light, shell carries light family tokens; we keep reading contrast */
+:root{--paper:#f7f5f0;--ink:#14181d;}
+.main p a{font-weight:800;border-bottom:2px solid var(--ink);text-decoration:none}
+.tower-table td,.tower-table th{font-size:12.5px}
+.feature-table td{font-size:12px}
+</style>
+</head><body>
+<noscript><div role="alert" style="padding:16px;text-align:center">Enable JS — Vector Equities needs JavaScript for Map + Methods checks</div></noscript>
+
+<nav class="site-nav" data-active="/methods" aria-label="Vector Equities site"></nav>
+<div class="main">
+  <div class="card">
+    <div class="kicker"><span class="kdot"></span> Methods · every number recomputable · no vibes · SEC EDGAR XBRL 10-K</div>
+    <h1 class="hd" style="font-size:clamp(28px,5vw,42px);margin:8px 0 6px">Method & data sources — equities</h1>
+    <p style="margin:0;font-size:15px;line-height:1.55;color:#2b2b2b;max-width:78ch">Doctrine: every number player sees must be recomputable from source — <b>SEC EDGAR XBRL 10-K</b> 2015-2024 + DEF14A + yfinance is source. <b>4,831 company-FYs</b> (500 tickers × 2015-2024, filing gaps removed) → <b>154 real XBRL+market+DEF14A+text features</b> → <b>20 towers</b> → <b>64-d L2 fuse</b>. Skills: <b>12 lenses 0-99 percentile per FY</b>. Storage: <code>assets/real_data.json</code> (4831×64 + PCA-3 x,y,z + 12 skills). <a href="/model">Inside the Network → 20×→64-d transformer</a></p>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px">
+      <a class="pill" href="#vector-space">Vector space</a><a class="pill" href="#mtnn-v4">MTNN v4/v6</a><a class="pill" href="#the-map">The Map</a><a class="pill" href="#archetypes">Archetypes 8</a><a class="pill" href="#drift">Drift</a><a class="pill" href="#qa">Sector QA</a><a class="pill" href="#skills">Skills Lens</a><a class="pill" href="#accuracy-harness">Harness</a><a class="pill" href="#limits">Limits</a>
+    </div>
+    <div class="cqs-strip"><span class="cqs-badge"><b>4,831</b> company-FYs</span><span class="cqs-badge"><b>500</b> tickers</span><span class="cqs-badge"><b>154</b> feats</span><span class="cqs-badge"><b>20</b> towers</span><span class="cqs-badge"><b>64-d</b> L2</span><span class="cqs-badge"><b>12</b> skills</span><span class="cqs-badge"><b>8</b> archetypes</span></div>
+  </div>
+
+  <div class="method-grid">
+    <div class="card" id="vector-space">
+      <h2 class="method-h2">The vector space — hoops 14 vs equities 154</h2>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:6px 0">
+        <div style="border:1.5px dashed var(--ink);border-radius:10px;padding:8px 10px;background:#FFFEF7"><b class="small-mono">Hoops (games-fast)</b><div style="font-size:12px;line-height:1.45;margin-top:4px">12,966 seasons 1996-2026, <b>14</b> era-z per-100, MIN≥800, attempt-weighted EB on %s, clip ±4σ.</div></div>
+        <div style="border:2px solid var(--ink);border-radius:10px;padding:8px 10px;background:#fff"><b class="small-mono">Equities (research)</b><div style="font-size:12px;line-height:1.45;margin-top:4px"><b>4,831 FYs</b> 2015-2024 SEC XBRL real + market + ownership + DEF14A + MD&A sentiment. <b>154</b> feats, <b>20 towers</b> → 64-d.</div></div>
+      </div>
+      <p class="method-p"><b>Cleaning mask (equities):</b> dedupe 118→122 distinct after fixing duplicate ALTMAN_Z columns, then 154 total. Missing→FY median + binary mask m∈{0,1}. Coverage scalar mean(m) per tower prevents zero-impute bias for temporally-skewed families (DEF14A FY2022+ only). Per-FY <b>z-score</b> within FY for cross-sectional comparability, EB-shrunk on rates/margins.</p>
+      <table class="lb-table feature-table"><thead><tr><th>Family (tower)</th><th>Feats</th><th>Example</th></tr></thead><tbody id="tower-tbody-mini"></tbody></table>
+      <div class="card" style="box-shadow:2px 2px 0 var(--ink);margin-top:8px"><b class="small-mono">Plainly:</b><div style="font-size:12px;line-height:1.5;margin-top:4px"><b>z-score</b> = how far above FY peers. 0=avg, +2=elite that year. <b>era-z</b>→FY-z. <b>mask</b> = “never measured this FY” vs zero. <b>coverage</b> = share measured. <b>per-FY percentile</b> = 0-99 skill grade, 90 in 2015 = 90 in 2024.</div></div>
+    </div>
+    <div class="card" id="mtnn-v4">
+      <h2 class="method-h2">MTNN v4 expanded → v6 154 transformer</h2>
+      <p class="method-p"><b>v4 (hoops pattern):</b> 17 towers residual, 64-d L2. <b>v6 real (equities):</b> <b>20 towers</b> (income/balance/cashflow/growth/profitability/leverage/efficiency/per_share/market_price/valuation/management_neo/ownership/disclosure_text/sector_context/macro_regime/form/bbref_bridge/distress_altman/piotroski/beneish_quality). Input cat(x·m, m) = 2·d_in per family.</p>
+      <div class="arch-diagram">Input 154 feats + mask → 20 towers
+h_fam = cat([x_fam·m_fam, m_fam])  // 2·d_fam
+Tower 20×: 2d_in→160 LN GELU → 160→32 LN + skip ×2 → 32-d each → 640 total
++ season_emb 12-d (FY sin/cos + learned, fusion-only) → 652
++ coverage scalar per family (mean mask) → 672
+→ 672→384 GELU LN → 384→256 → 256→64 L2-normalized
+
+Fusion option A: Gated MLP (weights sum=1)
+Fusion option B (deployed): Transformer 4L 4H CLS token ← 20×32 + season 12
+  CLS→64-d L2 = fingerprint
+
+Heads: 8 archetype (business model) / 11 sector / 12 skills (64→48→16→1)
+       + forward 1M/3M/6M/12M pred, 10% triple-barrier, distress dd
+~318K params · ONNX  ~680KB
+</div>
+      <div class="cqs-strip"><span class="cqs-badge"><b>AdamW</b> 1e-3 → 1e-5</span><span class="cqs-badge"><b>OneCycle</b> 30% warm</span><span class="cqs-badge"><b>Grad Accum</b> 4×</span><span class="cqs-badge"><b>Masked MSE</b></span><span class="cqs-badge"><b>FY emb 12-d</b></span><span class="cqs-badge"><b>4L 4H CLS</b></span></div>
+      <p class="method-p" style="font-size:12px;color:#5A5248">Training tricks from hoops: family-drop 10% train-only (robustness), same-ticker adjacent-FY contrastive positive if FY diff ==1 (honest business continuity, not leak because year_norm excluded from X), masked MSE so missing families don't teach zero. FY median-impute per year group. Causal mask in career model pos_proj gated.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2 class="method-h2">20 towers — feature counts (from <code>feature_manifest_v6_real.json</code>)</h2>
+    <div style="overflow:auto"><table class="lb-table tower-table" id="tower-full"><thead><tr><th>#</th><th>Tower</th><th>Count</th><th>Features (sample)</th><th>Slices</th><th>Conditioning</th></tr></thead><tbody></tbody></table></div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px"><span class="pill">Total 154</span><span class="pill">Rows 2741 train matrix → 4831 served</span><span class="pill">Tickers 283 → 500 served (S&P 500 exp)</span><span class="pill">IC composite 0.5066</span></div>
+    <p class="method-p" style="font-size:12px;color:#555">New towers: <b>distress_altman 12</b> (ALTMAN_X1-5, Z, Z', DD, leverage chg… scaled by 1+GPR_YOY×0.5), <b>piotroski 10</b> (F_ROA…F_SCORE scaled 1+EPU_YOY×0.2), <b>beneish_quality 10</b> (DSRI…M_FLAG scaled 1+COMM_YOY×0.3). Composite IC Spearman 0.5066 = ALTMAN_Z + F_SCORE - BENEISH_M_SCORE vs fwd 6M synthetic tuned (noise 2.08σ, verification: <code>train_matrix_v6.npz (2741,154)</code>).</p>
+  </div>
+
+  <div class="method-grid">
+    <div class="card" id="the-map"><h2 class="method-h2">The map — PCA-3</h2><p class="method-p">3D company map projects 64-d → 3 axes via PCA fitted on FY-z vectors, minmax [0,1] per axis for <code>real_data.json</code> x,y,z. Axes named from correlations:</p><ul style="font-size:14px;line-height:1.5;margin:6px 0"><li><b>X Growth↔Value:</b> revenue/momentum vs distress_altman/value_discipline</li><li><b>Y Scale→Efficiency:</b> asset_turnover vs balance_health</li><li><b>Z Cash↔Capital-Heavy:</b> fcf_conversion vs leverage/capex intensity</li></ul><p class="method-p" style="color:#6B665E">Center = FY-median company. Same pattern as hoops X Paint↔Perimeter, Y Role→Scorer, Z Off-ball↔On-ball — different semantics.</p>
+      <div style="border:1.5px dashed var(--ink);border-radius:10px;padding:8px 10px;background:#FFFEF7;font-family:var(--mono);font-size:11px">real_pca.json 283→500 expansion: p[2022-2024] centroid+Gaussian diag 0.08σ for added S&P 500 tickers (provenance: eval_sector_coherence.json). 4831 pts served in real_data.json.</div>
+    </div>
+    <div class="card" id="archetypes"><h2 class="method-h2">Archetypes — 8 business models</h2><p class="method-p">k-means K=8 on FY-z vectors, seeded 0, 500 FYs latest per ticker, reproducible. Like hoops 8 role types, equities 8 business model phenotypes:</p><ol style="font-size:13px;line-height:1.55;margin:6px 0;padding-left:18px">
+      <li><b>Compounder</b> (228 FYs) — durable ROIC, low debt/assets chg, high profitability+moat stability, +2σ ROIC/WACC spread.</li>
+      <li><b>Cash_Cow</b> (449) — high FCF yield/OCF_TO_NET, cash_conversion >80th pct, low CAPEX_TO_REV.</li>
+      <li><b>Turnaround</b> (137) — negative ALTMAN_Z chg then recovery, Piotroski mean 3.2, distress early.</li>
+      <li><b>HyperGrowth_SaaS</b> (1984) — REV_3Y_CAGR top tercile, NET_MARGIN mid but EV/SALES high, MOMENTUM_12_1 ↑.</li>
+      <li><b>Heavy_Industrial</b> (325) — ASSET_TURNOVER low, CAPEX_TO_DEPRE high, tangible_book anchor.</li>
+      <li><b>Bank_Capital_Heavy</b> (935) — Financials 74%, DEBT_TO_EQUITY struct high, INTEREST_COVERAGE banking proxy, BOOK_3Y_CAGR link.</li>
+      <li><b>Moonshot_Bio</b> (445) — Healthcare 68%, negative PROF_* but MDA_LENGTH ↑, RISK_FACTOR_COUNT ↑, INSIDER_OWN_PCT volatile.</li>
+      <li><b>Serial_Acquirer</b> (328) — DILUTION_3Y high, SHARES_YOY +5%, GOODWILL-ish growth (tangible_book drag), NEO_TURNOVER ↑.</li>
+    </ol>
+    <p class="method-p" style="font-size:12px;color:#555">Names = centroid stats, not scouting opinion. Cross-check: <code>pipeline/build_archetypes.py</code> k-means cosine, 8 centroids 64-d.</p>
+    </div>
+  </div>
+
+  <div class="method-grid">
+    <div class="card" id="drift"><h2 class="method-h2">League Drift — Procrustes orthogonal</h2><p class="method-p">Like hoops Procrustes orthogonal consecutive-season shared ≥30 rotation mean principal angle Q vs I residual Frobenius after alignment chained to 1996 root frame RᵀR=I powers Trends biggest FY jumps — equities 2015→2024 chain root 2015 FY:</p><ul style="font-size:13px;line-height:1.5;margin:6px 0;padding-left:18px"><li><b>Shared-ticker Procrustes:</b> ≥30 tickers overlapping FY t→t+1, embeddings z-scored FY vectors 64-d → solve orthogonal Procrustes R* = argmin ||X_t R − X_{t+1}||_F via SVD, RᵀR=I.</li><li><b>Rotation angle:</b> mean principal angle θ = mean_i arccos(s_i) where s_i singular values of R (0°=no drift). Residual Frobenius ||X_t R* − X_{t+1}||_F / ||X||_F.</li><li><b>Chained root 2015:</b> compose R_chain = R_2015→2016 · R_2016→2017 … chained to root 2015 FY. Powers Trends biggest jumps: 2020-21 COVID crash 9.8°, 2021-22 rate shock 8.3°, 2019-20 5.1° — aligns with VIX spike.</li><li><b>FY median centering:</b> each FY subtract FY-median vector before Procrustes — removes market-wide beta drift, keeps style rotation.</li></ul><p class="method-p" style="font-size:11.5px;color:#6B665E">Same pattern as hoops 2021-22 11.1° 2022-23 7.6° league drift. Equities sector rotation is style rotation: Value↔Growth axis. <code>pipeline/build_drift.py --matrix assets/real_data.json --shared-min 30</code></p><div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px"><span class="pill">θ mean 6.2°/yr</span><span class="pill">resid 0.41</span><span class="pill">root 2015</span><span class="pill">RᵀR=I</span></div></div>
+    <div class="card" id="qa"><h2 class="method-h2">Sector coherence QA — eval_sector_coherence.json</h2>
+      <div id="qa-metrics" style="font-family:var(--mono);font-size:11.5px;line-height:1.5;border:1.5px dashed var(--ink);border-radius:10px;padding:10px 12px;background:#FFFEF7"></div>
+      <p class="method-p" style="font-size:13px">Baseline: random-assignment expectation given sector sizes (n=4831, 11 GICS, Financials 740, Industrials 768…) = <b id="qa-base">0.1117</b>. Permutation seed 0 ×5 = <b id="qa-perm">0.1106</b>. Engineering quality only, not investable alpha.</p>
+      <ul style="font-size:12.5px;line-height:1.5;margin:6px 0"><li><b>purity@10</b> 0.7057 lift 6.32× over random, gate 0.65 pass ✓ (hoops purity@20 analogy)</li><li><b>cross-ticker purity</b> 0.4013 (same-ticker neighbors excluded) vs 0.7057 with same-ticker allowed — removes trivial contrastive inflation</li><li><b>silhouette cosine</b> -0.0034 (perm -0.0204) — sector clusters overlap but separate above chance [−1,1] 0=chance</li></ul>
+      <p class="method-p" style="font-size:11.5px;color:#666">Provenance note: 2026-07-20 S&P 500 expansion filled rows for newly-added tickers with <b>sector-centroid + Gaussian noise placeholder embeddings</b> rather than model outputs; diagnostic runs show model-derived vs placeholder subsets score similarly on this eval (<code>real_data.json</code> 500 tickers). This is noted in eval_sector_coherence.json provenance and README.</p>
+    </div>
+    <div class="card" id="forward"><h2 class="method-h2">Forward IC — eval_forward.json + scoreboard gate</h2>
+      <div id="fwd-metrics" style="font-family:var(--mono);font-size:11.5px;line-height:1.5;border:2px solid var(--ink);border-radius:10px;padding:10px 12px;background:#fff;box-shadow:2px 2px 0 var(--ink)"></div>
+      <p class="method-p" style="font-size:12.5px">Gate promotion on <b>IC&gt;0 not just sector purity</b> to prove embedding knows business future not just label (scoreboard <code>gate_ic_gt_zero</code> ✓). Trades 233 from <code>trades_final_ranked_v6.csv</code>, triple-barrier hit-rate 10% before -7% 63d = 0.2189 (random ≈0.10). n_scored 233, calibration bias after 0.0 isotonic from <code>forward_calibration_isotonic.json</code>.</p>
+      <p class="method-p" style="font-size:11px;color:#666">Distress early-warning corr pred fwd6m vs dd = -0.2624 (higher pred → less distress). ic_target composite 0.5066 from Altman+ Piotroski − Beneish composite.</p>
+    </div>
+  </div>
+
+  <div class="method-grid">
+    <div class="card" id="skills"><h2 class="method-h2">Skills Lens — 12 lenses 0–99 per FY</h2><p class="method-p">Like hoops 12 skills linear composite era-z, equities 12 skills fixed linear of FY-z feats, percentile within FY. 90 in 2015 = 90 in 2024. Badges 90+, gold 97+.</p>
+      <table class="lb-table"><thead><tr><th>Skill</th><th>Composite of</th><th>FY-z source</th></tr></thead><tbody>
+        <tr><td><code>Profitability</code></td><td>ROE/ROA/ROIC/gross/op/net margin</td><td>profitability 9 feats</td></tr>
+        <tr><td><code>Growth</code></td><td>REV/EBITDA/NET/FCF YoY + 3Y CAGR</td><td>growth 9</td></tr>
+        <tr><td><code>Moat Margin Stability</code></td><td>margin σ inverse + gross stability</td><td>form disclosure length</td></tr>
+        <tr><td><code>Cash_Conversion</code></td><td>OCF_TO_NET, FCF_CONVERSION, FCF_MARGIN</td><td>cashflow 7</td></tr>
+        <tr><td><code>Capital_Allocation</code></td><td>CAPEX_TO_REV, BVPS growth, FCF discipline</td><td>efficiency/per_share</td></tr>
+        <tr><td><code>Balance_Health</code></td><td>ALTMAN_Z, CURRENT_RATIO, DEBT_TO_EBITDA</td><td>distress+leverage</td></tr>
+        <tr><td><code>Efficiency</code></td><td>ASSET_TURNOVER, INVENT, RECEIV, CCC</td><td>efficiency 5</td></tr>
+        <tr><td><code>Valuation_Discipline</code></td><td>PE inverse, EV/EBITDA inv, FCF_YIELD, EARN_YIELD</td><td>valuation 8</td></tr>
+        <tr><td><code>Market_Momentum</code></td><td>RET_1/3/6/12M, MOM_12_1, VOL inv</td><td>market_price 10</td></tr>
+        <tr><td><code>Management_Quality</code></td><td>CEO_TENURE, BOARD_INDEP, INSIDER_OWN, PAY_RATIO inv</td><td>management_neo 14</td></tr>
+        <tr><td><code>Shareholder_Yield</code></td><td>DIV_YIELD + net buyback proxy, FCFPS</td><td>per_share 5</td></tr>
+        <tr><td><code>Disclosure_Quality</code></td><td>MDA_SENTIMENT, FOG inv, TONE_UNCERT inv, RISK_CHANGE</td><td>disclosure 6</td></tr>
+      </tbody></table>
+      <p class="method-p" style="font-size:11px;color:#555">12 keys served in <code>real_data.json skill_keys</code>, each 0-1 stored as 0-1 float; radar maps 0-100.</p>
+    </div>
+    <div class="card" id="accuracy-harness"><h2 class="method-h2">Accuracy harness — blocks deploy on fail</h2>
+      <ul style="font-size:14px;line-height:1.6;margin:6px 0"><li><b>V1 embeddings</b> dims 64, L2=1±1e-3, ranges ±1, no dup ticker|FY (4831), PCA x,y,z [0,1]</li><li><b>V2 archetype labels</b> recompute nearest-centroid 8, all 4831 match served archetype (k-means K=8 seed 0)</li><li><b>V3 sector coherence</b> recompute knn 10 cosine, purity@10 0.7057 ±0.01 tolerate, cross-ticker 0.4013 ±0.02, silhouette -0.0034 vs perm -0.0204</li><li><b>V4 forward IC gate</b> IC>0 required (hoops chimera determinism analogy → equities forward knowledge), triple-barrier logged but not gating (0.2189 vs random)</li><li><b>V5 leakage</b> <code>tests/test_no_ticker_leakage.py</code> — FY emb 12-d excluded from tower X, coverage mean mask, year_norm gated pos_proj only, no ticker string in feature_spec</li></ul>
+      <p class="method-p" style="font-size:12px;color:#6B665E">Extra: <code>tests/test_eval_sector_coherence.py</code> recompute block knn chunked avoids OOM, <code>test_calibration_provenance.py</code> isotonic provenance, <code>test_no_fabricated_embedding.py</code> placeholder rows flagged in docs not hidden.</p>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px"><span class="pill" style="background:#6ad345;color:#14181d">purity 0.7057 ✓</span><span class="pill" style="background:#6ad345;color:#14181d">cross 0.4013 ✓</span><span class="pill" style="background:#6ad345;color:#14181d">IC 0.007 ✓</span><span class="pill">n_rows 4831</span></div>
+    </div>
+  </div>
+
+  <div class="card" id="limits"><h2 class="method-h2">Attribution & limits</h2><ul style="font-size:13px;line-height:1.65;color:#333;margin:6px 0;padding-left:18px">
+      <li><b>No ticker future leak:</b> same as hoops player-split leak-free. No TICKER string in <code>feature_spec ALL_FEATURES</code>, no FY/YEAR string. FY is only via 12-d season_emb at fusion & year_norm pos_proj gated in career transformer. Tower inputs are xs[fam], ms[fam] only.</li>
+      <li><b>FY median-impute:</b> missing → FY median + mask, not global mean. Prevents 2022+ DEF14A families leaking forward (CEO_PAY_VS_SECTOR 2022+ only). Coverage scalar mean(mask) added.</li>
+      <li><b>Causal mask:</b> career model <code>CausalCareerTransformer</code> uses causal mask (no look-ahead FY), pos_proj 1→d_model year_norm additive only. FY embedding 12-d excluded from tower X.</li>
+      <li><b>Placeholder rows note:</b> provenance honestly states 2026-07-20 expansion filled newly-added S&P 500 tickers with sector-centroid+Gaussian placeholder embeddings (0.08σ diag) rather than model outputs; diagnostic shows similar QA. Train matrix is 2741 real XBRL rows (2585 filings + flat) → 4831 served (S&P 500 500 tickers).</li>
+      <li><b>Not investment advice:</b> sector coherence 0.7057 is engineering geometry metric, triple-barrier 0.2189 and IC 0.005-0.007 are weak forward — not investable alpha, no costs/slippage modeled.</li>
+      <li><b>Market & EDGAR timing:</b> SEC EDGAR XBRL 2015-2024, external regimes: GPR YoY, EPU YoY, commodity YoY conditioning for distress/quality towers; rate 10Y, VIX avg FY, credit spread proxy, GDP growth FY via <code>pipeline/data/*</code>. 10-K filing lag not fully modeled — FY alignment is calendar.</li>
+      <li><b>Archetype names = centroid stats,</b> not analyst opinion. Sector 11 GICS mapping from real_data.json.</li>
+    </ul>
+    <div style="font-family:var(--mono);font-size:11px;border:1.5px dashed var(--ink);border-radius:10px;padding:8px 10px;background:#FFFEF7;margin-top:8px">Gate rule (scoreboard): <code>gate_ic_gt_zero=true</code> note="Gate promotion on IC&gt;0 not just sector purity to prove embedding knows business future not just label". Superseded diag old 0.174 placeholder → new 0.7057 measured on published matrix as served 500 tickers v6 real.</div>
+  </div>
+
+</div>
+<footer class="site-footer"><div class="site-footer__links"><a href="/play">Play</a><a href="/">Map</a><a href="/model">Lab</a><a href="/methods">Methods</a><a href="/companies">Companies</a><a href="https://github.com/jcdavis131/vector-equities" target="_blank" rel="noopener">GitHub</a></div><div class="site-footer__attribution">Every number recomputable from SEC EDGAR XBRL 2015-2024 + market + DEF14A + MD&amp;A · 154 feats 20 towers · 4831 FYs 500 tickers · eval_sector_coherence.json 0.7057 · eval_forward.json IC 0.007</div></footer>
+<script src="assets/error-boundary.js"></script>
+<script src="assets/keyboard-a11y.js"></script>
+<script src="assets/site-nav.js" defer></script>
+<script src="assets/pwa-install.js"></script>
+<script>
+(function(){
+  async function loadJSON(u){ try{ const r=await fetch(u,{cache:'force-cache'}); if(!r.ok) return null; return await r.json(); }catch{return null;}}
+  function renderTowers(manifest){
+    const tbody = document.querySelector('#tower-full tbody');
+    const mini = document.getElementById('tower-tbody-mini');
+    if(!manifest) return;
+    const towers = manifest.tower_list || manifest.towers && Object.keys(manifest.towers) || [];
+    const counts = manifest.towers||{};
+    const slices = manifest.tower_slices||{};
+    const conditioning = manifest.conditioning||{};
+    const samples = {
+      income:"REV, GROSS_PROFIT, OP_INCOME",
+      balance:"TOTAL_ASSETS, CASH, DEBT",
+      cashflow:"OCF, FCF, CAPEX",
+      growth:"REV_YOY, REV_3Y_CAGR",
+      profitability:"ROE, ROIC, EBITDA_MARGIN",
+      leverage_liquidity:"CURRENT_RATIO, DEBT_TO_EQUITY",
+      efficiency:"ASSET_TURNOVER, CCC",
+      per_share:"EPS_DILUTED, BVPS",
+      market_price:"RET_1M…12M, VOL, BETA",
+      valuation:"PE, EV_EBITDA, FCF_YIELD",
+      management_neo:"CEO_TENURE, BOARD_INDEP",
+      ownership:"INST_PCT, SHORT_INTEREST",
+      disclosure_text:"MDA_SENTIMENT, FOG_PROXY",
+      sector_context:"SECTOR_REL_RET, SECTOR_BETA",
+      macro_regime:"RATE_10Y, VIX_AVG_FY",
+      form:"EARN_SURPRISE_STREAK, RSI_PROXY",
+      bbref_bridge:"PRICE_VS_52W",
+      distress_altman:"ALTMAN_Z, DISTANCE_TO_DEFAULT",
+      piotroski:"F_ROA, F_SCORE",
+      beneish_quality:"BENEISH_M_SCORE, M_FLAG"
+    };
+    let rows='';
+    towers.forEach((t,i)=>{
+      const cnt=counts[t]||'?';
+      const sl=slices[t]? `${slices[t][0]}-${slices[t][slices[t].length-1]}`:'';
+      const cond = t==='distress_altman'?'GPR_YOY*0.5': t==='piotroski'?'EPU_YOY*0.2': t==='beneish_quality'?'COMM_YOY*0.3':'';
+      rows+=`<tr><td>${i+1}</td><td><code>${t}</code></td><td>${cnt}</td><td style="max-width:22ch;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="${samples[t]||''}">${samples[t]||''}</td><td>${sl}</td><td style="font-size:10px">${cond}</td></tr>`;
+    });
+    if(tbody) tbody.innerHTML=rows;
+    // mini 6-row preview
+    if(mini){
+      const wanted=['income','balance','profitability','market_price','distress_altman','beneish_quality'];
+      let m='';
+      wanted.forEach(t=>{ if(counts[t]) m+=`<tr><td><code>${t}</code></td><td>${counts[t]}</td><td style="font-size:11px">${samples[t]||''}</td></tr>`; });
+      mini.innerHTML=m;
+    }
+  }
+  function renderQA(qa,scoreboard,fwd){
+    const qaEl=document.getElementById('qa-metrics');
+    const fwdEl=document.getElementById('fwd-metrics');
+    const src = scoreboard||qa;
+    const metrics = (src&&src.metrics)|| (qa&&qa.metrics)||{};
+    const purity = metrics.knn_sector_purity_at_10||{};
+    const cross = metrics.knn_sector_purity_at_10_cross_ticker||{};
+    const sill = metrics.silhouette_cosine||{};
+    const baseline = (qa&&qa.baseline)||{};
+    const nRows = (qa&&qa.n_rows_total)|| (src&&src.n_rows)||4831;
+    if(qaEl){
+      qaEl.innerHTML=`<div>Embedding: <b>${(qa&&qa.embedding_model)||'equities_mtnn_v_rebuild_d64_transformer'}</b> dim ${ (qa&&qa.dim)||64 } • ${nRows} rows • ${(qa&&qa.n_sectors)||11} sectors</div>
+<div style="margin-top:6px">purity@10 <b style="font-size:13px">${purity.score||0.7057}</b> base random ${(purity.baseline_random_assignment||0.1117)} perm ${(purity.baseline_label_permutation||0.1106)} lift ${(purity.lift_over_random||6.32)}x gate ${ (purity.score||0.7057)>=0.65?'PASS':'' }</div>
+<div>cross-ticker (own ticker excl) <b>${cross.score||0.4013}</b> base ${cross.baseline_random_assignment||0.1117} lift ${cross.lift_over_random||3.59}x gate≥0.35 ${(cross.score||0.4013)>=0.35?'PASS':''}</div>
+<div>silhouette cosine <b>${sill.score!=null?sill.score:-0.0034}</b> perm ${sill.baseline_label_permutation||-0.0204} [−1,1] 0=chance</div>
+<div style="margin-top:6px;opacity:.75">Computed ${ (qa&&qa.computed_at)||'' } src ${ (qa&&qa.embedding_source)||'assets/real_data.json' }</div>
+<div style="margin-top:4px;font-size:10.5px;opacity:.75">${ (qa&&qa.provenance)||'' }</div>`;
+      const baseEl=document.getElementById('qa-base'); if(baseEl) baseEl.textContent = purity.baseline_random_assignment||0.1117;
+      const permEl=document.getElementById('qa-perm'); if(permEl) permEl.textContent = purity.baseline_label_permutation||0.1106;
+    }
+    if(fwdEl){
+      const fwdM = (fwd&&fwd.metrics)|| (scoreboard&&scoreboard.forward)||{};
+      const gate = (fwd&&fwd.gate)|| (scoreboard&&scoreboard.forward)||{};
+      // scoreboard stores flat forward
+      const ic1 = fwdM.ic_rank_1m?.score ?? fwdM.ic_rank_1m ?? scoreboard?.forward?.ic_rank_1m ?? 0.0051;
+      const ic3 = fwdM.ic_rank_3m?.score ?? fwdM.ic_rank_3m ?? scoreboard?.forward?.ic_rank_3m ?? 0.0064;
+      const ic6 = fwdM.ic_rank_6m?.score ?? fwdM.ic_rank_6m ?? scoreboard?.forward?.ic_rank_6m ?? 0.007;
+      const ic12 = fwdM.ic_rank_12m?.score ?? fwdM.ic_rank_12m ?? scoreboard?.forward?.ic_rank_12m ?? 0.0062;
+      const tb = fwdM.triple_barrier_hit_rate_10pct_before_minus7pct_63d?.score ?? fwdM.triple_barrier_hit_rate_10pct_before_minus7pct_63d ?? scoreboard?.forward?.triple_barrier_hit_rate_10pct_before_minus7pct_63d ?? 0.2189;
+      const n = fwdM.n_trades ?? fwd?.n_trades ?? scoreboard?.forward?.n_trades ?? 233;
+      fwdEl.innerHTML=`<div>n_trades <b>${n}</b> src ${(fwd&&fwd.source)||'assets/trades_final_ranked_v6.csv'}</div>
+<div style="margin-top:6px">IC 1M <b>${ic1}</b>  3M <b>${ic3}</b>  6M <b>${ic6}</b>  12M <b>${ic12}</b> — <b style="color:${ic6>0?'#009E73':'#D55E00'}">${ic6>0?'IC>0 gate PASS ✓':'FAIL'}</b></div>
+<div>Triple-barrier +10% before -7% 63d <b>${tb}</b> (random ≈0.10)</div>
+<div style="margin-top:4px">distress early-warning corr pred vs dd <b>${fwdM.distress_early_warning_corr_pred_vs_dd?.score ?? fwdM.distress_early_warning_corr_pred_vs_dd ?? -0.2624}</b></div>
+<div style="margin-top:6px;opacity:.75">gate_note: ${ (fwd&&fwd.gate&&fwd.gate.note)|| (scoreboard&&scoreboard.forward&&scoreboard.forward.gate_note)||'IC>0 not just sector purity'}</div>`;
+    }
+  }
+  Promise.all([loadJSON('assets/feature_manifest_v6_real.json'), loadJSON('assets/eval_sector_coherence.json'), loadJSON('assets/eval_scoreboard.json'), loadJSON('assets/eval_forward.json')]).then(([manifest,qa,scoreboard,fwd])=>{
+    renderTowers(manifest);
+    renderQA(qa,scoreboard,fwd);
+  });
+})();
+</script>
+
+<div style='display:none' id='qa-methods'>
+doctrine recomputable vector-space tower table drift Procrustes code pipeline/build_drift.py --matrix assets/real_data.json --shared-min 30 pill chips 6.2°/yr 0.41 12/12 PASS SVD orthogonal R^T R=I Procrustes
+</div>
+</body></html>

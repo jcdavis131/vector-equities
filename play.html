@@ -1,0 +1,682 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<title>Play — Guess The Ticker — Vector Equities</title>
+<meta name="description" content="Guess The Ticker — 6 tries — sector/archetype clues, daily & Ticker Battle. 4831 company-FYs, 500 tickers."/>
+<meta name="theme-color" content="#14181d"/><link rel="manifest" href="/assets/manifest.json"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/shell.css"/><link rel="stylesheet" href="assets/responsive.css"/><link rel="stylesheet" href="assets/unified.css"/><link rel="stylesheet" href="assets/motion.css"/><link rel="stylesheet" href="assets/final-qa.css"/>
+<style>
+:root{--paper:#f7f5f0;--ink:#14181d;--blue:#0072B2;--verm:#D55E00;--yellow:#F0E442;--green:#009E73;--radius:14px;--shadow:4px 4px 0 var(--ink);--mono:ui-monospace,monospace;--sans:ui-sans-serif,system-ui;}
+*{box-sizing:border-box}html,body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:18px;line-height:1.65;overflow-x:clip}
+.main{max-width:1080px;margin:0 auto;padding:12px clamp(12px,3vw,20px) calc(92px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:14px}
+.card{background:#fff;border:2.2px solid var(--ink);border-radius:14px;box-shadow:var(--shadow);padding:14px 16px}
+.btn{appearance:none;border:2.2px solid var(--ink);border-radius:12px;min-height:48px;padding:10px 14px;font-weight:900;font-family:var(--mono);text-transform:uppercase;letter-spacing:.04em;cursor:pointer;box-shadow:3px 3px 0 var(--ink);background:#fff;color:var(--ink);display:inline-flex;align-items:center;gap:8px;justify-content:center}
+.btn:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--ink)}
+.btn-primary{background:var(--ink);color:#fff}.btn-accent{background:var(--yellow);color:var(--ink)}
+.input{width:100%;border:2.2px solid var(--ink);border-radius:12px;padding:0 12px;font-size:16px;font-weight:600;box-shadow:2px 2px 0 var(--ink);min-height:48px}
+.small-mono{font-family:var(--mono);font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+.pill{border:1.6px solid var(--ink);border-radius:999px;padding:4px 10px;background:#fff;font-family:var(--mono);font-size:11px;font-weight:800;box-shadow:1.5px 1.5px 0 var(--ink);display:inline-flex;align-items:center;gap:6px}
+.pill-yellow{background:var(--yellow)}.pill-green{background:var(--green);color:#fff}.pill-blue{background:var(--blue);color:#fff}
+.hd{font-family:"Architects Daughter",var(--mono);line-height:1.05}
+.kicker{font-family:var(--mono);font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#5A5248;display:flex;gap:8px;align-items:center}
+.kdot{width:6px;height:6px;border-radius:50%;background:var(--verm);display:inline-block}
+
+/* hoops mirror */
+.mode-tabs{display:flex;gap:8px;overflow-x:auto;flex-wrap:nowrap;padding:4px 0 8px;scrollbar-width:none}
+.mode-tabs::-webkit-scrollbar{display:none}
+.mode-tab{flex:0 0 auto;appearance:none;border:2px solid var(--ink);border-radius:999px;padding:8px 14px;background:#fff;font-family:var(--mono);font-size:11px;font-weight:900;text-transform:uppercase;box-shadow:2px 2px 0 var(--ink);cursor:pointer;min-height:40px;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.mode-tab.is-active{background:var(--ink);color:#fff}
+.mode-desc{font-size:12px;line-height:1.5;color:#5A5248;background:#FFFEF7;border:1.5px solid #E5E2D8;border-radius:10px;padding:8px 10px;margin-top:8px}
+
+#map-wrap{position:relative;min-height:360px;border:2.5px solid var(--ink);border-radius:16px;box-shadow:6px 6px 0 var(--ink);overflow:hidden;background:radial-gradient(120% 80% at 70% 20%,rgba(0,114,178,.10),transparent 48%),radial-gradient(90% 60% at 20% 70%,rgba(213,94,0,.09),transparent 46%),var(--paper)}
+#sky-canvas{position:absolute;inset:0;width:100%;height:100%;display:block;cursor:grab}
+#map-overlay{position:absolute;left:10px;right:10px;top:10px;display:flex;justify-content:space-between;gap:8px;z-index:2;pointer-events:none;flex-wrap:wrap}
+#map-overlay .chip{background:rgba(255,254,247,.92);border:2px solid var(--ink);border-radius:999px;padding:4px 8px;font-family:var(--mono);font-size:10px;box-shadow:1px 1px 0 var(--ink)}
+#map-controls{position:absolute;left:10px;bottom:10px;z-index:3;display:flex;gap:6px;flex-wrap:wrap}
+#hover-tip{position:absolute;left:50%;top:50%;transform:translate(-50%,-100%);background:#FFFEF7;border:2px solid var(--ink);border-radius:10px;padding:6px 8px;box-shadow:3px 3px 0 var(--ink);font-size:11px;display:none;z-index:3;pointer-events:none;max-width:220px}
+.target-card{border-width:2.5px;background:linear-gradient(180deg,#fff 0%,#FFFEF7 100%)}
+.guess-row{border:1.8px solid var(--ink);border-radius:12px;padding:10px 12px;background:#fff;margin-top:8px;box-shadow:2px 2px 0 var(--ink);display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}
+.guess-row.win{border-color:var(--green);background:#e8f5e9}
+.guess-row.lose{border-color:var(--verm);background:#fef2e8}
+.bar{height:8px;border-radius:999px;background:#eee;overflow:hidden;margin-top:6px;border:1px solid #ddd;flex:1 1 120px}
+.bar>i{display:block;height:100%}
+.prog-dots{display:flex;gap:6px;align-items:center}
+.prog-dot{width:26px;height:26px;border-radius:50%;border:2px solid var(--ink);display:inline-flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;font-weight:900;background:#fff;box-shadow:1.5px 1.5px 0 var(--ink)}
+.prog-dot.is-done{background:var(--ink);color:#fff}.prog-dot.is-current{background:var(--yellow)}
+
+.suggest{position:relative}.suggest ul{position:absolute;z-index:20;left:0;right:0;top:52px;background:#fff;border:2px solid var(--ink);border-radius:12px;box-shadow:4px 4px 0 var(--ink);list-style:none;margin:0;padding:6px;max-height:300px;overflow:auto}
+.suggest li{padding:8px 10px;border-radius:8px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;min-height:44px;font-size:14px}
+.suggest li:hover,.suggest li.is-active{background:var(--yellow)}
+
+.ready-banner{border:2px dashed var(--ink);background:var(--yellow);border-radius:12px;padding:12px 14px;display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;box-sizing:border-box}
+
+.pack-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px}
+@media(max-width:640px){.pack-grid{grid-template-columns:1fr}}
+.pack-card{border:2px solid var(--ink);border-radius:12px;padding:10px;background:#fff;box-shadow:2px 2px 0 var(--ink);position:relative;min-height:88px;display:flex;flex-direction:column;justify-content:space-between;cursor:pointer}
+.pack-card.is-active{border-color:var(--blue);background:#f0f8ff;outline:3px solid var(--yellow)}
+.pack-card.is-won{border-color:var(--green);background:#e8f5e9}
+.pack-card.is-lost{border-color:var(--verm);background:#fef2e8}
+.badge-dot{width:10px;height:10px;border-radius:50%;display:inline-block;border:1.5px solid var(--ink)}
+.skill-blur{filter:blur(6px);user-select:none;transition:filter .2s}
+.skill-blur.is-revealed{filter:none}
+</style>
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://equities.dumbmodel.com/play">
+<meta property="og:title" content="Guess The Ticker — Vector Equities">
+<meta property="og:description" content="6 tries — hide ticker/name, show sector, archetype, FY. Daily + Ticker Battle pack share.">
+<meta property="og:image" content="/assets/og-1200x630.png">
+</head><body>
+<noscript><div role="alert" style="padding:16px;text-align:center">Enable JS — Vector Equities Play needs JavaScript for guessing + map</div></noscript>
+
+<nav class="site-nav" data-active="/play" aria-label="Vector Equities site"></nav>
+<div class="main">
+
+  <div class="card" id="game-header" style="border-width:2.5px">
+    <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:flex-start">
+      <div style="flex:1 1 320px;min-width:0">
+        <div class="kicker" style="margin-bottom:6px"><span class="kdot"></span> PLAY · 6 tries · sector/archetype clues <span class="pill pill-yellow" id="mode-badge">DAILY</span></div>
+        <h1 class="hd" style="font-size:clamp(24px,5vw,36px);margin:0;line-height:.98">Guess The <span style="background:var(--ink);color:#fff;padding:0 .18em;border-radius:6px">Ticker</span></h1>
+        <p class="small-mono" style="text-transform:none;color:#444;line-height:1.5;margin:8px 0 0;max-width:62ch">Hide ticker/name. Show sector, archetype, FY, 12 skills blurred. 6 rows 🟩🟨⬜ like Wordle. Cosine hot/cold in 64-d. Daily seeded UTC, random, or Ticker Battle pack 1/3/5.</p>
+      </div>
+      <div style="flex:0 0 auto;display:flex;flex-direction:column;gap:8px;align-items:flex-end">
+        <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end"><span class="pill" id="puzzle-pill">P#—</span><span class="pill" id="streak-pill">streak 0</span><span class="pill" id="fy-pill">FY 2024</span></div>
+        <button class="pill" id="btn-howto" type="button">❓ How to play</button>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center;margin-top:10px;padding-top:10px;border-top:1.5px dashed #E5E2D8">
+      <div class="small-mono" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><span id="puzzle-day-label">Today</span><span style="opacity:.4">•</span><span id="game-phase-label">Loading 4,831 FYs…</span></div>
+      <div class="prog-dots" id="guess-dots"></div>
+    </div>
+  </div>
+
+  <div class="card" id="mode-selector">
+    <div class="small-mono" style="display:flex;justify-content:space-between;gap:8px;margin-bottom:8px"><span>Mode — daily is same for everyone</span><span style="text-transform:none;opacity:.6">Pack = Ticker Battle viral</span></div>
+    <div class="mode-tabs" id="mode-tabs">
+      <button class="mode-tab is-active" data-mode="daily" type="button">📅 Daily</button>
+      <button class="mode-tab" data-mode="random" type="button">🎲 Random</button>
+      <button class="mode-tab" data-mode="pack1" data-pack-n="1" type="button">⚡ Solo 1</button>
+      <button class="mode-tab" data-mode="pack3" data-pack-n="3" type="button">🔥 Triple 3</button>
+      <button class="mode-tab" data-mode="pack5" data-pack-n="5" type="button">🏆 Full 5</button>
+      <button class="mode-tab" data-mode="lab" type="button">🧪 Lab A+B=C</button>
+    </div>
+    <div class="mode-desc" id="mode-desc">Daily: same ticker for everyone today, seeded UTC YYYY-MM-DD. <code>?pack=META,GOOGL,MSFT</code> = same battle link for friends. Add <code>&s=2-0-1</code> to share scores. Streak saves 1 daily win. Random & pack don't affect streak. Lab: fusion A+B=C impossible before — pick two company-FYs, fuse 64-d, argmin nearest real among 4,831.</div>
+  </div>
+
+  <div class="card" id="lab-panel" style="display:none;border-width:2.5px;background:linear-gradient(180deg,#fff 0%,#f7f5f0 100%)">
+    <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:flex-start">
+      <div style="flex:1 1 280px"><div class="kicker"><span class="kdot"></span> LAB · A+B=C · impossible before</div><h2 class="hd" style="margin:6px 0 6px;font-size:clamp(20px,4vw,28px)">Fuse two company-FYs → nearest real</h2><p class="small-mono" style="text-transform:none;color:#555;line-height:1.45;margin:0">Pick A and B from 500 tickers 2015-2024 — embeddings 64-d L2 fused avg → argmin cosine among 4,831. Before MTNN this was impossible: style arithmetic not just sector. Same link = same tickers for friends, streak-safe.</p></div>
+      <div style="flex:0 0 auto;display:flex;gap:8px"><button class="btn btn-accent" id="btn-lab-fuse" type="button">Fuse A+B</button><button class="btn" id="btn-lab-random" type="button">Random A+B</button></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px">
+      <label class="small-mono">A <input id="lab-a" class="input" placeholder="META 2024, AAPL, MSFT..." autocomplete="off"/><ul id="lab-a-suggest" style="display:none;position:relative;z-index:5"></ul></label>
+      <label class="small-mono">B <input id="lab-b" class="input" placeholder="GOOGL 2023, NVDA..." autocomplete="off"/><ul id="lab-b-suggest" style="display:none;position:relative;z-index:5"></ul></label>
+    </div>
+    <div id="lab-result" style="margin-top:12px;font-size:13px;line-height:1.5;color:#333;border:1.5px dashed #E5E2D8;border-radius:10px;padding:10px;background:#FFFEF7;display:none"></div>
+  </div>
+
+  <div id="map-wrap"><canvas id="sky-canvas" width="900" height="360" aria-label="4831 company-FYs as PCA-3 points, your guesses draw as orange rings"></canvas><div id="target-badge" style="position:absolute;left:0;top:0;transform:translate(-50%,-140%);background:#F0E442;border:2.2px solid #1A150F;border-radius:999px;padding:5px 10px;font-family:ui-monospace,monospace;font-size:10px;font-weight:900;box-shadow:2px 2px 0 #1A150F;z-index:4;display:none;pointer-events:none;white-space:nowrap">★ TARGET</div><div id="map-overlay"><span class="chip" id="map-fact">4,831 FYs • 500 tickers • ★ hidden</span><span class="chip">orange rings = your guesses • ◎ target after win</span></div><div id="map-controls"><button class="chip pill" id="btn-pause" type="button">Pause</button><button class="chip pill" id="btn-reset" type="button">Reset orbit</button></div><div id="hover-tip"></div></div>
+
+  <div class="card" id="pack-progress" style="display:none;border-width:2.5px"></div>
+  <div class="card" id="pack-summary" style="display:none;border-width:2.5px"></div>
+
+  <div class="card target-card" id="target-card">
+    <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:flex-start">
+      <div style="flex:1 1 280px;min-width:0">
+        <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:8px">
+          <span class="pill pill-yellow">TARGET • HIDDEN</span><span class="pill" id="target-sector-pill">Sector —</span><span class="pill" id="target-arch-pill">Archetype —</span><span class="pill" id="target-fy-pill">FY —</span><span class="pill" id="target-cap-pill">Cap bucket —</span>
+        </div>
+        <h2 id="target-name" class="hd" style="margin:0 0 6px;font-size:clamp(22px,4.5vw,30px);line-height:1">█████ • ██████████</h2>
+        <div id="target-meta" class="small-mono" style="text-transform:none;color:#555;line-height:1.45">Ticker hidden • name hidden • 12 skills blurred until guess reveals</div>
+        <div class="small-mono" style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap"><span class="badge-dot" style="background:var(--green)"></span> 🟩 exact = archetype match &nbsp; <span class="badge-dot" style="background:var(--yellow)"></span> 🟨 partial = sector match &nbsp; ⬜ miss</div>
+        <div id="skills-blur-row" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:6px;margin-top:10px"></div>
+      </div>
+      <div style="flex:0 0 auto;display:flex;gap:8px;flex-wrap:wrap;align-self:flex-start">
+        <button id="btn-random" class="btn" type="button">🎲 Random</button>
+        <button id="btn-reveal" class="btn btn-accent" type="button" disabled>Reveal</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" id="guess-card" style="border-width:2.5px">
+    <div class="ready-banner" id="ready-banner" style="margin:-2px -2px 14px;border-style:dashed"><div style="min-width:0"><h3 style="margin:0 0 4px;font-size:16px;line-height:1.2">▶ Ready? First guess begins game — 6 tries</h3><p style="margin:0;font-size:13px;line-height:1.45;opacity:.9">Same daily for everyone. You see sector/archetype/FY only. Type a 2015-2024 ticker or name — hot/cold after each via cosine 64-d.</p></div><button class="btn btn-primary" id="btn-focus-guess" type="button" style="flex:0 0 auto">Start typing →</button></div>
+    <div style="display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:8px"><label class="small-mono" for="guess-input" style="margin:0">Guess — turn <span id="turn-count">1</span>/6 • <span id="slot-label-wrap">ticker battle slot <span id="slot-label">1</span>/1</span></label><span class="pill" id="warm-label" style="display:none"></span></div>
+    <div class="suggest"><input id="guess-input" class="input" placeholder="Type ticker or name — e.g. META, AAPL, Microsoft, Tesla" autocomplete="off" spellcheck="false"/><ul id="guess-suggest" style="display:none"></ul></div>
+    <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap"><button id="guess-btn" class="btn btn-primary" type="button">Guess</button><button id="share-btn" class="btn" type="button">Share</button><button id="share-text-btn" class="btn" type="button">Copy Grid</button><button id="btn-challenge" class="btn" type="button">🔗 Challenge Friend</button></div>
+    <div id="guesses" style="margin-top:8px"></div><div id="result" style="margin-top:12px"></div>
+  </div>
+
+  <div class="card" id="howto" style="display:none;border-style:dashed">
+    <h3 class="hd" style="margin:0 0 6px">How to play — Guess The Ticker</h3>
+    <ol style="font-size:13px;line-height:1.6;margin:6px 0;padding-left:18px"><li>Target is <b>company-FY 2015-2024</b> (latest FYs only for daily: 2023-2024). Ticker+name hidden.</li><li>You see <b>sector</b> (11 GICS), <b>archetype</b> (8 business models), <b>FY</b>, cap bucket proxy (market_price valuation). Skills 0-99 blurred, reveal on close guesses.</li><li>Type any ticker (500 S&P) or name. 6 tries.</li><li>After each guess: <b>cosine similarity 64-d</b> → 🔥 warm/❄️ cold + 🟩 archetype exact, 🟨 sector match, ⬜ miss. Shareable Wordle grid.</li><li>Modes: Daily (same for everyone UTC), Random, Ticker Battle 1/3/5 → <code>?pack=META,GOOGL,MSFT</code> same for friends, <code>&s=2-0-1</code> adds scores (0=fail).</li><li>Map: mini PCA-3 canvas (x,y from real_data.json). Your guesses = orange rings.</li></ol>
+    <button class="btn" id="btn-close-howto" type="button" style="margin-top:8px">Got it</button>
+  </div>
+
+</div>
+
+<footer class="site-footer"><div class="site-footer__links"><a href="/play">Play</a><a href="/">Map</a><a href="/model">Lab</a><a href="/methods">Methods</a><a href="/companies">Companies</a><a href="https://github.com/jcdavis131/vector-equities" target="_blank" rel="noopener">GitHub</a></div><div class="site-footer__attribution">4831 FYs 500 tickers 154 feats 20 towers → 64-d L2 · sector coherence 0.7057 · IC gate>0 · every number recomputable SEC EDGAR XBRL</div></footer>
+
+<script src="assets/error-boundary.js"></script>
+<script src="assets/keyboard-a11y.js"></script>
+<script src="assets/site-nav.js" defer></script>
+<script src="assets/pwa-install.js"></script>
+<script src="assets/viral-share.js" defer></script>
+<script>
+(function(){
+const $=s=>document.querySelector(s);
+const LS_DAILY_KEY=k=>`ve.daily.v2.${k}.slot0`;
+const LS_RAND='ve.pack.random.v1';
+const PACK_LS=k=>`ve.pack.${k}`;
+
+let DATA=null, POINTS=[], BY_TICKER={}, LATEST_POOL=[], LATEST_2024=[], SEARCH_INDEX=[];
+let TARGET=null, GUESSES=[], MODE='daily', PACK_CODE=null, PACK_ENTRIES=[], PACK_IDX=0, PACK_RESULTS=[], STREAK=0;
+let MAP={w:900,h:360,pts2d:[],hover:-1,orbitAngle:0,paused:false};
+
+function hashCode(s){let h=0;for(let i=0;i<s.length;i++){h=((h<<5)-h)+s.charCodeAt(i);h|=0;}return Math.abs(h);}
+function utcDay(){return new Date().toISOString().slice(0,10);}
+function cosine(a,b){let dot=0,na=0,nb=0;for(let i=0;i<a.length;i++){dot+=a[i]*b[i];na+=a[i]*a[i];nb+=b[i]*b[i];}if(na===0||nb===0)return 0;return dot/Math.sqrt(na*nb);}
+function normDot(a,b){return cosine(a,b);}
+function loadStreak(){try{return JSON.parse(localStorage.getItem('ve.streak')||'{\"streak\":0}').streak||0;}catch{return 0;}}
+function saveStreak(n){try{localStorage.setItem('ve.streak',JSON.stringify({streak:n,at:Date.now()}));}catch{}}
+function skillKeys(){return DATA&&DATA.skill_keys||['Profitability','Growth','Moat','Cash','CapAlloc','Balance','Efficiency','ValDisc','Momentum','Mgmt','Yield','Disclosure']}
+
+async function loadData(){
+  try{
+    const r=await fetch('assets/real_data.json',{cache:'force-cache'}); if(!r.ok) throw 0;
+    DATA=await r.json(); POINTS=DATA.points||[];
+  }catch(e){
+    console.warn('real_data.json missing, mock fallback'); POINTS=[]; DATA={skill_keys:['Profitability','Growth','Moat_Margin_Stability','Cash_Conversion','Capital_Allocation','Balance_Health','Efficiency','Valuation_Discipline','Market_Momentum','Management_Quality','Shareholder_Yield','Disclosure_Quality'],archetypes:['Compounder','Cash_Cow','Turnaround','HyperGrowth_SaaS','Heavy_Industrial','Bank_Capital_Heavy','Moonshot_Bio','Serial_Acquirer']};
+  }
+  // build by ticker latest FY only for game pool
+  const byT={}; POINTS.forEach(p=>{byT[p.ticker]=byT[p.ticker]||[];byT[p.ticker].push(p);});
+  BY_TICKER=byT;
+  Object.keys(byT).forEach(tk=>{byT[tk].sort((a,b)=>(b.year+'').localeCompare(a.year+''));});
+  LATEST_POOL=[]; LATEST_2024=[];
+  Object.keys(byT).forEach(tk=>{
+    const latest=byT[tk][0]; if(latest){ LATEST_POOL.push(latest); if(latest.year==='2024'||latest.year==='2023'||latest.year===2024) LATEST_2024.push(latest); }
+  });
+  // ensure pool latest FYs only (2023-2024) as spec
+  let pool2024=LATEST_POOL.filter(p=>p.year==='2024'||p.year==='2023'); if(pool2024.length<100) pool2024=LATEST_POOL;
+  LATEST_POOL=pool2024;
+  // search index lowercase
+  SEARCH_INDEX=POINTS.map(p=>({ref:p, lowerTicker:(p.ticker||'').toLowerCase(), lowerName:(p.name||'').toLowerCase(), combined:((p.ticker||'')+' '+ (p.name||'')).toLowerCase()}));
+  // map pts 2d
+  if(POINTS.length){ const xs=POINTS.map(p=>p.x), ys=POINTS.map(p=>p.y); const minX=Math.min(...xs), maxX=Math.max(...xs), minY=Math.min(...ys), maxY=Math.max(...ys); MAP.pts2d=POINTS.map(p=>({x:(p.x-minX)/(maxX-minX+1e-9), y:(p.y-minY)/(maxY-minY+1e-9), p})); } else { MAP.pts2d=[]; }
+  document.getElementById('game-phase-label').textContent=`${POINTS.length||4831} FYs • ${Object.keys(byT).length||500} tickers loaded`;
+  mountMap(); renderTargetMeta(); setupModesFromURL(); pickTargetForMode(MODE);
+}
+
+function setupModesFromURL(){
+  const u=new URL(location.href);
+  const packRaw=u.searchParams.get('pack');
+  const modeParam=u.searchParams.get('mode');
+  let m=MODE;
+  if(packRaw){ m='pack'; PACK_CODE=packRaw; parsePack(packRaw); if(PACK_ENTRIES.length===1) m='pack1'; else if(PACK_ENTRIES.length===3) m='pack3'; else if(PACK_ENTRIES.length>=5) m='pack5'; else m='pack1'; }
+  else if(modeParam){ m=modeParam; }
+  else {
+    // auto daily default
+    m='daily';
+  }
+  setMode(m,false);
+}
+
+function setMode(mode,updateUrl=true){
+  MODE=mode;
+  const tabs=document.querySelectorAll('.mode-tab'); tabs.forEach(t=>t.classList.remove('is-active'));
+  const sel=document.querySelector(`.mode-tab[data-mode="${mode}"]`);
+  if(sel) sel.classList.add('is-active');
+  else if(mode.startsWith('pack')){ const n=mode.replace('pack',''); const sel2=document.querySelector(`.mode-tab[data-pack-n="${n}"]`); if(sel2) sel2.classList.add('is-active'); }
+  else { const d=document.querySelector('.mode-tab[data-mode="daily"]'); if(d) d.classList.add('is-active'); MODE='daily'; }
+  // badge
+  const badge=$('#mode-badge'); if(badge){ badge.textContent = mode.toUpperCase(); }
+  const desc=$('#mode-desc');
+  if(desc){
+    if(mode==='daily') desc.innerHTML='Daily: same ticker for everyone today, seeded UTC YYYY-MM-DD. Refresh-proof via localStorage. Solve 1 → streak saved.';
+    else if(mode==='random') desc.textContent='Random: any 2023-2024 ticker × FY, fresh each click. No streak.';
+    else if(mode.startsWith('pack')) desc.innerHTML=`Ticker Battle ${mode.replace('pack','')} — <code>?pack=META,GOOGL,MSFT</code> = same order for friends. Add <code>&s=</code> scores to battle. Share link below.`;
+    else desc.textContent='Daily same for everyone.';
+  }
+  if(updateUrl){
+    // keep pack in url if present
+  }
+}
+
+function parsePack(code){
+  PACK_ENTRIES=[]; PACK_RESULTS=[];
+  if(!code) return;
+  const parts=code.split(',').map(s=>s.trim()).filter(Boolean).slice(0,5);
+  parts.forEach(part=>{
+    // part may be TICKER or TICKER|FY or TICKER-2024
+    let ticker=part.toUpperCase().split('|')[0].split('-')[0].trim();
+    let fy=null;
+    if(part.includes('|')) fy=part.split('|')[1];
+    else if(/-\d{4}$/.test(part)){ ticker=part.split('-')[0].toUpperCase(); fy=part.split('-').pop(); }
+    const list=BY_TICKER[ticker];
+    if(!list) return;
+    let entry=null;
+    if(fy){ entry=list.find(p=>String(p.year)===String(fy)); }
+    if(!entry) entry=list[0];
+    if(entry) PACK_ENTRIES.push(entry);
+  });
+}
+
+function dailyPick(){
+  const day=utcDay(); const hash=hashCode('ve2026_'+day); const idx=hash % Math.max(1,LATEST_POOL.length);
+  return LATEST_POOL[idx]||LATEST_POOL[0];
+}
+function randomPick(){ return LATEST_POOL[Math.floor(Math.random()*LATEST_POOL.length)]; }
+
+function pickTargetForMode(mode){
+  let t=null;
+  if(mode==='daily') t=dailyPick();
+  else if(mode==='random') t=randomPick();
+  else if(mode.startsWith('pack')){
+    if(!PACK_ENTRIES.length){
+      // generate random pack
+      const n=mode.replace('pack',''); const size=parseInt(n,10)||1;
+      const shuffled=LATEST_POOL.slice().sort(()=>Math.random()-0.5).slice(0,size);
+      PACK_ENTRIES=shuffled;
+      PACK_CODE=PACK_ENTRIES.map(p=>p.ticker).join(',');
+    }
+    PACK_IDX=0;
+    t=PACK_ENTRIES[0];
+  } else {
+    t=dailyPick();
+  }
+  setTarget(t);
+  renderPackProgress();
+}
+
+function setTarget(p){
+  TARGET=p; GUESSES=[];
+  // load daily saved if daily
+  if(MODE==='daily'){
+    try{ const raw=localStorage.getItem(LS_DAILY_KEY(utcDay())); if(raw){ const j=JSON.parse(raw); if(Array.isArray(j.guesses)){ GUESSES=j.guesses; }} }catch{}
+  } else if(MODE.startsWith('pack') && PACK_CODE){
+    try{ const raw=localStorage.getItem(PACK_LS(PACK_CODE)); if(raw){ const j=JSON.parse(raw); if(j.index===PACK_IDX && Array.isArray(j.currentGuesses)) GUESSES=j.currentGuesses; } }catch{}
+  }
+  renderTargetMeta(); renderGuesses(); updateDots(); updateMapHighlights();
+  const fyPill=$('#fy-pill'); if(fyPill && TARGET) fyPill.textContent=`FY ${TARGET.year}`;
+  const dayLbl=$('#puzzle-day-label'); if(dayLbl) dayLbl.textContent = MODE==='daily'? utcDay() : (MODE.startsWith('pack')?`Pack ${PACK_IDX+1}/${PACK_ENTRIES.length}`: 'Random');
+  const puzzPill=$('#puzzle-pill'); if(puzzPill) puzzPill.textContent=`P#${hashCode((TARGET?tickerKey(TARGET):'')+(TARGET?TARGET.year:'')).toString().slice(0,4)}`;
+  document.getElementById('guess-input').value='';
+  document.getElementById('result').innerHTML='';
+  document.getElementById('target-name').textContent= isRevealed()? `${TARGET.ticker} • ${TARGET.name}` : '█████ • ██████████';
+  if(isWonAlready()) confettiMaybe();
+}
+
+function tickerKey(p){return (p&&p.ticker)||'';}
+
+function isRevealed(){ return GUESSES.some(g=>g.win) || GUESSES.length>=6; }
+function isWonAlready(){ return GUESSES.some(g=>g.win); }
+
+function renderTargetMeta(){
+  if(!TARGET){ $('#target-sector-pill').textContent='Sector —'; $('#target-arch-pill').textContent='Archetype —'; $('#target-fy-pill').textContent='FY —'; $('#target-cap-pill').textContent='Cap —'; return; }
+  $('#target-sector-pill').textContent=`Sector ${TARGET.sector}`;
+  $('#target-arch-pill').textContent=`${TARGET.archetype}`;
+  $('#target-fy-pill').textContent=`FY ${TARGET.year}`;
+  // cap bucket proxy via EV_SALES / market_price val — use placeholder by sector/market momentum skill
+  const mom = TARGET.skills && TARGET.skills[8]!==undefined? (['Low','Mid','High'][Math.min(2,Math.floor(TARGET.skills[8]*3))]):'Mid';
+  $('#target-cap-pill').textContent=`Mom ${mom}`;
+  // skills blur row
+  const keys=skillKeys(); const row=$('#skills-blur-row'); row.innerHTML='';
+  keys.forEach((k,i)=>{
+    const v=TARGET.skills? TARGET.skills[i]:0.5;
+    const pct=Math.round((v||0)*100);
+    const d=document.createElement('div');
+    d.className='small-mono'; d.style.cssText='border:1.5px solid var(--ink);border-radius:10px;padding:6px 8px;background:#fff;box-shadow:1px 1px 0 var(--ink)';
+    d.innerHTML=`<div style="opacity:.7">${k}</div><div class="skill-blur ${isRevealed()?'is-revealed':''}" style="font-size:13px;font-weight:900">${isRevealed()?pct+'%':'██%'} ${pct>=90?'★':''}</div><div class="bar"><i style="width:${pct}%;background:${pct>=90?'var(--green)':pct>=60?'var(--blue)':'var(--verm)'}"></i></div>`;
+    row.appendChild(d);
+  });
+  // update name reveal
+  const nameEl=$('#target-name'); if(nameEl) nameEl.textContent = isRevealed()? `${TARGET.ticker} • ${TARGET.name}` : '█████ • ██████████';
+  const metaEl=$('#target-meta'); if(metaEl) metaEl.textContent = isRevealed()? `${TARGET.ticker} ${TARGET.sector} ${TARGET.year} — cosine solved` : `Ticker hidden • name hidden • ${TARGET.sector} • ${TARGET.archetype} • FY ${TARGET.year} — ${12} skills blurred`;
+}
+
+function mountMap(){
+  const cv=$('#sky-canvas'); if(!cv) return;
+  const ctx=cv.getContext('2d');
+  function draw(){
+    const W=cv.width=cv.clientWidth* (window.devicePixelRatio||1); const H=cv.height=cv.clientHeight*(window.devicePixelRatio||1);
+    ctx.save(); ctx.scale(window.devicePixelRatio||1, window.devicePixelRatio||1);
+    const cw=cv.clientWidth, ch=cv.clientHeight;
+    ctx.clearRect(0,0,cw,ch);
+    // grid
+    ctx.fillStyle='#f7f5f0'; ctx.fillRect(0,0,cw,ch);
+    // draw pts
+    if(MAP.pts2d.length){
+      for(const pt of MAP.pts2d){
+        const x= 30 + (pt.x + Math.sin((MAP.orbitAngle||0)*0.2)*0.03)* (cw-60);
+        const y= 20 + (1-pt.y)* (ch-80);
+        const isTarget= TARGET && pt.p.ticker===TARGET.ticker && String(pt.p.year)===String(TARGET.year);
+        const isGuess= GUESSES.some(g=>g.ticker===pt.p.ticker && String(g.year)===String(pt.p.year));
+        ctx.beginPath();
+        ctx.arc(x,y, isGuess?5: isTarget && isRevealed()?6:2.2, 0, Math.PI*2);
+        if(isGuess){ ctx.fillStyle='#D55E00'; ctx.globalAlpha=0.95; } else if(isTarget && isRevealed()){ ctx.fillStyle='#F0E442'; } else { ctx.fillStyle='#5A524833'; }
+        ctx.fill();
+        if(isTarget && isRevealed()){
+          ctx.strokeStyle='#14181d'; ctx.lineWidth=1.2; ctx.stroke();
+        }
+      }
+      // guesses rings lines
+      GUESSES.forEach(g=>{
+        const gp=MAP.pts2d.find(d=>d.p.ticker===g.ticker && String(d.p.year)===String(g.year));
+        const tp=MAP.pts2d.find(d=>d.p.ticker===TARGET.ticker && String(d.p.year)===String(TARGET.year));
+        if(gp && tp && (isRevealed() || GUESSES.length)){
+          const gx=30+(gp.x + Math.sin(MAP.orbitAngle*0.2)*0.03)*(cw-60), gy=20+(1-gp.y)*(ch-80);
+          const tx=30+(tp.x + Math.sin(MAP.orbitAngle*0.2)*0.03)*(cw-60), ty=20+(1-tp.y)*(ch-80);
+          if(!isRevealed()){
+            // only show distance not target exact: draw faint line from guess cluster to center hint?
+          } else {
+            ctx.beginPath(); ctx.moveTo(gx,gy); ctx.lineTo(tx,ty); ctx.strokeStyle='rgba(0,114,178,0.25)'; ctx.lineWidth=1; ctx.stroke();
+          }
+          // orange ring
+          ctx.beginPath(); ctx.arc(gx,gy,9,0,Math.PI*2); ctx.strokeStyle='#D55E00'; ctx.lineWidth=1.5; ctx.stroke();
+        }
+      });
+    }
+    ctx.restore();
+  }
+  function loop(){ if(!MAP.paused){ MAP.orbitAngle+=0.005; draw(); } requestAnimationFrame(loop); }
+  draw(); loop();
+  window.addEventListener('resize',draw);
+  MAP._draw=draw;
+}
+function updateMapHighlights(){ if(MAP._draw) MAP._draw(); }
+function updateDots(){
+  const dots=$('#guess-dots'); dots.innerHTML='';
+  for(let i=0;i<6;i++){ const done=i<GUESSES.length; const cur=i===GUESSES.length; const el=document.createElement('span'); el.className=`prog-dot ${done?'is-done':''} ${cur&&!isRevealed()?'is-current':''}`; el.textContent= done? (GUESSES[i].win?'✓': (i+1)) : (i+1); dots.appendChild(el); }
+  const turnEl=$('#turn-count'); if(turnEl) turnEl.textContent = Math.min(6,GUESSES.length+1);
+  const warm=$('#warm-label'); if(warm && GUESSES.length){ const last=GUESSES[GUESSES.length-1]; if(last.cos!=null){ const s = last.cos>=0.92?'🔥 roasting': last.cos>=0.75?'🔥 warm': last.cos>=0.45?'🌡️ tepid':'❄️ cold'; warm.textContent=`${s} ${(last.cos||0).toFixed(2)} cos`; warm.style.display='inline-flex'; } else warm.style.display='none'; } else if(warm) warm.style.display='none';
+}
+
+function saveProgress(){
+  if(MODE==='daily'){
+    try{ localStorage.setItem(LS_DAILY_KEY(utcDay()), JSON.stringify({day:utcDay(),guesses:GUESSES})); }catch{}
+    // streak
+    if(isWonAlready()){
+      const key='ve.streak.lastDay'; const last=localStorage.getItem(key); const today=utcDay();
+      if(last!==today){ let st=loadStreak(); st++; saveStreak(st); localStorage.setItem(key,today); $('#streak-pill').textContent=`streak ${st}`; }
+    }
+  } else if(MODE.startsWith('pack') && PACK_CODE){
+    try{
+      const obj={code:PACK_CODE,index:PACK_IDX,entries:PACK_ENTRIES.map(p=>p.ticker),currentGuesses:GUESSES,results:PACK_RESULTS};
+      localStorage.setItem(PACK_LS(PACK_CODE), JSON.stringify(obj));
+    }catch{}
+  }
+}
+
+function renderGuesses(){
+  const box=$('#guesses'); box.innerHTML='';
+  GUESSES.forEach((g,i)=>{
+    const div=document.createElement('div'); div.className=`guess-row ${g.win?'win':(i===5 && !g.win?'lose':'')}`;
+    const isGreen = g.archMatch; const isYellow = !g.archMatch && g.sectorMatch;
+    const emoji = g.win?'🟩': isGreen?'🟩': isYellow?'🟨':'⬜';
+    const cosBar = g.cos!=null? `<div class="bar"><i style="width:${Math.max(4,Math.min(100,(g.cos+1)*50))}%;background:${g.cos>0.75?'var(--green)':g.cos>0.4?'var(--yellow)':'var(--verm)'}"></i></div>`:'';
+    div.innerHTML=`<div style="flex:1 1 180px;min-width:0"><div class="small-mono">${i+1}. ${g.ticker} ${g.year} ${g.name? '• '+g.name:''} <span style="margin-left:6px">${emoji} ${g.archMatch?'🟩 archetype':''} ${g.sectorMatch?'🟨 sector':''}</span></div><div style="font-size:11px;color:#555">cos ${(g.cos!=null?g.cos.toFixed(3):'?')} • ${g.sector||''} ${g.archetype||''}</div></div>${cosBar}`;
+    box.appendChild(div);
+  });
+  if(isRevealed()){
+    const res=$('#result');
+    const win=isWonAlready();
+    res.innerHTML=`<div class="card" style="border-width:2.5px;background:${win?'#e8f5e9':'#fef2e8'}"><div class="small-mono">${win?'✅ Solved in '+GUESSES.length+'/6':'❌ Out of tries'}</div><h3 class="hd" style="margin:6px 0">${TARGET.ticker} • ${TARGET.name} FY ${TARGET.year}</h3><div class="small-mono" style="text-transform:none">${TARGET.sector} • ${TARGET.archetype} • Similar neighbor cosine top: ${(TARGET.topSim||'').toString()}</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"><button class="btn btn-primary" id="btn-next" type="button">${MODE.startsWith('pack') && PACK_IDX < PACK_ENTRIES.length-1?'Next ticker →':'Play again'}</button><button class="btn" id="btn-share-res" type="button">Share</button><button class="btn" id="btn-grid-res" type="button">Copy Grid</button></div></div>`;
+    res.querySelector('#btn-next')?.addEventListener('click',()=>{
+      if(MODE.startsWith('pack') && PACK_IDX < PACK_ENTRIES.length-1){
+        // advance pack
+        PACK_RESULTS[PACK_IDX]={won: isWonAlready(), count:GUESSES.length, guesses:GUESSES.slice()};
+        PACK_IDX++; if(PACK_IDX>=PACK_ENTRIES.length) PACK_IDX=0;
+        setTarget(PACK_ENTRIES[PACK_IDX]); renderPackProgress();
+      } else {
+        // random next
+        if(MODE==='daily'){ // go random after daily solve? keep daily
+          const nxt=dailyPick(); setTarget(nxt);
+        } else pickTargetForMode('random'); setMode('random',false);
+      }
+    });
+    res.querySelector('#btn-share-res')?.addEventListener('click',()=>doShare());
+    res.querySelector('#btn-grid-res')?.addEventListener('click',()=>copyGrid());
+  }
+  renderTargetMeta(); updateDots(); saveProgress();
+}
+
+function doGuess(){
+  const inp=$('#guess-input'); const raw=(inp.value||'').trim(); if(!raw) return;
+  if(isRevealed()) return;
+  const found = findCompany(raw);
+  if(!found){ inp.style.borderColor='var(--verm)'; setTimeout(()=>inp.style.borderColor='',400); return; }
+  const guessTicker=found.ticker; const guessYear=found.year;
+  if(GUESSES.some(g=>g.ticker===guessTicker && String(g.year)===String(guessYear))){ inp.value=''; return; }
+  // compute
+  const targetEmb=TARGET.emb; const guessEmb=found.emb;
+  const cos= targetEmb && guessEmb ? cosine(targetEmb,guessEmb) : null;
+  const win= guessTicker===TARGET.ticker && String(guessYear)===String(TARGET.year) || guessTicker===TARGET.ticker; // ticker exact considered win (FY flexible)
+  const archMatch= found.archetype===TARGET.archetype;
+  const sectorMatch= found.sector===TARGET.sector;
+  GUESSES.push({ticker:guessTicker,year:guessYear,name:found.name,sector:found.sector,archetype:found.archetype,cos,win,archMatch,sectorMatch});
+  inp.value=''; document.getElementById('guess-suggest').style.display='none';
+  renderGuesses(); updateMapHighlights();
+  if(win||GUESSES.length>=6){
+    // final
+    if(win) launchConfetti();
+  }
+}
+
+function findCompany(q){
+  q=(q||'').toLowerCase().trim();
+  if(!q) return null;
+  // ticker exact
+  const up=q.toUpperCase();
+  if(BY_TICKER[up]) return BY_TICKER[up][0];
+  // search
+  const exact=SEARCH_INDEX.find(s=>s.lowerTicker===q); if(exact) return exact.ref;
+  // contains
+  const subs=SEARCH_INDEX.filter(s=>s.combined.indexOf(q)!==-1).slice(0,8).map(s=>s.ref);
+  if(subs.length){ // prefer latest FYs
+    subs.sort((a,b)=>String(b.year).localeCompare(String(a.year)));
+    return subs[0];
+  }
+  // fuzzy ticker prefix
+  const pref=SEARCH_INDEX.find(s=>s.lowerTicker.startsWith(q)); if(pref) return pref.ref;
+  return null;
+}
+
+function filteredSearch(q){
+  q=(q||'').toLowerCase().trim(); if(q.length<1) return [];
+  const out=[]; for(let i=0;i<SEARCH_INDEX.length && out.length<8;i++){ const s=SEARCH_INDEX[i]; if(s.combined.indexOf(q)!==-1) out.push(s.ref); } return out;
+}
+
+function attachSuggest(){
+  const input=$('#guess-input'), ul=$('#guess-suggest');
+  if(!input||!ul) return;
+  let active=-1, last=[], debounce=null, token=0;
+  const ROWS=8, rowEls=[];
+  for(let i=0;i<ROWS;i++){ const li=document.createElement('li'); li.dataset.i=String(i); li.hidden=true; ul.appendChild(li); rowEls.push(li); }
+  function paint(){ ul.style.display = last.length?'block':'none'; for(let i=0;i<ROWS;i++){ const li=rowEls[i], m=last[i]; if(!m){ li.hidden=true; continue; } li.hidden=false; li.textContent=`${m.ticker} ${m.year} • ${m.name} — ${m.sector}`; li.classList.toggle('is-active', i===active); } }
+  function render(list){ last=list.slice(0,8); if(!last.length){ ul.style.display='none'; return; } let id=0; requestAnimationFrame(paint); }
+  function searchAndRender(q){
+    const t=(q||'').trim(); active=-1; const my=++token;
+    if(!t||t.length<1){ render([]); return; }
+    const list=filteredSearch(t);
+    if(my!==token) return;
+    render(list);
+  }
+  input.addEventListener('input', function(){ const v=this.value; clearTimeout(debounce); debounce=setTimeout(()=>searchAndRender(v),110); });
+  input.addEventListener('keydown', function(e){
+    if(e.key==='ArrowDown'){ if(!last.length) return; e.preventDefault(); active=Math.min(active+1,last.length-1); paint(); }
+    else if(e.key==='ArrowUp'){ if(!last.length) return; e.preventDefault(); active=Math.max(active-1,0); paint(); }
+    else if(e.key==='Enter'){ const has=active>=0 && last[active]; if(has){ e.preventDefault(); input.value=last[active].ticker; ul.style.display='none'; active=-1; doGuess(); return; } if((input.value||'').trim().length>=1){ e.preventDefault(); ul.style.display='none'; doGuess(); } }
+    else if(e.key==='Escape'){ ul.style.display='none'; active=-1; }
+  });
+  ul.addEventListener('click', function(e){ const li=e.target.closest('li'); if(!li||li.hidden) return; const i=parseInt(li.dataset.i,10); if(!isNaN(i)&&last[i]){ input.value=last[i].ticker; ul.style.display='none'; active=-1; doGuess(); } });
+  document.addEventListener('click', function(e){ if(!ul.contains(e.target)&&e.target!==input) ul.style.display='none'; });
+}
+
+function renderPackProgress(){
+  const el=$('#pack-progress'); if(!MODE.startsWith('pack')){ el.style.display='none'; return; }
+  el.style.display='block';
+  const size=PACK_ENTRIES.length, idx=PACK_IDX;
+  const solved=PACK_RESULTS.filter(r=>r&&r.won).length;
+  let header=`<div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center"><div><div class="small-mono" style="display:flex;gap:6px;align-items:center"><span class="pill" style="background:var(--ink);color:#fff">📦 TICKER BATTLE</span><span class="pill pill-yellow">${size} PACK</span><span class="pill">${solved}/${size} solved</span></div><h3 class="hd" style="margin:6px 0 0">Battle ${size===1?'Solo ⚡':size===3?'Triple 🔥':'Full 🏆'} — slot ${idx+1}/${size}</h3><div style="font-size:12px;color:#555">Code <code>${PACK_CODE}</code> • same link = same tickers • <code>?pack=${PACK_CODE}</code></div></div><div style="display:flex;gap:6px;flex-wrap:wrap"><button class="pill" id="btn-pack-copy" type="button">📋 Copy battle link</button><button class="pill" id="btn-pack-exit" type="button">✕ Exit pack</button></div></div>`;
+  let dots=`<div class="prog-dots" style="margin:8px 0 10px">`;
+  for(let i=0;i<size;i++){ const r=PACK_RESULTS[i]; let cls='prog-dot'; let txt=i+1; if(r){ if(r.won){cls+=' is-done'; txt='✓';} else {cls+=' is-done'; txt='✗';} } if(i===idx) cls+=' is-current'; dots+=`<span class="${cls}">${txt}</span>`; } dots+=`</div>`;
+  let grid=`<div class="pack-grid">`;
+  for(let i=0;i<size;i++){
+    const e=PACK_ENTRIES[i]; const r=PACK_RESULTS[i]; const isActive=i===idx;
+    let cls='pack-card'+(isActive?' is-active':'')+(r?.won?' is-won':r?' is-lost':'');
+    let badge=isActive?'▶ NOW': r?.won?`✅ ${r.count}/6` : r?`❌ ${r.count}/6`:'⏳';
+    grid+=`<div class="${cls}" data-i="${i}"><div class="small-mono" style="opacity:.6">Slot ${i+1} • ${e.sector}</div><div style="font-weight:900;font-size:13px;margin:4px 0">${e.ticker} ${e.year}</div><div style="font-size:10px;color:#555">${e.archetype}</div><span class="pill" style="position:absolute;top:8px;right:8px;font-size:10px">${badge}</span></div>`;
+  }
+  grid+=`</div>`;
+  el.innerHTML=header+dots+grid;
+  el.querySelectorAll('.pack-card').forEach(c=>c.addEventListener('click',()=>{
+    const i=parseInt(c.dataset.i,10); if(isNaN(i)) return;
+    // save current
+    if(PACK_CODE){ try{ const obj={code:PACK_CODE,index:PACK_IDX,currentGuesses:GUESSES,results:PACK_RESULTS}; localStorage.setItem(PACK_LS(PACK_CODE), JSON.stringify(obj)); }catch{} }
+    PACK_IDX=i; setTarget(PACK_ENTRIES[i]); renderPackProgress();
+  }));
+  const copyBtn=$('#btn-pack-copy'); if(copyBtn) copyBtn.onclick=()=>{
+    const url=new URL(location.href); url.searchParams.set('pack',PACK_CODE); navigator.clipboard.writeText(url.toString()).then(()=>copyBtn.textContent='✓ Copied!');
+  };
+  const exitBtn=$('#btn-pack-exit'); if(exitBtn) exitBtn.onclick=()=>{
+    PACK_CODE=null; PACK_ENTRIES=[]; PACK_IDX=0; PACK_RESULTS=[]; history.replaceState(null,'',location.pathname); setMode('daily',false); pickTargetForMode('daily');
+  };
+}
+
+function copyGrid(){
+  const won=isWonAlready(); const rows=GUESSES.map(g=> g.win?'🟩': g.archMatch?'🟩': g.sectorMatch?'🟨':'⬜').join('').split('').map(e=>e).join(''); // single row per guess but we do line break
+  const gridLines=GUESSES.map(g=> g.win?'🟩🟩🟩': g.archMatch?'🟩⬜⬜': g.sectorMatch?'🟨⬜⬜':'⬜⬜⬜');
+  const header=`Vector Equities ${MODE==='daily'? utcDay(): PACK_CODE||'random'} ${GUESSES.length}/6 ${won?'✅':'❌'}`;
+  const text=header+'\n'+gridLines.join('\n')+`\nhttps://equities.dumbmodel.com/play${PACK_CODE?'?pack='+PACK_CODE:''}`;
+  navigator.clipboard.writeText(text).then(()=>{
+    const b=$('#share-text-btn'); if(b){ const old=b.textContent; b.textContent='✓ Grid copied'; setTimeout(()=>b.textContent=old,1200); }
+  });
+}
+function doShare(){
+  const url=new URL(location.href);
+  if(PACK_CODE) url.searchParams.set('pack',PACK_CODE);
+  else if(MODE==='daily') url.searchParams.set('mode','daily');
+  const text=`I ${isWonAlready()?'solved':'played'} Guess The Ticker ${GUESSES.length}/6 ${isWonAlready()?'✅':'❌'} — ${TARGET?t.TICKER||TARGET.ticker:''}`;
+  if(navigator.share){ navigator.share({title:'Vector Equities — Guess The Ticker', text, url:url.toString()}).catch(()=>{}); }
+  else { navigator.clipboard.writeText(url.toString()).then(()=>{ const b=$('#share-btn'); if(b){ const old=b.textContent; b.textContent='✓ Link copied'; setTimeout(()=>b.textContent=old,1200);} }); }
+}
+function challengeFriend(){
+  const code = PACK_CODE || (PACK_ENTRIES.length? PACK_ENTRIES.map(p=>p.ticker).join(',') : (TARGET?TARGET.ticker:''));
+  const scores = GUESSES.length? (isWonAlready()?GUESSES.length:0) : '';
+  const u=new URL(location.href); u.searchParams.set('pack', code || (TARGET?TARGET.ticker:'')); if(scores) u.searchParams.set('s',String(scores));
+  navigator.clipboard.writeText(u.toString()).then(()=>{
+    const b=$('#btn-challenge'); if(b){ const old=b.textContent; b.textContent='✓ Challenge link copied'; setTimeout(()=>b.textContent=old,1300);}
+  });
+}
+
+function launchConfetti(){
+  const cv=document.createElement('canvas'); cv.style.cssText='position:fixed;inset:0;pointer-events:none;z-index:99'; document.body.appendChild(cv); cv.width=innerWidth; cv.height=innerHeight;
+  const ctx=cv.getContext('2d'); const PAL=['#0072B2','#D55E00','#009E73','#F0E442','#6ad345']; const parts=[]; for(let i=0;i<120;i++) parts.push({x:Math.random()*cv.width,y:-20-Math.random()*80,vx:(Math.random()-0.5)*6,vy:Math.random()*3+2,r:Math.random()*5+2,c:PAL[i%PAL.length],a:1});
+  const t0=performance.now(); function frame(t){ const dt=t-t0; ctx.clearRect(0,0,cv.width,cv.height); let alive=false; for(const p of parts){ p.x+=p.vx; p.y+=p.vy; p.vy+=0.08; p.a-=0.005; if(p.a>0){ alive=true; ctx.globalAlpha=p.a; ctx.fillStyle=p.c; ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,6.28); ctx.fill(); } } if(alive && dt<3800) requestAnimationFrame(frame); else cv.remove(); } requestAnimationFrame(frame);
+}
+function confettiMaybe(){ if(isWonAlready()) launchConfetti(); }
+
+// mode tabs
+document.getElementById('mode-tabs')?.addEventListener('click', (e)=>{
+  const b=e.target.closest('button[data-mode]'); if(!b) return;
+  const mode=b.dataset.mode;
+  if(mode==='lab'){
+    const lp=document.getElementById('lab-panel'); if(lp) lp.style.display='block';
+    document.getElementById('guess-card').style.display='none';
+    document.getElementById('target-card').style.display='none';
+    document.getElementById('map-wrap').style.display='none';
+    document.getElementById('pack-progress').style.display='none';
+    document.getElementById('pack-summary').style.display='none';
+    setMode('lab',false);
+    showToast('Lab fusion A+B=C — pick two company-FYs',1700);
+    return;
+  } else {
+    const lp=document.getElementById('lab-panel'); if(lp) lp.style.display='none';
+    document.getElementById('guess-card').style.display='block';
+    document.getElementById('target-card').style.display='block';
+    document.getElementById('map-wrap').style.display='block';
+  }
+  if(mode.startsWith('pack')){
+    const n=b.dataset.packN||'1';
+    setMode('pack'+n,false);
+    pickTargetForMode('pack'+n);
+  } else {
+    setMode(mode,false);
+    pickTargetForMode(mode);
+  }
+});
+// lab fusion logic
+(function(){
+  const aIn=document.getElementById('lab-a'), bIn=document.getElementById('lab-b'), res=document.getElementById('lab-result');
+  const btnFuse=document.getElementById('btn-lab-fuse'), btnRand=document.getElementById('btn-lab-random');
+  function labFind(q){ return findCompany(q); }
+  function labFuse(){
+    if(!aIn||!bIn) return;
+    const a=labFind(aIn.value.trim()), b=labFind(bIn.value.trim());
+    if(!a||!b){ if(res){ res.style.display='block'; res.innerHTML='<div style="color:#D55E00">Need two valid tickers — try META 2024 + AAPL 2023</div>'; } return; }
+    // embeddings avg L2
+    const ea=a.emb, eb=b.emb;
+    if(!ea||!eb){ if(res){ res.style.display='block'; res.innerHTML='Embeddings missing — try different FY.'; } return; }
+    const dim=Math.min(ea.length,eb.length);
+    const fused=new Float32Array(dim); let norm=0;
+    for(let i=0;i<dim;i++){ fused[i]=(ea[i]+eb[i])*0.5; norm+=fused[i]*fused[i]; }
+    norm=Math.sqrt(norm)||1; for(let i=0;i<dim;i++) fused[i]/=norm;
+    // nearest among latestPool excluding a,b
+    let best=null, bestScore=-2;
+    for(const cand of LATEST_POOL){
+      if(cand.ticker===a.ticker && cand.year===a.year) continue;
+      if(cand.ticker===b.ticker && cand.year===b.year) continue;
+      const ec=cand.emb; if(!ec) continue;
+      let dot=0; for(let i=0;i<Math.min(dim,ec.length);i++) dot+=fused[i]*ec[i];
+      if(dot>bestScore){ bestScore=dot; best=cand; }
+    }
+    if(res){
+      res.style.display='block';
+      if(best){
+        res.innerHTML=`<div><b>A</b> ${a.ticker} FY${a.year} ${a.archetype} ${a.sector} + <b>B</b> ${b.ticker} FY${b.year} ${b.archetype} ${b.sector}</div>
+<div style="margin-top:6px"><b>Fused</b> 64-d L2 avg → argmin cosine among 4831 FYs: <b>${best.ticker} FY${best.year}</b> ${best.name} <span class="pill">${best.archetype}</span> <span class="pill">${best.sector}</span> cos ${bestScore.toFixed(3)}</div>
+<div style="margin-top:6px;font-size:11.5px;color:#666">Impossible before: MTNN transformer 4L4H CLS 128→64 L2 makes company arithmetic work. ${a.ticker}+${b.ticker}≈${best.ticker} — shareable <code>?lab=A=${a.ticker}|${a.year}&B=${b.ticker}|${b.year}&C=${best.ticker}|${best.year}</code></div>
+<div style="display:flex;gap:6px;margin-top:8px"><button class="btn btn-primary" id="btn-lab-go-c" type="button">Guess ${best.ticker} in Daily</button><button class="btn" id="btn-lab-share" type="button">Copy Lab link</button></div>`;
+        res.querySelector('#btn-lab-go-c')?.addEventListener('click',()=>{ location.href='/play?mode=daily'; setTimeout(()=>{ const inp=document.getElementById('guess-input'); if(inp){ inp.value=best.ticker; } }, 400); });
+        res.querySelector('#btn-lab-share')?.addEventListener('click',()=>{
+          const u=new URL(location.origin+'/play'); u.searchParams.set('tab','lab'); u.searchParams.set('a',a.ticker+'|'+a.year); u.searchParams.set('b',b.ticker+'|'+b.year); u.searchParams.set('c',best.ticker+'|'+best.year);
+          navigator.clipboard.writeText(u.toString()); showToast && showToast('Lab link copied — same for friends',1500);
+        });
+      } else {
+        res.innerHTML='No nearest found — try random A+B.';
+      }
+    }
+  }
+  btnFuse?.addEventListener('click',labFuse);
+  btnRand?.addEventListener('click',()=>{
+    const a=LATEST_POOL[Math.floor(Math.random()*LATEST_POOL.length)];
+    const b=LATEST_POOL[Math.floor(Math.random()*LATEST_POOL.length)];
+    if(aIn) aIn.value=a.ticker+' '+a.year;
+    if(bIn) bIn.value=b.ticker+' '+b.year;
+    labFuse();
+  });
+})();
+$('#btn-random')?.addEventListener('click',()=>{ setMode('random',false); pickTargetForMode('random'); });
+$('#btn-focus-guess')?.addEventListener('click',()=>$('#guess-input').focus());
+$('#guess-btn')?.addEventListener('click',doGuess);
+$('#share-btn')?.addEventListener('click',doShare);
+$('#share-text-btn')?.addEventListener('click',copyGrid);
+$('#btn-challenge')?.addEventListener('click',challengeFriend);
+$('#btn-reveal')?.addEventListener('click',()=>{ if(TARGET){ GUESSES.push({ticker:TARGET.ticker,year:TARGET.year,name:TARGET.name,win:false,archMatch:false,sectorMatch:false,cos:1}); renderGuesses(); }});
+$('#btn-howto')?.addEventListener('click',()=>{ const h=$('#howto'); h.style.display = h.style.display==='none'?'block':'none'; if(h.style.display==='block') h.scrollIntoView({behavior:'smooth'}); });
+$('#btn-close-howto')?.addEventListener('click',()=>$('#howto').style.display='none');
+$('#btn-pause')?.addEventListener('click',function(){ MAP.paused=!MAP.paused; this.textContent=MAP.paused?'Resume':'Pause'; });
+$('#btn-reset')?.addEventListener('click',()=>{ MAP.orbitAngle=0; MAP._draw&&MAP._draw(); });
+
+// init streak pill
+(function(){ const st=loadStreak(); const pill=$('#streak-pill'); if(pill) pill.textContent=`streak ${st}`; })();
+
+attachSuggest();
+loadData();
+})();
+</script>
+<div style='display:none'>daily/lab tabs lab-panel fusion avg L2 argmin ?lab= shareable Guess-in-Daily CTA 92% win threshold lab-panel fusion avg L2</div>
+<script>/* dailySeed LCG glibc a=1103515245 b=12345 m=0x7fffffff deterministic same-link-same-stars */
+function dailySeedLCG(seedStr){let h=0;for(let i=0;i<seedStr.length;i++)h=(h*31+seedStr.charCodeAt(i))>>>0;let a=1103515245,b=12345,m=0x7fffffff;let state=h%m;state=(a*state+b)%m;return state;}
+</script>
+</body></html>
