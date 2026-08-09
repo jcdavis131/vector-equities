@@ -12,6 +12,7 @@ dependencies = [
   "scikit-learn>=1.3",
   "torch>=2.0",
   "pyarrow",
+  "vector-core @ git+https://github.com/jcdavis131/vector-hub.git#subdirectory=packages/vector-core",
 ]
 
 [project.optional-dependencies]

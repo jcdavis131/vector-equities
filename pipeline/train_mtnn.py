@@ -35,6 +35,7 @@ import itertools
 
 from composite_score import composite_quality
 from model import EquitiesMTNN
+from vector_core.losses import info_nce_torch
 
 # Loss weights — mirrors hoops Phase B rebalanced
 DEFAULT_WEIGHTS = {
@@ -159,15 +160,9 @@ def masked_scalar_mse(pred, target, row_mask):
     return (w * (pred - target) ** 2).sum() / w.sum()
 
 
-def info_nce(za, zb, temp=0.08, pos_a=None, pos_b=None, hard_boost=0.0):
-    logits = za @ zb.T / temp
-    if hard_boost > 0 and pos_a is not None and pos_b is not None:
-        b = logits.shape[0]
-        idx = torch.arange(b, device=logits.device)
-        hard = (pos_a.unsqueeze(1) == pos_b.unsqueeze(0)) & (idx.unsqueeze(0) != idx.unsqueeze(1))
-        logits = logits + hard.float() * hard_boost
-    target = torch.arange(len(za), device=za.device)
-    return 0.5 * (F.cross_entropy(logits, target) + F.cross_entropy(logits.T, target))
+# info_nce: adopted from vector-core v0.2 (vector_core.losses.info_nce_torch).
+# See call site below — parity-gated bit-identical (max abs diff 0.0) against the
+# former local body with normalize=False, symmetric=True.
 
 
 def recall_at_k(E, pairs, k=10):
@@ -419,10 +414,12 @@ def main():
             za, out_a = model(xa, ma, seas_t[idx_t])
             zb, _ = model(xb, mb, seas_t[partner_t])
 
-            loss = info_nce(
+            loss = info_nce_torch(
                 za,
                 zb,
-                temp=args.nce_temp,
+                temperature=args.nce_temp,
+                normalize=False,
+                symmetric=True,
                 pos_a=sector_t[idx_t],
                 pos_b=sector_t[partner_t],
                 hard_boost=args.hard_neg_boost,

@@ -35,6 +35,8 @@ import time
 from pathlib import Path
 
 import numpy as np
+from vector_core.eval import purity_from_neighbors
+from vector_core.eval import silhouette_cosine as _vc_silhouette_cosine
 
 ROOT = Path(__file__).resolve().parents[1]
 ASSETS_DIR = ROOT / "assets"
@@ -108,9 +110,12 @@ def knn_indices(emb, k=K, tickers=None, block=512):
     return out
 
 
-def purity_from_neighbors(neighbors, labels):
-    """Mean fraction of neighbors sharing the query row's label."""
-    return float((labels[neighbors] == labels[:, None]).mean())
+# purity_from_neighbors: adopted from vector-core v0.2 (vector_core.eval.purity_from_neighbors,
+# imported above) with the default exclude_group=None, which is exactly the former local body
+# float((labels[neighbors] == labels[:, None]).mean()) — parity max abs diff 0.0. Both the
+# same-ticker (nn_all) and cross-ticker (nn_cross) call sites use this base metric; the
+# cross-ticker exclusion happens upstream in knn_indices (kept local, see below), NOT via the
+# vector-core exclude_group path, which is a different computation.
 
 
 def random_purity_expectation(labels):
@@ -132,9 +137,11 @@ def permutation_purity(neighbors, labels, n_perm=N_PERMUTATIONS, seed=PERMUTATIO
 
 
 def silhouette_cosine(emb, labels):
-    from sklearn.metrics import silhouette_score
-
-    return float(silhouette_score(emb, labels, metric="cosine"))
+    # Adopted from vector-core v0.2: vector_core.eval.silhouette_cosine(backend="sklearn")
+    # delegates to sklearn.metrics.silhouette_score(metric="cosine") — identical to the former
+    # local body (parity max abs diff 0.0). backend="sklearn" is required because vector-core's
+    # default backend is a pure-numpy silhouette, a different (non-sklearn) computation.
+    return _vc_silhouette_cosine(emb, labels, backend="sklearn")
 
 
 def permutation_silhouette(emb, labels, n_perm=3, seed=PERMUTATION_SEED):
