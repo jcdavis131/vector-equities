@@ -20,6 +20,8 @@ from dataset_career import (
 )
 from model_career import EquitiesCareerMTNN
 
+from _torch_safe import safe_torch_load
+
 print("Loading bundle v6...")
 (
     Z,
@@ -53,7 +55,7 @@ for p in ckpt_path_candidates:
 if ckpt_path is None:
     raise SystemExit("No checkpoint found")
 
-ckpt = torch.load(ckpt_path, map_location="cpu", weights_only=False)
+ckpt = safe_torch_load(ckpt_path, map_location="cpu")
 args = ckpt.get("args", {})
 print(
     f"Checkpoint {ckpt_path} epoch {ckpt.get('epoch')} IC {ckpt.get('ic')} args {args}"

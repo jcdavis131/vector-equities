@@ -24,6 +24,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+from _torch_safe import safe_torch_load
+
 ROOT = Path(__file__).resolve().parents[1]
 DATA_DIR = ROOT / "pipeline" / "data"
 import sys
@@ -561,7 +563,7 @@ def main():
 
     # restore best
     if BEST_CKPT.exists():
-        ckpt = torch.load(BEST_CKPT, map_location=device)
+        ckpt = safe_torch_load(BEST_CKPT, map_location=device)
         model.load_state_dict(ckpt["model"])
         print(
             f"restored best epoch {ckpt['epoch']} recall {ckpt.get('val_recall')} purity {ckpt.get('val_purity')} comp {ckpt.get('composite')}"

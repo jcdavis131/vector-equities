@@ -19,6 +19,8 @@ from dataset_career import (
 )
 from model_career import EquitiesCareerMTNN
 
+from _torch_safe import safe_torch_load
+
 DATA_DIR = Path("pipeline/data")
 Z, mask, Z_raw, tickers_b, names, fy_arr, sectors_arr, manifest, fwd, _ = load_bundle()
 fams, feat_list = family_slices(manifest)
@@ -30,7 +32,7 @@ seqs, _, _ = build_sequences(
 
 device = "cpu"
 ckpt_path = DATA_DIR / "mtnn_career_best.pt"
-ckpt = torch.load(ckpt_path, map_location=device, weights_only=False)
+ckpt = safe_torch_load(ckpt_path, map_location=device)
 args = ckpt.get("args", {})
 model = EquitiesCareerMTNN(
     fam_dims=fam_dims,
