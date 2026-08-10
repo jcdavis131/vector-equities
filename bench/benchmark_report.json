@@ -1,0 +1,898 @@
+{
+  "schema_version": "1.1",
+  "domain": "equities",
+  "primary_task_type": "prediction",
+  "description": "Ticker-dates. The classic IC-and-ROC story per target: a forward return (rank IC), a forward realized volatility, and a binary drawdown flag.",
+  "aggregate": {
+    "targets_total": 3,
+    "targets_scored": 3,
+    "targets_spec_only": 0,
+    "targets_errored": 0,
+    "targets_judged": 3,
+    "mtnn_target_wins": 0,
+    "baseline_target_wins": 3,
+    "primary_metric_verdicts": {
+      "forward_return": false,
+      "forward_realized_vol": false,
+      "drawdown_exceedance": false
+    },
+    "headline": "baseline wins all 3 judged target(s) on their primary metric",
+    "built": "2026-08-10T00:19:01"
+  },
+  "targets": [
+    {
+      "target": {
+        "name": "forward_return",
+        "kind": "regression",
+        "horizon": "1m",
+        "split": "temporal",
+        "primary_metric": "spearman_ic",
+        "status": "scored"
+      },
+      "note": "",
+      "scorecard": {
+        "schema_version": "1.0",
+        "domain": "equities",
+        "task": "equities::forward_return",
+        "task_type": "prediction",
+        "split": "temporal",
+        "seed": 42,
+        "k_values": [
+          1,
+          5,
+          10
+        ],
+        "summary": {
+          "metrics_judged": 4,
+          "mtnn_wins": 0,
+          "baseline_wins": 4,
+          "headline": "baseline wins all 4 judged metric(s) — this domain is simple",
+          "built": "2026-08-10T00:18:56",
+          "n_train": 3297,
+          "n_test": 1491
+        },
+        "methods": [
+          {
+            "name": "dummy_mean",
+            "kind": "prediction",
+            "is_mtnn": false,
+            "status": "ok",
+            "metrics": {
+              "spearman_ic": 0.0,
+              "mae": 0.162071,
+              "rmse": 0.28127,
+              "r2": -1e-06
+            },
+            "note": ""
+          },
+          {
+            "name": "persistence",
+            "kind": "prediction",
+            "is_mtnn": false,
+            "status": "ok",
+            "metrics": {
+              "spearman_ic": 0.040075,
+              "mae": 0.218804,
+              "rmse": 0.361544,
+              "r2": -0.65225
+            },
+            "note": ""
+          },
+          {
+            "name": "ridge",
+            "kind": "prediction",
+            "is_mtnn": false,
+            "status": "ok",
+            "metrics": {
+              "spearman_ic": 0.144842,
+              "mae": 0.215655,
+              "rmse": 0.313553,
+              "r2": -0.242725
+            },
+            "note": ""
+          },
+          {
+            "name": "pca_ridge(n=16)",
+            "kind": "prediction",
+            "is_mtnn": false,
+            "status": "ok",
+            "metrics": {
+              "spearman_ic": 0.148097,
+              "mae": 0.158353,
+              "rmse": 0.277543,
+              "r2": 0.026321
+            },
+            "note": ""
+          },
+          {
+            "name": "knn(k=10)",
+            "kind": "prediction",
+            "is_mtnn": false,
+            "status": "ok",
+            "metrics": {
+              "spearman_ic": 0.123054,
+              "mae": 0.164473,
+              "rmse": 0.285041,
+              "r2": -0.026998
+            },
+            "note": ""
+          },
+          {
+            "name": "hist_gbm",
+            "kind": "prediction",
+            "is_mtnn": false,
+            "status": "ok",
+            "metrics": {
+              "spearman_ic": 0.061977,
+              "mae": 0.179019,
+              "rmse": 0.284974,
+              "r2": -0.026516
+            },
+            "note": ""
+          },
+          {
+            "name": "mlp",
+            "kind": "prediction",
+            "is_mtnn": false,
+            "status": "ok",
+            "metrics": {
+              "spearman_ic": 0.074683,
+              "mae": 0.289513,
+              "rmse": 0.406131,
+              "r2": -1.084903
+            },
+            "note": ""
+          },
+          {
+            "name": "mtnn",
+            "kind": "prediction",
+            "is_mtnn": true,
+            "status": "ok",
+            "metrics": {
+              "spearman_ic": 0.092626,
+              "mae": 0.164891,
+              "rmse": 0.28107,
+              "r2": 0.001421
+            },
+            "note": ""
+          }
+        ],
+        "metrics": {
+          "spearman_ic": {
+            "higher_is_better": true,
+            "ranking": [
+              {
+                "method": "pca_ridge(n=16)",
+                "value": 0.148097
+              },
+              {
+                "method": "ridge",
+                "value": 0.144842
+              },
+              {
+                "method": "knn(k=10)",
+                "value": 0.123054
+              },
+              {
+                "method": "mtnn",
+                "value": 0.092626
+              },
+              {
+                "method": "mlp",
+                "value": 0.074683
+              },
+              {
+                "method": "hist_gbm",
+                "value": 0.061977
+              },
+              {
+                "method": "persistence",
+                "value": 0.040075
+              },
+              {
+                "method": "dummy_mean",
+                "value": 0.0
+              }
+            ],
+            "best_method": "pca_ridge(n=16)",
+            "best_baseline": "pca_ridge(n=16)",
+            "best_baseline_value": 0.148097,
+            "mtnn_value": 0.092626,
+            "mtnn_delta": -0.055471,
+            "mtnn_beats_best_baseline": false
+          },
+          "mae": {
+            "higher_is_better": false,
+            "ranking": [
+              {
+                "method": "pca_ridge(n=16)",
+                "value": 0.158353
+              },
+              {
+                "method": "dummy_mean",
+                "value": 0.162071
+              },
+              {
+                "method": "knn(k=10)",
+                "value": 0.164473
+              },
+              {
+                "method": "mtnn",
+                "value": 0.164891
+              },
+              {
+                "method": "hist_gbm",
+                "value": 0.179019
+              },
+              {
+                "method": "ridge",
+                "value": 0.215655
+              },
+              {
+                "method": "persistence",
+                "value": 0.218804
+              },
+              {
+                "method": "mlp",
+                "value": 0.289513
+              }
+            ],
+            "best_method": "pca_ridge(n=16)",
+            "best_baseline": "pca_ridge(n=16)",
+            "best_baseline_value": 0.158353,
+            "mtnn_value": 0.164891,
+            "mtnn_delta": -0.006538,
+            "mtnn_beats_best_baseline": false
+          },
+          "rmse": {
+            "higher_is_better": false,
+            "ranking": [
+              {
+                "method": "pca_ridge(n=16)",
+                "value": 0.277543
+              },
+              {
+                "method": "mtnn",
+                "value": 0.28107
+              },
+              {
+                "method": "dummy_mean",
+                "value": 0.28127
+              },
+              {
+                "method": "hist_gbm",
+                "value": 0.284974
+              },
+              {
+                "method": "knn(k=10)",
+                "value": 0.285041
+              },
+              {
+                "method": "ridge",
+                "value": 0.313553
+              },
+              {
+                "method": "persistence",
+                "value": 0.361544
+              },
+              {
+                "method": "mlp",
+                "value": 0.406131
+              }
+            ],
+            "best_method": "pca_ridge(n=16)",
+            "best_baseline": "pca_ridge(n=16)",
+            "best_baseline_value": 0.277543,
+            "mtnn_value": 0.28107,
+            "mtnn_delta": -0.003526,
+            "mtnn_beats_best_baseline": false
+          },
+          "r2": {
+            "higher_is_better": true,
+            "ranking": [
+              {
+                "method": "pca_ridge(n=16)",
+                "value": 0.026321
+              },
+              {
+                "method": "mtnn",
+                "value": 0.001421
+              },
+              {
+                "method": "dummy_mean",
+                "value": -1e-06
+              },
+              {
+                "method": "hist_gbm",
+                "value": -0.026516
+              },
+              {
+                "method": "knn(k=10)",
+                "value": -0.026998
+              },
+              {
+                "method": "ridge",
+                "value": -0.242725
+              },
+              {
+                "method": "persistence",
+                "value": -0.65225
+              },
+              {
+                "method": "mlp",
+                "value": -1.084903
+              }
+            ],
+            "best_method": "pca_ridge(n=16)",
+            "best_baseline": "pca_ridge(n=16)",
+            "best_baseline_value": 0.026321,
+            "mtnn_value": 0.001421,
+            "mtnn_delta": -0.0249,
+            "mtnn_beats_best_baseline": false
+          }
+        },
+        "notes": {
+          "target": "forward_return",
+          "kind": "regression",
+          "horizon": "1m",
+          "primary_metric": "spearman_ic",
+          "construction": "y = return over (t, t+H]; features use only information available at t. Temporal split at a date cut: train dates <= cut, test after. spearman_ic is the headline (rank-IC of the signal).",
+          "dataset": "equities_bench_v1.npz",
+          "n_rows": "4788",
+          "horizon_actual": "126 trading days (~6 months) from the July-1 fy+1 anchor — the repo's fwd6 convention; the registry's '1m' horizon label is prose, the split enforces leakage safety",
+          "dd_threshold": "",
+          "training": "MTNN = pipeline/model.py EquitiesMTNN (family towers d_tower=24, gated fusion, d_emb=48, n_seasons=1) + 3 linear forward heads, trained jointly (ret_weight*mse + mse + bce) on fy2015-2020; model selection (early stop, patience 30, + grid [{'lr': 0.0015, 'ret_weight': 1.0}, {'lr': 0.0015, 'ret_weight': 2.0}, {'lr': 0.0005, 'ret_weight': 1.0}, {'lr': 0.0005, 'ret_weight': 2.0}]) on the fy2021 validation score (mean of val spearman_ic/spearman_ic/roc_auc); selected {'lr': 0.0015, 'ret_weight': 1.0} at epoch 15 (val score 0.5577); AdamW wd=0.0001 batch=512 seed=42. Test rows (fy>=2022) never seen in training or model selection."
+        }
+      }
+    },
+    {
+      "target": {
+        "name": "forward_realized_vol",
+        "kind": "regression",
+        "horizon": "1m",
+        "split": "temporal",
+        "primary_metric": "spearman_ic",
+        "status": "scored"
+      },
+      "note": "",
+      "scorecard": {
+        "schema_version": "1.0",
+        "domain": "equities",
+        "task": "equities::forward_realized_vol",
+        "task_type": "prediction",
+        "split": "temporal",
+        "seed": 42,
+        "k_values": [
+          1,
+          5,
+          10
+        ],
+        "summary": {
+          "metrics_judged": 4,
+          "mtnn_wins": 0,
+          "baseline_wins": 4,
+          "headline": "baseline wins all 4 judged metric(s) — this domain is simple",
+          "built": "2026-08-10T00:18:58",
+          "n_train": 3297,
+          "n_test": 1491
+        },
+        "methods": [
+          {
+            "name": "dummy_mean",
+            "kind": "prediction",
+            "is_mtnn": false,
+            "status": "ok",
+            "metrics": {
+              "spearman_ic": 0.0,
+              "mae": 0.080649,
+              "rmse": 0.117516,
+              "r2": -0.004345
+            },
+            "note": ""
+          },
+          {
+            "name": "persistence",
+            "kind": "prediction",
+            "is_mtnn": false,
+            "status": "ok",
+            "metrics": {
+              "spearman_ic": 0.657841,
+              "mae": 0.09323,
+              "rmse": 0.126323,
+              "r2": -0.160527
+            },
+            "note": ""
+          },
+          {
+            "name": "ridge",
+            "kind": "prediction",
+            "is_mtnn": false,
+            "status": "ok",
+            "metrics": {
+              "spearman_ic": 0.619298,
+              "mae": 0.114428,
+              "rmse": 0.143505,
+              "r2": -0.497691
+            },
+            "note": ""
+          },
+          {
+            "name": "pca_ridge(n=16)",
+            "kind": "prediction",
+            "is_mtnn": false,
+            "status": "ok",
+            "metrics": {
+              "spearman_ic": 0.673143,
+              "mae": 0.058618,
+              "rmse": 0.085684,
+              "r2": 0.466064
+            },
+            "note": ""
+          },
+          {
+            "name": "knn(k=10)",
+            "kind": "prediction",
+            "is_mtnn": false,
+            "status": "ok",
+            "metrics": {
+              "spearman_ic": 0.580021,
+              "mae": 0.064779,
+              "rmse": 0.098447,
+              "r2": 0.295161
+            },
+            "note": ""
+          },
+          {
+            "name": "hist_gbm",
+            "kind": "prediction",
+            "is_mtnn": false,
+            "status": "ok",
+            "metrics": {
+              "spearman_ic": 0.717767,
+              "mae": 0.055203,
+              "rmse": 0.083862,
+              "r2": 0.488537
+            },
+            "note": ""
+          },
+          {
+            "name": "mlp",
+            "kind": "prediction",
+            "is_mtnn": false,
+            "status": "ok",
+            "metrics": {
+              "spearman_ic": 0.37053,
+              "mae": 0.107971,
+              "rmse": 0.146516,
+              "r2": -0.561205
+            },
+            "note": ""
+          },
+          {
+            "name": "mtnn",
+            "kind": "prediction",
+            "is_mtnn": true,
+            "status": "ok",
+            "metrics": {
+              "spearman_ic": 0.696474,
+              "mae": 0.062136,
+              "rmse": 0.099829,
+              "r2": 0.275233
+            },
+            "note": ""
+          }
+        ],
+        "metrics": {
+          "spearman_ic": {
+            "higher_is_better": true,
+            "ranking": [
+              {
+                "method": "hist_gbm",
+                "value": 0.717767
+              },
+              {
+                "method": "mtnn",
+                "value": 0.696474
+              },
+              {
+                "method": "pca_ridge(n=16)",
+                "value": 0.673143
+              },
+              {
+                "method": "persistence",
+                "value": 0.657841
+              },
+              {
+                "method": "ridge",
+                "value": 0.619298
+              },
+              {
+                "method": "knn(k=10)",
+                "value": 0.580021
+              },
+              {
+                "method": "mlp",
+                "value": 0.37053
+              },
+              {
+                "method": "dummy_mean",
+                "value": 0.0
+              }
+            ],
+            "best_method": "hist_gbm",
+            "best_baseline": "hist_gbm",
+            "best_baseline_value": 0.717767,
+            "mtnn_value": 0.696474,
+            "mtnn_delta": -0.021293,
+            "mtnn_beats_best_baseline": false
+          },
+          "mae": {
+            "higher_is_better": false,
+            "ranking": [
+              {
+                "method": "hist_gbm",
+                "value": 0.055203
+              },
+              {
+                "method": "pca_ridge(n=16)",
+                "value": 0.058618
+              },
+              {
+                "method": "mtnn",
+                "value": 0.062136
+              },
+              {
+                "method": "knn(k=10)",
+                "value": 0.064779
+              },
+              {
+                "method": "dummy_mean",
+                "value": 0.080649
+              },
+              {
+                "method": "persistence",
+                "value": 0.09323
+              },
+              {
+                "method": "mlp",
+                "value": 0.107971
+              },
+              {
+                "method": "ridge",
+                "value": 0.114428
+              }
+            ],
+            "best_method": "hist_gbm",
+            "best_baseline": "hist_gbm",
+            "best_baseline_value": 0.055203,
+            "mtnn_value": 0.062136,
+            "mtnn_delta": -0.006933,
+            "mtnn_beats_best_baseline": false
+          },
+          "rmse": {
+            "higher_is_better": false,
+            "ranking": [
+              {
+                "method": "hist_gbm",
+                "value": 0.083862
+              },
+              {
+                "method": "pca_ridge(n=16)",
+                "value": 0.085684
+              },
+              {
+                "method": "knn(k=10)",
+                "value": 0.098447
+              },
+              {
+                "method": "mtnn",
+                "value": 0.099829
+              },
+              {
+                "method": "dummy_mean",
+                "value": 0.117516
+              },
+              {
+                "method": "persistence",
+                "value": 0.126323
+              },
+              {
+                "method": "ridge",
+                "value": 0.143505
+              },
+              {
+                "method": "mlp",
+                "value": 0.146516
+              }
+            ],
+            "best_method": "hist_gbm",
+            "best_baseline": "hist_gbm",
+            "best_baseline_value": 0.083862,
+            "mtnn_value": 0.099829,
+            "mtnn_delta": -0.015967,
+            "mtnn_beats_best_baseline": false
+          },
+          "r2": {
+            "higher_is_better": true,
+            "ranking": [
+              {
+                "method": "hist_gbm",
+                "value": 0.488537
+              },
+              {
+                "method": "pca_ridge(n=16)",
+                "value": 0.466064
+              },
+              {
+                "method": "knn(k=10)",
+                "value": 0.295161
+              },
+              {
+                "method": "mtnn",
+                "value": 0.275233
+              },
+              {
+                "method": "dummy_mean",
+                "value": -0.004345
+              },
+              {
+                "method": "persistence",
+                "value": -0.160527
+              },
+              {
+                "method": "ridge",
+                "value": -0.497691
+              },
+              {
+                "method": "mlp",
+                "value": -0.561205
+              }
+            ],
+            "best_method": "hist_gbm",
+            "best_baseline": "hist_gbm",
+            "best_baseline_value": 0.488537,
+            "mtnn_value": 0.275233,
+            "mtnn_delta": -0.213304,
+            "mtnn_beats_best_baseline": false
+          }
+        },
+        "notes": {
+          "target": "forward_realized_vol",
+          "kind": "regression",
+          "horizon": "1m",
+          "primary_metric": "spearman_ic",
+          "construction": "y = realized vol of returns over (t, t+H]; features known at t. Temporal split at a date cut.",
+          "dataset": "equities_bench_v1.npz",
+          "n_rows": "4788",
+          "horizon_actual": "126 trading days (~6 months) from the July-1 fy+1 anchor — the repo's fwd6 convention; the registry's '1m' horizon label is prose, the split enforces leakage safety",
+          "dd_threshold": "",
+          "training": "MTNN = pipeline/model.py EquitiesMTNN (family towers d_tower=24, gated fusion, d_emb=48, n_seasons=1) + 3 linear forward heads, trained jointly (ret_weight*mse + mse + bce) on fy2015-2020; model selection (early stop, patience 30, + grid [{'lr': 0.0015, 'ret_weight': 1.0}, {'lr': 0.0015, 'ret_weight': 2.0}, {'lr': 0.0005, 'ret_weight': 1.0}, {'lr': 0.0005, 'ret_weight': 2.0}]) on the fy2021 validation score (mean of val spearman_ic/spearman_ic/roc_auc); selected {'lr': 0.0015, 'ret_weight': 1.0} at epoch 15 (val score 0.5577); AdamW wd=0.0001 batch=512 seed=42. Test rows (fy>=2022) never seen in training or model selection."
+        }
+      }
+    },
+    {
+      "target": {
+        "name": "drawdown_exceedance",
+        "kind": "binary_classification",
+        "horizon": "1m",
+        "split": "temporal",
+        "primary_metric": "roc_auc",
+        "status": "scored"
+      },
+      "note": "",
+      "scorecard": {
+        "schema_version": "1.0",
+        "domain": "equities",
+        "task": "equities::drawdown_exceedance",
+        "task_type": "prediction",
+        "split": "temporal",
+        "seed": 42,
+        "k_values": [
+          1,
+          5,
+          10
+        ],
+        "summary": {
+          "metrics_judged": 2,
+          "mtnn_wins": 0,
+          "baseline_wins": 2,
+          "headline": "baseline wins all 2 judged metric(s) — this domain is simple",
+          "built": "2026-08-10T00:19:01",
+          "n_train": 3297,
+          "n_test": 1491
+        },
+        "methods": [
+          {
+            "name": "dummy_mean",
+            "kind": "prediction",
+            "is_mtnn": false,
+            "status": "ok",
+            "metrics": {
+              "roc_auc": 0.5,
+              "spearman_ic": 0.0
+            },
+            "note": ""
+          },
+          {
+            "name": "persistence",
+            "kind": "prediction",
+            "is_mtnn": false,
+            "status": "ok",
+            "metrics": {
+              "roc_auc": 0.549357,
+              "spearman_ic": 0.117498
+            },
+            "note": ""
+          },
+          {
+            "name": "ridge",
+            "kind": "prediction",
+            "is_mtnn": false,
+            "status": "ok",
+            "metrics": {
+              "roc_auc": 0.686415,
+              "spearman_ic": 0.319692
+            },
+            "note": ""
+          },
+          {
+            "name": "pca_ridge(n=16)",
+            "kind": "prediction",
+            "is_mtnn": false,
+            "status": "ok",
+            "metrics": {
+              "roc_auc": 0.628648,
+              "spearman_ic": 0.220625
+            },
+            "note": ""
+          },
+          {
+            "name": "knn(k=10)",
+            "kind": "prediction",
+            "is_mtnn": false,
+            "status": "ok",
+            "metrics": {
+              "roc_auc": 0.590329,
+              "spearman_ic": 0.156406
+            },
+            "note": ""
+          },
+          {
+            "name": "hist_gbm",
+            "kind": "prediction",
+            "is_mtnn": false,
+            "status": "ok",
+            "metrics": {
+              "roc_auc": 0.656537,
+              "spearman_ic": 0.268453
+            },
+            "note": ""
+          },
+          {
+            "name": "mlp",
+            "kind": "prediction",
+            "is_mtnn": false,
+            "status": "ok",
+            "metrics": {
+              "roc_auc": 0.563862,
+              "spearman_ic": 0.109519
+            },
+            "note": ""
+          },
+          {
+            "name": "mtnn",
+            "kind": "prediction",
+            "is_mtnn": true,
+            "status": "ok",
+            "metrics": {
+              "roc_auc": 0.67238,
+              "spearman_ic": 0.295622
+            },
+            "note": ""
+          }
+        ],
+        "metrics": {
+          "roc_auc": {
+            "higher_is_better": true,
+            "ranking": [
+              {
+                "method": "ridge",
+                "value": 0.686415
+              },
+              {
+                "method": "mtnn",
+                "value": 0.67238
+              },
+              {
+                "method": "hist_gbm",
+                "value": 0.656537
+              },
+              {
+                "method": "pca_ridge(n=16)",
+                "value": 0.628648
+              },
+              {
+                "method": "knn(k=10)",
+                "value": 0.590329
+              },
+              {
+                "method": "mlp",
+                "value": 0.563862
+              },
+              {
+                "method": "persistence",
+                "value": 0.549357
+              },
+              {
+                "method": "dummy_mean",
+                "value": 0.5
+              }
+            ],
+            "best_method": "ridge",
+            "best_baseline": "ridge",
+            "best_baseline_value": 0.686415,
+            "mtnn_value": 0.67238,
+            "mtnn_delta": -0.014035,
+            "mtnn_beats_best_baseline": false
+          },
+          "spearman_ic": {
+            "higher_is_better": true,
+            "ranking": [
+              {
+                "method": "ridge",
+                "value": 0.319692
+              },
+              {
+                "method": "mtnn",
+                "value": 0.295622
+              },
+              {
+                "method": "hist_gbm",
+                "value": 0.268453
+              },
+              {
+                "method": "pca_ridge(n=16)",
+                "value": 0.220625
+              },
+              {
+                "method": "knn(k=10)",
+                "value": 0.156406
+              },
+              {
+                "method": "persistence",
+                "value": 0.117498
+              },
+              {
+                "method": "mlp",
+                "value": 0.109519
+              },
+              {
+                "method": "dummy_mean",
+                "value": 0.0
+              }
+            ],
+            "best_method": "ridge",
+            "best_baseline": "ridge",
+            "best_baseline_value": 0.319692,
+            "mtnn_value": 0.295622,
+            "mtnn_delta": -0.024069,
+            "mtnn_beats_best_baseline": false
+          }
+        },
+        "notes": {
+          "target": "drawdown_exceedance",
+          "kind": "binary_classification",
+          "horizon": "1m",
+          "primary_metric": "roc_auc",
+          "construction": "y = 1 if the max peak-to-trough drawdown over (t, t+H] exceeds a fixed threshold else 0; features known at t. Temporal split at a date cut. Scored by roc_auc over the regressor's score output.",
+          "dataset": "equities_bench_v1.npz",
+          "n_rows": "4788",
+          "horizon_actual": "126 trading days (~6 months) from the July-1 fy+1 anchor — the repo's fwd6 convention; the registry's '1m' horizon label is prose, the split enforces leakage safety",
+          "dd_threshold": "-0.1470",
+          "training": "MTNN = pipeline/model.py EquitiesMTNN (family towers d_tower=24, gated fusion, d_emb=48, n_seasons=1) + 3 linear forward heads, trained jointly (ret_weight*mse + mse + bce) on fy2015-2020; model selection (early stop, patience 30, + grid [{'lr': 0.0015, 'ret_weight': 1.0}, {'lr': 0.0015, 'ret_weight': 2.0}, {'lr': 0.0005, 'ret_weight': 1.0}, {'lr': 0.0005, 'ret_weight': 2.0}]) on the fy2021 validation score (mean of val spearman_ic/spearman_ic/roc_auc); selected {'lr': 0.0015, 'ret_weight': 1.0} at epoch 15 (val score 0.5577); AdamW wd=0.0001 batch=512 seed=42. Test rows (fy>=2022) never seen in training or model selection."
+        }
+      }
+    }
+  ],
+  "notes": {}
+}
