@@ -45,7 +45,7 @@ def composite_quality(report: dict) -> dict:
     # normalize - clip
     r2_clip = float(np.clip(r2, -0.5, 0.9)) if r2 is not None else 0.0
     # market bonus = acc - 0.5 scaled
-    market_bonus = float(np.clip((market_acc - 0.5) * 2, -0.5, 0.5)) if market_acc else 0.0
+    market_bonus = float(np.clip((market_acc - 0.5) * 2, -0.5, 0.5)) if market_acc is not None else 0.0
 
     parts = []
     if recall is not None:
