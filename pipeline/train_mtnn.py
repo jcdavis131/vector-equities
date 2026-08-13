@@ -245,11 +245,34 @@ def main():
     ap.add_argument("--weight-decay", type=float, default=1e-4)
     ap.add_argument("--grad-accum", type=int, default=1)
     ap.add_argument("--val-every", type=int, default=5)
+    ap.add_argument("--device", type=str, default=None)
+    # hill133 aliases — zero-deps config mapping
+    ap.add_argument("--dropout", type=float, default=None, help="alias for --drop-p 0.12")
+    ap.add_argument("--temp", type=float, default=None, help="alias for --nce-temp 0.08")
+    ap.add_argument("--hard-neg", type=float, default=None, help="alias for --hard-neg-boost 0.2")
+    ap.add_argument("--clip", type=float, default=1.0, help="grad clip 1.0")
+    ap.add_argument("--one-cycle", action="store_true", help="enable OneCycle 10% warmup")
+    ap.add_argument("--one_cycle", action="store_true", help="alias snake")
+    ap.add_argument("--pct-start", type=float, default=0.1, dest="pct_start", help="OneCycle pct_start 0.1")
+    ap.add_argument("--pct_start", type=float, default=0.1, help="alias")
     args = ap.parse_args()
+    # alias resolution
+    if args.dropout is not None:
+        args.drop_p = args.dropout
+    if args.temp is not None:
+        args.nce_temp = args.temp
+    if args.hard_neg is not None:
+        args.hard_neg_boost = args.hard_neg
+    # pct_start dual
+    pct_start = getattr(args, "pct_start", 0.1)
+    # OneCycle flag — train_mtnn already uses OneCycle; keep flag for compat
+    use_onecycle = bool(getattr(args, "one_cycle", False) or getattr(args, "one_cycle", False) or True)  # always true for hill133 config
+    # clip alias
+    args.clip = getattr(args, "clip", 1.0)
 
     torch.manual_seed(args.seed)
     np.random.seed(args.seed)
-    device = "cuda" if torch.cuda.is_available() else "cpu"
+    device = args.device or ("cuda" if torch.cuda.is_available() else "cpu")  # auto: GPU on personal local (CUDA avail), CPU in Hatch VM
 
     Z, mask, tickers, names, fiscal_years, sectors, clusters, manifest = load_bundle()
     fams = family_slices(manifest)
@@ -356,6 +379,8 @@ def main():
         n_fusion_layers=args.n_fusion_layers,
         n_attn_heads=args.n_attn_heads,
         d_fusion_hidden=(args.fusion_hidden or None),
+        dropout=float(args.drop_p),
+        drop_p=float(args.drop_p),
     ).to(device)
 
     # adamw no-decay on biases + LN
@@ -378,7 +403,7 @@ def main():
         opt,
         max_lr=args.lr,
         total_steps=max(1, (len(fit_idx) // args.batch + 1) * args.epochs),
-        pct_start=0.1,
+        pct_start=float(pct_start),
         anneal_strategy="linear",
     )
 
@@ -465,14 +490,14 @@ def main():
             total += float(loss)
             if accum < args.grad_accum:
                 continue
-            nn.utils.clip_grad_norm_(model.parameters(), 1.0)
+            nn.utils.clip_grad_norm_(model.parameters(), float(getattr(args, "clip", 1.0)))
             opt.step()
             sched.step()
             opt.zero_grad(set_to_none=True)
             accum = 0
             steps += 1
         if accum > 0:
-            nn.utils.clip_grad_norm_(model.parameters(), 1.0)
+            nn.utils.clip_grad_norm_(model.parameters(), float(getattr(args, "clip", 1.0)))
             opt.step()
             sched.step()
             opt.zero_grad(set_to_none=True)

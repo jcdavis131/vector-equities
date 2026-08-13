@@ -75,7 +75,7 @@ def score_trades(entry_threshold=0.7, fwd_ret_threshold=0.05, dd_threshold=-0.10
             feat_to_idx = {f: i for i, f in enumerate(feat_list)}
             fam_dims = {fam: len(cols) for fam, cols in fams.items()}
             seqs, _, _ = build_sequences(Z, mask, Z_raw, tickers_b, fy_arr, sectors_arr, manifest, fwd)
-            device = "cuda" if torch.cuda.is_available() else "cpu"
+            device = "cuda" if torch.cuda.is_available() else "cpu"  # auto: GPU on personal local (CUDA avail), CPU in Hatch VM
             ckpt = safe_torch_load(model_path, map_location=device)
             args = ckpt.get("args", {})
             model = EquitiesCareerMTNN(

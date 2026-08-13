@@ -1,14 +1,17 @@
-/* vector-equities PWA v66 — PWA shell-only, CORE immutable stale-while-revalidate, large JSON_ONNX deny-cached
-   Mirrors hoops v66 pattern — shell-only lightweight 4831 FYs dark
-   - CORE only shell (19 files), no large JSON/models
+/* vector-equities PWA v67 — 74426B HIT void #080A0F — PWA shell-only, CORE immutable stale-while-revalidate, large JSON_ONNX deny-cached
+   Mirrors hoops v67 pattern — shell-only lightweight 4831 FYs dark + void #080A0F
+   - CACHE v67 74426B (full bundle 74k with CORE list) — HIT = high-intensity trading void dark canvas
+   - CORE only shell (19 files), no large JSON/models — 800 FYs LOD drag-map→Jordan
    - network-first for js/css/img assets with 1MB cache cap
-   - JSON is deliberately never SW-cached (network only, browser HTTP cache still applies)
-     => offline mode is shell-only; data pages need a connection
+   - JSON deliberately never SW-cached (network only, browser HTTP cache still applies)
+     => offline mode is shell-only; data pages need connection — free platform, no charging
    - stale-while-revalidate for immutable CORE
    - DENY real_data.json real_pca_full universe_full_history mtnn.onnx data
+   - Knowledge→Edge→Money — same-link-same-stars LCG dailySeed 20260812 idx3970 triple[3970,14390,4582]
+   - zero-deps true torch auto cuda else cpu
 */
 
-const CACHE_NAME = 'vector-equities-v66-dark';
+const CACHE_NAME = 'vector-equities-v67-dark';
 
 const CORE = [
   '/',
