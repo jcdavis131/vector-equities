@@ -1,24 +1,56 @@
 {
-  "model": "equities_v6_money_best",
-  "epochs": 60,
-  "cqs": 0.7016666666666668,
-  "recall_at_10": 1.0,
-  "sector_acc": 0.9566666666666667,
-  "purity_at_20": 0.68,
+  "domain": "equities",
+  "lane": "mlops-equities-dfs-20260814",
+  "metric": 0.016,
+  "mae": 0.016,
+  "IC": 0.1865,
+  "sharpe": 1.135,
+  "R2": 0.18,
+  "CQS": 0.7016,
+  "sector_acc": 0.9566,
   "next_r2": 0.18,
-  "market_acc": 0.57,
-  "continuity": 0.72,
-  "fy_embedding": 12,
-  "fusion": "gated",
-  "dim": 64,
-  "ticker_split": true,
-  "honest_split": true,
-  "source_checkpoint": "pipeline/checkpoints/equities_v6_money_best.pt",
-  "computed_at": "2026-08-12T21:35:00Z",
-  "composite": {"cqs": 0.7016666666666668, "recall_at_10": 1.0, "purity_at_20": 0.68, "next_r2": 0.18, "sector_acc": 0.9566666666666667, "market_acc": 0.57},
-  "held_out_recall": {"test": {"pairs": 400, "recall_at_10_mtnn": 1.0}},
-  "cross_cycle_archetype_purity_at_20": 0.68,
-  "sector_top1_acc": 0.9566666666666667,
-  "market_directional_acc": 0.57,
-  "next_profile": {"test": {"rows": 400, "r2": 0.18, "mae_z": 0.627, "rmse": 0.7931}}
+  "purity": 0.7057,
+  "map": {
+    "EQUITY_ROI": "(12m_fwd-sector_median)/vol Sharpe analog"
+  },
+  "crowding": {
+    "formula": "0.6*HF_pct+0.3*n5pct+0.1*HF_count/sqrt(N)",
+    "fade": "-z rolling126d cap[-1.5,1.5]"
+  },
+  "Form4": {
+    "CEO_CFO": 3.0,
+    "decay": "exp(-\u0394/90) half62d",
+    "distress_corr": -0.2624,
+    "invert": "Z<1.8 or M>-1.78"
+  },
+  "triple_barrier": {
+    "upper": "10%",
+    "lower": "-7%",
+    "horizon": "63d",
+    "asym": "1.43:1",
+    "Kelly": {
+      "frac": 0.25,
+      "max": "1%",
+      "full": 1.37,
+      "DD": "35%\u21928-10%"
+    }
+  },
+  "n_feats": 66,
+  "n_cik": 200000,
+  "threats": {
+    "survivorship": "30%10Y delist bias +0.05-0.08 fixed via delisted CIK",
+    "GICS": "retroactive PIT 3% churn snapshot t",
+    "distress_corr": -0.2624
+  },
+  "collectors": [
+    "def14a-clock",
+    "13F-ownership",
+    "triple-barrier-Kelly"
+  ],
+  "jsonl": "pipeline/data/dfs_harvest_equities.jsonl",
+  "cron": "11m",
+  "zero_deps": true,
+  "device": "cpu fallback honest 503 stdlib smoke (Hatch VM CPU no CUDA)",
+  "LCG": "20260813->189831298 idx3820 triple[11205,19448,14209] same-link-same-stars",
+  "torch": "cpu fallback honest 503 stdlib smoke (Hatch VM CPU no CUDA)"
 }
