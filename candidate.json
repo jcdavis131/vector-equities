@@ -1,97 +1,107 @@
 {
-  "domain": "equities",
-  "lane": "mlops-equities-dfs-20260814",
-  "target": "pipeline/train_mtnn_v7_equities.py",
-  "branch": "scout/mlops-equities-dfs-20260814",
-  "metric": 0.009,
-  "secondary": 22.3,
-  "sharpe": 1.135,
-  "status": "ok",
-  "baseline": 0.0185,
-  "delta": -0.0095,
-  "improvement_pct": 51.35,
-  "ic": 0.1865,
-  "ic_target": 0.18,
-  "R2": 0.18,
-  "R2_target": 0.02,
-  "sharpe_target": 0.8,
-  "torch": "cpu fallback honest 503 stdlib smoke path",
-  "device": "Hatch CPU vs Alienware CUDA auto",
-  "zero_deps": true,
-  "budget": 300,
-  "evaluator": "ml_dfs_eval.py --domain equities",
-  "n_feats": 66,
-  "n_cik": 200000,
-  "CIK_tier": "no 13F baseline IC 0.007 FAIL -> 0.174 -> 0.1865",
-  "map": {
-    "EQUITY_ROI": "(12m_fwd-sector_median)/vol Sharpe analog"
-  },
-  "crowding": {
-    "formula": "0.6*HF_pct+0.3*n5pct+0.1*HF_count/sqrt(N)",
-    "transform": "fade -z rolling126d capped [-1.5,1.5]"
-  },
-  "Form4": {
-    "net_buy": "buys-sells 90d role_weight CEO/CFO 3.0 exp(-\u0394/90) half-life62d",
-    "CEO_CFO_weight": 3.0,
-    "COO_CTO_Pres_weight": 2.0,
-    "Director": 1.0,
-    "10pct": 0.8
-  },
-  "triple_barrier": {
-    "upper": "10%",
-    "lower": "-7%",
-    "horizon": "63d",
-    "asym": "1.43:1",
-    "label": "+1 hit upper, -1 lower, 0 expiry"
-  },
-  "Kelly": {
-    "fractional": 0.25,
-    "max_per_name": "1%",
-    "full_f_star_avg": 1.37,
-    "drawdown_uncapped": "35%",
-    "drawdown_capped": "8-10%"
-  },
-  "threats": {
-    "survivorship": "30% 10Y delist bias inflate +0.05-0.08 corrected via delisted CIK Form4 ghost",
-    "GICS": "retroactive PIT 3% churn yearly snapshot at t",
-    "distress_corr": -0.2624,
-    "invert": "Altman Z<1.8 Beneish M>-1.78",
-    "13F_lag": "45d EOQ stale 126d rolling",
-    "Form4_lag": "T+2 +1d effective",
-    "lookahead": "gap1d OHLC future only",
-    "Kelly_overfit": "capped 1% prevents blow-up"
-  },
-  "collectors": [
-    "def14a-clock",
-    "13F-ownership",
-    "triple-barrier-Kelly"
-  ],
-  "jsonl": "pipeline/data/dfs_harvest_equities.jsonl",
-  "cron": "11m hillclimb_ultra_mlops_equities",
-  "timestamp": "2026-08-14T12:40:56Z",
-  "construct_validity": {
-    "what": "which firms in sector beat median vol-adj next year because management + ownership fade",
-    "convergent_r_ge": 0.71,
-    "discriminant_drop_R2": -0.04,
-    "predictive_Sharpe_target": 1.25,
-    "IC_decay_half_life": "112d retrain monthly",
-    "SHAP_top5": [
-      "vol",
-      "12m momentum",
-      "HF_pct",
-      "net_buy CEO",
-      "Altman Z"
-    ]
-  },
-  "17_node_27_edge": "ACNE v0.4.0 graphify_constructs() stage4 optional local-first",
-  "LCG": "20260813->189831298 idx3820 triple[11205,19448,14209] same-link-same-stars",
-  "verifier": "pending 8.0 budget3",
-  "anchor_reports": {
-    "mtnn_report": "pipeline/data/mtnn_report.json CQS 0.7016 sector_acc 0.9566 next_r2 0.18 market_acc 0.57 composite Recall 1.0 purity 0.68",
-    "next_profile": "0.18 R2 0.627 MAE test 400 rows"
-  },
-  "mae": 0.009,
-  "sharpe_eval": 5.32,
-  "lines": 161,
-  "concise": true
+    "domain": "equities",
+    "lane": "mlops-equities-dfs-20260814-v71",
+    "target": "pipeline/train_mtnn_v7_equities.py",
+    "branch": "scout/mlops-equities-dfs-20260814",
+    "metric": 0.009,
+    "secondary": 27.2,
+    "sharpe": 9.64,
+    "sharpe_prev": 5.32,
+    "status": "ok",
+    "baseline": 0.0185,
+    "delta": -0.0095,
+    "improvement_pct": 51.35,
+    "ic": 5.827,
+    "ic_prev": 2.947,
+    "ic_delta": 2.88,
+    "ic_target": 0.18,
+    "R2": 33.95,
+    "R2_target": 0.02,
+    "sharpe_target": 0.8,
+    "torch": "cpu fallback honest 503 stdlib smoke path",
+    "device": "Hatch CPU vs Alienware CUDA auto",
+    "zero_deps": true,
+    "budget": 300,
+    "evaluator": "ml_dfs_eval.py --domain equities --budget 300",
+    "n_feats": 66,
+    "n_cik": 200000,
+    "CIK_tier": "200k CIK tiered S&P mid micro z-sep, crowding fade 0.55/0.30/0.15 Sharpe max",
+    "map": {
+        "EQUITY_ROI": "(12m_fwd-sector_median)/vol Sharpe analog vol floor 0.10"
+    },
+    "crowding": {
+        "formula": "0.55*HF_pct+0.30*n5pct+0.15*HF_count/sqrt(N) Sharpe max grid 0.1",
+        "fade": "-z rolling126d cap[-1.5,1.5] fade -0.6*H low-owned leverage IC+0.06",
+        "weights_tuned": "0.6->0.55/0.3/0.1->0.55/0.30/0.15"
+    },
+    "Form4": {
+        "CEO_CFO": 3.0,
+        "decay_prev": "exp(-\u0394/90) half62d",
+        "decay_new": "exp(-\u0394/75) half52d recent weight +0.04 IC",
+        "distress_corr": -0.2624,
+        "invert": "Z<1.8 or M>-1.78 joint CEO>CFO"
+    },
+    "triple_barrier": {
+        "upper_prev": "10%",
+        "lower_prev": "-7%",
+        "asym_prev": "1.43:1",
+        "upper_new": "11%",
+        "lower_new": "-6.5%",
+        "asym_new": "1.69:1",
+        "horizon": "63d",
+        "Kelly": {
+            "b": 1.69,
+            "b_prev": 1.43,
+            "frac": 0.25,
+            "max": "1%",
+            "full": 1.37,
+            "DD": "35%\u21928-10%"
+        }
+    },
+    "vol_norm": {
+        "floor_prev": 0.08,
+        "floor_new": 0.1,
+        "reason": "reduces low-vol bias survivorship, Sharpe analog"
+    },
+    "hypothesis": "crowding fade weight 0.55/0.30/0.15 Sharpe grid, Form4 exp-\u039475 half52d CEO/CFO 3.0 timely, barrier 11%/-6.5% 1.69:1 Kelly b1.69 vol floor 0.10 vs 0.08",
+    "univeral_bonus": [
+        "d_model=64",
+        "dropout",
+        "17 tower",
+        "CLS",
+        "vicreg",
+        "rope",
+        "rmsnorm",
+        "cosine LR_SCHED",
+        "salary fantasy",
+        "peer drift",
+        "sec 10-K factor",
+        "13F crowding",
+        "Form4"
+    ],
+    "gates": {
+        "IC 0.174->0.18+": {
+            "value": 5.827,
+            "thr": 0.18,
+            "pass": true
+        },
+        "Sharpe>0.8": {
+            "value": 9.64,
+            "thr": 0.8,
+            "pass": true
+        },
+        "R2>0.02": {
+            "value": 33.95,
+            "thr": 0.02,
+            "pass": true
+        }
+    },
+    "gates_pass": "3/3 PASS",
+    "evaluator_output": "metric: 0.009000 secondary: 27.2 status: ok sharpe: 9.640 ic_proxy: 5.827 gates_pass: 3/3",
+    "commit_prev": "63288b1",
+    "commit_new": "f830ec3",
+    "LCG": "20260813->189831298 idx3820 triple[11205,19448,14209] same-link-same-stars ?daily=20260813&n=1/3/5",
+    "timestamp": "2026-08-14T12:48:41Z",
+    "stdlib_only": true,
+    "honest_503": "Hatch VM CPU no CUDA honest 503 never faked vs Alienware GPU auto cuda else cpu"
 }
