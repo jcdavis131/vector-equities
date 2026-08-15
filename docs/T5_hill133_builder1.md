@@ -28,5 +28,5 @@ Loss hill133:
 ## Smoke triage
 Smoke 2ep transformer 4000 rows CPU CQS0.5908 recall0.9125 purity0.7589 sector0.13 FAIL starved CLS market0.593 PASS next_R2 -0.0031 FAIL proves recall super fast → full 60ep fixes sector attention 0.13→0.957 gated baseline sticky continuity 0.72 AR1.
 
-**Triple-write** even no-change nodeId `builder-towers-v6-20` latency 94ms tokens 380 ok none zero-deps true free platform free forever private edge gated.
+**Triple-write** even no-change nodeId `builder-towers-v6-20` latency 94ms tokens 380 ok none zero-deps true free platform free — open access private edge gated.
 

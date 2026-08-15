@@ -9,12 +9,12 @@
 
 ---
 
-## 0) Everyday Chain — Knowledge → Edge → Money (Free Platform Free Forever)
+## 0) Everyday Chain — Knowledge → Edge → Money (Free Platform free — open access)
 
-**Platform free forever:** Vector Equities 5th game free, no paywall, no $199, no API key, proof-of-work for you to learn. Knowledge proves edge, edge proves money-path is real, money kept private separate bankroll.
+**Platform free — open access:** Vector Equities 5th game free, no paywall, no $199, no API key, proof-of-work for you to learn. Knowledge proves edge, edge proves money-path is real, money kept private separate bankroll.
 
 ```
-Knowledge (free forever)
+Knowledge (free — open access)
   SEC 10-K XBRL CompanyFacts 14,400×118-154 Z · DEF14A NEO CEO age/tenure/founder pay-ratio board-indep · Form4 insider net 12M · GDELT industry_event 10f · GPR/EPU political_risk 10f · WTI/Brent/Copper/DXY/BDRY global_trade_commodity 12f · yfinance market_price 9f · own-6f text-6f macro-4f form-5f bbref-3f
     ↓ MTNN 64-d L2 norm FY-regime conditioned
 Edge (calibrated glass-box)
@@ -196,7 +196,7 @@ python3 -u pipeline/train_mtnn.py \
 
 **Everyday language log:** Rebuilt data to 14,400 companies sticky careers so same company next year feels like same company — AR1 0.72. Smoke showed transformer needs more than 2 epochs to learn sectors (0.13 sector_acc) but recall super fast 0.91→1.0 proves generalization better early. Gated remembers sectors (0.95) but needs ranking loss to push IC 0.007→0.011+. Var loss 0.2 pushes std 0.7%→4% optimal — IC needs spread to pay. Distress invert fixes negative correlation. Triple-barrier 63d→21d +7%/-5% win 22%→55% target for tiny spreads kill-switch DD<12%. Knowledge→Edge→Money holds — free platform proves edge you can drag-map void #080A0F find Jordan — LCG 20260812 idx3970 same-link-same-stars everyday same stars for everyone today.
 
-**No financial advice. Platform free forever free users forever. Profit via own calibrated edge private 0.25 Kelly 1% max 3 concurrent per-play separate bankroll kill-switch DD<12% — IC>0.03 gate before any tiny 0DTE spreads — currently IC 0.007 <0.03 no 0DTE live.**
+**No financial advice. Platform free — open access free users forever. Profit via own calibrated edge private 0.25 Kelly 1% max 3 concurrent per-play separate bankroll kill-switch DD<12% — IC>0.03 gate before any tiny 0DTE spreads — currently IC 0.007 <0.03 no 0DTE live.**
 
 Pacing :01 lite — resume LOCAL-GPU 60ep transformer via `COORDINATION_LOCAL_GPU.md` claim.
 

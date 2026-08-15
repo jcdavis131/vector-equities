@@ -89,7 +89,7 @@ Current honest: `assets/eval_forward.json` n=233 IC rank 1M 0.0051 3M0.0064 6M0.
 
 ---
 
-## 3) Everyday Chain — Drag-Map→Jordan 5 Games Free Forever Same-Link-Same-Stars LCG 1103515245 glibc
+## 3) Everyday Chain — Drag-Map→Jordan 5 Games free — open access Same-Link-Same-Stars LCG 1103515245 glibc
 
 Per `ALIGNMENT_SYNTHESIS.md` Knowledge→Edge→Money + `MEMORY.md` hoops.dumbmodel.com clean professional readable UI:
 
@@ -97,7 +97,7 @@ Per `ALIGNMENT_SYNTHESIS.md` Knowledge→Edge→Money + `MEMORY.md` hoops.dumbmo
 Free platform free users forever (hoops.dumbmodel.com model)
   drag-map 3D embedding map central shared-map.js LOD4000/8000 DPR1 fillRect vintage
   → Jordan entry shows position not auto-start game Popular tap-to-explore
-  → 5 games free forever: hoops + pitch + equities + gridiron + unified chimera (dumbmodel.com vector-hub 5th game unified chimera 20k+ cross-sport live 2026-08-05)
+  → 5 games free — open access: hoops + pitch + equities + gridiron + unified chimera (dumbmodel.com vector-hub 5th game unified chimera 20k+ cross-sport live 2026-08-05)
   → same-link-same-stars challenge-a-friend link one-tap share Play Today's type-or-tap guessing
   → profitability via own edge glass-box SHAP logged eval JSON + Lab page
   → Kalshi 0.25 Kelly 1% max per play 3 concurrent max → private paper trades
@@ -162,13 +162,13 @@ Triple-write simulated 7/7 VERIFIED per lane2 verification rule.
 - [x] 7 papers baseline table all ≥8.0 PASS avg 8.94 gate 8.93 PASS thr8.0 53.6/6=8.93
 - [x] Forms+Bloom m8192 TSBF90% ACNE17n27e token-cache80% TinyBloom Zep TLPG17n27e bi-temporal valid/tx monotonic people writeback CLS-RoPE19tok 192/6=32 RoFormer RMSNorm eps1e-6 rotate seats VICReg coeff25 stay spread3→59 hinge spread DeepCORAL GRL0.3→0.5 slide center Δ+0.0593→0.64 floor Fro||Cs-Ct||²/4d² SupCon τ0.07 strict grading sep0.867 hard-neg heap8-16 infoNCE0.65/0.35 KaLM MTEB72.32 3840-d Nomic BEIR0.5881 MoMA12 GARNet token-cache80% 12LLMs shim
 - [x] Forward IC uplift focus: ranking loss diff>5% margin0.02 distress invert loss EPU/GPR macro conditioning Top50 conviction small-n problem 233 min Kelly stability triple-barrier 21.89% FAIL calibrate 21d/ +7%-5%
-- [x] Everyday chain drag-map→Jordan 5 games free forever same-link-same-stars LCG1103515245 glibc state=(seed*1103515245+12345)&0x7fffffff idx=state%N 3970 triple
+- [x] Everyday chain drag-map→Jordan 5 games free — open access same-link-same-stars LCG1103515245 glibc state=(seed*1103515245+12345)&0x7fffffff idx=state%N 3970 triple
 - [x] Timeline triple-write 7-field nodeId agentId attempt latency tokens status errorClass ts runId ooda tempo :01 zero_deps true even no-change per checkpoint-manager bundles/ultra/runs + dottie/pipeline/runs + .scout/missions/_cron/timeline.jsonl 7/7 verified
 - [x] Pacing :01 lite MoMA-lite 5 tiers ultra v3.3 10 phases checkpoint-init + router0 MoMA + L1 3-strategists history-penalized + L2 DAG side-effect tagged + L3 pacing-filtered swarm + router2 bounded recovery + L4 verification econ + metrics-dance checkpoint
 - [x] This file `docs/T5_hill133_research.md` 7 papers PASS 8.93
 
 ---
 
-**No financial advice. Platform free forever. Profit via own calibrated edge private 0.25 Kelly 1% max 3 concurrent per-play separate bankroll kill-switch DD<12% — IC>0.03 gate. LCG 1103515245 glibc.**
+**No financial advice. Platform free — open access. Profit via own calibrated edge private 0.25 Kelly 1% max 3 concurrent per-play separate bankroll kill-switch DD<12% — IC>0.03 gate. LCG 1103515245 glibc.**
 
 Deep-researcher pause — builder picks up `pipeline/towers_v6/` 10+10+12=32 feats + transformer 60ep LOCAL-GPU resume via `COORDINATION_LOCAL_GPU.md` claim `python3 -u pipeline/train_mtnn.py --epochs 60 --fusion transformer --batch 512 --device cuda` promotion ONLY IF CQS>0.72 market>0.58 next_R2>0.20 IC>0.01 Sharpe>1.2.

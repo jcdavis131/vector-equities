@@ -182,12 +182,12 @@ Gate per HILLCLIMB_v6_to_v2_REPORT.md: v2 promotion requires IC>0.01 AND Sharpe>
 - [x] Forward IC 1M0.0051 3M0.0064 6M0.007/0.0097 spearman 12M0.0062 Top500.079 bias0.0 isotonic 162 thresholds triple0.2189 distress-0.2624 Sharpe sqrt2 0.57 FAIL sqrtN6.15 PASS → IC>0.01 FAIL gate no v2 honest
 - [x] Smoke 2ep transformer 4k CQS0.5908 recall0.9125 purity0.7589 sector0.13 market0.593 PASS >0.58 next_R2 -0.0031 FAIL vs full 14.4k 60ep epoch0 loss6.0163 val_recall0.9 test0.95 purity0.718 comp0.809 would beat 0.7017 SIGTERM 167s before epoch1
 - [x] Tower V6 17→20 10+10+12=32 feats industry_event/political_risk/global_trade_commodity pipeline towers_v6/ synthetic fallback offline auto-detect families model no code change ContinuousFusion gated learns VIX weighting
-- [x] Free platform free users no Stripe free forever Knowledge→Edge→Money 0.25 Kelly1% max3 concurrent Kalshi → equity paper → tiny 0DTE gated ONLY IC>0.03 Sharpe>1.2 win>55% DD<12% kill-switch separate bankroll NOT financial advice
+- [x] Free platform free users no Stripe free — open access Knowledge→Edge→Money 0.25 Kelly1% max3 concurrent Kalshi → equity paper → tiny 0DTE gated ONLY IC>0.03 Sharpe>1.2 win>55% DD<12% kill-switch separate bankroll NOT financial advice
 - [x] Zero-deps true torch auto cuda else cpu LOCAL-GPU resume batch nano OneCycle10% warmup clip1.0 LCG20260812 idx3970 PWA v67
 - [x] DAG7 JSON PAL usable from Claude Code agents tag/provenance rogue protection MoMA-lite 5 tiers GARNet OODA4/4 L0 pacing max3/4 :01 L1×3 9 lenses L2 side-effect READ/WRITE_IDEMPOTENT L3 swarm concurrency4 T1 lite T2 triage T3 deep-research T4 tool T5 epic lite L4 budget3 thr8.0 earlyExit0.3 fix-once SHAP construct validity palindrome
 - [x] This file docs/T5_hill133_planner.md
 
-**No financial advice. Platform free forever. Profit via own calibrated edge private 0.25 Kelly1% max3 concurrent per-play separate bankroll kill-switch DD<12% — IC>0.03 gate.**
+**No financial advice. Platform free — open access. Profit via own calibrated edge private 0.25 Kelly1% max3 concurrent per-play separate bankroll kill-switch DD<12% — IC>0.03 gate.**
 
 Lens pause — resume LOCAL-GPU 60ep transformer via COORDINATION_LOCAL_GPU.md claim python3 -u pipeline/train_mtnn.py --epochs60 --fusion transformer --batch512 --device cuda
 

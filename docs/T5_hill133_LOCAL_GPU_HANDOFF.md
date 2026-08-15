@@ -15,7 +15,7 @@ python3 -u pipeline/train_mtnn.py --epochs 60 --dim 64 --fusion transformer --ba
 - Timeout counts 30-60m LOCAL-GPU exempt <7 max, nano fallback batch256 accum2 --one-cycle --pct-start 0.1 --clip 1.0 device auto cuda else cpu
 
 **Locks:**
-- Zero-deps true torch auto cuda else cpu, free platform free forever Knowledge→Edge→Money no $199/$49 Knowledge 10-K XBRL DEF14A →Edge MTNN 64-d SupCon CORAL GRL transformer →Money private only
+- Zero-deps true torch auto cuda else cpu, free platform free — open access Knowledge→Edge→Money no $199/$49 Knowledge 10-K XBRL DEF14A →Edge MTNN 64-d SupCon CORAL GRL transformer →Money private only
 - 0DTE ONLY IF IC>0.03 Sharpe>1.2 win>55% DD<12% kill-switch separate bankroll NOT financial advice current IC0.007<0.03 paper only
 - Triple-write 7-field even no-change mandatory nodeId,agentId,attempt,latency_ms,tokens_est,status,errorClass ts runId ooda tempo :01 zero_deps true
 

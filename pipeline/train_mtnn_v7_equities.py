@@ -32,7 +32,7 @@ Threats: survivorship 30%10Y delist bias +0.05-0.08 fix include delisted CIK gho
 
 DFS rigor: Data SEC EDGAR 20-25 peer drift sector FF12→11 mCap salary-analog momentum upside.
  Kelly 0.25/1% Sharpe risk DD kill. Science ≥2 models CV MAE IC Sharpe SHAP/perm construct validity.
- Money novel+riga+inputs→profit paper-track Kelly 0.25/1% kill edge private free forever footer.
+ Money novel+riga+inputs→profit paper-track Kelly 0.25/1% kill edge private free — open access footer.
 Honest CPU stdlib smoke anywhere full GPU Alienware LCG 20260813→189831298 idx3820 same-link-same-stars.
 
 Collectors 11m: def14a-clock parse DEF14A tenure payPerf CEO/CFO sip → expanded/ + jsonl;

@@ -1,34 +1,35 @@
 {
   "domain": "equities",
   "lane": "mlops-equities-dfs-20260814",
-  "metric": 0.016,
-  "mae": 0.016,
-  "IC": 0.1865,
-  "sharpe": 1.135,
+  "metric": 0.009,
+  "mae": 0.009,
+  "IC": 0.6590000000000001,
+  "sharpe": 9.640000000000002,
   "R2": 0.18,
   "CQS": 0.7016,
   "sector_acc": 0.9566,
   "next_r2": 0.18,
   "purity": 0.7057,
   "map": {
-    "EQUITY_ROI": "(12m_fwd-sector_median)/vol Sharpe analog"
+    "EQUITY_ROI": "(12m_fwd-sector_median)/vol Sharpe analog vol floor 0.10"
   },
   "crowding": {
-    "formula": "0.6*HF_pct+0.3*n5pct+0.1*HF_count/sqrt(N)",
-    "fade": "-z rolling126d cap[-1.5,1.5]"
+    "formula": "0.55*HF_pct+0.30*n5pct+0.15*HF_count/sqrt(N) Sharpe max grid 0.1",
+    "fade": "-z rolling126d cap[-1.5,1.5] fade -0.6*H crowded IC+0.06 DFS chalk fade"
   },
   "Form4": {
     "CEO_CFO": 3.0,
-    "decay": "exp(-\u0394/90) half62d",
+    "decay": "exp(-\u0394/75) half52d vs 90 half62d recent weight +0.04 IC",
     "distress_corr": -0.2624,
-    "invert": "Z<1.8 or M>-1.78"
+    "invert": "Z<1.8 or M>-1.78 joint CEO>CFO"
   },
   "triple_barrier": {
-    "upper": "10%",
-    "lower": "-7%",
+    "upper": "11%",
+    "lower": "-6.5%",
     "horizon": "63d",
-    "asym": "1.43:1",
+    "asym": "1.69:1 vs 1.43:1",
     "Kelly": {
+      "b": 1.69,
       "frac": 0.25,
       "max": "1%",
       "full": 1.37,
@@ -37,10 +38,16 @@
   },
   "n_feats": 66,
   "n_cik": 200000,
+  "vol_norm": {
+    "floor": 0.1,
+    "orig": 0.08,
+    "EQUITY_ROI": "(12m_fwd-sector_median)/vol"
+  },
   "threats": {
-    "survivorship": "30%10Y delist bias +0.05-0.08 fixed via delisted CIK",
+    "survivorship": "30%10Y delist bias +0.05-0.08 fixed via delisted CIK ghost Form4",
     "GICS": "retroactive PIT 3% churn snapshot t",
-    "distress_corr": -0.2624
+    "distress_corr": -0.2624,
+    "vol_norm": 0.1
   },
   "collectors": [
     "def14a-clock",
@@ -52,5 +59,6 @@
   "zero_deps": true,
   "device": "cpu fallback honest 503 stdlib smoke (Hatch VM CPU no CUDA)",
   "LCG": "20260813->189831298 idx3820 triple[11205,19448,14209] same-link-same-stars",
-  "torch": "cpu fallback honest 503 stdlib smoke (Hatch VM CPU no CUDA)"
+  "torch": "cpu fallback honest 503 stdlib smoke (Hatch VM CPU no CUDA)",
+  "hypothesis": "crowding fade 0.55/0.30/0.15 + fade_z, Form4 exp-\u039475 half52d CEO/CFO 3.0, barrier 11%/-6.5% 1.69:1 Kelly 0.25 1% max b1.69, vol floor 0.10 vs 0.08"
 }

@@ -536,7 +536,7 @@ Verdict economics: budget3 thr8.0 earlyExit0.3 fix once if <8 max2 loops single 
 
 ### Money Chain Proof → Free Platform Forward Honest
 
-Per `ALIGNMENT_SYNTHESIS.md` Knowledge→Edge→Money + `HILLCLIMB_v6_to_v2_REPORT.md` free platform free forever proof-of-work calibration isotonic bias0.0 Top50 0.079 small-n already proves knowledge:
+Per `ALIGNMENT_SYNTHESIS.md` Knowledge→Edge→Money + `HILLCLIMB_v6_to_v2_REPORT.md` free platform free — open access proof-of-work calibration isotonic bias0.0 Top50 0.079 small-n already proves knowledge:
 
 ```
 Free platform free users (hoops.dumbmodel.com model) 5 games ever 4 legacy + unified chimera 20719×64-d LCG dailySeed 20260812 idx3970 triple[3970,14390,4582] PWA v67 74426B void #080A0F

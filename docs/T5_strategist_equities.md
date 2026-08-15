@@ -236,13 +236,13 @@ Free platform free users (hoops.dumbmodel.com model)
 - [x] Forward IC 1M 0.0051 3M 0.0064 6M 0.007/0.0097 spearman 12M 0.0062 Top50 0.079 bias0.0 isotonic 162 thresholds triple0.2189 distress-0.2624 Sharpe sqrt2 0.57 FAIL sqrtN 6.15 PASS → IC>0.01 FAIL gate no v2 honest
 - [x] Smoke 2ep transformer 4k CQS0.5908 recall0.9125 purity0.7589 sector0.13 market0.593 PASS >0.58 next_R2 -0.0031 FAIL vs full 14.4k 60ep epoch0 loss6.0163 val_recall0.9 test0.95 purity0.718 comp0.809 would beat 0.7017 SIGTERM 167s before epoch1
 - [x] Tower V6 17→20 10+10+12=32 feats industry_event/political_risk/global_trade_commodity pipeline `towers_v6/` synthetic fallback offline auto-detect families model no code change ContinuousFusion gated learns VIX weighting
-- [x] Free platform free users no Stripe free forever Knowledge→Edge→Money 0.25 Kelly 1% max3 concurrent Kalshi → equity paper → tiny 0DTE gated ONLY IC>0.03 Sharpe>1.2 win>55% DD<12% kill-switch separate bankroll NOT financial advice
+- [x] Free platform free users no Stripe free — open access Knowledge→Edge→Money 0.25 Kelly 1% max3 concurrent Kalshi → equity paper → tiny 0DTE gated ONLY IC>0.03 Sharpe>1.2 win>55% DD<12% kill-switch separate bankroll NOT financial advice
 - [x] Zero-deps true torch auto cuda else cpu LOCAL-GPU resume batch nano OneCycle 10% warmup clip1.0 LCG 20260812 idx3970 PWA v67
 - [x] This file `docs/T5_strategist_equities.md` lens T5 :01 lite
 
 ---
 
-**No financial advice. Platform free forever. Profit via own calibrated edge private 0.25 Kelly 1% max 3 concurrent per-play separate bankroll kill-switch DD<12% — IC>0.03 gate.**
+**No financial advice. Platform free — open access. Profit via own calibrated edge private 0.25 Kelly 1% max 3 concurrent per-play separate bankroll kill-switch DD<12% — IC>0.03 gate.**
 
 Lens pause — resume LOCAL-GPU 60ep transformer via `COORDINATION_LOCAL_GPU.md` claim `python3 -u pipeline/train_mtnn.py --epochs 60 --fusion transformer --batch 512 --device cuda`.
 
