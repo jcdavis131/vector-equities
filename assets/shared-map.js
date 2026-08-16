@@ -1,106 +1,24 @@
-// shared-map.js v4-filtered — adapted for equities from hoops v4-filtered
-// hoops pattern: LOD, fast lite 4322 first paint, full progressive filtered 3+ seasons OR rookie last 3,
-// maxRender 4000 mobile / 8000 desktop, frameBudget 42 mobile / 33 desktop,
-// pid-aware dedup fixing Gary Payton pid 56 (1996-07 11 seasons) vs Gary Payton II pid 1627780 (2017-26 7 seasons)
-// equities DOB analog = CIK+ticker disambiguation:
-//   GOOG ticker GOOG CIK 1652044 vs GOOGL 1652044 same company multiple share classes
-//   BRK.A vs BRK.B CIK 1067983
-// prevents collapsing 4831 FYs across distinct tickers that share CIK
-// zero-deps true, offline-first, no network fetch
-export function mountSharedMap(opts){
-  const {
-    canvasId='sky-canvas',
-    overlayId='map-overlay',
-    controlsId='map-controls',
-    legendId='map-legend',
-    cardId='trading-card-void',
-    dataUrl='assets/real_data.json',
-    maxRenderMobile=4000,
-    maxRenderDesktop=8000,
-    frameBudgetMobile=42,
-    frameBudgetDesktop=33
-  }=opts||{};
-  const canvas=document.getElementById(canvasId);
-  const overlay=document.getElementById(overlayId);
-  const controls=document.getElementById(controlsId);
-  const legend=document.getElementById(legendId);
-  const cardVoid=document.getElementById(cardId);
-  if(!canvas){ console.warn('shared-map no canvas',canvasId); return {destroy(){}}; }
-  const isMobile = matchMedia('(max-width: 768px)').matches || navigator.webdriver;
-  const maxRender = isMobile ? maxRenderMobile : maxRenderDesktop;
-  const frameBudget = isMobile ? frameBudgetMobile : frameBudgetDesktop;
-  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let raf=0, paused=false, points=[], filtered=[], hovered=null, selected=null;
-  let cikTickerSeen=new Map(); // cik:ticker -> point, ensures distinct tickers kept
-  const ctx=canvas.getContext('2d',{alpha:false, desynchronized:true});
-  function resize(){ const dpr=Math.min(devicePixelRatio||1,2); const r=canvas.getBoundingClientRect(); canvas.width=r.width*dpr; canvas.height=r.height*dpr; ctx.setTransform(dpr,0,0,dpr,0,0); }
-  window.addEventListener('resize',resize); resize();
-  function disambigKey(p){ return (p.cik||p.ticker)+':'+p.ticker; } // CIK+ticker like hoops pid
-  async function load(){
-    try{
-      const res=await fetch(dataUrl,{cache:'force-cache'}); const j=await res.json(); points=j.points||j||[];
-      // hoops LOD analog: filtering for equities = keep all 4831 FYs (500 tickers) since all >=3 seasons analog (public co 10y)
-      // but apply dedup by CIK+ticker to keep GOOG vs GOOGL distinct, BRK.A vs BRK.B distinct
-      cikTickerSeen.clear();
-      for(const p of points){
-        const k=disambigKey(p);
-        if(!cikTickerSeen.has(k)) cikTickerSeen.set(k,p);
-      }
-      filtered=Array.from(cikTickerSeen.values());
-      // first paint fast lite 4322 analog: equities first 4000 (mobile) else 4831 — progressive
-      const firstPaint = filtered.slice(0, Math.min(filtered.length, isMobile? Math.min(filtered.length,4000): filtered.length));
-      if(overlay){ overlay.innerHTML=`<span class="chip">4831 FYs</span><span class="chip">500 TICKERS</span><span class="chip">154 FEATS</span><span class="chip">20 towers 64-d L2</span><span class="chip">purity 0.7057 lift 6.32×</span><span class="chip">IC 6M 0.007</span><span class="chip">CIK+ticker</span>`; }
-      if(legend){ legend.innerHTML=`SHAPE=SECTOR COLOR=ARCHETYPE • 11 sectors • 8 archetypes • TRI=Tech CIRCLE=Comp ${filtered.length} points`;}
-      if(controls){ controls.innerHTML=`<button id="pause-btn">Pause</button><button id="reset-btn">Reset</button>`; 
-        const pb=document.getElementById('pause-btn'); const rb=document.getElementById('reset-btn');
-        if(pb) pb.onclick=()=>{ paused=!paused; pb.textContent=paused?'Play':'Pause'; if(!paused) loop(); };
-        if(rb) rb.onclick=()=>{ selected=null; hovered=null; if(cardVoid) cardVoid.innerHTML=''; };
-      }
-      // render loop
-      let idx=0;
-      function drawBatch(){
-        const t0=performance.now();
-        const batch=Math.min(maxRender, filtered.length-idx);
-        for(let i=0;i<batch;i++){
-          const p=filtered[idx+i];
-          // simple projection: x,y already PCA 64→2 in real_data.json; use p.x,p.y normalized -1..1
-          const x=(p.x*0.5+0.5)*canvas.clientWidth;
-          const y=(p.y*0.5+0.5)*canvas.clientHeight;
-          // color by archetype
-          const arch=(p.archetype||'').toLowerCase();
-          let fill='#6ad345';
-          if(arch.includes('grow')) fill='#6ad345';
-          else if(arch.includes('value')) fill='#5ac0ff';
-          else if(arch.includes('cyclical')) fill='#ffbf48';
-          else if(arch.includes('defens')) fill='#ff7ab2';
-          ctx.fillStyle=fill; ctx.globalAlpha=0.85;
-          const r=arch==='mega-cap'?3:2;
-          ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.fill();
-        }
-        idx+=batch;
-        if(idx<filtered.length && !paused){
-          const dt=performance.now()-t0;
-          if(dt<frameBudget) requestAnimationFrame(drawBatch); else setTimeout(()=>requestAnimationFrame(drawBatch),0);
-        } else if(!reduceMotion && !paused){
-          raf=requestAnimationFrame(loop);
-        }
-      }
-      drawBatch();
-      
-      // interactive trading card void (glass-box)
-      canvas.addEventListener('mousemove', (e)=>{
-        const rect=canvas.getBoundingClientRect(); const mx=e.clientX-rect.left; const my=e.clientY-rect.top;
-        // nearest neighbor search among rendered (naive linear up to maxRender for parity)
-        let best=null, bd=1e9;
-        for(let i=0;i<Math.min(filtered.length,maxRender);i++){ const p=filtered[i]; const x=(p.x*0.5+0.5)*rect.width; const y=(p.y*0.5+0.5)*rect.height; const d=Math.hypot(x-mx,y-my); if(d<bd && d<18){ bd=d; best=p; } }
-        if(best && best!==hovered){ hovered=best; canvas.style.cursor='pointer'; if(cardVoid){ cardVoid.innerHTML=`<div style="padding:10px;background:#0f1524;border:1px solid #2a3b8f;border-radius:10px"><b>${best.ticker} ${best.year}</b> <span style="color:#8aa0ff">${best.sector}/${best.archetype}</span><br><span style="font-size:11px;color:#9aa7d1">CIK:${best.cik||'—'} emb 64-d cos=${((best.emb||[]).slice(0,3).join(' ')).slice(0,64)}</span></div>`; } }
-      });
-      canvas.addEventListener('click',()=>{ if(hovered){ selected=hovered; }});
-    }catch(e){ console.error('shared-map load fail',e); if(overlay) overlay.textContent='map load failed — offline cache empty (4831 FYs)'; }
-  }
-  function loop(){ if(paused) return; // gentle rotation placeholder for dark void effect
-    ctx.fillStyle='#0b0e14'; ctx.globalAlpha=0.04; ctx.fillRect(0,0,canvas.clientWidth,canvas.clientHeight); raf=requestAnimationFrame(()=>{});}
-  load();
-  return {destroy(){ cancelAnimationFrame(raf); }};
+/* shared-map.js — LOD 8000/4000, quaternion arcball, momentum 0.94, spring 120/0.18, lens 1.8x, DPR1 no devicePixelRatio, single-select clear prev, void #080A0F */
+export async function mountSharedMap(canvas, opts={}){
+  const DPR=1;
+  const LOD_HIGH=8000, LOD_LOW=4000;
+  const w=canvas.width=Math.floor(canvas.clientWidth||900)*DPR;
+  const h=canvas.height=Math.floor(canvas.clientHeight||520)*DPR;
+  canvas.style.width=(w/DPR)+'px'; canvas.style.height=(h/DPR)+'px';
+  const ctx=canvas.getContext('2d',{alpha:false});
+  let points=[]; let sel=null; let rot={x:-0.18,y:0.62,z:0}; let vel={x:0,y:0};
+  let momentum=0.94, springK=120, damp=0.18, lens=1.8;
+  let lod=LOD_HIGH; let paused=false;
+  function quatFromEuler(rx,ry){ const cx=Math.cos(rx/2),sx=Math.sin(rx/2),cy=Math.cos(ry/2),sy=Math.sin(ry/2); return {w:cx*cy,x:sx*cy,y:cx*sy,z:-sx*sy}; }
+  function applyQuat(p,q){ const {w,x,y,z}=q; const vx=p.x,vy=p.y,vz=p.z; const ix=w*vx + y*vz - z*vy, iy=w*vy + z*vx - x*vz, iz=w*vz + x*vy - y*vx; return {x:ix*w + -x*0 + iy*-z - iz*-y, y:iy*w + -y*0 + iz*-x - ix*-z, z:iz*w + -z*0 + ix*-y - iy*-x}; }
+  function project(p){ const q=quatFromEuler(rot.x,rot.y); const r=applyQuat(p,q); const d=2.8/(2.8 - r.z*0.9); return {sx:(r.x*d*lens*0.42+0.5)*w, sy:(-r.y*d*lens*0.42+0.5)*h, depth:r.z, d}; }
+  function draw(){ ctx.fillStyle='#080A0F'; ctx.fillRect(0,0,w,h); ctx.strokeStyle='rgba(30,42,68,.22)'; ctx.lineWidth=1; const N=Math.min(lod, points.length); const sorted=points.slice(0,N).map(p=>{const pr=project(p); return {...p,...pr}}).sort((a,b)=>a.depth-b.depth); for(const pt of sorted){ const isSel=sel&&pt.id===sel.id; const c=pt.c||'#56B4E9'; const s=isSel?6:(pt.z*0.5+2.2)*(pt.d||1); ctx.beginPath(); ctx.fillStyle=c; ctx.globalAlpha=isSel?1:0.86; ctx.arc(pt.sx,pt.sy,Math.max(1.2,Math.min(7,s)),0,Math.PI*2); ctx.fill(); if(isSel){ ctx.strokeStyle='#FEFCF9'; ctx.lineWidth=1.8; ctx.stroke(); } } ctx.globalAlpha=1; }
+  function tick(){ if(!paused){ rot.y+=vel.y*0.016; rot.x+=vel.x*0.016; vel.x*=momentum; vel.y*=momentum; rot.x+=(-0.18-rot.x)*0.015*springK*0.01; vel.x*=(1-damp*0.02);} draw(); requestAnimationFrame(tick); }
+  let dragging=false,last={x:0,y:0}; canvas.addEventListener('pointerdown',e=>{dragging=true;canvas.setPointerCapture(e.pointerId);canvas.classList.add('grabbing');last={x:e.clientX,y:e.clientY};paused=false;});
+  canvas.addEventListener('pointermove',e=>{ if(!dragging) return; const dx=e.clientX-last.x, dy=e.clientY-last.y; vel.y+=dx*0.008; vel.x+=dy*0.006; rot.y+=dx*0.006; rot.x+=dy*0.004; rot.x=Math.max(-1.2,Math.min(1.2,rot.x)); last={x:e.clientX,y:e.clientY};});
+  canvas.addEventListener('pointerup',()=>{dragging=false;canvas.classList.remove('grabbing');});
+  canvas.addEventListener('click',e=>{const rect=canvas.getBoundingClientRect(); const mx=(e.clientX-rect.left)*DPR,my=(e.clientY-rect.top)*DPR; let best=null,bd=18; for(const pt of points.slice(0,lod)){ const pr=project(pt); const dist=Math.hypot(pr.sx-mx,pr.sy-my); if(dist<bd){bd=dist;best=pt;}} if(best){ sel=best; canvas.dispatchEvent(new CustomEvent('point-select',{detail:best,bubbles:true})); } else { sel=null; canvas.dispatchEvent(new CustomEvent('point-deselect',{bubbles:true})); }});
+  canvas.addEventListener('wheel',e=>{e.preventDefault(); lens=Math.max(0.9,Math.min(2.6,lens+Math.sign(e.deltaY)*-0.06));},{passive:false});
+  tick(); return {setPoints(arr){ points=arr.map(p=>({x:(p.x??Math.random()*2-1),y:(p.y??Math.random()*2-1),z:(p.z??Math.random()*2-1),c:p.c||p.color||'#56B4E9',id:p.id||p.ticker||p.pid||Math.random(),...p})); draw();}, setTarget(id){ sel=points.find(p=>p.id===id||p.ticker===id)||null; }, clearSel(){ sel=null; }, resize(){ const nw=Math.floor(canvas.clientWidth)*DPR, nh=Math.floor(canvas.clientHeight)*DPR; canvas.width=nw; canvas.height=nh; draw(); }, setLOD(v){ lod=v===8000?LOD_HIGH:LOD_LOW; }, pause(){paused=true}, resume(){paused=false}, getSelected(){return sel}};
 }
-// progressive filtered v4: preserves GOOG vs GOOGL distinct, BRK.A vs BRK.B distinct, LOD maxRender 4000 mobile 8000 desktop, frameBudget 42/33
+export function pickOKABE(pos){ const map={PG:'#E69F00',SG:'#56B4E9',SF:'#009E73',PF:'#F0E442',C:'#0072B2',QB:'#E69F00',WR:'#56B4E9',RB:'#009E73',TE:'#0072B2',DEF:'#0072B2',FWD:'#E69F00',MID:'#56B4E9',GK:'#FFFEF7'}; return map[pos]||'#56B4E9'; }
