@@ -177,6 +177,41 @@ Post-filter the distribution is plausible: p50 −165k shares, p99 ~1.0M,
 net-sell rows outnumbering net-buy about 10:1, which is the well-documented
 asymmetry in insider activity.
 
+## Did the fabrication inflate the metric? No — and that is worth knowing
+
+I predicted the IC would fall once the model could no longer lean on invented
+values. **That prediction was wrong**, and the reason is checkable rather than
+hand-waved.
+
+A constant column carries zero information. Measured on the pre-fix matrix,
+after the per-FY z-scoring the model actually consumes:
+
+```
+23 of 27 constant columns had EXACTLY zero variance in Z
+   CEO_AGE, CEO_PAY_RATIO, BOARD_INDEP_PCT, INSIDER_OWN_PCT, ... : Z std 0.000000
+the remaining 4 (DIV_YIELD, FLOAT_PCT, SHORT_INTEREST_PCT, TONE_UNCERTAINTY)
+   sat at Z std ~0.0004 — floating-point noise from per-FY normalisation
+```
+
+The model saw an identical `0.0` in every row for those columns. They could not
+help it discriminate between companies, so removing them costs nothing
+predictively — which is exactly what the re-measured baseline shows (seed 5
+0.5291 vs 0.5301, seed 7 0.5147 vs 0.5202).
+
+So the damage from this fabrication was never a corrupted score. It was:
+
+- **trust** — a reader, or a future model, had no way to tell `CEO_AGE 55` from
+  a measurement;
+- **wasted effort** — someone could reasonably have spent weeks tuning a
+  governance feature that was a constant;
+- **a blocked path** — the columns looked populated, so nothing flagged that
+  the real DEF 14A / Form 4 sources were sitting unparsed on disk.
+
+That last one is the real cost. The fabrication did not make the model look
+better than it was; it made the *data* look more complete than it was, and
+that is what stopped anyone from wiring the 5.5 GB of real SEC filings that
+were already downloaded.
+
 ## Not contained to this repo
 
 The constant-column test that opened this audit **cannot see partial
