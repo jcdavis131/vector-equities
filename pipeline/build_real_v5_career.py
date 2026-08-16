@@ -266,28 +266,49 @@ def load_form4():
     if not files:
         print("No Form4 index found")
         return {}
-    counts = defaultdict(lambda: defaultdict(int))
+    # This used to return a FILING COUNT per (ticker, year) and assign it to
+    # INSIDER_NET_12M -- a feature whose name promises net insider activity.
+    # The count is a real signal, but it is not what the column claims, and it
+    # cannot distinguish a director buying from a director selling.
+    #
+    # build_form4_index.py now emits a signed net from the SEC's own quarterly
+    # Form 3/4/5 datasets (TRANS_SHARES signed by TRANS_ACQUIRED_DISP_CD,
+    # restricted to open-market codes P/S), so this sums the thing the name
+    # describes. Filing count is still returned alongside for anything that
+    # wants activity volume.
+    #
+    # None, never 0, when a (ticker, year) has no usable open-market rows:
+    # "no insider traded on the open market" and "trades netted to zero" are
+    # different facts, and only the second is a measurement.
+    nets: dict[tuple[str, int], float] = {}
+    counts: dict[tuple[str, int], int] = defaultdict(int)
     total_lines = 0
+    tickers_seen = set()
     for fp in files:
-        with Path(fp).open() as f:
+        with Path(fp).open(encoding="utf-8") as f:
             for line in f:
                 try:
                     j = json.loads(line)
-                    ticker = j.get("ticker")
-                    fdate = j.get("filing_date", "")
-                    if not ticker or not fdate:
-                        continue
-                    yr = int(fdate[:4])
-                    counts[ticker][yr] += 1
-                    total_lines += 1
-                except Exception:
+                except Exception:  # noqa: BLE001
                     continue
-    flat = {}
-    for ticker, year_dict in counts.items():
-        for fy, cnt in year_dict.items():
-            flat[(ticker, fy)] = cnt
-    print(f"Form4 total filings {total_lines}, tickers {len(counts)}")
-    return flat
+                ticker = j.get("ticker")
+                fdate = j.get("filing_date", "")
+                if not ticker or not fdate:
+                    continue
+                try:
+                    yr = int(fdate[:4])
+                except Exception:  # noqa: BLE001
+                    continue
+                key = (ticker, yr)
+                counts[key] += 1
+                tickers_seen.add(ticker)
+                total_lines += 1
+                net = j.get("net_shares")
+                if net is not None:
+                    nets[key] = nets.get(key, 0.0) + float(net)
+    print(f"Form4 submissions {total_lines}, tickers {len(tickers_seen)}, "
+          f"(ticker,year) with an open-market net: {len(nets)}")
+    return {"net": nets, "count": dict(counts)}
 
 
 def load_market_history():
@@ -501,7 +522,8 @@ def build_v5(limit=None):
     summaries = load_summaries()
     print(f"Loaded {len(summaries)} summaries, universe {len(uni)}")
     exec_features = load_def14a()
-    form4_flat = load_form4()
+    form4 = load_form4()
+    form4_net, form4_count = form4.get("net", {}), form4.get("count", {})
     market_hist = load_market_history()
     spy_hist = market_hist.get("SPY")
 
@@ -695,9 +717,11 @@ def build_v5(limit=None):
             else:
                 neo_count_real = None  # no filing -> unknown, not "5"
 
-            f4_count = form4_flat.get((ticker, yr))
-            if f4_count is not None:
-                insider_net = float(f4_count)
+            # Signed open-market net shares, not a filing count. Absent stays
+            # None so the writer leaves mask=0.
+            f4_net = form4_net.get((ticker, yr))
+            if f4_net is not None:
+                insider_net = float(f4_net)
 
             # Market history metrics
             m_hist = market_hist.get(ticker)
@@ -1105,7 +1129,7 @@ def build_v5(limit=None):
     market_hist_tickers = set(market_hist.keys())
     tickers_with_mhist = len(set(tickers) & market_hist_tickers)
     rows_with_mhist = sum(1 for t in tickers if t in market_hist_tickers)
-    form4_keys_str = {(t, str(fy)) for t, fy in form4_flat.keys()}
+    form4_keys_str = {(t, str(fy)) for t, fy in form4_count.keys()}
     rows_with_form4 = sum(1 for t, fy in zip(tickers, fyears, strict=False) if (t, fy) in form4_keys_str)
 
     # real flags
@@ -1175,12 +1199,13 @@ def build_v5(limit=None):
             "rows_with_real_neo": rows_with_neo_precise,
             "tickers_with_market_hist": tickers_with_mhist,
             "rows_with_market_hist": rows_with_mhist,
-            "tickers_with_form4": len({t for t, _ in form4_flat.keys()}),
+            "tickers_with_form4": len({t for t, _ in form4_count.keys()}),
             "rows_with_form4": rows_with_form4,
         },
         "sources": {
             "def14a_parsed": len(exec_features),
-            "form4_index": len(form4_flat),
+            "form4_index": len(form4_count),
+            "form4_open_market_net": len(form4_net),
             "market_history": len(market_hist),
         },
         "forward_labels": [
