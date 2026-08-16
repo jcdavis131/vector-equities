@@ -78,7 +78,24 @@ seqs, feat_to_idx, extra_idx = build_sequences(
 )
 print(f"Built {len(seqs)} seqs")
 np.random.seed(Args.seed)
-uniq_tickers = list({s["ticker"] for s in seqs})
+# sorted(), NOT list(). Python randomises str hashing per process and nothing
+# here pins PYTHONHASHSEED, so `list({...})` over a set of tickers came out in a
+# DIFFERENT order in every run. np.random.shuffle is seeded, but shuffling a
+# differently-ordered list gives a different permutation -- so --seed did not
+# control the train/val split at all, and two runs at the same seed trained on
+# different data. Measured 2026-08-15 against a fresh baseline panel: seed 5
+# gave IC 0.5047 then 0.5309, seed 7 gave 0.5182 then 0.4571, same commit, same
+# flags. That is a ~0.06 swing attributed to a seed that was not in control.
+#
+# Consequences this fix removes: the panel's spread was split variance wearing
+# seed variance's name, an A/B compared two different data splits, and per-seed
+# pairing across arms was meaningless because seed 5 was not the same split on
+# both sides. sorted() makes the pre-shuffle order canonical, after which the
+# seeded shuffle is reproducible.
+#
+# This CHANGES THE NUMBERS -- it is a new data regime, and any baseline measured
+# before this commit is not comparable to one measured after.
+uniq_tickers = sorted({s["ticker"] for s in seqs})
 np.random.shuffle(uniq_tickers)
 n = len(uniq_tickers)
 n_train = int(n * 0.7)
