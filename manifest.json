@@ -1,5 +1,5 @@
 {
-  "background_color": "#0b0e14",
+  "background_color": "#080A0F",
   "categories": [
     "sports",
     "games",
@@ -40,7 +40,7 @@
       "type": "image/png"
     }
   ],
-  "id": "/?utm_source=pwa",
+  "id": "/?pov=owner",
   "lang": "en",
   "name": "Vector Equities \u2014 4,831 FYs Dark Map",
   "orientation": "any",
@@ -91,6 +91,6 @@
       "url": "/play?tab=lab&utm_source=pwa_shortcut&utm_medium=lab"
     }
   ],
-  "start_url": "/?utm_source=pwa",
-  "theme_color": "#0b0e14"
+  "start_url": "/?pov=owner",
+  "theme_color": "#080A0F"
 }
