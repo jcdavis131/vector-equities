@@ -125,3 +125,71 @@ Columns with no available source at all (`float_pct`, `short_int`, `ceo_age`,
 `board_indep`, `pay_ratio`, `ceo_dual`, `ceo_eq`, `ceo_pay_vs`) should be
 `mask = 0` or dropped from the schema — carrying a dead column is not free, and
 that is a design call for the operator.
+
+---
+
+## Outcome (same day)
+
+| | before | after |
+|---|---|---|
+| mask mean | 0.8610 | 0.5699 |
+| constant-but-observed | 23 | 1 |
+| never observed | 1 | 29 |
+| label sentinels | 511 | 0 |
+| columns carrying real data | — | 89 / 118 |
+| `fwd_ret_6m` (the metric target) | 4320 finite / 4320 distinct | **unchanged** |
+
+The 29-point drop in mask coverage *is* the fix: that gap was fabricated
+values asserting "observed". The target being bit-identical across every
+rebuild is the integrity check — nothing about this work touched what the
+metric scores against.
+
+`INSIDER_NET_12M` went from a hardcoded constant to real SEC data at ~92%
+coverage, from `build_form4_index.py` over 46 quarterly Form 3/4/5 archives
+(2,358,852 submissions, 15,076 issuers, full FY2015-2024 range).
+
+### Three filters on the insider data, each definitional rather than cosmetic
+
+Raw sums produced a 5.1-billion-share outlier, so each was traced to source
+rather than clipped:
+
+1. **Security class.** `NONDERIV_TRANS` carries every class a filer reports.
+   Summing Preferred and Common share *counts* is apples-to-oranges — my bug,
+   fixed by restricting to common-equivalent titles.
+2. **Filer relationship.** BAC FY2016 carried one submission from *"YNOFACE
+   Holdings Inc"* (relationship: `Other`) reporting **4,201,596,806 common
+   shares** — about 40% of Bank of America. A column named `INSIDER_NET_12M`
+   should require Director / Officer / TenPercentOwner. That is the feature's
+   own definition, not an outlier rule.
+3. **Positive price.** GOOGL FY2017 carried *"Lee Antonio"*, filing as
+   `TenPercentOwnerOther`, reporting a **PURCHASE of 4,500,000,000 common
+   shares at $0.00** — roughly six times Alphabet's actual Class A count. An
+   open-market trade has a price; a P/S row at $0.00 is a transfer, gift,
+   error or hoax.
+
+EDGAR does not verify Form 4 submissions, so these entries are genuinely in
+the public record. **None of them were clipped by magnitude** — each is
+excluded by a rule that follows from what the column is supposed to mean.
+Silently winsorising real records to make a distribution look reasonable is
+the same failure as inventing them.
+
+Post-filter the distribution is plausible: p50 −165k shares, p99 ~1.0M,
+net-sell rows outnumbering net-buy about 10:1, which is the well-documented
+asymmetry in insider activity.
+
+## Not contained to this repo
+
+The constant-column test that opened this audit **cannot see partial
+fabrication**, and that blind spot hid the worst cases here (`CEO_TOTAL_COMP`
+was 99.9% one literal yet not "constant"). Re-running the pattern enumeration
+across every builder in the estate found `vector-gridiron`:
+
+```
+temp       18401/49860  36.9%   68.0 indoor / 60.0 outdoor default
+kick_hour  25876/49860  51.9%   13.0, an assumed 1pm kickoff
+           mask coverage 1.000 on both
+```
+
+Fixed in that repo (`e59ed1a`). `vector-hoops`, `vector-pitch` and
+`vector-unified` show candidate sites but none verified as reaching their
+matrices.

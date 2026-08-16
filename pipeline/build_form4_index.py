@@ -59,6 +59,39 @@ OUT = ROOT / "pipeline" / "data" / "form4_index_all.jsonl"
 # Open-market transactions: the insider chose to buy or sell.
 OPEN_MARKET = {"P", "S"}
 
+# NONDERIV_TRANS carries every security class a filer reports -- common,
+# preferred, units, warrants-as-nonderivative, and assorted one-off instruments
+# ("NOTIS GLC"). Summing share COUNTS across classes is an apples-to-oranges
+# error: 100,000,000 preferred at $100 is not comparable to common at $15.
+# Restrict to common-equivalent titles, which is what an insider-conviction
+# signal is about. Verified against a quarter's title distribution: "common
+# stock", "class a common stock", "common shares", "ordinary shares" and
+# "class c capital stock" cover the overwhelming majority.
+COMMON_HINTS = ("common", "ordinary", "capital stock")
+
+# Form 4 filers declare their relationship to the issuer in REPORTINGOWNER.tsv:
+# Director, Officer, TenPercentOwner, Other. A feature called INSIDER_NET_12M
+# should mean insiders, so "Other" alone does not qualify.
+#
+# This is not an outlier filter -- it is the feature's own definition. It does
+# happen to exclude erroneous filings: BAC FY2016 carried a single submission
+# from "YNOFACE Holdings Inc" (relationship: Other) reporting 4.2 BILLION common
+# shares, roughly 40% of Bank of America. EDGAR accepts Form 4 filings without
+# verifying them, so the record genuinely contains such entries; they are real
+# SEC data and obviously not real insider activity. Excluding them by WHO FILED
+# is defensible in a way that clipping by magnitude would not be.
+INSIDER_RELATIONSHIPS = ("director", "officer", "tenpercentowner")
+
+
+def is_insider(rel: str) -> bool:
+    r = (rel or "").strip().lower()
+    return any(k in r for k in INSIDER_RELATIONSHIPS)
+
+
+def is_common(title: str) -> bool:
+    t = (title or "").strip().lower()
+    return any(h in t for h in COMMON_HINTS)
+
 MONTHS = {m: i + 1 for i, m in enumerate(
     ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"])}
 
@@ -114,14 +147,24 @@ def process_zip(path: Path) -> list[dict]:
                 "doc_type": (row.get("DOCUMENT_TYPE") or "").strip() or None,
             }
 
+        insiders = set()
+        for row in read_tsv(zf, "REPORTINGOWNER.tsv"):
+            acc = (row.get("ACCESSION_NUMBER") or "").strip()
+            if acc and is_insider(row.get("RPTOWNER_RELATIONSHIP", "")):
+                insiders.add(acc)
+
         agg = defaultdict(lambda: {"n": 0, "open_sh": 0.0, "all_sh": 0.0,
                                    "open_val": 0.0, "any_open": False, "any_all": False})
         for row in read_tsv(zf, "NONDERIV_TRANS.tsv"):
             acc = (row.get("ACCESSION_NUMBER") or "").strip()
             if not acc:
                 continue
+            if acc not in insiders:
+                continue
             shares = _num(row.get("TRANS_SHARES"))
             if shares is None:
+                continue
+            if not is_common(row.get("SECURITY_TITLE", "")):
                 continue
             code = (row.get("TRANS_CODE") or "").strip().upper()
             ad = (row.get("TRANS_ACQUIRED_DISP_CD") or "").strip().upper()
@@ -133,11 +176,21 @@ def process_zip(path: Path) -> list[dict]:
             a["n"] += 1
             a["all_sh"] += sign * shares
             a["any_all"] = True
-            if code in OPEN_MARKET:
+            # An OPEN-MARKET trade has a price. A P/S row reporting
+            # TRANS_PRICEPERSHARE 0.00 is a transfer, a gift, an error or a
+            # hoax -- not someone buying or selling at market. Requiring a
+            # positive price is the definition of the thing this column
+            # measures, not an outlier filter.
+            #
+            # It is what excludes GOOGL FY2017: "Lee Antonio", filing as
+            # TenPercentOwnerOther, reported a PURCHASE of 4,500,000,000 common
+            # shares at $0.00 -- roughly six times Alphabet's actual Class A
+            # count. EDGAR does not verify Form 4 submissions, so entries like
+            # this are genuinely in the record.
+            if code in OPEN_MARKET and price is not None and price > 0:
                 a["open_sh"] += sign * shares
                 a["any_open"] = True
-                if price is not None:
-                    a["open_val"] += sign * shares * price
+                a["open_val"] += sign * shares * price
 
         for acc, sub in subs.items():
             if not sub["ticker"] or not sub["filing_date"]:

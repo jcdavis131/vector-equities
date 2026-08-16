@@ -7,12 +7,13 @@
     "rows_with_real_neo": 798,
     "tickers_with_market_hist": 500,
     "rows_with_market_hist": 4831,
-    "tickers_with_form4": 0,
-    "rows_with_form4": 0
+    "tickers_with_form4": 15076,
+    "rows_with_form4": 4554
   },
   "sources": {
     "def14a_parsed": 869,
-    "form4_index": 0,
+    "form4_index": 73033,
+    "form4_open_market_net": 51666,
     "market_history": 504
   },
   "features": [
@@ -229,7 +230,7 @@
     "CEO_DUALITY": false,
     "INST_PCT": false,
     "INST_DELTA_QOQ": false,
-    "INSIDER_NET_12M": false,
+    "INSIDER_NET_12M": true,
     "FLOAT_PCT": false,
     "TOP10_INST_CONC": false,
     "SHORT_INTEREST_PCT": false,
