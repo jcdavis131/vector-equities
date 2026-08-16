@@ -1,0 +1,3502 @@
+[
+  {
+    "ticker": "A",
+    "cik": "1090872",
+    "company": "Agilent Technologies",
+    "sector": "Healthcare",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "AAPL",
+    "cik": "320193",
+    "company": "Apple Inc.",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "ABBV",
+    "cik": "1551152",
+    "company": "AbbVie",
+    "sector": "Healthcare",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "ABNB",
+    "cik": "1559720",
+    "company": "Airbnb",
+    "sector": "Consumer Discretionary",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "ABT",
+    "cik": "1800",
+    "company": "Abbott Laboratories",
+    "sector": "Healthcare",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "ACGL",
+    "cik": "947484",
+    "company": "Arch Capital Group",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "ACN",
+    "cik": "1467373",
+    "company": "Accenture",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "ADBE",
+    "cik": "796343",
+    "company": "Adobe Inc.",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "ADI",
+    "cik": "6281",
+    "company": "Analog Devices",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "ADM",
+    "cik": "7084",
+    "company": "Archer Daniels Midland",
+    "sector": "Consumer Staples",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "ADP",
+    "cik": "8670",
+    "company": "Automatic Data Processing",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "ADSK",
+    "cik": "769397",
+    "company": "Autodesk",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "AEE",
+    "cik": "1002910",
+    "company": "Ameren",
+    "sector": "Utilities",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "AEP",
+    "cik": "0000004904",
+    "company": "American Electric Power",
+    "sector": "Utilities",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "AES",
+    "cik": "874761",
+    "company": "AES Corporation",
+    "sector": "Utilities",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "AFL",
+    "cik": "4977",
+    "company": "Aflac",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "AIG",
+    "cik": "5272",
+    "company": "American International Group",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "AIZ",
+    "cik": "1267238",
+    "company": "Assurant",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "AJG",
+    "cik": "354190",
+    "company": "Arthur J. Gallagher & Co.",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "AKAM",
+    "cik": "1086222",
+    "company": "Akamai Technologies",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "ALB",
+    "cik": "915913",
+    "company": "Albemarle Corporation",
+    "sector": "Materials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "ALGN",
+    "cik": "1097149",
+    "company": "Align Technology",
+    "sector": "Healthcare",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "ALL",
+    "cik": "899051",
+    "company": "Allstate",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "ALLE",
+    "cik": "1579241",
+    "company": "Allegion",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "AMAT",
+    "cik": "6951",
+    "company": "Applied Materials",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "AMCR",
+    "cik": "1748790",
+    "company": "Amcor",
+    "sector": "Materials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "AMD",
+    "cik": "2488",
+    "company": "Advanced Micro Devices",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "AME",
+    "cik": "1037868",
+    "company": "Ametek",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "AMGN",
+    "cik": "318154",
+    "company": "Amgen",
+    "sector": "Healthcare",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "AMP",
+    "cik": "820027",
+    "company": "Ameriprise Financial",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "AMT",
+    "cik": "1053507",
+    "company": "American Tower",
+    "sector": "Real Estate",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "AMZN",
+    "cik": "1018724",
+    "company": "Amazon",
+    "sector": "Consumer Discretionary",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "ANET",
+    "cik": "1596532",
+    "company": "Arista Networks",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "AON",
+    "cik": "315293",
+    "company": "Aon plc",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "AOS",
+    "cik": "91142",
+    "company": "A. O. Smith",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "APA",
+    "cik": "1841666",
+    "company": "APA Corporation",
+    "sector": "Energy",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "APD",
+    "cik": "2969",
+    "company": "Air Products",
+    "sector": "Materials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "APH",
+    "cik": "820313",
+    "company": "Amphenol",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "APO",
+    "cik": "1858681",
+    "company": "Apollo Global Management",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "APP",
+    "cik": "1751008",
+    "company": "AppLovin",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "APTV",
+    "cik": "1521332",
+    "company": "Aptiv",
+    "sector": "Consumer Discretionary",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "ARE",
+    "cik": "1035443",
+    "company": "Alexandria Real Estate Equities",
+    "sector": "Real Estate",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "ARES",
+    "cik": "1176948",
+    "company": "Ares Management",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "ATO",
+    "cik": "731802",
+    "company": "Atmos Energy",
+    "sector": "Utilities",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "AVB",
+    "cik": "915912",
+    "company": "AvalonBay Communities",
+    "sector": "Real Estate",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "AVGO",
+    "cik": "1730168",
+    "company": "Broadcom",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "AVY",
+    "cik": "8818",
+    "company": "Avery Dennison",
+    "sector": "Materials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "AWK",
+    "cik": "1410636",
+    "company": "American Water Works",
+    "sector": "Utilities",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "AXON",
+    "cik": "1069183",
+    "company": "Axon Enterprise",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "AXP",
+    "cik": "4962",
+    "company": "American Express",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "AZO",
+    "cik": "866787",
+    "company": "AutoZone",
+    "sector": "Consumer Discretionary",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "BA",
+    "cik": "12927",
+    "company": "Boeing",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "BAC",
+    "cik": "70858",
+    "company": "Bank of America",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "BALL",
+    "cik": "9389",
+    "company": "Ball Corporation",
+    "sector": "Materials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "BAX",
+    "cik": "10456",
+    "company": "Baxter International",
+    "sector": "Healthcare",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "BBY",
+    "cik": "764478",
+    "company": "Best Buy",
+    "sector": "Consumer Discretionary",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "BDX",
+    "cik": "10795",
+    "company": "Becton Dickinson",
+    "sector": "Healthcare",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "BEN",
+    "cik": "38777",
+    "company": "Franklin Resources",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "BF-B",
+    "cik": "14693",
+    "company": "Brown\u2013Forman",
+    "sector": "Consumer Staples",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "BG",
+    "cik": "1996862",
+    "company": "Bunge Global",
+    "sector": "Consumer Staples",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "BIIB",
+    "cik": "875045",
+    "company": "Biogen",
+    "sector": "Healthcare",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "BKNG",
+    "cik": "1075531",
+    "company": "Booking Holdings",
+    "sector": "Consumer Discretionary",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "BKR",
+    "cik": "1701605",
+    "company": "Baker Hughes",
+    "sector": "Energy",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "BLDR",
+    "cik": "1316835",
+    "company": "Builders FirstSource",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "BLK",
+    "cik": "2012383",
+    "company": "BlackRock",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "BMY",
+    "cik": "14272",
+    "company": "Bristol Myers Squibb",
+    "sector": "Healthcare",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "BNY",
+    "cik": "1390777",
+    "company": "BNY Mellon",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "BR",
+    "cik": "1383312",
+    "company": "Broadridge Financial Solutions",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "BRK-B",
+    "cik": "1067983",
+    "company": "Berkshire Hathaway",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "BRO",
+    "cik": "79282",
+    "company": "Brown & Brown",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "BSX",
+    "cik": "885725",
+    "company": "Boston Scientific",
+    "sector": "Healthcare",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "BX",
+    "cik": "1393818",
+    "company": "Blackstone Inc.",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "BXP",
+    "cik": "1037540",
+    "company": "BXP, Inc.",
+    "sector": "Real Estate",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "C",
+    "cik": "831001",
+    "company": "Citigroup",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "CAH",
+    "cik": "721371",
+    "company": "Cardinal Health",
+    "sector": "Healthcare",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "CARR",
+    "cik": "1783180",
+    "company": "Carrier Global",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "CASY",
+    "cik": "726958",
+    "company": "Casey's",
+    "sector": "Consumer Staples",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "CAT",
+    "cik": "18230",
+    "company": "Caterpillar Inc.",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "CB",
+    "cik": "896159",
+    "company": "Chubb Limited",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "CBOE",
+    "cik": "1374310",
+    "company": "Cboe Global Markets",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "CBRE",
+    "cik": "1138118",
+    "company": "CBRE Group",
+    "sector": "Real Estate",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "CCI",
+    "cik": "1051470",
+    "company": "Crown Castle",
+    "sector": "Real Estate",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "CCL",
+    "cik": "815097",
+    "company": "Carnival Corporation",
+    "sector": "Consumer Discretionary",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "CDNS",
+    "cik": "813672",
+    "company": "Cadence Design Systems",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "CDW",
+    "cik": "1402057",
+    "company": "CDW Corporation",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "CEG",
+    "cik": "1868275",
+    "company": "Constellation Energy",
+    "sector": "Utilities",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "CF",
+    "cik": "1324404",
+    "company": "CF Industries",
+    "sector": "Materials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "CFG",
+    "cik": "759944",
+    "company": "Citizens Financial Group",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "CHD",
+    "cik": "313927",
+    "company": "Church & Dwight",
+    "sector": "Consumer Staples",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "CHRW",
+    "cik": "1043277",
+    "company": "C.H. Robinson",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "CHTR",
+    "cik": "1091667",
+    "company": "Charter Communications",
+    "sector": "Communication",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "CI",
+    "cik": "1739940",
+    "company": "Cigna",
+    "sector": "Healthcare",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "CIEN",
+    "cik": "936395",
+    "company": "Ciena",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "CINF",
+    "cik": "20286",
+    "company": "Cincinnati Financial",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "CL",
+    "cik": "21665",
+    "company": "Colgate-Palmolive",
+    "sector": "Consumer Staples",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "CLX",
+    "cik": "21076",
+    "company": "Clorox",
+    "sector": "Consumer Staples",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "CMCSA",
+    "cik": "1166691",
+    "company": "Comcast",
+    "sector": "Communication",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "CME",
+    "cik": "1156375",
+    "company": "CME Group",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "CMG",
+    "cik": "1058090",
+    "company": "Chipotle Mexican Grill",
+    "sector": "Consumer Discretionary",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "CMI",
+    "cik": "26172",
+    "company": "Cummins",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "CMS",
+    "cik": "811156",
+    "company": "CMS Energy",
+    "sector": "Utilities",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "CNC",
+    "cik": "1071739",
+    "company": "Centene Corporation",
+    "sector": "Healthcare",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "CNP",
+    "cik": "1130310",
+    "company": "CenterPoint Energy",
+    "sector": "Utilities",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "COF",
+    "cik": "927628",
+    "company": "Capital One",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "COHR",
+    "cik": "820318",
+    "company": "Coherent Corp.",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "COIN",
+    "cik": "1679788",
+    "company": "Coinbase",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "COO",
+    "cik": "711404",
+    "company": "Cooper Companies (The)",
+    "sector": "Healthcare",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "COP",
+    "cik": "1163165",
+    "company": "ConocoPhillips",
+    "sector": "Energy",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "COR",
+    "cik": "1140859",
+    "company": "Cencora",
+    "sector": "Healthcare",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "COST",
+    "cik": "909832",
+    "company": "Costco",
+    "sector": "Consumer Staples",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "CPAY",
+    "cik": "1175454",
+    "company": "Corpay",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "CPRT",
+    "cik": "900075",
+    "company": "Copart",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "CPT",
+    "cik": "906345",
+    "company": "Camden Property Trust",
+    "sector": "Real Estate",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "CRH",
+    "cik": "849395",
+    "company": "CRH plc",
+    "sector": "Materials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "CRL",
+    "cik": "1100682",
+    "company": "Charles River Laboratories",
+    "sector": "Healthcare",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "CRM",
+    "cik": "1108524",
+    "company": "Salesforce",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "CRWD",
+    "cik": "1535527",
+    "company": "CrowdStrike",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "CSCO",
+    "cik": "858877",
+    "company": "Cisco",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "CSGP",
+    "cik": "1057352",
+    "company": "CoStar Group",
+    "sector": "Real Estate",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "CSX",
+    "cik": "277948",
+    "company": "CSX Corporation",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "CTAS",
+    "cik": "723254",
+    "company": "Cintas",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "CTSH",
+    "cik": "1058290",
+    "company": "Cognizant",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "CTVA",
+    "cik": "1755672",
+    "company": "Corteva",
+    "sector": "Materials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "CVNA",
+    "cik": "1690820",
+    "company": "Carvana",
+    "sector": "Consumer Discretionary",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "CVS",
+    "cik": "64803",
+    "company": "CVS Health",
+    "sector": "Healthcare",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "CVX",
+    "cik": "93410",
+    "company": "Chevron Corporation",
+    "sector": "Energy",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "D",
+    "cik": "715957",
+    "company": "Dominion Energy",
+    "sector": "Utilities",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "DAL",
+    "cik": "27904",
+    "company": "Delta Air Lines",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "DASH",
+    "cik": "1792789",
+    "company": "DoorDash",
+    "sector": "Consumer Discretionary",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "DD",
+    "cik": "1666700",
+    "company": "DuPont",
+    "sector": "Materials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "DDOG",
+    "cik": "1561550",
+    "company": "Datadog",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "DE",
+    "cik": "315189",
+    "company": "Deere & Company",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "DECK",
+    "cik": "910521",
+    "company": "Deckers Brands",
+    "sector": "Consumer Discretionary",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "DELL",
+    "cik": "1571996",
+    "company": "Dell Technologies",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "DG",
+    "cik": "29534",
+    "company": "Dollar General",
+    "sector": "Consumer Staples",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "DGX",
+    "cik": "1022079",
+    "company": "Quest Diagnostics",
+    "sector": "Healthcare",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "DHI",
+    "cik": "882184",
+    "company": "D. R. Horton",
+    "sector": "Consumer Discretionary",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "DHR",
+    "cik": "313616",
+    "company": "Danaher Corporation",
+    "sector": "Healthcare",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "DIS",
+    "cik": "1744489",
+    "company": "Walt Disney Company (The)",
+    "sector": "Communication",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "DLR",
+    "cik": "1297996",
+    "company": "Digital Realty",
+    "sector": "Real Estate",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "DLTR",
+    "cik": "935703",
+    "company": "Dollar Tree",
+    "sector": "Consumer Staples",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "DOC",
+    "cik": "765880",
+    "company": "Healthpeak Properties",
+    "sector": "Real Estate",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "DOV",
+    "cik": "29905",
+    "company": "Dover Corporation",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "DOW",
+    "cik": "1751788",
+    "company": "Dow Inc.",
+    "sector": "Materials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "DPZ",
+    "cik": "1286681",
+    "company": "Domino's",
+    "sector": "Consumer Discretionary",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "DRI",
+    "cik": "940944",
+    "company": "Darden Restaurants",
+    "sector": "Consumer Discretionary",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "DTE",
+    "cik": "936340",
+    "company": "DTE Energy",
+    "sector": "Utilities",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "DUK",
+    "cik": "1326160",
+    "company": "Duke Energy",
+    "sector": "Utilities",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "DVA",
+    "cik": "927066",
+    "company": "DaVita",
+    "sector": "Healthcare",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "DVN",
+    "cik": "1090012",
+    "company": "Devon Energy",
+    "sector": "Energy",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "DXCM",
+    "cik": "1093557",
+    "company": "Dexcom",
+    "sector": "Healthcare",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "EA",
+    "cik": "712515",
+    "company": "Electronic Arts",
+    "sector": "Communication",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "EBAY",
+    "cik": "1065088",
+    "company": "eBay Inc.",
+    "sector": "Consumer Discretionary",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "ECHO",
+    "cik": "1415404",
+    "company": "EchoStar",
+    "sector": "Communication",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "ECL",
+    "cik": "31462",
+    "company": "Ecolab",
+    "sector": "Materials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "ED",
+    "cik": "1047862",
+    "company": "Consolidated Edison",
+    "sector": "Utilities",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "EFX",
+    "cik": "33185",
+    "company": "Equifax",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "EG",
+    "cik": "1095073",
+    "company": "Everest Group",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "EIX",
+    "cik": "827052",
+    "company": "Edison International",
+    "sector": "Utilities",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "EL",
+    "cik": "1001250",
+    "company": "Est\u00e9e Lauder Companies (The)",
+    "sector": "Consumer Staples",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "ELV",
+    "cik": "1156039",
+    "company": "Elevance Health",
+    "sector": "Healthcare",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "EME",
+    "cik": "105634",
+    "company": "Emcor",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "EMR",
+    "cik": "32604",
+    "company": "Emerson Electric",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "EOG",
+    "cik": "821189",
+    "company": "EOG Resources",
+    "sector": "Energy",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "EQIX",
+    "cik": "1101239",
+    "company": "Equinix",
+    "sector": "Real Estate",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "EQR",
+    "cik": "906107",
+    "company": "Equity Residential",
+    "sector": "Real Estate",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "EQT",
+    "cik": "33213",
+    "company": "EQT Corporation",
+    "sector": "Energy",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "ERIE",
+    "cik": "922621",
+    "company": "Erie Indemnity",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "ES",
+    "cik": "72741",
+    "company": "Eversource Energy",
+    "sector": "Utilities",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "ESS",
+    "cik": "920522",
+    "company": "Essex Property Trust",
+    "sector": "Real Estate",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "ETN",
+    "cik": "1551182",
+    "company": "Eaton Corporation",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "ETR",
+    "cik": "65984",
+    "company": "Entergy",
+    "sector": "Utilities",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "EVRG",
+    "cik": "1711269",
+    "company": "Evergy",
+    "sector": "Utilities",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "EW",
+    "cik": "1099800",
+    "company": "Edwards Lifesciences",
+    "sector": "Healthcare",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "EXC",
+    "cik": "1109357",
+    "company": "Exelon",
+    "sector": "Utilities",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "EXE",
+    "cik": "895126",
+    "company": "Expand Energy",
+    "sector": "Energy",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "EXPD",
+    "cik": "746515",
+    "company": "Expeditors International",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "EXPE",
+    "cik": "1324424",
+    "company": "Expedia Group",
+    "sector": "Consumer Discretionary",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "EXR",
+    "cik": "1289490",
+    "company": "Extra Space Storage",
+    "sector": "Real Estate",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "F",
+    "cik": "37996",
+    "company": "Ford Motor Company",
+    "sector": "Consumer Discretionary",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "FANG",
+    "cik": "1539838",
+    "company": "Diamondback Energy",
+    "sector": "Energy",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "FAST",
+    "cik": "815556",
+    "company": "Fastenal",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "FCX",
+    "cik": "831259",
+    "company": "Freeport-McMoRan",
+    "sector": "Materials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "FDS",
+    "cik": "1013237",
+    "company": "FactSet",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "FDX",
+    "cik": "1048911",
+    "company": "FedEx",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "FE",
+    "cik": "1031296",
+    "company": "FirstEnergy",
+    "sector": "Utilities",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "FFIV",
+    "cik": "1048695",
+    "company": "F5, Inc.",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "FICO",
+    "cik": "814547",
+    "company": "Fair Isaac",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "FIS",
+    "cik": "1136893",
+    "company": "Fidelity National Information Services",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "FISV",
+    "cik": "798354",
+    "company": "Fiserv",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "FITB",
+    "cik": "35527",
+    "company": "Fifth Third Bancorp",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "FIX",
+    "cik": "1035983",
+    "company": "Comfort Systems USA",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "FLEX",
+    "cik": "866374",
+    "company": "Flex Ltd.",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "FOX",
+    "cik": "1754301",
+    "company": "Fox Corporation (Class B)",
+    "sector": "Communication",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "FOXA",
+    "cik": "1754301",
+    "company": "Fox Corporation (Class A)",
+    "sector": "Communication",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "FRT",
+    "cik": "34903",
+    "company": "Federal Realty Investment Trust",
+    "sector": "Real Estate",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "FSLR",
+    "cik": "1274494",
+    "company": "First Solar",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "FTNT",
+    "cik": "1262039",
+    "company": "Fortinet",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "FTV",
+    "cik": "1659166",
+    "company": "Fortive",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "GD",
+    "cik": "40533",
+    "company": "General Dynamics",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "GDDY",
+    "cik": "1609711",
+    "company": "GoDaddy",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "GE",
+    "cik": "40545",
+    "company": "GE Aerospace",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "GEHC",
+    "cik": "1932393",
+    "company": "GE HealthCare",
+    "sector": "Healthcare",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "GEN",
+    "cik": "849399",
+    "company": "Gen Digital",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "GEV",
+    "cik": "1996810",
+    "company": "GE Vernova",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "GILD",
+    "cik": "882095",
+    "company": "Gilead Sciences",
+    "sector": "Healthcare",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "GIS",
+    "cik": "40704",
+    "company": "General Mills",
+    "sector": "Consumer Staples",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "GL",
+    "cik": "320335",
+    "company": "Globe Life",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "GLW",
+    "cik": "24741",
+    "company": "Corning Inc.",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "GM",
+    "cik": "1467858",
+    "company": "General Motors",
+    "sector": "Consumer Discretionary",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "GNRC",
+    "cik": "1474735",
+    "company": "Generac",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "GOOG",
+    "cik": "1652044",
+    "company": "Alphabet Inc. (Class C)",
+    "sector": "Communication",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "GOOGL",
+    "cik": "1652044",
+    "company": "Alphabet Inc. (Class A)",
+    "sector": "Communication",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "GPC",
+    "cik": "40987",
+    "company": "Genuine Parts Company",
+    "sector": "Consumer Discretionary",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "GPN",
+    "cik": "1123360",
+    "company": "Global Payments",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "GRMN",
+    "cik": "1121788",
+    "company": "Garmin",
+    "sector": "Consumer Discretionary",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "GS",
+    "cik": "886982",
+    "company": "Goldman Sachs",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "GWW",
+    "cik": "277135",
+    "company": "W. W. Grainger",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "HAL",
+    "cik": "45012",
+    "company": "Halliburton",
+    "sector": "Energy",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "HAS",
+    "cik": "46080",
+    "company": "Hasbro",
+    "sector": "Consumer Discretionary",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "HBAN",
+    "cik": "49196",
+    "company": "Huntington Bancshares",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "HCA",
+    "cik": "860730",
+    "company": "HCA Healthcare",
+    "sector": "Healthcare",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "HD",
+    "cik": "354950",
+    "company": "Home Depot (The)",
+    "sector": "Consumer Discretionary",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "HIG",
+    "cik": "874766",
+    "company": "Hartford (The)",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "HII",
+    "cik": "1501585",
+    "company": "Huntington Ingalls Industries",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "HLT",
+    "cik": "1585689",
+    "company": "Hilton Worldwide",
+    "sector": "Consumer Discretionary",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "HON",
+    "cik": "773840",
+    "company": "Honeywell Technologies",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "HOOD",
+    "cik": "1783879",
+    "company": "Robinhood Markets",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "HPE",
+    "cik": "1645590",
+    "company": "Hewlett Packard Enterprise",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "HPQ",
+    "cik": "47217",
+    "company": "HP Inc.",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "HRL",
+    "cik": "48465",
+    "company": "Hormel Foods",
+    "sector": "Consumer Staples",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "HSIC",
+    "cik": "1000228",
+    "company": "Henry Schein",
+    "sector": "Healthcare",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "HST",
+    "cik": "1070750",
+    "company": "Host Hotels & Resorts",
+    "sector": "Real Estate",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "HSY",
+    "cik": "47111",
+    "company": "Hershey Company (The)",
+    "sector": "Consumer Staples",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "HUBB",
+    "cik": "48898",
+    "company": "Hubbell Incorporated",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "HUM",
+    "cik": "49071",
+    "company": "Humana",
+    "sector": "Healthcare",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "HWM",
+    "cik": "4281",
+    "company": "Howmet Aerospace",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "IBKR",
+    "cik": "1381197",
+    "company": "Interactive Brokers",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "IBM",
+    "cik": "51143",
+    "company": "IBM",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "ICE",
+    "cik": "1571949",
+    "company": "Intercontinental Exchange",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "IDXX",
+    "cik": "874716",
+    "company": "Idexx Laboratories",
+    "sector": "Healthcare",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "IEX",
+    "cik": "832101",
+    "company": "IDEX Corporation",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "IFF",
+    "cik": "51253",
+    "company": "International Flavors & Fragrances",
+    "sector": "Materials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "INCY",
+    "cik": "879169",
+    "company": "Incyte",
+    "sector": "Healthcare",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "INTC",
+    "cik": "50863",
+    "company": "Intel",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "INTU",
+    "cik": "896878",
+    "company": "Intuit",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "INVH",
+    "cik": "1687229",
+    "company": "Invitation Homes",
+    "sector": "Real Estate",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "IP",
+    "cik": "51434",
+    "company": "International Paper",
+    "sector": "Materials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "IQV",
+    "cik": "1478242",
+    "company": "IQVIA",
+    "sector": "Healthcare",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "IR",
+    "cik": "1699150",
+    "company": "Ingersoll Rand",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "IRM",
+    "cik": "1020569",
+    "company": "Iron Mountain",
+    "sector": "Real Estate",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "ISRG",
+    "cik": "1035267",
+    "company": "Intuitive Surgical",
+    "sector": "Healthcare",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "IT",
+    "cik": "749251",
+    "company": "Gartner",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "ITW",
+    "cik": "49826",
+    "company": "Illinois Tool Works",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "IVZ",
+    "cik": "914208",
+    "company": "Invesco",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "J",
+    "cik": "52988",
+    "company": "Jacobs Solutions",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "JBHT",
+    "cik": "728535",
+    "company": "J.B. Hunt",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "JBL",
+    "cik": "898293",
+    "company": "Jabil",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "JCI",
+    "cik": "833444",
+    "company": "Johnson Controls",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "JKHY",
+    "cik": "779152",
+    "company": "Jack Henry & Associates",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "JNJ",
+    "cik": "200406",
+    "company": "Johnson & Johnson",
+    "sector": "Healthcare",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "JPM",
+    "cik": "19617",
+    "company": "JPMorgan Chase",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "KDP",
+    "cik": "1418135",
+    "company": "Keurig Dr Pepper",
+    "sector": "Consumer Staples",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "KEY",
+    "cik": "91576",
+    "company": "KeyCorp",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "KEYS",
+    "cik": "1601046",
+    "company": "Keysight Technologies",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "KHC",
+    "cik": "1637459",
+    "company": "Kraft Heinz",
+    "sector": "Consumer Staples",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "KIM",
+    "cik": "879101",
+    "company": "Kimco Realty",
+    "sector": "Real Estate",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "KKR",
+    "cik": "1404912",
+    "company": "KKR & Co.",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "KLAC",
+    "cik": "319201",
+    "company": "KLA Corporation",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "KMB",
+    "cik": "55785",
+    "company": "Kimberly-Clark",
+    "sector": "Consumer Staples",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "KMI",
+    "cik": "1506307",
+    "company": "Kinder Morgan",
+    "sector": "Energy",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "KO",
+    "cik": "21344",
+    "company": "Coca-Cola Company (The)",
+    "sector": "Consumer Staples",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "KR",
+    "cik": "56873",
+    "company": "Kroger",
+    "sector": "Consumer Staples",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "KVUE",
+    "cik": "1944048",
+    "company": "Kenvue",
+    "sector": "Consumer Staples",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "L",
+    "cik": "60086",
+    "company": "Loews Corporation",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "LDOS",
+    "cik": "1336920",
+    "company": "Leidos",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "LEN",
+    "cik": "920760",
+    "company": "Lennar",
+    "sector": "Consumer Discretionary",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "LH",
+    "cik": "920148",
+    "company": "Labcorp",
+    "sector": "Healthcare",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "LHX",
+    "cik": "202058",
+    "company": "L3Harris",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "LII",
+    "cik": "1069202",
+    "company": "Lennox International",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "LIN",
+    "cik": "1707925",
+    "company": "Linde plc",
+    "sector": "Materials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "LITE",
+    "cik": "1633978",
+    "company": "Lumentum",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "LLY",
+    "cik": "59478",
+    "company": "Lilly (Eli)",
+    "sector": "Healthcare",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "LMT",
+    "cik": "936468",
+    "company": "Lockheed Martin",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "LNT",
+    "cik": "352541",
+    "company": "Alliant Energy",
+    "sector": "Utilities",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "LOW",
+    "cik": "60667",
+    "company": "Lowe's",
+    "sector": "Consumer Discretionary",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "LRCX",
+    "cik": "707549",
+    "company": "Lam Research",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "LULU",
+    "cik": "1397187",
+    "company": "Lululemon Athletica",
+    "sector": "Consumer Discretionary",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "LUV",
+    "cik": "92380",
+    "company": "Southwest Airlines",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "LVS",
+    "cik": "1300514",
+    "company": "Las Vegas Sands",
+    "sector": "Consumer Discretionary",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "LYB",
+    "cik": "1489393",
+    "company": "LyondellBasell",
+    "sector": "Materials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "LYV",
+    "cik": "1335258",
+    "company": "Live Nation Entertainment",
+    "sector": "Communication",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "MA",
+    "cik": "1141391",
+    "company": "Mastercard",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "MAA",
+    "cik": "912595",
+    "company": "Mid-America Apartment Communities",
+    "sector": "Real Estate",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "MAR",
+    "cik": "1048286",
+    "company": "Marriott International",
+    "sector": "Consumer Discretionary",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "MAS",
+    "cik": "62996",
+    "company": "Masco",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "MCD",
+    "cik": "63908",
+    "company": "McDonald's",
+    "sector": "Consumer Discretionary",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "MCHP",
+    "cik": "827054",
+    "company": "Microchip Technology",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "MCK",
+    "cik": "927653",
+    "company": "McKesson Corporation",
+    "sector": "Healthcare",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "MCO",
+    "cik": "1059556",
+    "company": "Moody's Corporation",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "MDLZ",
+    "cik": "1103982",
+    "company": "Mondelez International",
+    "sector": "Consumer Staples",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "MDT",
+    "cik": "1613103",
+    "company": "Medtronic",
+    "sector": "Healthcare",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "MET",
+    "cik": "1099219",
+    "company": "MetLife",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "META",
+    "cik": "1326801",
+    "company": "Meta Platforms",
+    "sector": "Communication",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "MGM",
+    "cik": "789570",
+    "company": "MGM Resorts",
+    "sector": "Consumer Discretionary",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "MKC",
+    "cik": "63754",
+    "company": "McCormick & Company",
+    "sector": "Consumer Staples",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "MLM",
+    "cik": "916076",
+    "company": "Martin Marietta Materials",
+    "sector": "Materials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "MMM",
+    "cik": "66740",
+    "company": "3M",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "MNST",
+    "cik": "865752",
+    "company": "Monster Beverage",
+    "sector": "Consumer Staples",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "MO",
+    "cik": "764180",
+    "company": "Altria",
+    "sector": "Consumer Staples",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "MOS",
+    "cik": "1285785",
+    "company": "Mosaic Company (The)",
+    "sector": "Materials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "MPC",
+    "cik": "1510295",
+    "company": "Marathon Petroleum",
+    "sector": "Energy",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "MPWR",
+    "cik": "1280452",
+    "company": "Monolithic Power Systems",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "MRK",
+    "cik": "310158",
+    "company": "Merck & Co.",
+    "sector": "Healthcare",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "MRNA",
+    "cik": "1682852",
+    "company": "Moderna",
+    "sector": "Healthcare",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "MRSH",
+    "cik": "62709",
+    "company": "Marsh McLennan",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "MRVL",
+    "cik": "1835632",
+    "company": "Marvell Technology",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "MS",
+    "cik": "895421",
+    "company": "Morgan Stanley",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "MSCI",
+    "cik": "1408198",
+    "company": "MSCI Inc.",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "MSFT",
+    "cik": "789019",
+    "company": "Microsoft",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "MSI",
+    "cik": "68505",
+    "company": "Motorola Solutions",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "MTB",
+    "cik": "36270",
+    "company": "M&T Bank",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "MTD",
+    "cik": "1037646",
+    "company": "Mettler Toledo",
+    "sector": "Healthcare",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "MU",
+    "cik": "723125",
+    "company": "Micron Technology",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "NCLH",
+    "cik": "1513761",
+    "company": "Norwegian Cruise Line Holdings",
+    "sector": "Consumer Discretionary",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "NDAQ",
+    "cik": "1120193",
+    "company": "Nasdaq, Inc.",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "NDSN",
+    "cik": "72331",
+    "company": "Nordson Corporation",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "NEE",
+    "cik": "753308",
+    "company": "NextEra Energy",
+    "sector": "Utilities",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "NEM",
+    "cik": "1164727",
+    "company": "Newmont",
+    "sector": "Materials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "NFLX",
+    "cik": "1065280",
+    "company": "Netflix",
+    "sector": "Communication",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "NI",
+    "cik": "1111711",
+    "company": "NiSource",
+    "sector": "Utilities",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "NKE",
+    "cik": "320187",
+    "company": "Nike, Inc.",
+    "sector": "Consumer Discretionary",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "NOC",
+    "cik": "1133421",
+    "company": "Northrop Grumman",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "NOW",
+    "cik": "1373715",
+    "company": "ServiceNow",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "NRG",
+    "cik": "1013871",
+    "company": "NRG Energy",
+    "sector": "Utilities",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "NSC",
+    "cik": "702165",
+    "company": "Norfolk Southern",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "NTAP",
+    "cik": "1002047",
+    "company": "NetApp",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "NTRS",
+    "cik": "73124",
+    "company": "Northern Trust",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "NUE",
+    "cik": "73309",
+    "company": "Nucor",
+    "sector": "Materials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "NVDA",
+    "cik": "1045810",
+    "company": "Nvidia",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "NVR",
+    "cik": "906163",
+    "company": "NVR, Inc.",
+    "sector": "Consumer Discretionary",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "NWS",
+    "cik": "1564708",
+    "company": "News Corp (Class B)",
+    "sector": "Communication",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "NWSA",
+    "cik": "1564708",
+    "company": "News Corp (Class A)",
+    "sector": "Communication",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "NXPI",
+    "cik": "1413447",
+    "company": "NXP Semiconductors",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "O",
+    "cik": "726728",
+    "company": "Realty Income",
+    "sector": "Real Estate",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "ODFL",
+    "cik": "878927",
+    "company": "Old Dominion",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "OKE",
+    "cik": "1039684",
+    "company": "Oneok",
+    "sector": "Energy",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "OMC",
+    "cik": "29989",
+    "company": "Omnicom Group",
+    "sector": "Communication",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "ON",
+    "cik": "1097864",
+    "company": "ON Semiconductor",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "ORCL",
+    "cik": "1341439",
+    "company": "Oracle Corporation",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "ORLY",
+    "cik": "898173",
+    "company": "O\u2019Reilly Automotive",
+    "sector": "Consumer Discretionary",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "OTIS",
+    "cik": "1781335",
+    "company": "Otis Worldwide",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "OXY",
+    "cik": "797468",
+    "company": "Occidental Petroleum",
+    "sector": "Energy",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "PANW",
+    "cik": "1327567",
+    "company": "Palo Alto Networks",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "PAYX",
+    "cik": "723531",
+    "company": "Paychex",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "PCAR",
+    "cik": "75362",
+    "company": "Paccar",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "PCG",
+    "cik": "1004980",
+    "company": "PG&E Corporation",
+    "sector": "Utilities",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "PEG",
+    "cik": "788784",
+    "company": "Public Service Enterprise Group",
+    "sector": "Utilities",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "PEP",
+    "cik": "77476",
+    "company": "PepsiCo",
+    "sector": "Consumer Staples",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "PFE",
+    "cik": "78003",
+    "company": "Pfizer",
+    "sector": "Healthcare",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "PFG",
+    "cik": "1126328",
+    "company": "Principal Financial Group",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "PG",
+    "cik": "80424",
+    "company": "Procter & Gamble",
+    "sector": "Consumer Staples",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "PGR",
+    "cik": "80661",
+    "company": "Progressive Corporation",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "PH",
+    "cik": "76334",
+    "company": "Parker Hannifin",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "PHM",
+    "cik": "822416",
+    "company": "PulteGroup",
+    "sector": "Consumer Discretionary",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "PKG",
+    "cik": "75677",
+    "company": "Packaging Corporation of America",
+    "sector": "Materials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "PLD",
+    "cik": "1045609",
+    "company": "Prologis",
+    "sector": "Real Estate",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "PLTR",
+    "cik": "1321655",
+    "company": "Palantir Technologies",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "PM",
+    "cik": "1413329",
+    "company": "Philip Morris International",
+    "sector": "Consumer Staples",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "PNC",
+    "cik": "713676",
+    "company": "PNC Financial Services",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "PNR",
+    "cik": "77360",
+    "company": "Pentair",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "PNW",
+    "cik": "764622",
+    "company": "Pinnacle West Capital",
+    "sector": "Utilities",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "PODD",
+    "cik": "1145197",
+    "company": "Insulet Corporation",
+    "sector": "Healthcare",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "PPG",
+    "cik": "79879",
+    "company": "PPG Industries",
+    "sector": "Materials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "PPL",
+    "cik": "922224",
+    "company": "PPL Corporation",
+    "sector": "Utilities",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "PRU",
+    "cik": "1137774",
+    "company": "Prudential Financial",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "PSA",
+    "cik": "1393311",
+    "company": "Public Storage",
+    "sector": "Real Estate",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "PSKY",
+    "cik": "2041610",
+    "company": "Paramount Skydance Corporation",
+    "sector": "Communication",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "PSX",
+    "cik": "1534701",
+    "company": "Phillips 66",
+    "sector": "Energy",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "PTC",
+    "cik": "857005",
+    "company": "PTC Inc.",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "PWR",
+    "cik": "1050915",
+    "company": "Quanta Services",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "PYPL",
+    "cik": "1633917",
+    "company": "PayPal",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "Q",
+    "cik": "2058873",
+    "company": "Qnity Electronics",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "QCOM",
+    "cik": "804328",
+    "company": "Qualcomm",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "RCL",
+    "cik": "884887",
+    "company": "Royal Caribbean Group",
+    "sector": "Consumer Discretionary",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "REG",
+    "cik": "910606",
+    "company": "Regency Centers",
+    "sector": "Real Estate",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "REGN",
+    "cik": "872589",
+    "company": "Regeneron Pharmaceuticals",
+    "sector": "Healthcare",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "RF",
+    "cik": "1281761",
+    "company": "Regions Financial Corporation",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "RJF",
+    "cik": "720005",
+    "company": "Raymond James Financial",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "RL",
+    "cik": "1037038",
+    "company": "Ralph Lauren Corporation",
+    "sector": "Consumer Discretionary",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "RMD",
+    "cik": "943819",
+    "company": "ResMed",
+    "sector": "Healthcare",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "ROK",
+    "cik": "1024478",
+    "company": "Rockwell Automation",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "ROL",
+    "cik": "84839",
+    "company": "Rollins, Inc.",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "ROP",
+    "cik": "882835",
+    "company": "Roper Technologies",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "ROST",
+    "cik": "745732",
+    "company": "Ross Stores",
+    "sector": "Consumer Discretionary",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "RSG",
+    "cik": "1060391",
+    "company": "Republic Services",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "RTX",
+    "cik": "101829",
+    "company": "RTX Corporation",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "RVTY",
+    "cik": "31791",
+    "company": "Revvity",
+    "sector": "Healthcare",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "SBAC",
+    "cik": "1034054",
+    "company": "SBA Communications",
+    "sector": "Real Estate",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "SBUX",
+    "cik": "829224",
+    "company": "Starbucks",
+    "sector": "Consumer Discretionary",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "SCHW",
+    "cik": "316709",
+    "company": "Charles Schwab Corporation",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "SHW",
+    "cik": "89800",
+    "company": "Sherwin-Williams",
+    "sector": "Materials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "SJM",
+    "cik": "91419",
+    "company": "J.M. Smucker Company (The)",
+    "sector": "Consumer Staples",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "SLB",
+    "cik": "87347",
+    "company": "Schlumberger",
+    "sector": "Energy",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "SMCI",
+    "cik": "1375365",
+    "company": "Supermicro",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "SNA",
+    "cik": "91440",
+    "company": "Snap-on",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "SNDK",
+    "cik": "2023554",
+    "company": "Sandisk",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "SNPS",
+    "cik": "883241",
+    "company": "Synopsys",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "SO",
+    "cik": "92122",
+    "company": "Southern Company",
+    "sector": "Utilities",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "SOLV",
+    "cik": "1964738",
+    "company": "Solventum",
+    "sector": "Healthcare",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "SPG",
+    "cik": "1063761",
+    "company": "Simon Property Group",
+    "sector": "Real Estate",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "SPGI",
+    "cik": "64040",
+    "company": "S&P Global",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "SRE",
+    "cik": "1032208",
+    "company": "Sempra",
+    "sector": "Utilities",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "STE",
+    "cik": "1757898",
+    "company": "Steris",
+    "sector": "Healthcare",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "STLD",
+    "cik": "1022671",
+    "company": "Steel Dynamics",
+    "sector": "Materials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "STT",
+    "cik": "93751",
+    "company": "State Street Corporation",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "STX",
+    "cik": "1137789",
+    "company": "Seagate Technology",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "STZ",
+    "cik": "16918",
+    "company": "Constellation Brands",
+    "sector": "Consumer Staples",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "SW",
+    "cik": "2005951",
+    "company": "Smurfit Westrock",
+    "sector": "Materials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "SWK",
+    "cik": "93556",
+    "company": "Stanley Black & Decker",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "SWKS",
+    "cik": "4127",
+    "company": "Skyworks Solutions",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "SYF",
+    "cik": "1601712",
+    "company": "Synchrony Financial",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "SYK",
+    "cik": "310764",
+    "company": "Stryker Corporation",
+    "sector": "Healthcare",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "SYY",
+    "cik": "96021",
+    "company": "Sysco",
+    "sector": "Consumer Staples",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "T",
+    "cik": "732717",
+    "company": "AT&T",
+    "sector": "Communication",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "TAP",
+    "cik": "24545",
+    "company": "Molson Coors Beverage Company",
+    "sector": "Consumer Staples",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "TDG",
+    "cik": "1260221",
+    "company": "TransDigm Group",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "TDY",
+    "cik": "1094285",
+    "company": "Teledyne Technologies",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "TECH",
+    "cik": "842023",
+    "company": "Bio-Techne",
+    "sector": "Healthcare",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "TEL",
+    "cik": "1385157",
+    "company": "TE Connectivity",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "TER",
+    "cik": "97210",
+    "company": "Teradyne",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "TFC",
+    "cik": "92230",
+    "company": "Truist Financial",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "TGT",
+    "cik": "27419",
+    "company": "Target Corporation",
+    "sector": "Consumer Staples",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "TJX",
+    "cik": "109198",
+    "company": "TJX Companies",
+    "sector": "Consumer Discretionary",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "TKO",
+    "cik": "1973266",
+    "company": "TKO Group Holdings",
+    "sector": "Communication",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "TMO",
+    "cik": "97745",
+    "company": "Thermo Fisher Scientific",
+    "sector": "Healthcare",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "TMUS",
+    "cik": "1283699",
+    "company": "T-Mobile US",
+    "sector": "Communication",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "TPL",
+    "cik": "1811074",
+    "company": "Texas Pacific Land Corporation",
+    "sector": "Energy",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "TPR",
+    "cik": "1116132",
+    "company": "Tapestry, Inc.",
+    "sector": "Consumer Discretionary",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "TRGP",
+    "cik": "1389170",
+    "company": "Targa Resources",
+    "sector": "Energy",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "TRMB",
+    "cik": "864749",
+    "company": "Trimble Inc.",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "TROW",
+    "cik": "1113169",
+    "company": "T. Rowe Price",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "TRV",
+    "cik": "86312",
+    "company": "Travelers Companies (The)",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "TSCO",
+    "cik": "916365",
+    "company": "Tractor Supply",
+    "sector": "Consumer Discretionary",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "TSLA",
+    "cik": "1318605",
+    "company": "Tesla, Inc.",
+    "sector": "Consumer Discretionary",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "TSN",
+    "cik": "100493",
+    "company": "Tyson Foods",
+    "sector": "Consumer Staples",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "TT",
+    "cik": "1466258",
+    "company": "Trane Technologies",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "TTD",
+    "cik": "1671933",
+    "company": "Trade Desk (The)",
+    "sector": "Communication",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "TTWO",
+    "cik": "946581",
+    "company": "Take-Two Interactive",
+    "sector": "Communication",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "TXN",
+    "cik": "97476",
+    "company": "Texas Instruments",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "TXT",
+    "cik": "217346",
+    "company": "Textron",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "TYL",
+    "cik": "860731",
+    "company": "Tyler Technologies",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "UAL",
+    "cik": "100517",
+    "company": "United Airlines Holdings",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "UBER",
+    "cik": "1543151",
+    "company": "Uber",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "UDR",
+    "cik": "74208",
+    "company": "UDR, Inc.",
+    "sector": "Real Estate",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "UHS",
+    "cik": "352915",
+    "company": "Universal Health Services",
+    "sector": "Healthcare",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "ULTA",
+    "cik": "1403568",
+    "company": "Ulta Beauty",
+    "sector": "Consumer Discretionary",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "UNH",
+    "cik": "731766",
+    "company": "UnitedHealth Group",
+    "sector": "Healthcare",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "UNP",
+    "cik": "100885",
+    "company": "Union Pacific Corporation",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "UPS",
+    "cik": "1090727",
+    "company": "United Parcel Service",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "URI",
+    "cik": "1067701",
+    "company": "United Rentals",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "USB",
+    "cik": "36104",
+    "company": "U.S. Bancorp",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "V",
+    "cik": "1403161",
+    "company": "Visa Inc.",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "VEEV",
+    "cik": "1393052",
+    "company": "Veeva Systems",
+    "sector": "Healthcare",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "VICI",
+    "cik": "1705696",
+    "company": "Vici Properties",
+    "sector": "Real Estate",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "VLO",
+    "cik": "1035002",
+    "company": "Valero Energy",
+    "sector": "Energy",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "VLTO",
+    "cik": "1967680",
+    "company": "Veralto",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "VMC",
+    "cik": "1396009",
+    "company": "Vulcan Materials Company",
+    "sector": "Materials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "VRSK",
+    "cik": "1442145",
+    "company": "Verisk Analytics",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "VRSN",
+    "cik": "1014473",
+    "company": "Verisign",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "VRT",
+    "cik": "1674101",
+    "company": "Vertiv",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "VRTX",
+    "cik": "875320",
+    "company": "Vertex Pharmaceuticals",
+    "sector": "Healthcare",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "VST",
+    "cik": "1692819",
+    "company": "Vistra Corp.",
+    "sector": "Utilities",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "VTR",
+    "cik": "740260",
+    "company": "Ventas",
+    "sector": "Real Estate",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "VTRS",
+    "cik": "1792044",
+    "company": "Viatris",
+    "sector": "Healthcare",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "VZ",
+    "cik": "732712",
+    "company": "Verizon",
+    "sector": "Communication",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "WAB",
+    "cik": "943452",
+    "company": "Wabtec",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "WAT",
+    "cik": "1000697",
+    "company": "Waters Corporation",
+    "sector": "Healthcare",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "WBD",
+    "cik": "1437107",
+    "company": "Warner Bros. Discovery",
+    "sector": "Communication",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "WDAY",
+    "cik": "1327811",
+    "company": "Workday, Inc.",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "WDC",
+    "cik": "106040",
+    "company": "Western Digital",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "WEC",
+    "cik": "783325",
+    "company": "WEC Energy Group",
+    "sector": "Utilities",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "WELL",
+    "cik": "766704",
+    "company": "Welltower",
+    "sector": "Real Estate",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "WFC",
+    "cik": "72971",
+    "company": "Wells Fargo",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "WM",
+    "cik": "823768",
+    "company": "Waste Management",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "WMB",
+    "cik": "107263",
+    "company": "Williams Companies",
+    "sector": "Energy",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "WMT",
+    "cik": "104169",
+    "company": "Walmart",
+    "sector": "Consumer Staples",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "WRB",
+    "cik": "11544",
+    "company": "W. R. Berkley Corporation",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "WSM",
+    "cik": "719955",
+    "company": "Williams-Sonoma, Inc.",
+    "sector": "Consumer Discretionary",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "WST",
+    "cik": "105770",
+    "company": "West Pharmaceutical Services",
+    "sector": "Healthcare",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "WTW",
+    "cik": "1140536",
+    "company": "Willis Towers Watson",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "WY",
+    "cik": "106535",
+    "company": "Weyerhaeuser",
+    "sector": "Real Estate",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "WYNN",
+    "cik": "1174922",
+    "company": "Wynn Resorts",
+    "sector": "Consumer Discretionary",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "XEL",
+    "cik": "72903",
+    "company": "Xcel Energy",
+    "sector": "Utilities",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "XYL",
+    "cik": "1524472",
+    "company": "Xylem Inc.",
+    "sector": "Industrials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "XYZ",
+    "cik": "1512673",
+    "company": "Block, Inc.",
+    "sector": "Financials",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "YUM",
+    "cik": "1041061",
+    "company": "Yum! Brands",
+    "sector": "Consumer Discretionary",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "ZBH",
+    "cik": "1136869",
+    "company": "Zimmer Biomet",
+    "sector": "Healthcare",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "ZBRA",
+    "cik": "877212",
+    "company": "Zebra Technologies",
+    "sector": "Technology",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  },
+  {
+    "ticker": "ZTS",
+    "cik": "1555280",
+    "company": "Zoetis",
+    "sector": "Healthcare",
+    "_provenance": "ticker/company/sector from train_matrix_v5.npz; cik from expanded/universe_sec.json"
+  }
+]
