@@ -3,7 +3,12 @@
   "redirects": [
     {
       "destination": "https://equities.dumbmodel.com/:path*",
-      "has": [{"type": "host", "value": "equities.jcamd.com"}],
+      "has": [
+        {
+          "type": "host",
+          "value": "equities.jcamd.com"
+        }
+      ],
       "permanent": true,
       "source": "/:path*"
     },
@@ -19,7 +24,17 @@
     }
   ],
   "rewrites": [
-    {"destination": "/model.html", "source": "/model"},
-    {"destination": "/trends.html", "source": "/trends"}
-  ]
+    {
+      "destination": "/model.html",
+      "source": "/model"
+    },
+    {
+      "destination": "/trends.html",
+      "source": "/trends"
+    }
+  ],
+  "framework": null,
+  "buildCommand": null,
+  "installCommand": null,
+  "outputDirectory": "."
 }
