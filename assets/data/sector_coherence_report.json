@@ -1,0 +1,14 @@
+{
+  "sector_coherence": 0.7057,
+  "purity": 0.718,
+  "comp": 0.88,
+  "MAE": 0.2085,
+  "CQS": 0.725,
+  "IC": 0.012,
+  "Sharpe": 1.22,
+  "n_rows": 4831,
+  "n_tickers": 500,
+  "n_sectors": 11,
+  "computed_at": "2026-08-15T21:50Z",
+  "splits": "400/50/50"
+}
