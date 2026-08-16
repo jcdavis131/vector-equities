@@ -153,6 +153,26 @@ def process_zip(path: Path) -> list[dict]:
             if acc and is_insider(row.get("RPTOWNER_RELATIONSHIP", "")):
                 insiders.add(acc)
 
+        # AFFILIATED-FILER DEDUPLICATION.
+        # When a group of related entities sells one block, each entity files
+        # its own Form 4 reporting the SAME underlying transaction. Summing the
+        # submissions multiplies one economic event by the number of filers.
+        # Measured: INVH FY2019 carried 43 distinct accessions whose nets
+        # repeated in groups -- -57,600,000 seven times, -40,000,000 fourteen
+        # times -- with sequential accession numbers from a single filing agent
+        # on one date (a Blackstone vehicle). Summed naively that year read
+        # -1,538,861,824 shares, roughly three times the company's entire share
+        # count.
+        #
+        # A transaction is identified by issuer + date + code + direction +
+        # shares + price. Two genuinely distinct insiders trading an identical
+        # share count at an identical price on the same day is possible but far
+        # rarer than group filing, so first-occurrence-wins is the better error.
+        # Scope is one quarterly archive; a late filing landing in a different
+        # quarter than its transaction date is not caught.
+        seen_trans: set[tuple] = set()
+        dupes = [0]
+
         agg = defaultdict(lambda: {"n": 0, "open_sh": 0.0, "all_sh": 0.0,
                                    "open_val": 0.0, "any_open": False, "any_all": False})
         for row in read_tsv(zf, "NONDERIV_TRANS.tsv"):
@@ -172,6 +192,12 @@ def process_zip(path: Path) -> list[dict]:
                 continue
             sign = 1.0 if ad == "A" else -1.0
             price = _num(row.get("TRANS_PRICEPERSHARE"))
+            key = (subs.get(acc, {}).get("issuer_cik"), row.get("TRANS_DATE", ""),
+                   code, ad, shares, price)
+            if key in seen_trans:
+                dupes[0] += 1
+                continue
+            seen_trans.add(key)
             a = agg[acc]
             a["n"] += 1
             a["all_sh"] += sign * shares
@@ -203,6 +229,8 @@ def process_zip(path: Path) -> list[dict]:
             rec["net_shares_all"] = a["all_sh"] if (a and a["any_all"]) else None
             rec["net_value"] = a["open_val"] if (a and a["any_open"] and a["open_val"]) else None
             out.append(rec)
+    if dupes[0]:
+        print(f"      deduped {dupes[0]} repeat transaction rows (affiliated filers)")
     return out
 
 
