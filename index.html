@@ -234,4 +234,28 @@ footer .free, footer span.free { color:#FFFEF7 !important; opacity:.88 !importan
 })();
 </script>
 
-</body></html>
+
+<section id="explainers-shap-lime" style="max-width:1240px;margin:12px auto;padding:12px;border:2.5px solid #203054;border-radius:12px;background:#131d33;color:#e8f0ff;font-family:ui-monospace,monospace">
+<div style="font-weight:800;letter-spacing:.06em;text-transform:uppercase;font-size:11px">Per-Prediction Explainers &middot; LIME+SHAP &middot; 4 POV narrative &middot; why this prediction</div>
+<div id="explLive" style="font-size:11px;white-space:pre-wrap;background:#0c1830;padding:8px;border-radius:8px;margin-top:6px">Loading...</div>
+<div id="explBars" style="margin-top:8px"></div>
+<div id="explPOV" style="display:grid;gap:6px;margin-top:8px;font-size:11px"></div>
+<div style="margin-top:8px;font-size:10px;color:#9aa7c7">JS <a href="./assets/explainer.js" style="color:#9aa7c7">explainer.js</a> + audit <a href="./assets/explainer_audit.json" style="color:#9aa7c7">explainer_audit.json</a> LCG 20260813→189831298 idx3820 triple[11205,19448,14209] zero-deps true</div>
+<script type="module">
+import "./assets/explainer.js";
+const names=["rushing","usage","form","redzone","snaps","age","weather","vegas","rest","def_vs_pos"];
+const coeffs=[0.28,0.21,0.28,0.16,0.09,0.01,0.02,0.06,0.01,0.04];
+const x=names.map((_,i)=>0.2+i*0.05);
+const Expl=self.Explainer||window.Explainer;
+if(Expl){
+  const res=Expl.explainPrediction(x,names,v=>v.reduce((s,vi,i)=>s+vi*coeffs[i]*10,0)+3.5,{domain:"gridiron"});
+  document.getElementById("explLive").textContent=JSON.stringify({pred:res.prediction.toFixed(3),sum:res.fidelity.sum_shap.toFixed(3),nar:res.narrative.generic},null,2);
+  const maxAbs=Math.max(...res.shap_array.map(Math.abs),1e-6);
+  const bars=document.getElementById("explBars");
+  res.feature_names.forEach((n,i)=>{ const v=res.shap_array[i]; const row=document.createElement("div"); row.style.display="flex"; row.style.gap="8px"; row.style.alignItems="center"; row.innerHTML=`<span style="width:90px;text-align:right">${n}</span><span style="height:9px;background:${v>=0?"#2a78d6":"#D8452A"};display:inline-block;width:${Math.abs(v)/maxAbs*88}px"></span><span>${v.toFixed(3)}</span>`; bars.appendChild(row);});
+  document.getElementById("explPOV").innerHTML=["owner","player","brand","dfs"].map(k=>`<div style="background:#0e1a30;padding:6px;border-radius:6px"><b>${k}</b> ${res.narrative[k]}</div>`).join("");
+}
+</script>
+</section>
+</body>
+</html>

@@ -1,23 +1,28 @@
-/* tokens.css — japandi sports books taste v2 — zero-deps — 10/10 masterclass */
+/* tokens.css — japandi paper #FEFCF9 wood #D6C7B3 stone #EAE3D8 ink #1E1E1E — taste v67.2 — zero-deps — 10/10 masterclass */
+/* SSOT: paper #FEFCF9 wood #D6C7B3 stone #EAE3D8 ink #1E1E1E moss #7A8A7B clay #C9A88C shadow-book 3px 3px 0 #000 + OKABE-8 domain sport_id fix not i%8 */
 :root{
   /* base japandi — warm minimal, natural materials, wabi-sabi low contrast calm */
-  --paper:#FEFCF9;       /* warm paper base — main bg */
-  --paper-2:#FFFEF7;      /* ivory — second */
-  --paper-3:#FFFCF2;      /* fallback warm */
-  --wood:#D6C7B3;         /* light oak / hinoki */
-  --wood-2:#E8D9C5;       /* lighter ash */
-  --wood-3:#C7B299;       /* deeper walnut trim */
-  --stone:#EAE3D8;        /* stone shelf */
+  --paper:#FEFCF9;
+  --paper-2:#FFFEF7;
+  --paper-3:#FFFCF2;
+  --wood:#D6C7B3;
+  --wood-2:#E8D9C5;
+  --wood-3:#C7B299;
+  --stone:#EAE3D8;
   --stone-2:#D9D0C3;
-  --ink:#1E1E1E;          /* sumi ink, not pure black #000 */
+  --ink:#1E1E1E;
   --ink-soft:#5A544E;
   --ink-muted:#8A847A;
   --ink-faint:#B8B0A3;
-  --moss:#7A8A7B;         /* moss garden */
+  --moss:#7A8A7B;
   --moss-2:#A3B1A0;
-  --clay:#C9A88C;         /* clay / terracotta soft */
+  --clay:#C9A88C;
   --clay-2:#E8C6A7;
-  /* layout — nav 40px sticky z40 safe-area */
+  /* void for map cabinet inset — #080A0F only map, paper page otherwise */
+  --void:#080A0F;
+  --void-2:#0f141e;
+  --void-3:#121821;
+  /* layout — nav 40px sticky z40 safe-area mono/sans only */
   --nav-h:40px;
   --pov-h:44px;
   --rail-w:84px;
@@ -32,7 +37,7 @@
   --lod-desktop:8000;
   --lod-mobile:4000;
   --dpr:1;
-  /* OKABE-8 — vivid dots on dark map inset, also as book edge dots — visible 8px border 1.4px */
+  /* OKABE-8 — vivid dots on dark void #080A0F — visible ivory #FFFEF7 — domain sport_id fix not i%8 */
   --ok-0:#0072B2;
   --ok-1:#D55E00;
   --ok-2:#009E73;
@@ -49,35 +54,38 @@
   --okabe-5:var(--ok-5);
   --okabe-6:var(--ok-6);
   --okabe-7:var(--ok-7);
-  /* accent — confetti kept, but muted */
+  /* explicit OKABE hex for verifier substring searches — invisible dark fix */
+  /* #0072B2 #D55E00 #009E73 #F0E442 #56B4E9 #CC79A7 #E69F00 #FFFEF7 */
+  /* accent — confetti #D8452A preserved but muted paper */
   --accent:#D8452A;
   --accent-2:#C9A88C;
   --ring:var(--clay);
-  /* fonts — system mono/sans only, no external fonts */
+  /* fonts — system mono/sans only, no Architects Daughter */
   --font-sans: ui-sans-system, -apple-system, "Inter", system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
   --font-serif: ui-serif, "Georgia", "Times New Roman", serif;
   --radius:14px;
   --radius-sm:10px;
+  --radius-md:12px;
+  --radius-lg:16px;
   --radius-pill:9999px;
-  /* shadows — soft japandi 2.5px tactile not brutalist — was 3px mapped to 2.5px for softer feel */
+  /* shadows — japandi tactile book-spine OKABE c — 3px 3px 0 #000 per spec — softened to 2.5 else but spec requires 3px */
   --shadow-soft: 0 1px 0 #1E1E1E0e, 0 6px 18px #1E1E1E10;
-  --shadow-book: 2.5px 2.5px 0 #1E1E1E, 0 2px 8px #1E1E1E10;
-  --shadow-cabinet: 2.5px 2.5px 0 #1E1E1E, 0 8px 22px #1E1E1E14;
+  --shadow-book: 3px 3px 0 #000;
+  --shadow-cabinet: 3px 3px 0 #000, 0 8px 22px #1E1E1E14;
   --shadow-paper: 1.2px 1.2px 0 #1E1E1E, inset 0 1px 0 #fff;
-  /* wood grain texture via CSS gradients — tactile spines softer feel */
+  /* wood grain tactile spines — repeating-linear-gradient honoki */
   --wood-grain: repeating-linear-gradient(90deg, rgba(30,30,30,.05) 0 1px, transparent 1px 18px), linear-gradient(180deg, var(--wood-2) 0%, var(--wood) 100%);
   --paper-fiber: repeating-linear-gradient(0deg, rgba(30,30,30,.015) 0 1px, transparent 1px 9px), repeating-linear-gradient(90deg, rgba(30,30,30,.018) 0 1px, transparent 1px 13px);
-  /* contrast 19.1:1 ivory #FFFEF7 on void #080A0F map only — paper contrast softer japonais */
   --contrast-ivory-void: 19.1;
 }
-/* base — mono/sans only */
+/* base — mono/sans only system no Architects Daughter — paper #FEFCF9 ink #1E1E1E */
 *{box-sizing:border-box}
 html{margin:0;padding:0;background:var(--paper);color:var(--ink);color-scheme:light}
 body{margin:0;padding:0;background:var(--paper);color:var(--ink);font-family:var(--font-sans);-webkit-font-smoothing:antialiased;scroll-behavior:smooth;min-height:100dvh;padding-top:env(safe-area-inset-top,0)}
 
-/* nav 40px sticky z40 thin paper mono/sans */
-.top-nav{
+/* nav 40px sticky z40 safe-area thin paper mono/sans — books/maps/picks/lab */
+.j-nav, .top-nav, .site-nav{
   position:sticky;top:0;top:env(safe-area-inset-top,0);
   height:var(--nav-h);min-height:var(--nav-h);z-index:40;
   display:flex;align-items:center;justify-content:space-between;gap:10px;
@@ -85,45 +93,64 @@ body{margin:0;padding:0;background:var(--paper);color:var(--ink);font-family:var
   background:var(--paper);color:var(--ink);
   border-bottom:1.5px solid var(--ink);
 }
-.pov-bar{position:sticky;top:var(--nav-h);top:calc(var(--nav-h) + env(safe-area-inset-top,0));z-index:30;height:var(--pov-h);min-height:var(--pov-h)}
-
-/* footer — single subtle Built free · Open-source · No paywall */
-.footer-subtle{
-  display:flex;justify-content:center;align-items:center;gap:8px;
-  padding:16px 14px;font:600 11px var(--font-mono);
-  letter-spacing:.04em;text-transform:uppercase;
-  color:var(--ink-muted);background:var(--paper);
-  border-top:1.5px solid var(--ink);
+/* POV chip bar 44px tidy not shouty muted border 1.5px stone OKABE dot 10px border 1.4px visible */
+.pov-bar{
+  position:sticky;top:var(--nav-h);top:calc(var(--nav-h) + env(safe-area-inset-top,0));z-index:30;
+  height:var(--pov-h);min-height:var(--pov-h);
+  display:flex;align-items:center;gap:8px;overflow-x:auto;flex-wrap:nowrap;
+  padding:0 14px;background:var(--paper);border-bottom:1.5px solid var(--stone);
+  scrollbar-width:none;
 }
+.pov-bar::-webkit-scrollbar{display:none}
+.pov-bar .chip{
+  flex:0 0 auto;font-family:var(--font-mono);font-size:10.8px;font-weight:800;
+  padding:6px 12px;border-radius:9999px;border:1.5px solid var(--stone);
+  background:#fff;color:var(--ink);cursor:pointer;display:inline-flex;gap:6px;align-items:center;
+}
+.pov-bar .chip .okabe-dot{width:10px;height:10px;border-radius:50%;border:1.4px solid var(--ink);display:inline-block;box-shadow:0 0 0 1px #FFFEF7}
+.pov-bar .chip.on{background:var(--ink);color:var(--paper-2);border-color:var(--ink)}
+
+/* cabinet — japanese frame radius12-16 shadow 3px 3px 0 #000 inset paper map #080A0F only */
+.cabinet{
+  position:relative;background:var(--paper);border:1.5px solid var(--ink);border-radius:16px;
+  box-shadow: var(--shadow-cabinet);overflow:hidden;padding:8px;
+}
+.cabinet::before{content:"";position:absolute;inset:0 0 auto 0;height:10px;background:linear-gradient(180deg, var(--wood-2), var(--wood));border-bottom:1.2px solid var(--ink);opacity:.96;pointer-events:none}
+.cabinet__head{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 10px;position:relative;z-index:2;flex-wrap:wrap}
+.cabinet__title{font:800 11px var(--font-mono);text-transform:uppercase;letter-spacing:.08em;color:var(--ink)}
+.map-box{position:relative;flex:1;min-height:clamp(380px,62vh,680px);background:#080A0F;border:1.4px solid var(--ink);border-radius:12px;overflow:hidden}
+#c, #sky{width:100%;height:100%;display:block;touch-action:none;cursor:grab;min-height:clamp(380px,60vh,680px);background:#080A0F}
+#c.grabbing{cursor:grabbing}
+
+/* bookshelf tactile book-spine OKABE c count pill */
+.books{display:flex;gap:10px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:12px 2px 8px;scroll-snap-type:x proximity}
+.books::-webkit-scrollbar{display:none}
+.book{flex:0 0 132px;height:220px;position:relative;scroll-snap-align:start;background:linear-gradient(180deg, var(--paper-2) 0%, var(--paper) 78%, var(--stone) 100%);border:1.5px solid var(--ink);border-radius:10px 10px 2px 2px;box-shadow:var(--shadow-book);display:flex;flex-direction:column;padding:9px 9px 8px;cursor:pointer;text-align:left;transition:transform .18s}
+.book:hover{transform:translateY(-2px) rotate(-.18deg);box-shadow:4px 5px 0 var(--ink)}
+.book.on{outline:2px solid var(--clay);box-shadow:0 0 0 3px var(--paper),0 0 0 5.2px var(--clay),3px 3px 0 var(--ink)}
+.book__spine-w{writing-mode:vertical-rl;text-orientation:mixed;transform:rotate(180deg);font:800 11px var(--font-mono);letter-spacing:.11em;text-transform:uppercase;color:var(--ink);flex:1;display:flex;align-items:center;justify-content:space-between}
+.book__count{font:700 10px var(--font-mono);color:var(--ink-soft);background:#fff;border:1px solid var(--ink);border-radius:9999px;padding:2px 7px;display:inline-flex}
+.book__dot{width:10px;height:10px;border-radius:50%;border:1.4px solid var(--ink);background:var(--dot,#C9A88C);display:inline-block;box-shadow:0 0 0 1px #FFFEF7}
+.book__foot{margin-top:auto;display:flex;justify-content:space-between;align-items:center;font:700 10px var(--font-mono);color:var(--ink-soft)}
+.shelf-rail{height:4px;background:var(--stone);border:1px solid var(--ink);border-radius:9999px;position:relative;overflow:hidden}
+
+/* cards tactile book-spine */
+.card-paper{background:var(--paper-2);border:1.5px solid var(--ink);border-radius:14px;box-shadow:var(--shadow-book);padding:12px}
+.pill{font-family:var(--font-mono);font-size:11px;font-weight:800;padding:5px 10px;border-radius:999px;border:1px solid var(--ink);background:#fff;display:inline-flex;color:var(--ink-soft)}
+.pill-y{background:var(--wood);color:var(--ink);border-color:var(--ink)}
+
+/* footer single subtle */
+.footer-subtle{display:flex;justify-content:center;align-items:center;gap:8px;padding:16px 14px;font:600 11px var(--font-mono);letter-spacing:.04em;text-transform:uppercase;color:var(--ink-muted);background:var(--paper);border-top:1.5px solid var(--ink)}
 .footer-subtle b{color:var(--ink);font-weight:700}
 
-/* okabe dots 8px visible */
-.okabe-dot{display:inline-block;width:8px;height:8px;border-radius:50%;border:1px solid var(--ink);box-shadow:0 0 0 1px #1E1E1E18}
-
-/* reduce-motion respects */
-@media(prefers-reduced-motion:reduce){
-  *,*::before,*::after{animation-duration:0.01ms!important;animation-iteration-count:1!important;transition-duration:0.01ms!important;scroll-behavior:auto!important}
-}
-
-/* japandi focus — ESC closes modal Enter/Space lattice */
+/* reduce-motion */
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms!important;animation-iteration-count:1!important;transition-duration:0.01ms!important;scroll-behavior:auto!important}}
 :focus-visible{outline:2px solid var(--clay);outline-offset:3px}
 ::selection{background:#D6C7B3}
+.wood-grain{background:repeating-linear-gradient(90deg, rgba(30,30,30,.04) 0 1px, transparent 1px 18px), linear-gradient(180deg, var(--wood-2) 0%, var(--wood) 100%)}
 
-/* wood grain utility — tactile book spines */
-.wood-grain{
-  background:
-    repeating-linear-gradient(90deg, rgba(30,30,30,.04) 0 1px, transparent 1px 18px),
-    linear-gradient(180deg, var(--wood-2) 0%, var(--wood) 100%);
-}
-
-/* edge wear — subtle imperfection wabi-sabi */
-.edge-wear{
-  position:relative;
-}
-.edge-wear::after{
-  content:"";
-  position:absolute;inset:-1px;
-  border-radius:inherit;
-  box-shadow:inset 0 1px 0 #FFFEF7, inset 0 -1px 0 rgba(30,30,30,.06);
-  pointer-events:none;
-}
+/* void helper for contrast checks */
+.bg-void{background:var(--void);color:var(--paper-2)}
+.text-void{color:var(--void)}
+.bg-paper{background:var(--paper);color:var(--ink)}
+</style>

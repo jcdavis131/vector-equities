@@ -1,0 +1,36 @@
+{
+  "daily": "20260813",
+  "seed": 189831298,
+  "idx": 3820,
+  "n1": {
+    "seed": 189831298,
+    "items": [
+      11205
+    ]
+  },
+  "n3": {
+    "items": [
+      11205,
+      19448,
+      14209
+    ]
+  },
+  "n5": {
+    "items": [
+      11205,
+      19448,
+      14209,
+      11701,
+      18524
+    ]
+  },
+  "Solo1": "11205",
+  "Triple3": "11205,19448,14209",
+  "Full5": "11205,19448,14209,11701,18524",
+  "same_link_same_stars": "?daily=20260813&n=1/3/5",
+  "open\u2192drag-map\u2192Jordan\u2192copy-link": "equal stars DAU3/WAU3 TLPG dedup",
+  "DAU3": true,
+  "WAU3": true,
+  "TLPG": true,
+  "humanized": "humanized-badge"
+}

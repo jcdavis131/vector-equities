@@ -1,0 +1,250 @@
+{
+  "date": "2026-08-16",
+  "domain": "equities",
+  "pov": "all",
+  "chips": [
+    {
+      "id": "owner",
+      "label": "Owner",
+      "sub": "championship economics cap tools",
+      "type": "championship economics cap tools"
+    },
+    {
+      "id": "player",
+      "label": "Player",
+      "sub": "stay-on-floor fit",
+      "type": "Player stay-on-floor fit"
+    },
+    {
+      "id": "brand",
+      "label": "Brand",
+      "sub": "Sponsor wins\u2192story",
+      "type": "Brand Sponsor wins\u2192story"
+    },
+    {
+      "id": "dfs",
+      "label": "DFS",
+      "sub": "optimizer",
+      "type": "DFS optimizer"
+    }
+  ],
+  "owner": [
+    {
+      "ticker": "FLEX",
+      "display_name": "Flex Ltd.",
+      "sector": "Technology",
+      "cap": 454,
+      "x": 0.2219,
+      "y": 0.36576,
+      "z": -0.54462,
+      "edge": 0.9976
+    },
+    {
+      "ticker": "VTRS",
+      "display_name": "Viatris",
+      "sector": "Healthcare",
+      "cap": 387,
+      "x": -0.13846,
+      "y": -0.12952,
+      "z": -0.18268,
+      "edge": 0.9976
+    },
+    {
+      "ticker": "LNT",
+      "display_name": "Alliant Energy",
+      "sector": "Utilities",
+      "cap": 1286,
+      "x": -0.05571,
+      "y": -0.27431,
+      "z": 0.17909,
+      "edge": 0.9934
+    },
+    {
+      "ticker": "LEN",
+      "display_name": "Lennar",
+      "sector": "Consumer Discretionary",
+      "cap": 1488,
+      "x": -0.05123,
+      "y": -0.1657,
+      "z": -0.16328,
+      "edge": 0.9926
+    },
+    {
+      "ticker": "NWS",
+      "display_name": "News Corp (Class B)",
+      "sector": "Communication",
+      "cap": 355,
+      "x": 0.02459,
+      "y": -0.36531,
+      "z": -0.10221,
+      "edge": 0.9866
+    }
+  ],
+  "player": [
+    {
+      "ticker": "NDAQ",
+      "display_name": "Nasdaq, Inc.",
+      "sector": "Financials",
+      "cap": 38,
+      "x": -0.39999,
+      "y": -0.4364,
+      "z": 0.08996,
+      "edge": 0.9983
+    },
+    {
+      "ticker": "BA",
+      "display_name": "Boeing",
+      "sector": "Industrials",
+      "cap": 330,
+      "x": -0.27276,
+      "y": 0.33877,
+      "z": -0.37037,
+      "edge": 0.9968
+    },
+    {
+      "ticker": "JNJ",
+      "display_name": "Johnson & Johnson",
+      "sector": "Healthcare",
+      "cap": 981,
+      "x": -0.03715,
+      "y": -0.07475,
+      "z": -0.25903,
+      "edge": 0.994
+    },
+    {
+      "ticker": "TMO",
+      "display_name": "Thermo Fisher Scientific",
+      "sector": "Healthcare",
+      "cap": 188,
+      "x": 0.17449,
+      "y": -0.18266,
+      "z": -0.10229,
+      "edge": 0.9884
+    },
+    {
+      "ticker": "ETN",
+      "display_name": "Eaton Corporation",
+      "sector": "Industrials",
+      "cap": 616,
+      "x": 0.09672,
+      "y": -0.1751,
+      "z": -0.11627,
+      "edge": 0.9881
+    }
+  ],
+  "brand": [
+    {
+      "ticker": "FITB",
+      "display_name": "Fifth Third Bancorp",
+      "sector": "Financials",
+      "cap": 702,
+      "x": -0.05306,
+      "y": -0.39793,
+      "z": 0.27802,
+      "edge": 0.9993
+    },
+    {
+      "ticker": "TTWO",
+      "display_name": "Take-Two Interactive",
+      "sector": "Communication",
+      "cap": 427,
+      "x": -0.53968,
+      "y": 0.12704,
+      "z": -0.37556,
+      "edge": 0.997
+    },
+    {
+      "ticker": "SWK",
+      "display_name": "Stanley Black & Decker",
+      "sector": "Industrials",
+      "cap": 434,
+      "x": 0.1636,
+      "y": -0.12319,
+      "z": -0.23552,
+      "edge": 0.9969
+    },
+    {
+      "ticker": "SJM",
+      "display_name": "J.M. Smucker Company (The)",
+      "sector": "Consumer Staples",
+      "cap": 1419,
+      "x": -0.32214,
+      "y": -0.01898,
+      "z": -0.15462,
+      "edge": 0.9961
+    },
+    {
+      "ticker": "HPQ",
+      "display_name": "HP Inc.",
+      "sector": "Technology",
+      "cap": 835,
+      "x": -0.50252,
+      "y": 0.266751,
+      "z": -0.36671,
+      "edge": 0.992
+    }
+  ],
+  "dfs": [
+    {
+      "ticker": "SHW",
+      "display_name": "Sherwin-Williams",
+      "sector": "Materials",
+      "cap": 500,
+      "x": 0.21216,
+      "y": 0.06258,
+      "z": -0.10479,
+      "edge": 0.998
+    },
+    {
+      "ticker": "RSG",
+      "display_name": "Republic Services",
+      "sector": "Industrials",
+      "cap": 114,
+      "x": -0.0033,
+      "y": 0.0423,
+      "z": -0.24497,
+      "edge": 0.9933
+    },
+    {
+      "ticker": "HST",
+      "display_name": "Host Hotels & Resorts",
+      "sector": "Real Estate",
+      "cap": 842,
+      "x": -0.20731,
+      "y": 0.00331,
+      "z": -0.09724,
+      "edge": 0.9922
+    },
+    {
+      "ticker": "TYL",
+      "display_name": "Tyler Technologies",
+      "sector": "Technology",
+      "cap": 1480,
+      "x": -0.00355,
+      "y": -0.31159,
+      "z": -0.12925,
+      "edge": 0.9879
+    },
+    {
+      "ticker": "TRMB",
+      "display_name": "Trimble Inc.",
+      "sector": "Technology",
+      "cap": 1108,
+      "x": 0.0356,
+      "y": -0.18581,
+      "z": -0.39529,
+      "edge": 0.9876
+    }
+  ],
+  "provenance": {
+    "lcg": 189831298,
+    "triple": [
+      11205,
+      19448,
+      14209
+    ],
+    "same_link_same_stars": true,
+    "daily": "20260813"
+  },
+  "LCG": 189831298
+}
