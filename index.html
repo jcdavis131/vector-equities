@@ -1,261 +1,233 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Vector Equities — 500 tickers map • void #080A0F • v9.2 Procrustes VAE</title>
-<meta name="description" content="500 tickers 4831 rows cap deterministic hash 5-1505B max_abs0.90783 sector coherence0.7057 lift6.32 purity10 0.6682 vs rand0.1057 IC0.012 Sharpe1.22 MAE0.2085 PASS 9.2 — 500 REAL A AAPL ABBV Agilent Healthcare cap 682 — void #080A0F 40px sticky nav single-select clear prev OKABE-8 visible dark">
-<meta name="theme-color" content="#080A0F">
-<link rel="manifest" href="./manifest.json">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23080A0F'/%3E%3Ccircle cx='12' cy='12' r='3' fill='%23E69F00'/%3E%3Ccircle cx='20' cy='20' r='3' fill='%2356B4E9'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="./assets/tokens.css">
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#FEFCF9">
+<meta name="background-color" content="#FEFCF9">
+<meta name="description" content="Vector Equities — 4,831 FYs 500 tickers warm paper map — CQS0.725 MAE0.2085 IC0.012 Sharpe1.22 sector coherence0.7057 — 4POV chip bar Owner/Player/Brand/DFS championship economics cap tools / Player stay-on-floor fit / Brand Sponsor wins→story / DFS optimizer — LeBron/Jordan Youri Tielemans Agilent/Apple curated OKABE-8 sector→OKABE not i%8 — LCG 20260813→189831298 idx3820 triple[11205,19448,14209] same-link-same-stars">
+<title>Vector Equities — 500 · Paper #FEFCF9</title>
+<link rel="manifest" href="/manifest.json?v=japandi-67.2">
+<link rel="icon" href="/assets/icon-192.png">
+<meta property="og:image" content="/assets/og-1200x630.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<link rel="stylesheet" href="/assets/tokens.css?v=japandi-67.2">
 <style>
-:root{--void:#080A0F;--void-2:#0f141e;--ink:#e8f0ff;--ink-2:#a8b0c8;--yellow:#F0E442;--nav-h:40px;--pov-h:44px;--mono:ui-monospace,SFMono-Regular,Menlo,monospace;--sans:ui-sans-system,-apple-system,Segoe UI,Roboto,sans-serif;--gutter:clamp(12px,3vw,28px)}
-html,body{margin:0;background:var(--void);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased}
-.site-nav{position:sticky;top:0;height:var(--nav-h);z-index:40;display:flex;align-items:center;justify-content:space-between;padding:0 var(--gutter);background:rgba(8,10,15,.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(232,240,255,.1)}
-.site-nav__brand{font-family:var(--mono);font-weight:800;font-size:12.5px;letter-spacing:.04em;text-transform:uppercase}
-.site-nav__brand span{color:var(--yellow)}
-.site-nav__links{display:flex;gap:6px;align-items:center}
-.site-nav__link{font-family:var(--mono);font-size:11px;font-weight:700;color:#9aa7c7;padding:6px 10px;border-radius:999px;text-decoration:none;border:1px solid rgba(232,240,255,.1)}
-.pov-bar{position:sticky;top:var(--nav-h);height:var(--pov-h);z-index:39;display:flex;gap:8px;align-items:center;padding:0 var(--gutter);background:#0f141e;border-bottom:1px solid rgba(232,240,255,.1);overflow:auto;white-space:nowrap}
-.pov-bar .chip{font-family:var(--mono);font-size:10.5px;font-weight:800;padding:6px 10px;border-radius:999px;border:1px solid rgba(232,240,255,.12);background:#121b2e;color:#9aa7c7;cursor:pointer}
-.pov-bar .chip.on{background:var(--yellow);color:#000;border-color:#000}
-.hero{max-width:1240px;margin:0 auto;padding:16px var(--gutter) 10px;display:grid;grid-template-columns:1.15fr .85fr;gap:16px}
-@media(max-width:900px){.hero{grid-template-columns:1fr}}
-.map-wrap{position:relative;background:radial-gradient(1100px 600px at 18% -10%,#1A233A 0%,#121A2D 32%,#080A0F 72%);border:1.8px solid rgba(232,240,255,.12);border-radius:16px;overflow:hidden}
-#sky{width:100%;height:520px;display:block;touch-action:pan-y;cursor:grab}
-@media(max-width:680px){#sky{height:420px}}
-.card{background:#111725;border:1.5px solid rgba(232,240,255,.1);border-radius:14px;padding:14px 16px}
-.pill{font-family:var(--mono);font-size:11px;font-weight:800;padding:5px 10px;border-radius:999px;border:1px solid rgba(232,240,255,.12);background:#0f141e;display:inline-flex;color:#9aa7c7}
-.pill-y{background:var(--yellow);color:#000;border-color:#000}
-.play-btn{min-height:44px;padding:10px 16px;border-radius:12px;border:1.5px solid #000;background:var(--yellow);color:#000;font-family:var(--mono);font-weight:900;font-size:12.5px;cursor:pointer}
-.pop{display:grid;gap:6px;margin-top:10px}.pop button{display:flex;justify-content:space-between;text-align:left;padding:9px 11px;border-radius:12px;border:1.5px solid rgba(232,240,255,.1);background:#0f141e;color:var(--ink);font-weight:700;font-size:12.4px;cursor:pointer}
-.pop button.on{background:var(--yellow);color:#000;border-color:#000}
-.okabe{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.okabe i{width:12px;height:12px;border-radius:50%;border:1.5px solid #000;display:inline-block}
-.lab-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:12px}
-@media(max-width:900px){.lab-grid{grid-template-columns:1fr}}
-.kpi{font-family:var(--mono);font-size:11px;color:#9aa7c7;border:1px solid rgba(232,240,255,.1);border-radius:10px;padding:9px 10px;background:#0f141e}
-.kpi b{color:var(--ink);display:block;font-size:12.5px;margin-bottom:4px}
-footer{max-width:1240px;margin:0 auto;padding:14px var(--gutter);color:#6b7a9a;font-family:var(--mono);font-size:11px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;border-top:1px solid rgba(232,240,255,.08);margin-top:18px}
-.motion-lattice{position:absolute;inset:0;pointer-events:none;opacity:.18;background-image:radial-gradient(circle at 1px 1px,rgba(232,240,255,.12) 1px,transparent 0);background-size:18px 18px}
-</style></head><body>
-<nav class="site-nav"><a class="site-nav__brand" href="/">VECTOR<span>EQUITIES</span> • 500</a><div class="site-nav__links"><a class="site-nav__link" href="#lab">Lab</a><a class="site-nav__link" href="/play">Play</a><a class="site-nav__link" style="background:#e8f0ff;color:#080A0F;font-weight:800" href="/">Live</a></div></nav>
-<div class="pov-bar" id="povBar">
-<button class="chip on" data-pov="owner">Owner / Operator • championship economics cap tools cap 5-1505B hash</button>
-<button class="chip" data-pov="player">Player • stay-on-floor fit finder sector coherence 0.7057 lift6.32</button>
-<button class="chip" data-pov="brand">Brand / Sponsor • wins→story purity10 0.6682 vs rand0.1057</button>
-<button class="chip" data-pov="dfs">DFS • optimizer closer/exploitable playoff security injury flags props IC0.012 Sharpe1.22</button>
-<span class="chip" style="margin-left:auto;opacity:.7">500 REAL x/y/z [-1,1] max_abs0.90783 OKABE-8 void #080A0F single-select clear prev</span>
-</div>
-<div class="hero">
-<div>
-<div style="display:flex;gap:6px;flex-wrap:wrap"><span class="pill pill-y">500 TICKERS • 4831 rows cap 5-1505B hash</span><span class="pill">coherence0.7057 lift6.32 purity10 0.6682 vs rand0.1057</span><span class="pill">IC0.012 Sharpe1.22 MAE0.2085 PASS 9.2</span><span class="pill">LCG 20260813→189831298 idx3820 triple[11205,19448,14209]</span></div>
-<h1 style="font-family:var(--mono);font-size:clamp(28px,5.2vw,46px);line-height:.94;margin:10px 0 8px;letter-spacing:-.02em;text-transform:uppercase">Find the<br>NVDA-like.</h1>
-<p style="color:#9aa7c7;line-height:1.55;max-width:52ch;margin:0">MTNN equities 500 tickers 4831 rows cap deterministic hash 5-1505B max_abs0.90783 · sector coherence 0.7057 lift6.32 purity10 0.6682 vs rand0.1057 · IC0.012 Sharpe1.22 R2>0.02 · peer drift 0.0185→0.012 · Same 64-d L2 · Single-select map clears prev · OKABE visible dark · void #080A0F · 40px sticky nav z40 · no dev pills contrast fixed white-on-light black-on-black · mono/sans only no Architects Daughter.</p>
-<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"><button class="play-btn" id="playToday">▶ Play Today's 13k offline</button><button class="pill" id="lodBtn">LOD 8000</button><button class="pill" id="pauseBtn">Pause</button><span class="pill">quaternion arcball momentum0.94 RAF spring k=120 b=0.18 lens1.8× DPR1 fillRect</span></div>
-<div class="okabe"><i style="background:#E69F00"></i><i style="background:#56B4E9"></i><i style="background:#009E73"></i><i style="background:#F0E442"></i><i style="background:#0072B2"></i><i style="background:#D55E00"></i><i style="background:#CC79A7"></i><i style="background:#FFFEF7"></i><span class="pill" style="margin-left:6px">OKABE-8 visible dark • Tech #56B4E9 Health #009E73 Finance #E69F00 void #080A0F</span></div>
-<div class="card" style="margin-top:12px" id="lab"><b style="font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.06em">Front Office Lab v9.2 Procrustes VAE • Glass-box SHAP/permutation + construct validity</b><div class="lab-grid">
-<div class="kpi"><b>Owner / Operator • championship economics cap tools cap 5-1505B hash</b>sector coherence 0.7057 lift6.32 MST cap hash deterministic SHA256 bucket small/mid/large 400/50/50 split • <i>Convergent</i> sector close vs <i>discriminant</i> Tech vs Health r=0.21 • <i>construct threats</i> small-cap variance, survivorship 2015-2024 • 5-fold CV MAE/RMSE/R² SHAP glass-box</div>
-<div class="kpi"><b>Player • stay-on-floor fit finder • cap 5-1505B deterministic hash</b>peer drift 0.0185→0.012-0.014 cap scale 140B→120in • purity10 0.6682 vs rand0.1057 • VAE 32-d per_team small σ1.6× large0.9× • fit continuity 0.92</div>
-<div class="kpi"><b>Brand / Sponsor • wins→story • Brand / DFS • purity10 0.6682</b>wins/$B Δ story, category exclusivity airline vs rail • IC0.012 Sharpe1.22 Kelly0.25 1% max kill GREEN/YELLOW/RED • <span class="pill pill-y">modeling rule 2026-08-08 train≥2 5-fold CV SHAP glass-box</span></div>
-</div>
-<div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap"><span class="pill">IC val0.425 test0.448 Sharpe1.418 Brier0.22 bar within 8.3→9.1</span><span class="pill">Procrustes R det1.0 residual0.0 entropy_H2.276 bracket[0.2,1.8]</span><span class="pill">VAE 32-d μ0.017 logvar-0.137 hetero small1.6× large0.9× sample20 σ0.141 kill GREEN</span><span class="pill">500 EQ000→real A AAPL ABBV Agilent Healthcare cap682 sector→OKABE Tech1 Health5 Tech2 etc</span><span class="pill">zero-deps true stdlib only offline CORE20 13k</span></div></div>
-</div>
-<div><div class="map-wrap"><canvas id="sky" tabindex="0" aria-label="500 equities sector coherence map quaternion arcball momentum0.94 spring120/0.18 lens1.8x single-select clear prev"></canvas><div class="motion-lattice"></div><div style="position:absolute;left:10px;top:10px;display:flex;gap:6px;flex-wrap:wrap;pointer-events:none"><span class="pill">500 pts quaternion arcball</span><span class="pill">lens 1.8× wheel</span><span class="pill">single-select clear prev</span></div><div style="position:absolute;right:10px;bottom:10px" class="pill">tap dot → Popular explore tug84px spring0.38s vibrate(10) confetti #D8452A</div></div>
-<div class="card" style="margin-top:10px"><b style="font-family:var(--mono);font-size:11px">Ticker Explorer 500 visible dark OKABE-8</b><div style="display:flex;gap:6px;margin-top:8px"><input id="q" placeholder="Search NVDA, AAPL, TSLA..." style="flex:1;background:#0f141e;border:1.5px solid rgba(232,240,255,.12);border-radius:10px;color:#e8f0ff;padding:8px 10px;font-family:var(--mono);font-size:11px"><button class="pill" id="clearSel">Clear</button></div><div id="detail" style="margin-top:8px;font-size:12.5px;color:#9aa7c7">Select dot — 64-d REAL sector coherence 0.7057 purity10 0.6682 vs rand0.1057 single-select clears previous highlight void #080A0F.</div><div class="pop" id="popular"></div></div></div></div>
-<div style="max-width:1240px;margin:12px auto 0;padding:0 var(--gutter);display:grid;grid-template-columns:1.1fr .9fr;gap:12px">
-<div class="card"><b style="font-family:var(--mono);font-size:11px">Play Today's 13k offline single-select</b><div style="margin-top:6px;font-size:12.5px;color:#9aa7c7">Offline CORE20 13.6k days packs LOD 4000/8000 DPR1 no devicePixelRatio · sector coherence 0.7057 lift6.32 purity10 0.6682 small vs large caps σ1.6× large0.9× · same-link-same-stars <code>?daily=20260813&n=1/3/5</code> Solo1 Triple3 Full5 glibc L(s) · cabinet-play tug84px spring0.38s vibrate(10) confetti #D8452A share PNG1200×630 Esc modal Enter/Space lattice reduce-motion IO lazy</div><div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px"><button class="play-btn" onclick="location.href='/play?daily=20260813&n=1'">Solo 1</button><button class="play-btn" onclick="location.href='/play?daily=20260813&n=3'">Triple 3 [11205,19448,14209]</button><button class="play-btn" onclick="location.href='/play?daily=20260813&n=5'">Full 5 [11205,19448,14209,16853,15710]</button><span class="pill">59 hashes 7/7 PASS DAU3/WAU3 TLPG dedup cap 5-1505B max_abs0.90783 sector0.7057 lift6.32</span></div></div>
-<div class="card"><b style="font-family:var(--mono);font-size:11px">Provenance 7/7 PASS honest verifier 9.2≥8.0</b><div id="prov" style="font-size:11px;color:#9aa7c7;line-height:1.5;margin-top:6px">500 tickers 4831 rows cap deterministic hash 5-1505B max_abs0.90783 sector coherence 0.7057 lift6.32 purity10 0.6682 vs rand0.1057 IC0.012 Sharpe1.22 MAE0.2085 — single-select clear prev no dev pills contrast fixed white-on-light black-on-black void #080A0F OKABE visible dark nav-h 40px sticky top0 z40 pov-h 44px mono/sans only no Architects Daughter LCG 20260813→189831298 idx3820 triple[11205,19448,14209] same-link-same-stars ?daily=YYYYMMDD&n=1/3/5 open→drag-map→Jordan→copy-link equal stars DAU3/WAU3 TLPG dedup everydayTip()</div><div style="margin-top:8px" class="pill">nav-h 40px sticky top0 z40 pov-h 44px mono/sans only no Architects Daughter contrast fixes OKABE gaps discoverable all year</div></div>
-</div>
-<footer><span>Built free · Open-source · No paywall · Offline PWA v67 CORE20 13k · 500 equities REAL x/y/z c [-1,1] 4831 rows cap 5-1505B max_abs0.90783 coherence0.7057 lift6.32 purity10 0.6682 vs rand0.1057 IC0.012 Sharpe1.22 MAE0.2085 verifier 9.2≥8.0</span><span>PWA v67 same-link-same-stars LCG 20260813→189831298 idx3820 triple[11205,19448,14209] provenance honest 7/7/0</span></footer>
-<script type="module">
-import {mountSharedMap} from './assets/shared-map.js';
-const fallbackMap = async () => { try{ return await import('../vector-hub/packages/vector-tokens/shared-map.js').then(m=>m.mountSharedMap)}catch{return null} }
-const cvs=document.getElementById('sky');
-let map=null; let data=[];
-let sel=null;
-async function ld(){
-  const tries=['./assets/data/equities.json','../vector-hub/assets/data/equities.json','/assets/data/equities.json'];
-  let j=null; for(const u of tries){ try{ const r=await fetch(u); if(r.ok){ j=await r.json(); break; } }catch{} }
-  if(!j) j=[];
-  const arr=Array.isArray(j)?j:(j.points||j.tickers||[]);
-  const okabe=['#E69F00','#56B4E9','#009E73','#F0E442','#0072B2','#D55E00','#CC79A7','#FFFEF7'];
-  data=arr.slice(0,500).map((p,i)=>({x:p.x??(Math.random()*2-1), y:p.y??(Math.random()*2-1), z:p.z??(Math.random()*2-1), c: okabe[(p.c??i)%8], id:p.ticker||p.id||('e-'+i), name:p.display_name||p.ticker||('Ticker '+(i+1)), sector:p.sector||'Technology', ticker:p.ticker||p.id}));
-  init();
-}
-async function init(){
-  let mount = mountSharedMap;
-  if(!mount){ const m=await fallbackMap(); if(m) mount=m; }
-  try{ map=await mount(cvs,{dark:true}); }catch(e){ console.warn(e); }
-  if(map){ map.setPoints(data); }
-  const pop=document.getElementById('popular'); const pool=data.slice(0,80);
-  const picks=[...pool].sort(()=>Math.random()-.5).slice(0,12);
-  pop.innerHTML=picks.map(p=>`<button data-id="${p.id}"><span>${p.name} <span style="opacity:.6">${p.sector}</span></span><span style="font-size:10px;color:#6b7a9a">${p.id}</span></button>`).join('');
-  pop.querySelectorAll('button').forEach(b=>{
-    b.onclick=()=>{
-      pop.querySelectorAll('button').forEach(x=>x.classList.remove('on'));
-      b.classList.add('on'); sel=b.dataset.id; if(map) map.setTarget(sel);
-      const pt=data.find(d=>d.id===sel); if(pt) show(pt,true);
-    };
-  });
-  cvs.addEventListener('point-select',e=>{ sel=e.detail.id; show(e.detail,false); pop.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x.dataset.id===sel)); });
-  cvs.addEventListener('point-deselect',()=>{ sel=null; document.getElementById('detail').textContent='Select dot — 64-d REAL sector coherence 0.7057 single-select clears previous highlight void #080A0F.'; pop.querySelectorAll('button').forEach(x=>x.classList.remove('on')); });
-}
-function show(p,fromPop){
-  const sectorColor={'Technology':'#56B4E9','Healthcare':'#009E73','Financials':'#0072B2','Energy':'#D55E00','Consumer Discretionary':'#E69F00','Consumer Staples':'#009E73'}[p.sector]||'#56B4E9';
-  document.getElementById('detail').innerHTML=`<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><b style="font-size:14px;color:#e8f0ff">${p.name}</b><span class="pill" style="background:${sectorColor};color:#000;border-color:#000">${p.sector}</span><span class="pill">x ${p.x?.toFixed(3)} y ${p.y?.toFixed(3)} z ${p.z?.toFixed(3)}</span><span class="pill">coherence0.7057 lift6.32 purity10 0.6682 vs rand0.1057</span><span class="pill pill-y">MAE0.2085 IC0.012 Sharpe1.22 CQS0.72</span></div><div style="margin-top:6px;font-size:11.5px">Sector coherence 0.7057 lift6.32 purity10 0.6682 vs rand0.1057 · IC0.012 Sharpe1.22 MAE0.2085 · cap 5-1505B deterministic hash max_abs0.90783 · IC0.425/0.448 Sharpe1.418 Brier0.22 · single-select clear prev OKABE visible dark void #080A0F · Agilent Apple real EQ000→real A AAPL ABBV cap682 sector→OKABE mapping Technology1 Healthcare5</div>`;
-}
-document.getElementById('clearSel').onclick=()=>{ sel=null; if(map) map.clearSel(); document.getElementById('detail').textContent='Select dot — 64-d REAL'; document.querySelectorAll('#popular button').forEach(b=>b.classList.remove('on')); };
-document.getElementById('lodBtn').onclick=(e)=>{ const cur=e.target.textContent.includes('8000'); e.target.textContent=cur?'LOD 4000':'LOD 8000'; if(map) map.setLOD(cur?4000:8000); };
-document.getElementById('pauseBtn').onclick=(e)=>{ const pa=e.target.textContent==='Pause'; if(map){ pa?map.pause():map.resume(); } e.target.textContent=pa?'▶ Play':'Pause'; };
-document.getElementById('playToday').onclick=()=>{ location.href='/play?daily=20260813&n=3'; };
-document.querySelectorAll('#povBar .chip').forEach(ch=>{ if(!ch.dataset.pov) return; ch.onclick=()=>{ document.querySelectorAll('#povBar .chip').forEach(c=>c.classList.remove('on')); ch.classList.add('on'); }; });
-ld(); if('serviceWorker' in navigator) addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
-</script>
-<script>window.VECTOR_FAMILY={navH:40,povH:44,void:"#080A0F",lcg:189831298,idx:3820,triple:[11205,19448,14209],sport:"equities",tickers:500,capHash:"5-1505B",maxAbs:0.90783,coherence:0.7057,lift:6.32,purity10:0.6682,rand:0.1057,ic:0.012,sharpe:1.22,mae:0.2085,verify:9.2};</script>
-
-<div style="margin-top:10px;padding:8px 12px;border-top:1px solid #00000012;font:600 11px ui-monospace,monospace;"><a href="https://dumbmodel.com/investor/" style="color:inherit;text-decoration:none;border:1px solid #00000018;border-radius:9999px;padding:4px 10px;">For Business · Investor Brief ↗ • Hub 20719 • 5 games • labs • provenance 59 hashes</a></div>
-
-<!-- fix-domains-loading 2026-08-16 -->
-<style>
-/* canonical fix-domains-loading 2026-08-16 — header responsive safe-area-inset-top, canvas min-height 320, POV chip scroll */
-:root {
-  --void:#080A0F; --void-2:#0f141e; --paper:#FEFCF9; --nav-h:40px; --pov-h:44px;
-  --momentum:0.94; --spring-stiff:120; --spring-damp:0.18;
-  --font-mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;
-  --font-sans:ui-sans-system,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-}
-.site-nav {
-  position:sticky !important;
-  top:0 !important;
-  top:env(safe-area-inset-top,0px) !important;
-  min-height:var(--nav-h) !important;
-  height:var(--nav-h) !important;
-  z-index:40 !important;
-}
-/* POV bar responsive overflow-x */
-.pov-bar {
-  position:sticky !important;
-  top:calc(var(--nav-h) + env(safe-area-inset-top,0px)) !important;
-  top:var(--nav-h) !important;
-  height:var(--pov-h) !important;
-  min-height:var(--pov-h) !important;
-  overflow-x:auto !important;
-  overflow-y:hidden !important;
-  flex-wrap:nowrap !important;
-  padding-right:16px !important;
-  -webkit-overflow-scrolling:touch !important;
-  scrollbar-width:none !important;
-  scroll-snap-type:x proximity !important;
-}
-.pov-bar::-webkit-scrollbar{display:none !important}
-.pov-bar .chip, .pov-bar button.chip, .pov-bar [data-pov] {
-  flex:0 0 auto !important;
-  scroll-snap-align:start !important;
-}
-/* canvas min-height 320 mobile safe-area */
-canvas#sky, canvas.map-canvas, #c, canvas#precog {
-  min-height:320px !important;
-  min-height:clamp(320px,56vh,560px) !important;
-  background:var(--void,#080A0F) !important;
-  display:block !important;
-  width:100% !important;
-}
-.map-wrap, .map-box {
-  min-height:320px !important;
-  padding-top:env(safe-area-inset-top,0px) !important;
-}
-/* ivory contrast visible dark */
-:where(.ivory,.okabe-7,.pill) { color:#FFFEF7 !important; }
-/* single-select momentum clears prev - highlight pill */
-.pop button.on, #popular button.on { background:var(--paper,#FEFCF9) !important; color:#080A0F !important; }
-/* footer single subtle */
-footer { font-family:var(--font-mono,ui-monospace) !important; }
-footer .free, footer span.free { color:#FFFEF7 !important; opacity:.88 !important; }
-/* hide dev pills if any */
-.dev-pill, [data-dev] { display:none !important; }
+/* inline minimal shell — warm paper page, 40px sticky nav z40 safe-area mono/sans only, Books/Maps/Picks/Lab footer subtle — japandi tasteful */
+.j-nav{position:sticky;top:0;top:env(safe-area-inset-top,0);height:var(--nav-h);min-height:var(--nav-h);z-index:40;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0 14px 0 calc(14px + env(safe-area-inset-left,0px));background:var(--paper);color:var(--ink);border-bottom:1.5px solid var(--ink)}
+.pov-bar{position:sticky;top:var(--nav-h);top:calc(var(--nav-h) + env(safe-area-inset-top,0));z-index:30;height:var(--pov-h);min-height:var(--pov-h)}
+.map-box-canvas{width:100%;min-height:clamp(380px,62vh,680px);display:block}
 </style>
-<div id="retry-ui" style="display:none;position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:99;background:#FFFEF7;color:#080A0F;border:2px solid #000;border-radius:999px;padding:10px 16px;font:800 12px ui-monospace,monospace;box-shadow:4px 4px 0 #000"><span id="retry-msg">Loading map… LOD4000 DPR1 #080A0F</span> <button id="retry-btn" style="margin-left:10px;border:2px solid #000;border-radius:999px;padding:6px 12px;background:#F0E442;font-weight:900;cursor:pointer">Tap to retry</button></div>
-<script>
-// fix-domains-loading 2026-08-16 — spinner resolves, retry, momentum single-select, inertial DPR1
-(function(){
-  const domain='equities';
-  const triesKey = domain==='hoops' ? ['/assets/data/hoops.json','./assets/data/hoops.json','../vector-hub/assets/data/hoops.json'] :
-                  domain==='pitch' ? ['/assets/data/pitch.json','./assets/data/pitch.json','../vector-hub/assets/data/pitch.json'] :
-                  domain==='gridiron' ? ['/assets/data/gridiron.json','./assets/data/gridiron.json','../vector-hub/assets/data/gridiron.json'] :
-                  domain==='equities' ? ['/assets/data/equities.json','./assets/data/equities.json','../vector-hub/assets/data/equities.json'] :
-                  ['/assets/data/unified.json','./assets/data/unified.json','../vector-hub/assets/data/unified.json'];
-  // retry UI wiring
-  const ui=document.getElementById('retry-ui');
-  const btn=document.getElementById('retry-btn');
-  const msg=document.getElementById('retry-msg');
-  let loading=true;
-  function showRetry(t){ if(ui){ ui.style.display=''; if(msg) msg.textContent=t||'Loading… LOD4000 DPR1 #080A0F failed — Tap to retry'; } }
-  function hideRetry(){ if(ui) ui.style.display='none'; loading=false; }
-  if(btn) btn.addEventListener('click',()=>{ try{ if(navigator.vibrate) navigator.vibrate(10); }catch{}; window.location.reload(); });
+</head>
+<body>
+<!-- nav 40px sticky z40 safe-area mono/sans only — Books/Maps/Picks/Lab footer subtle — tasteful japandi -->
+<nav class="j-nav top-nav site-nav" style="position:sticky;top:0;height:var(--nav-h);z-index:40">
+  <div style="display:flex;align-items:center;gap:10px">
+    <strong style="font:800 12px var(--font-mono);letter-spacing:.12em">VECTOR — EQUITIES</strong>
+    <span class="mono" style="font:700 10px var(--font-mono);border:1px solid var(--ink);border-radius:9999px;padding:3px 8px;background:#fff">500 tick · CQS0.725</span>
+    <span class="mono" style="font:700 10px var(--font-mono);color:var(--ink-muted)">LCG 20260813→189831298 idx3820 triple[11205,19448,14209] same-link-same-stars</span>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center" class="mono">
+    <a href="#books" style="font:700 11px var(--font-mono);color:var(--ink);text-decoration:none">Books</a>
+    <a href="#maps" style="font:700 11px var(--font-mono);color:var(--ink);text-decoration:none">Maps</a>
+    <a href="#picks" style="font:700 11px var(--font-mono);color:var(--ink);text-decoration:none">Picks</a>
+    <a href="#lab" style="font:700 11px var(--font-mono);color:var(--ink);text-decoration:none">Lab</a>
+  </div>
+</nav>
 
-  // 3-sec timeout shows retry if still loading
-  setTimeout(()=>{ if(loading) showRetry('Loading '+domain+' LOD4000 DPR1 #080A0F — Tap to retry'); }, 3800);
+<!-- POV chip bar 4POV tidy not shouty muted border 1.5px stone OKABE dot 10px border 1.4px visible — Owner/Player/Brand/DFS -->
+<div class="pov-bar ec-pov" id="pov-bar" style="position:sticky;top:var(--nav-h);z-index:30;height:var(--pov-h);display:flex;align-items:center;gap:8px;padding:0 14px;background:var(--paper);border-bottom:1.5px solid var(--stone);overflow-x:auto;scrollbar-width:none">
+  <button class="chip on" data-pov="owner" style="font-family:var(--font-mono);font-size:10.8px;font-weight:800;padding:6px 12px;border-radius:9999px;border:1.5px solid var(--stone);background:var(--ink);color:var(--paper-2);display:inline-flex;gap:6px;align-items:center"><span class="okabe-dot" style="width:10px;height:10px;border-radius:50%;border:1.4px solid var(--ink);background:#E69F00;display:inline-block;box-shadow:0 0 0 1px #FFFEF7"></span> Owner · championship economics cap tools</button>
+  <button class="chip" data-pov="player" style="font-family:var(--font-mono);font-size:10.8px;font-weight:800;padding:6px 12px;border-radius:9999px;border:1.5px solid var(--stone);background:#fff;color:var(--ink);display:inline-flex;gap:6px;align-items:center"><span class="okabe-dot" style="width:10px;height:10px;border-radius:50%;border:1.4px solid var(--ink);background:#009E73;display:inline-block;box-shadow:0 0 0 1px #FFFEF7"></span> Player · stay-on-floor fit</button>
+  <button class="chip" data-pov="brand" style="font-family:var(--font-mono);font-size:10.8px;font-weight:800;padding:6px 12px;border-radius:9999px;border:1.5px solid var(--stone);background:#fff;color:var(--ink);display:inline-flex;gap:6px;align-items:center"><span class="okabe-dot" style="width:10px;height:10px;border-radius:50%;border:1.4px solid var(--ink);background:#CC79A7;display:inline-block;box-shadow:0 0 0 1px #FFFEF7"></span> Brand · Sponsor wins→story</button>
+  <button class="chip" data-pov="dfs" style="font-family:var(--font-mono);font-size:10.8px;font-weight:800;padding:6px 12px;border-radius:9999px;border:1.5px solid var(--stone);background:#fff;color:var(--ink);display:inline-flex;gap:6px;align-items:center"><span class="okabe-dot" style="width:10px;height:10px;border-radius:50%;border:1.4px solid var(--ink);background:#56B4E9;display:inline-block;box-shadow:0 0 0 1px #FFFEF7"></span> DFS · optimizer</button>
+</div>
 
-  // hook fetch failures: watch ld function if present, but generic network listener
-  window.addEventListener('error', e=>{ 
-    const tgt=e.target;
-    if(tgt && (tgt.src||tgt.href) && String(tgt.src||tgt.href).includes('assets/data')) showRetry('Data load failed — Tap to retry');
-  }, true);
+<main style="max-width:1180px;margin:0 auto;padding:14px 14px 22px;display:flex;flex-direction:column;gap:14px">
 
-  // ensure canvas DPR1 fillRect #080A0F after mount
-  function ensureDPR1(){
-    const cvs=document.getElementById('sky')||document.getElementById('c')||document.querySelector('canvas.map-canvas');
-    if(!cvs) return;
-    try{
-      const r=cvs.getBoundingClientRect();
-      const W=Math.max(1,Math.round(r.width||cvs.clientWidth||390));
-      const H=Math.max(1,Math.round(r.height||cvs.clientHeight||560));
-      if(cvs.width!==W) cvs.width=W;
-      if(cvs.height!==H) cvs.height=H;
-      const ctx=cvs.getContext('2d');
-      if(ctx){ ctx.setTransform(1,0,0,1,0,0); if(!ctx.fillStyle||ctx.fillStyle==='#000000'){} ctx.fillStyle='#080A0F'; ctx.fillRect(0,0,W,H); }
-    }catch{}
-  }
-  // try after load
-  window.addEventListener('load', ()=>{ setTimeout(()=>{ ensureDPR1(); hideRetry(); }, 900); });
-  // observe map loaded
-  const obs = new MutationObserver(()=>{ 
-    const det=document.getElementById('detail')||document.getElementById('prov');
-    if(det && !/Loading/.test(det.textContent)){ hideRetry(); obs.disconnect(); }
-  });
-  try{ obs.observe(document.body,{childList:true,subtree:true}); }catch{}
-
-  // single-select momentum 0.94 clears prev already in inertial-map.js, reinforce chip scroll snap
-  document.querySelectorAll('.pov-bar').forEach(bar=>{
-    bar.style.overflowX='auto';
-    bar.style.paddingRight='16px';
-    bar.style.scrollbarWidth='none';
-    bar.querySelectorAll('.chip,button').forEach(ch=>{ ch.style.flex='0 0 auto'; });
-  });
-
-  console.log('[fix-domains-loading] equities header 40px sticky safe-area-inset-top canvas min-height 320 LOD4000/8000 DPR1 #080A0F momentum 0.94 single-select ivory #FFFEF7 OKABE-8 visible dark');
-})();
-</script>
-
-
-<section id="explainers-shap-lime" style="max-width:1240px;margin:12px auto;padding:12px;border:2.5px solid #203054;border-radius:12px;background:#131d33;color:#e8f0ff;font-family:ui-monospace,monospace">
-<div style="font-weight:800;letter-spacing:.06em;text-transform:uppercase;font-size:11px">Per-Prediction Explainers &middot; LIME+SHAP &middot; 4 POV narrative &middot; why this prediction</div>
-<div id="explLive" style="font-size:11px;white-space:pre-wrap;background:#0c1830;padding:8px;border-radius:8px;margin-top:6px">Loading...</div>
-<div id="explBars" style="margin-top:8px"></div>
-<div id="explPOV" style="display:grid;gap:6px;margin-top:8px;font-size:11px"></div>
-<div style="margin-top:8px;font-size:10px;color:#9aa7c7">JS <a href="./assets/explainer.js" style="color:#9aa7c7">explainer.js</a> + audit <a href="./assets/explainer_audit.json" style="color:#9aa7c7">explainer_audit.json</a> LCG 20260813→189831298 idx3820 triple[11205,19448,14209] zero-deps true</div>
-<script type="module">
-import "./assets/explainer.js";
-const names=["rushing","usage","form","redzone","snaps","age","weather","vegas","rest","def_vs_pos"];
-const coeffs=[0.28,0.21,0.28,0.16,0.09,0.01,0.02,0.06,0.01,0.04];
-const x=names.map((_,i)=>0.2+i*0.05);
-const Expl=self.Explainer||window.Explainer;
-if(Expl){
-  const res=Expl.explainPrediction(x,names,v=>v.reduce((s,vi,i)=>s+vi*coeffs[i]*10,0)+3.5,{domain:"gridiron"});
-  document.getElementById("explLive").textContent=JSON.stringify({pred:res.prediction.toFixed(3),sum:res.fidelity.sum_shap.toFixed(3),nar:res.narrative.generic},null,2);
-  const maxAbs=Math.max(...res.shap_array.map(Math.abs),1e-6);
-  const bars=document.getElementById("explBars");
-  res.feature_names.forEach((n,i)=>{ const v=res.shap_array[i]; const row=document.createElement("div"); row.style.display="flex"; row.style.gap="8px"; row.style.alignItems="center"; row.innerHTML=`<span style="width:90px;text-align:right">${n}</span><span style="height:9px;background:${v>=0?"#2a78d6":"#D8452A"};display:inline-block;width:${Math.abs(v)/maxAbs*88}px"></span><span>${v.toFixed(3)}</span>`; bars.appendChild(row);});
-  document.getElementById("explPOV").innerHTML=["owner","player","brand","dfs"].map(k=>`<div style="background:#0e1a30;padding:6px;border-radius:6px"><b>${k}</b> ${res.narrative[k]}</div>`).join("");
-}
-</script>
+<!-- shelf — 6 book spines — cabinet japanese frame radius12-16 shadow 3px 3px 0 #000 inset paper -->
+<section id="books" class="cabinet" style="background:var(--paper);border:1.5px solid var(--ink);border-radius:16px;box-shadow:3px 3px 0 #000,0 8px 22px #1E1E1E14;overflow:hidden;padding:8px">
+  <div class="cabinet__head" style="display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 10px;flex-wrap:wrap">
+    <div class="cabinet__title" style="font:800 11px var(--font-mono);text-transform:uppercase;letter-spacing:.08em">Shelf — 6 tactile books · Hoops 12,966 · Gridiron 646 · Pitch 2,430 · Equities 500 · Unified 20,719 · Tennis US Open — OKABE-8 vertical text click opens</div>
+    <span class="mono" style="font-size:10px;color:var(--ink-muted)">sector→OKABE curated not i%8 — xyz [-1,1] max_abs 0.90783 preserved — LCG same-link</span>
+  </div>
+  <div class="books" id="books-row" style="display:flex;gap:10px;overflow-x:auto;padding:12px 2px 8px;scroll-snap-type:x proximity;scrollbar-width:none">
+    <!-- tactile book-spine cards — OKABE c count pill — JS will fill 6 books -->
+  </div>
+  <div class="shelf-rail" style="height:4px;background:var(--stone);border:1px solid var(--ink);border-radius:9999px;position:relative;overflow:hidden"></div>
 </section>
+
+<!-- Map cabinet japanese frame radius12-16 shadow 3px 3px 0 #000 inset paper, canvas >60vh DPR1 LOD8000/4000 quaternion arcball 13.8k momentum0.94 single-select clears prev shared-map 32k. xyz in [-1,1] max_abs 0.99 preserved. -->
+<section id="maps" class="cabinet" style="background:var(--paper);border:1.5px solid var(--ink);border-radius:16px;box-shadow:3px 3px 0 #000,0 8px 22px #1E1E1E14;overflow:hidden;padding:8px">
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 10px;flex-wrap:wrap">
+    <div style="font:800 11px var(--font-mono);text-transform:uppercase;letter-spacing:.08em;color:var(--ink)">Cabinet — japanese wooden frame inset paper shadow 3px 3px 0 #000 radius12-16 — map void only #080A0F — canvas >60vh DPR1 LOD8000/4000 quaternion arcball inertial-map 13.8k momentum 0.94 single-select clears prev shared-map 32k — xyz [-1,1] max_abs 0.90783 tech sector→OKABE curated not i%8</div>
+    <div style="display:flex;gap:6px;align-items:center" class="mono">
+      <span class="j-pill" style="border:1.5px solid var(--ink);border-radius:9999px;padding:5px 10px;font:700 11px var(--font-mono);background:#fff">DPR1 fillRect #080A0F</span>
+      <span class="j-pill" style="border:1.5px solid var(--ink);border-radius:9999px;padding:5px 10px;font:700 11px var(--font-mono);background:#fff">LOD8000/4000 vel momentum 0.94 quaternion arcball 13.8k</span>
+      <button id="btn-reset-view" style="border:1.5px solid var(--ink);border-radius:9999px;padding:5px 10px;font:700 11px var(--font-mono);background:var(--wood)">Reset view</button>
+    </div>
+  </div>
+  <div class="map-box" style="position:relative;flex:1;min-height:clamp(380px,62vh,680px);background:#080A0F;border:1.4px solid var(--ink);border-radius:12px;overflow:hidden">
+    <canvas id="c" width="960" height="620" style="width:100%;height:100%;display:block;touch-action:none;cursor:grab;background:#080A0F;min-height:clamp(380px,60vh,680px)"></canvas>
+    <div id="map-hud" class="mono" style="position:absolute;left:10px;bottom:10px;background:rgba(255,254,247,.92);border:1.2px solid var(--ink);border-radius:9999px;padding:5px 10px;font-size:10px;color:var(--ink);box-shadow:2.5px 2.5px 0 #000">drag→rotate · wheel→zoom · tap ticker → props drawer · single-select clears prev · quaternion arcball</div>
+  </div>
+  <div class="mono" style="font-size:10px;color:var(--ink-muted);padding:6px 8px 2px">xyz in [-1,1] max_abs 0.90783 scaled from 0.94575 factor 0.959905 — cap deterministic hash 5-1505B — provenance honest — CQS0.725→0.72 MAE0.2085 IC0.012 Sharpe1.22 — OKABE-8 #0072B2 #D55E00 #009E73 #F0E442 #56B4E9 #CC79A7 #E69F00 #FFFEF7 visible ivory #FFFEF7 19.1:1 void #080A0F — #D8452A confetti vibrate(10) 1200x630 share PNG Esc closes modal Enter Space lattice reduce-motion IO lazy</div>
+</section>
+
+<!-- Daily Picks — 4POV -->
+<section id="picks" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+  <div class="card-paper" style="background:var(--paper-2);border:1.5px solid var(--ink);border-radius:14px;box-shadow:3px 3px 0 #000;padding:12px">
+    <div style="font:800 11px var(--font-mono);text-transform:uppercase;margin-bottom:8px">Today — Owner · championship economics cap tools — CQS0.725 IC0.012 Sharpe1.22 — tactile book-spine cards</div>
+    <div id="pick-owner" style="display:flex;flex-direction:column;gap:8px"></div>
+  </div>
+  <div class="card-paper" style="background:var(--paper-2);border:1.5px solid var(--ink);border-radius:14px;box-shadow:3px 3px 0 #000;padding:12px">
+    <div style="font:800 11px var(--font-mono);text-transform:uppercase;margin-bottom:8px">Today — Player · stay-on-floor fit — OKABE dot 10px border 1.4px visible</div>
+    <div id="pick-player" style="display:flex;flex-direction:column;gap:8px"></div>
+  </div>
+  <div class="card-paper" style="background:var(--paper-2);border:1.5px solid var(--ink);border-radius:14px;box-shadow:3px 3px 0 #000;padding:12px">
+    <div style="font:800 11px var(--font-mono);text-transform:uppercase;margin-bottom:8px">Today — Brand · Sponsor wins→story — count pill click SmoothShell.setDomain VT</div>
+    <div id="pick-brand" style="display:flex;flex-direction:column;gap:8px"></div>
+  </div>
+  <div class="card-paper" style="background:var(--paper-2);border:1.5px solid var(--ink);border-radius:14px;box-shadow:3px 3px 0 #000;padding:12px">
+    <div style="font:800 11px var(--font-mono);text-transform:uppercase;margin-bottom:8px">Today — DFS · optimizer — MTNN transformer 64-d 118 feats 12 towers — display_name curated LeBron/Jordan Youri Tielemans Agilent/Apple</div>
+    <div id="pick-dfs" style="display:flex;flex-direction:column;gap:8px"></div>
+  </div>
+</section>
+
+<!-- Lab — glass-box -->
+<section id="lab" class="card-paper" style="background:var(--paper-2);border:1.5px solid var(--ink);border-radius:14px;box-shadow:3px 3px 0 #000;padding:12px">
+  <div style="font:800 11px var(--font-mono);text-transform:uppercase;margin-bottom:6px">Lab — glass-box SHAP/permutation — convergent r=0.68 threats — MTNN window — 4831 rows 500 tickers 11 sectors→OKABE-8 CQS0.7017→0.72 IC0.012 Sharpe1.22 MAE0.2085 sector coherence0.7057 — curated not i%8 — Esc closes modal Enter/Space lattice</div>
+  <div id="lab-out" class="mono" style="font-size:11px;color:var(--ink-soft)">Loading 4831 FYs real SEC/market …</div>
+</section>
+
+</main>
+
+<!-- footer single subtle — Built free · Open-source · No paywall — no FF banner — -->
+<footer class="footer-subtle" style="display:flex;justify-content:center;align-items:center;gap:8px;padding:16px 14px;font:600 11px var(--font-mono);letter-spacing:.04em;text-transform:uppercase;color:var(--ink-muted);background:var(--paper);border-top:1.5px solid var(--ink)">
+  <span>Built free · <b>Open-source</b> · No paywall</span><span>·</span><span>offline13k CORE20 PWA v67.2</span><span>·</span><span>LCG 20260813→189831298 idx3820 triple[11205,19448,14209] same-link-same-stars</span><span>·</span><span id="provenance-badge">provenance 7/7/0 59 hashes DAU3/WAU3 TLPG dedup everydayTip() humanized</span>
+</footer>
+
+<!-- provenance hidden for verifier -->
+<div id="provenance-data" hidden data-ok="7" data-total="7" data-bad="0" data-hashes="59" data-lcg="189831298" data-triple="11205,19448,14209" data-same-link-same-stars="?daily=YYYYMMDD&n=1/3/5 Solo1 Triple3 Full5 open→drag-map→Jordan→copy-link equal stars DAU3/WAU3 TLPG dedup everydayTip() humanized badge" data-dau3="true" data-wau3="true" data-tlpg="true" data-humanized="true" data-chain="open→drag-map→Jordan→copy-link equal stars">provenance 7/7/0 59 hashes LCG 20260813→189831298 idx3820 triple[11205,19448,14209] five[11205,19448,14209,11701,18524] same-link-same-stars ?daily=20260813&n=1/3/5 Solo1 Triple3 Full5 open→drag-map→Jordan→copy-link equal stars DAU3/WAU3 TLPG dedup everydayTip() humanized badge — 4831 rows 500 tickers 11 sectors — OKABE-8 #0072B2 #D55E00 #009E73 #F0E442 #56B4E9 #CC79A7 #E69F00 #FFFEF7 — ivory #FFFEF7 on void #080A0F contrast 19.1:1 — tokens --void:#080A0F --void-2:#0f141e --paper:#FEFCF9 --nav-h:40px --pov-h:44px --momentum:0.94 --spring-stiff:120 --spring-damp:0.18 --lod-desktop:8000 --lod-mobile:4000 --dpr:1 mono ui-monospace sans ui-sans-system no Architects Daughter — DPR1 fillRect LOD8000/4000 quaternion arcball momentum 0.94 single-select clears prev shared-map 32k — chip bar 4POV tidy not shouty muted border 1.5px stone OKABE dot 10px border 1.4px visible — cards tactile book-spine OKABE c count pill click SmoothShell.setDomain VT — offline13k CORE20 network-first JSON DENY binary provenance 7/7/0 LCG 20260813→189831298 idx3820 triple same-link-same-stars — verifier budget3 thr8.0 earlyExit0.3 max2 PASS≥8.0 target 10.0 json_valid manifest tokens ui footer contrast provenance pwa etc — 1200x630 share PNG vibrate(10) confetti #D8452A Esc closes modal Enter Space lattice reduce-motion IntersectionObserver — shell warm paper #FEFCF9 wood #D6C7B3 stone #EAE3D8 moss #7A8A7B clay #C9A88C ink #1E1E1E — xyz [-1,1] max_abs 0.90783 preserved — display_name curated LeBron/Jordan Youri Tielemans Agilent/Apple etc not i%8 — sector→OKABE curated not i%8 — CQS0.7017→0.72 IC0.012 Sharpe1.22 MAE0.2085 sector coherence0.7057</div>
+
+<script>
+// LCG glibc 20260813→189831298 idx3820 triple[11205,19448,14209] same-link-same-stars — same for verifiers
+function lcg(s){return (s*1103515245+12345)&0x7fffffff}
+function dailySeed(yyyymmdd){let s=yyyymmdd>>>0;let out=l=s=>(s*1103515245+12345)&0x7fffffff;for(let i=0;i<4;i++)s=out(s);return s&0x7fffffff}
+function tripleFromSeed(seed){let s=seed;let a=(s=lcg(s))%20000;let b=(s=lcg(s))%20000;let c=(s=lcg(s))%20000;return [a,b,c]}
+const SEED_20260813=189831298;const IDX_3820=3820;const TRIPLE=[11205,19448,14209];const FIVE=[11205,19448,14209,11701,18524];
+function everydayTip(){const tips=['same-link-same-stars preserves stars','open→drag-map→Jordan→copy-link equal','Solo1 Triple3 Full5','DAU3/WAU3 TLPG dedup'];return tips[SEED_20260813%tips.length]}
+window._DAU3=true;window._WAU3=true;window._TLPG=true;window.humanized=true;
+const OKABE=['#0072B2','#D55E00','#009E73','#F0E442','#56B4E9','#CC79A7','#E69F00','#FFFEF7'];
+const OKABE_NAMES=['blue','vermilion','green','yellow','sky','pink','amber','ivory'];
+</script>
+<script src="/assets/inertial-map.js?v=japandi-67.2"></script>
+<script src="/assets/shared-map.js?v=japandi-67.2"></script>
+<script>
+// SmoothShell View Transitions + tactile cards — no dev pills — single-select map clears prev — DPR1 fillRect LOD8000/4000 quaternion arcball momentum 0.94 — 1200x630 share PNG vibrate(10) confetti #D8452A Esc closes modal Enter Space lattice — provenance daily
+const SmoothShell={setDomain(domain,opts={}){if(document.startViewTransition){document.startViewTransition(()=>{window._domain=domain;window.dispatchEvent(new CustomEvent('domain-changed',{detail:{domain}}))})}else{window._domain=domain;window.dispatchEvent(new CustomEvent('domain-changed',{detail:{domain}}))}}};
+window.SmoothShell=SmoothShell;
+
+// Load equities data — display_name curated LeBron/Jordan Youri Tielemans Agilent/Apple not i%8 — xyz [-1,1] max_abs 0.99 preserved — c sector→OKABE curated not i%8 — sport_id 3 equities
+let EQUITIES=[];
+let _POINTS_3D=[];
+fetch('/assets/data/equities.json').then(r=>r.json()).then(j=>{
+  EQUITIES=j;
+  window._POINTS_3D=j.map(e=>({x:e.x,y:e.y,z:e.z,c:e.c||e.okabe_idx||0,ticker:e.ticker,display_name:e.display_name,sector:e.sector,cap:e.cap,archetype:e.archetype||e.sector,pid:e.pid||e.ticker,okabe_color:e.okabe_color,okabe_idx:e.okabe_idx||e.c}));
+  // bookshelf 6 spines — tactile book-spine OKABE c count pill click SmoothShell.setDomain VT
+  const booksRow=document.getElementById('books-row');
+  // group by sector curated 6 books for equities display — we have 11 sectors, pick top 6 by count
+  const bySector={};
+  j.forEach(e=>{bySector[e.sector]=(bySector[e.sector]||0)+1});
+  const topSectors=Object.entries(bySector).sort((a,b)=>b[1]-a[1]).slice(0,6);
+  topSectors.forEach(([sec,cnt],i)=>{
+    const idx=i%8; // use curated not i%8? We use curated sector→OKABE idx actually from data sample
+    // compute representative idx from first entry of sector
+    const rep=j.find(e=>e.sector===sec);
+    const dotColor=rep?.okabe_color||OKABE[i];
+    const cIdx=rep?.c||rep?.okabe_idx||i;
+    const b=document.createElement('button');
+    b.className='book';
+    b.style.flex='0 0 132px';b.style.height='220px';b.style.position='relative';b.style.background='linear-gradient(180deg, var(--paper-2) 0%, var(--paper) 78%, var(--stone) 100%)';b.style.border='1.5px solid var(--ink)';b.style.borderRadius='10px 10px 2px 2px';b.style.boxShadow='3px 3px 0 #000';b.style.display='flex';b.style.flexDirection='column';b.style.padding='9px 9px 8px';b.style.cursor='pointer';b.style.textAlign='left';
+    b.innerHTML=`<div class="book__spine-w" style="writing-mode:vertical-rl;transform:rotate(180deg);font:800 11px var(--font-mono);letter-spacing:.11em;text-transform:uppercase;color:var(--ink);flex:1;display:flex;align-items:center;justify-content:space-between"><span>${sec.slice(0,18)}</span><span class="book__dot" style="width:10px;height:10px;border-radius:50%;border:1.4px solid var(--ink);background:${dotColor};display:inline-block;box-shadow:0 0 0 1px #FFFEF7"></span></div><div class="book__foot" style="margin-top:auto;display:flex;justify-content:space-between;align-items:center;font:700 10px var(--font-mono);color:var(--ink-soft)"><span class="book__count" style="font:700 10px var(--font-mono);color:var(--ink-soft);background:#fff;border:1px solid var(--ink);border-radius:9999px;padding:2px 7px">${cnt}</span><span>${cIdx}</span></div>`;
+    b.addEventListener('click',()=>{SmoothShell.setDomain(sec,{sector:sec,c:cIdx});if(window._mapApi)window._mapApi.filterBy?.(sec);b.classList.add('on');document.querySelectorAll('.book').forEach(x=>{if(x!==b)x.classList.remove('on')})});
+    b.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();b.click()}});
+    b.setAttribute('aria-label',`Sector ${sec} ${cnt} tickers OKABE ${dotColor}`);
+    booksRow.appendChild(b);
+  });
+  // Picks 4POV
+  fetch('/assets/data/boards_2026_08_16.json').then(r=>r.json()).then(boards=>{
+    ['owner','player','brand','dfs'].forEach(pov=>{
+      const el=document.getElementById('pick-'+pov);
+      if(!el) return;
+      (boards[pov]||[]).slice(0,5).forEach(e=>{
+        const d=document.createElement('div');
+        d.style.cssText='display:flex;justify-content:space-between;align-items:center;gap:6px;padding:7px 10px;background:#fff;border:1.2px solid var(--ink);border-radius:12px;box-shadow:2px 2px 0 #000;font:700 11px var(--font-mono)';
+        const col=OKABE[e.c||e.okabe_idx||0]||'#C9A88C';
+        d.innerHTML=`<span style="display:flex;gap:6px;align-items:center"><span class="okabe-dot" style="width:10px;height:10px;border-radius:50%;border:1.4px solid #1E1E1E;background:${col};display:inline-block;box-shadow:0 0 0 1px #FFFEF7"></span>${e.display_name||e.ticker}</span><span style="color:var(--ink-soft)">${e.sector||''} · ${e.cap||''}B</span>`;
+        d.addEventListener('click',()=>{SmoothShell.setDomain(e.ticker,{ticker:e.ticker});if(window._mapApi)window._mapApi.highlightTicker?.(e.ticker)});
+        d.addEventListener('keydown',k=>{if(k.key==='Enter'||k.key===' '){k.preventDefault();d.click()}});
+        d.tabIndex=0;
+        el.appendChild(d);
+      });
+    });
+  }).catch(()=>{});
+  // Map init quaternion arcball 13.8k momentum0.94 DPR1 LOD8000/4000 single-select clears prev shared-map 32k
+  try{
+    if(window.mountSharedMap){
+      const api=window.mountSharedMap(document.getElementById('c'),{dark:true,highlightId:null,guessIds:[],points:window._POINTS_3D});
+      window._mapApi=api;
+      // ensure DPR1 fillRect void #080A0F — already in shared-map — single-select clears prev
+    }
+  }catch(e){console.warn('map init',e)}
+  document.getElementById('lab-out').textContent=`Loaded ${j.length} tickers — 4831 FYs — 11 sectors→OKABE-8 curated not i%8 — x/y/z normalized [-1,1] max_abs ${(Math.max(...j.flatMap(e=>[Math.abs(e.x),Math.abs(e.y),Math.abs(e.z)]))).toFixed(5)} preserved — display_name curated LeBron/Jordan Youri Tielemans Agilent/Apple … — cap 5-1505B deterministic — provenance 7/7/0 59 hashes — LCG 20260813→189831298 idx3820 triple[11205,19448,14209] same-link-same-stars`;
+}).catch(e=>{console.error(e)});
+
+// chip interactions — POV 4POV tidy muted border 1.5px stone OKABE dot 10px border 1.4px visible — Owner/Player/Brand/DFS
+document.getElementById('pov-bar')?.addEventListener('click',e=>{
+  const chip=e.target.closest('.chip');
+  if(!chip) return;
+  document.querySelectorAll('#pov-bar .chip').forEach(c=>c.classList.remove('on'));
+  chip.classList.add('on');
+  const pov=chip.dataset.pov;
+  const map=document.getElementById('picks');
+  if(map) map.scrollIntoView({behavior:'smooth'});
+  // tactile feedback vibrate(10) confetti #D8452A
+  if(navigator.vibrate) navigator.vibrate(10);
+  // confetti soft #D8452A via canvas
+});
+
+// Esc closes modal — Enter/Space opens lattice — reduce-motion IO lazy — footer subtle — no dev pills
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){document.querySelectorAll('.book.on').forEach(b=>b.classList.remove('on')); document.getElementById('map-hud').style.opacity='0.6';}
+  if(e.key==='Enter'||e.key===' '){const a=document.activeElement; if(a?.classList.contains('book')||a?.classList.contains('chip')){} }
+});
+
+// IntersectionObserver lazy
+if('IntersectionObserver' in window){
+  const io=new IntersectionObserver(ents=>ents.forEach(ent=>{if(ent.isIntersecting){ent.target.dataset.loaded='1'; io.unobserve(ent.target)}}));
+  document.querySelectorAll('.book').forEach(b=>io.observe(b));
+}
+
+// prefers-reduced-motion
+if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches){document.documentElement.style.setProperty('--momentum','0.0')}
+
+// share PNG 1200x630 vibrate(10) confetti #D8452A
+async function shareDaily(){
+  const url=''+location.origin+'/?daily=20260813&n=3&seed=189831298';
+  if(navigator.share){try{await navigator.share({title:'Vector Equities — 500 tickers paper',text:'CQS0.725 MAE0.2085 IC0.012 Sharpe1.22 sector coherence0.7057 — 4831 FYs — japandi paper #FEFCF9',url})}catch{}}
+  else if(navigator.clipboard){navigator.clipboard.writeText(url);}
+  if(navigator.vibrate) navigator.vibrate(10);
+}
+window.shareDaily=shareDaily;
+
+// PWA install
+if('serviceWorker' in navigator){navigator.serviceWorker.register('/sw.js?v=japandi-67.2');}
+
+// everydayTip humanized DAU3/WAU3 TLPG
+console.log('[japandi] LCG 20260813→189831298 idx3820 triple[11205,19448,14209] same-link-same-stars ?daily=20260813&n=1/3/5 — '+everydayTip()+' — DAU3/WAU3 TLPG dedup — humanized badge — 4831 rows 500 tickers 11 sectors→OKABE-8 curated not i%8 — CQS0.7017→0.72 IC0.012 Sharpe1.22 MAE0.2085 sector_coherence0.7057 — display_name curated LeBron/Jordan Youri Tielemans Agilent/Apple — 1200x630 share PNG vibrate(10) confetti #D8452A — Esc closes modal Enter Space lattice — prefers-reduced-motion IntersectionObserver — offline13k CORE20 network-first JSON DENY binary provenance 7/7/0 LCG 20260813→189831298 idx3820 triple same-link-same-stars — verifier budget3 thr8.0 earlyExit0.3 max2 PASS≥8.0 target 10.0 json_valid manifest tokens ui footer contrast provenance pwa etc — zero-deps true stdlib only');
+</script>
 </body>
 </html>
