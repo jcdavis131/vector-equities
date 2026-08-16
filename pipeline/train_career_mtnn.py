@@ -81,7 +81,9 @@ def main():
 
     torch.manual_seed(Args.seed)
     np.random.seed(Args.seed)
-    device = args.device or ("cuda" if torch.cuda.is_available() else "cpu")  # auto: GPU on personal local (CUDA avail), CPU in Hatch VM
+    device = Args.device or (
+        "cuda" if torch.cuda.is_available() else "cpu"
+    )  # auto: GPU on personal local (CUDA avail), CPU in Hatch VM
     print(f"Device {device}")
 
     (

@@ -266,13 +266,17 @@ def main():
     # pct_start dual
     pct_start = getattr(args, "pct_start", 0.1)
     # OneCycle flag — train_mtnn already uses OneCycle; keep flag for compat
-    use_onecycle = bool(getattr(args, "one_cycle", False) or getattr(args, "one_cycle", False) or True)  # always true for hill133 config
+    bool(
+        getattr(args, "one_cycle", False) or getattr(args, "one_cycle", False) or True
+    )  # always true for hill133 config
     # clip alias
     args.clip = getattr(args, "clip", 1.0)
 
     torch.manual_seed(args.seed)
     np.random.seed(args.seed)
-    device = args.device or ("cuda" if torch.cuda.is_available() else "cpu")  # auto: GPU on personal local (CUDA avail), CPU in Hatch VM
+    device = args.device or (
+        "cuda" if torch.cuda.is_available() else "cpu"
+    )  # auto: GPU on personal local (CUDA avail), CPU in Hatch VM
 
     Z, mask, tickers, names, fiscal_years, sectors, clusters, manifest = load_bundle()
     fams = family_slices(manifest)

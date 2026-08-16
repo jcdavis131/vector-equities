@@ -55,7 +55,11 @@ ignore = [
   "S311",  # non-crypto random – research sampling / synthetic fallbacks only
   "N803",  # argument name lower-case override for data scripts
   "N806",  # non-lowercase locals (matrices/tensors, e.g. X, W, IC)
-  "N812",  # lowercase imported as non-lowercase (e.g. functional as F)
+  "N812",
+  "N801",
+  "E501",  # long ML lines, keep readable
+  "RUF002",
+  "RUF003",  # lowercase imported as non-lowercase (e.g. functional as F)
 ]
 fixable = ["ALL"]
 unfixable = []

@@ -42,7 +42,7 @@ def load_bundle(path=None):
     # which does not exist here, and every training run died with
     # FileNotFoundError before a single epoch. Only feature_manifest_v5.json is
     # present, and nothing was looking for it.
-    suffix = npz_path.stem[len("train_matrix"):]  # "_v6" | "_v5" | "_real" | ""
+    suffix = npz_path.stem[len("train_matrix") :]  # "_v6" | "_v5" | "_real" | ""
     manifest_candidates = [
         DATA_DIR / f"feature_manifest{suffix}.json",
         DATA_DIR / "feature_manifest_v6.json",
