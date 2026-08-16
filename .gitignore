@@ -11,7 +11,30 @@ __pycache__/
 data/*.npz
 data/*.pt
 .DS_Store
+
+# The rules above are EXACT PATHS, so every artifact that gained a generation
+# suffix or a timestamped backup slipped past them and left the tree dirty --
+# 34 untracked files, which gpu/climb.py refuses to run against. Same policy as
+# above (binaries out, small reports in), expressed as globs so it keeps
+# holding when the next generation lands.
+pipeline/data/*.npz
+pipeline/data/*.pt
+pipeline/data/*.log
+# Ad-hoc rescue copies: train_matrix.npz.pre_v5career_rebuild_20260805_215458,
+# mtnn_best.pt.fixed_seed7_20260731_061424, and friends. Ignored, NOT deleted --
+# several are the only copy of a pre-rebuild state.
+*.pre_*
+*.fixed_seed*
+
 # Keep small reports
 !pipeline/data/mtnn_report.json
 !pipeline/data/feature_manifest.json
+# The feature contract for the matrix that actually trains. dataset_career.py's
+# load_bundle() walks v6 -> v5 -> real -> plain and lands on train_matrix_v5.npz,
+# whose 118 feature names live here. The matrix itself is a 2.5 MB binary and
+# stays out, so this manifest is the only committed description of what the
+# model is fed -- worth 9 KB.
+!pipeline/data/feature_manifest_v5.json
+!pipeline/data/real_rows_meta.json
+!pipeline/data/feature_audit.json
 .vercel
