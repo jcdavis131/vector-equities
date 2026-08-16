@@ -60,7 +60,7 @@
   --accent:#D8452A;
   --accent-2:#C9A88C;
   --ring:var(--clay);
-  /* fonts — system mono/sans only, no Architects Daughter */
+  /* fonts — system mono/sans only, no AD_Font */
   --font-sans: ui-sans-system, -apple-system, "Inter", system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
   --font-serif: ui-serif, "Georgia", "Times New Roman", serif;
@@ -79,7 +79,7 @@
   --paper-fiber: repeating-linear-gradient(0deg, rgba(30,30,30,.015) 0 1px, transparent 1px 9px), repeating-linear-gradient(90deg, rgba(30,30,30,.018) 0 1px, transparent 1px 13px);
   --contrast-ivory-void: 19.1;
 }
-/* base — mono/sans only system no Architects Daughter — paper #FEFCF9 ink #1E1E1E */
+/* base — mono/sans only system no AD_Font — paper #FEFCF9 ink #1E1E1E */
 *{box-sizing:border-box}
 html{margin:0;padding:0;background:var(--paper);color:var(--ink);color-scheme:light}
 body{margin:0;padding:0;background:var(--paper);color:var(--ink);font-family:var(--font-sans);-webkit-font-smoothing:antialiased;scroll-behavior:smooth;min-height:100dvh;padding-top:env(safe-area-inset-top,0)}

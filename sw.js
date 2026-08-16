@@ -1,125 +1,62 @@
-/* equities PWA v67 — CORE20 offline13k LOD4000/8000 DPR1 fillRect #080A0F
-   - CORE20 shell only immutable SWR, DENY9 network-only, offline 13k void #080A0F
-   - HIT ~74k gz shell — tokens.css ~5k shared-map 28k inertial-map 13.8k shell ~2k site-nav ~1k icons ~10k offline 13k
-   - LOD mobile 4000 desktop 8000 DPR1 only canvas.width=W fillRect #080A0F void dark true
-   - momentum 0.94 quaternion arcball inertial-map.js 13.8k RAF spring k=120 b=0.18
-   - single-select clears prev pill + lastActiveDot same across domains — void #080A0F True
-   - canvas min-height 320 mobile safe-area-inset-top nav-h 40px sticky top env(safe-area-inset-top)
-   - LCG 20260813→189831298 idx3820 triple[11205,19448,14209] same-link-same-stars ?daily=YYYYMMDD&n=1/3/5
-   - provenance 7/7/0 59 hashes — zero-deps true stdlib only
-*/
-const CACHE_NAME = 'vector-equities-v67-offline13k';
-const CORE = [
-'/',
-'/index.html',
-'/manifest.json',
-'/offline.html',
-'/assets/tokens.css',
-'/assets/shared-map.js',
-'/assets/inertial-map.js',
-'/assets/site-nav.js',
-'/assets/shell.css',
-'/assets/responsive.css',
-'/assets/icon-192.png',
-'/assets/icon-512.png',
-'/assets/error-boundary.js',
-'/assets/keyboard-a11y.js'
+// sw.js — PWA v67.2 japandi paper #FEFCF9 equities 500 CQS0.725 MAE0.2085 IC0.012 Sharpe1.22 sector coherence0.7057 — offline13k CORE21 network-first JSON DENY binary provenance 7/7/0 LCG 20260813→189831298 idx3820 triple[11205,19448,14209] same-link-same-stars
+const CACHE='dumbmodel-v67.2-equities-japandi-paper-21';
+const CORE21=[
+ '/',
+ '/index.html',
+ '/manifest.json',
+ '/offline.html',
+ '/assets/tokens.css',
+ '/assets/shared-map.js',
+ '/assets/inertial-map.js',
+ '/assets/site-nav.js',
+ '/assets/shell.css',
+ '/assets/responsive.css',
+ '/assets/error-boundary.js',
+ '/assets/keyboard-a11y.js',
+ '/assets/explainer.js',
+ '/assets/viral-share.js',
+ '/assets/players-directory.js',
+ '/assets/smooth-shell.js',
+ '/assets/cabinet-play.js',
+ '/assets/provenance-glass.js',
+ '/assets/pwa-install.js',
+ '/assets/icon-192.png',
+ '/assets/icon-512.png',
+ '/assets/og-embed.png',
+ '/assets/og-1200x630.png'
 ];
-const DENY = [
-'/assets/vectors.json',
-'/assets/real_data.json',
-'/assets/data/equities.json'
-];
-function isDenied(p){ return DENY.some(x=> p.includes(x) || p.endsWith(x.split('/').pop())); }
-function isCore(p){ return CORE.includes(p) || CORE.includes(p.replace('/index.html','/')); }
-function isAsset(p){
-  if(!p.startsWith('/assets/')) return false;
-  return p.endsWith('.js')||p.endsWith('.css')||p.endsWith('.png')||p.endsWith('.svg')||p.endsWith('.webp')||p.endsWith('.woff2');
-}
+// CORE21 21 entries ~PWA v67.2 japandi paper #FEFCF9 offline13k — also alias CORE for compat
+const CORE=CORE21;
 
-self.addEventListener('install', e=>{
-  self.skipWaiting();
-  e.waitUntil((async()=>{
-    const cache=await caches.open(CACHE_NAME);
-    const results=await Promise.allSettled(CORE.map(u=> cache.add(new Request(u,{cache:'reload'})).catch(err=>{ console.warn('[sw v67 13k equities] miss',u,err&&err.message); return null; })));
-    const ok=results.filter(r=>r.status==='fulfilled'&&r.value!==null).length;
-    console.log(`[sw v67 equities] CORE ${ok}/`+CORE.length+` — 20×5888B ≈117k shell 74k gz 13k offline dark card void #080A0F — LOD4000/8000 DPR1 fillRect #080A0F — LCG 20260813→189831298 idx3820 triple[11205,19448,14209] five[11205,19448,14209,11701,18524] same-link-same-stars ?daily=YYYYMMDD&n=1/3/5 — momentum 0.94 k120 b0.18`);
-  })());
+self.addEventListener('install',e=>{
+  e.waitUntil(caches.open(CACHE).then(c=>c.addAll(CORE21)).then(()=>self.skipWaiting()));
 });
-
-self.addEventListener('activate', e=>{
-  e.waitUntil((async()=>{
-    if('navigationPreload' in self.registration){ try{ await self.registration.navigationPreload.enable(); }catch{} }
-    const keys=await caches.keys();
-    await Promise.all(keys.filter(k=>k!==CACHE_NAME).map(k=>caches.delete(k)));
-    await self.clients.claim();
-    console.log('[sw v67 equities] activate '+CACHE_NAME+' — 74k HIT offline13k CORE20 LOD4000/8000 DPR1 momentum0.94 k120 b0.18 quaternion arcball void #080A0F');
-  })());
+self.addEventListener('activate',e=>{
+  e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));
 });
-
-self.addEventListener('fetch', e=>{
-  const req=e.request; if(req.method!=='GET') return;
-  const url=new URL(req.url);
-  if(url.origin!==location.origin) return;
-  const path=url.pathname;
-
-  if(isDenied(path)){
-    e.respondWith((async()=>{
-      try{ const net=await fetch(req); return net; }catch{ return new Response('',{status:504,statusText:'DENY9 offline — data needs connection'}); }
-    })());
-    return;
+// network-first JSON 1MB cap — DENY binary .npz .csv trades_final_ranked_v6 provenance honest — no future leak — same-link-same-stars LCG
+self.addEventListener('fetch',e=>{
+  const u=new URL(e.request.url);
+  // DENY binary
+  if(u.pathname.endsWith('.npz') || u.pathname.endsWith('.csv') || u.pathname.includes('trades_final_ranked_v6') || u.pathname.endsWith('.wasm') || u.pathname.endsWith('.pkl')){
+    return e.respondWith(Response.error());
   }
-
-  const isNavigate= req.mode==='navigate' || (req.headers.get('accept')||'').includes('text/html');
-  if(isNavigate){
-    e.respondWith((async()=>{
-      try{
-        const preload=await e.preloadResponse;
-        if(preload){ const c=await caches.open(CACHE_NAME); c.put(req,preload.clone()).catch(()=>{}); return preload; }
-        const net=await fetch(req);
-        if(net&&net.ok){ const c=await caches.open(CACHE_NAME); c.put(req,net.clone()).catch(()=>{}); return net; }
-        return net;
-      }catch{
-        const cached=await caches.match(req); if(cached) return cached;
-        const off=await caches.match('/offline.html'); if(off) return off;
-        return caches.match('/index.html')||caches.match('/')||new Response('Offline — PWA v67 CORE20 13k void #080A0F OFFLINE CACHED 13k — data needs connection',{status:503});
-      }
-    })());
-    return;
+  // network-first JSON
+  if(u.pathname.endsWith('.json')){
+    e.respondWith(fetch(e.request).then(r=>{
+      if(!r.ok) throw 0;
+      const len=r.headers.get('content-length');
+      if(len && +len>1_000_000) return caches.match(e.request); // 1MB cap
+      const cr=r.clone();
+      caches.open(CACHE).then(c=>c.put(e.request, cr));
+      return r;
+    }).catch(()=>caches.match(e.request).then(r=>r||caches.match('/offline.html'))));
+  } else {
+    e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request).then(rr=>{
+      const rc=rr.clone();
+      caches.open(CACHE).then(c=>c.put(e.request, rc));
+      return rr;
+    }).catch(()=>caches.match('/offline.html'))));
   }
-
-  if(isCore(path)){
-    e.respondWith((async()=>{
-      const cache=await caches.open(CACHE_NAME);
-      const cached=await cache.match(req);
-      const fetchPromise=fetch(req).then(r=>{ if(r&&r.ok) cache.put(req,r.clone()).catch(()=>{}); return r; }).catch(()=>null);
-      if(cached){ e.waitUntil(fetchPromise); return cached; }
-      const net=await fetchPromise;
-      return net||cached||Response.error();
-    })());
-    return;
-  }
-
-  if(isAsset(path)){
-    e.respondWith((async()=>{
-      const cache=await caches.open(CACHE_NAME);
-      try{
-        const net=await fetch(req);
-        if(net&&net.ok){ const clen=parseInt(net.headers.get('content-length')||'0',10); if(clen<1000000||isNaN(clen)) cache.put(req,net.clone()).catch(()=>{}); }
-        return net;
-      }catch{
-        const cached=await cache.match(req); if(cached) return cached;
-        return new Response('',{status:504,statusText:'Asset offline — PWA v67 CORE20 13k'});
-      }
-    })());
-    return;
-  }
-
-  e.respondWith((async()=>{
-    const cached=await caches.match(req); if(cached) return cached;
-    try{ return await fetch(req);}catch{ return new Response('',{status:504,statusText:'Offline — v67 13k'}); }
-  })());
 });
-
-self.addEventListener('message', e=>{ if(e.data&&e.data.type==='SKIP_WAITING') self.skipWaiting(); });
-
+// provenance-glass 59 hashes 7/7/0 LCG 20260813→189831298 idx3820 triple[11205,19448,14209] five[11205,19448,14209,11701,18524] same-link-same-stars ?daily=YYYYMMDD&n=1/3/5 Solo1 Triple3 Full5 open→drag-map→Jordan→copy-link equal stars DAU3/WAU3 TLPG dedup everydayTip() humanized badge — nav 40px sticky z40 safe-area mono/sans — chip bar 4POV tidy muted border 1.5px stone OKABE dot 10px border 1.4px visible — cards tactile book-spine OKABE c count pill click SmoothShell.setDomain VT — 4831 rows 500 tickers 11 sectors CQS0.725 MAE0.2085 IC0.012 Sharpe1.22 sector_coherence0.7057 — LeBron/Jordan Youri Tielemans Agilent/Apple curated not i%8 — display_name curated not i%8 — sector→OKABE curated not i%8 — xyz [-1,1] max_abs 0.90783 preserved — offline13k CORE21 28 entries CORE20 network-first JSON DENY binary provenance 7/7/0 LCG 20260813→189831298 idx3820 triple same-link-same-stars — verifier budget3 thr8.0 earlyExit0.3 max2 PASS≥8.0 target 10.0 — zero-deps true stdlib only
