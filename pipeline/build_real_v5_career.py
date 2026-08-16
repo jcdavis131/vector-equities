@@ -206,27 +206,43 @@ def load_def14a():
             neo_count = len(neos_filtered) if neos_filtered else ent.get("neo_count", 0)
             combined_ceo = (ceo_candidate.get("name", "") + " " + ceo_candidate.get("row_text", "")).lower()
             founder_flag = 1 if "founder" in combined_ceo else 0
-            bs = board_size if isinstance(board_size, int) and 3 <= board_size <= 20 else 9
+            # A filing whose board size did not parse is UNKNOWN, not 9.
+            bs = board_size if isinstance(board_size, int) and 3 <= board_size <= 20 else None
             ceo_counts[ceo_name.lower()] += 1
             tenure = ceo_counts[ceo_name.lower()]
             curr_neo_names = {
                 clean_name(n.get("name", "")).lower() for n in neos_filtered if clean_name(n.get("name", ""))
             }
+            # NEO turnover needs a comparable prior-year roster. The first year
+            # of a ticker's history, or a year where either roster came back
+            # empty, is UNCOMPUTABLE -- it used to return 0.15, a plausible
+            # turnover rate that then entered the matrix asserting "measured".
             if prev_neo_names is None:
-                turnover = 0.15
+                turnover = None
             else:
                 if len(curr_neo_names) == 0 or len(prev_neo_names) == 0:
-                    turnover = 0.15
+                    turnover = None
                 else:
                     overlap = len(curr_neo_names.intersection(prev_neo_names))
                     max_cnt = max(len(curr_neo_names), len(prev_neo_names))
-                    turnover = 1.0 - (overlap / max_cnt) if max_cnt > 0 else 0.15
+                    # No comparable prior-year NEO roster means turnover is
+                    # UNCOMPUTABLE, not 0.15.
+                    turnover = 1.0 - (overlap / max_cnt) if max_cnt > 0 else None
                 (prev_ceo_name is not None and ceo_name.lower() != prev_ceo_name)
             # time since CEO change will be computed later per sequence
             exec_features[(ticker, fy)] = {
                 "NEO_COUNT": neo_count,
-                "CEO_TOTAL_COMP": ceo_comp if ceo_comp is not None else 12.0,
-                "AVG_NEO_COMP": avg_comp if avg_comp is not None else 11.0,
+                # No fallback literal. These previously read
+                # `ceo_comp if ceo_comp is not None else 12.0` (and 11.0), which
+                # meant a filing that PARSED but whose compensation table did not
+                # yield a number still emitted a confident 12.0 -- and the caller
+                # sets mask=1 for any non-None value, so it entered the matrix
+                # asserting "measured". Measured 2026-08-15 on the shipped
+                # matrix: 4826 of 4831 rows (99.9%) sat on exactly 12.0/11.0.
+                # A constant-column check does not catch this, because the 5 real
+                # rows give the column a non-zero standard deviation.
+                "CEO_TOTAL_COMP": ceo_comp,
+                "AVG_NEO_COMP": avg_comp,
                 "CEO_TENURE": tenure,
                 "CEO_FOUNDER_FLAG": founder_flag,
                 "NEO_TURNOVER": turnover,
@@ -250,28 +266,49 @@ def load_form4():
     if not files:
         print("No Form4 index found")
         return {}
-    counts = defaultdict(lambda: defaultdict(int))
+    # This used to return a FILING COUNT per (ticker, year) and assign it to
+    # INSIDER_NET_12M -- a feature whose name promises net insider activity.
+    # The count is a real signal, but it is not what the column claims, and it
+    # cannot distinguish a director buying from a director selling.
+    #
+    # build_form4_index.py now emits a signed net from the SEC's own quarterly
+    # Form 3/4/5 datasets (TRANS_SHARES signed by TRANS_ACQUIRED_DISP_CD,
+    # restricted to open-market codes P/S), so this sums the thing the name
+    # describes. Filing count is still returned alongside for anything that
+    # wants activity volume.
+    #
+    # None, never 0, when a (ticker, year) has no usable open-market rows:
+    # "no insider traded on the open market" and "trades netted to zero" are
+    # different facts, and only the second is a measurement.
+    nets: dict[tuple[str, int], float] = {}
+    counts: dict[tuple[str, int], int] = defaultdict(int)
     total_lines = 0
+    tickers_seen = set()
     for fp in files:
-        with Path(fp).open() as f:
+        with Path(fp).open(encoding="utf-8") as f:
             for line in f:
                 try:
                     j = json.loads(line)
-                    ticker = j.get("ticker")
-                    fdate = j.get("filing_date", "")
-                    if not ticker or not fdate:
-                        continue
-                    yr = int(fdate[:4])
-                    counts[ticker][yr] += 1
-                    total_lines += 1
-                except Exception:
+                except Exception:  # noqa: BLE001
                     continue
-    flat = {}
-    for ticker, year_dict in counts.items():
-        for fy, cnt in year_dict.items():
-            flat[(ticker, fy)] = cnt
-    print(f"Form4 total filings {total_lines}, tickers {len(counts)}")
-    return flat
+                ticker = j.get("ticker")
+                fdate = j.get("filing_date", "")
+                if not ticker or not fdate:
+                    continue
+                try:
+                    yr = int(fdate[:4])
+                except Exception:  # noqa: BLE001
+                    continue
+                key = (ticker, yr)
+                counts[key] += 1
+                tickers_seen.add(ticker)
+                total_lines += 1
+                net = j.get("net_shares")
+                if net is not None:
+                    nets[key] = nets.get(key, 0.0) + float(net)
+    print(f"Form4 submissions {total_lines}, tickers {len(tickers_seen)}, "
+          f"(ticker,year) with an open-market net: {len(nets)}")
+    return {"net": nets, "count": dict(counts)}
 
 
 def load_market_history():
@@ -485,7 +522,8 @@ def build_v5(limit=None):
     summaries = load_summaries()
     print(f"Loaded {len(summaries)} summaries, universe {len(uni)}")
     exec_features = load_def14a()
-    form4_flat = load_form4()
+    form4 = load_form4()
+    form4_net, form4_count = form4.get("net", {}), form4.get("count", {})
     market_hist = load_market_history()
     spy_hist = market_hist.get("SPY")
 
@@ -607,27 +645,47 @@ def build_v5(limit=None):
             asset_turn = safe_div(rev, assets)
             capex_depr = safe_div(capex, depr)
 
-            inst_pct = 0.75
-            inst_delta = 0.0
-            insider_net = 0.0
-            float_pct = 0.9
-            top10_conc = 0.35
-            short_int = 0.03
-            ceo_age = 55
-            ceo_tenure = 6
-            ceo_founder = 0
-            ceo_comp = 12
-            ceo_eq = 1.5
-            avg_neo = 11
-            pay_ratio = 200
-            board_indep = 75
-            board_size = 9
-            insider_own = 3
-            ceo_pay_vs = 0
-            neo_turn = 0.15
-            ceo_dual = 0
-            ceo_change_flag = 0
-            time_since_ceo_change = 0
+            # ALL None, not literals. These were hardcoded seeds -- inst_pct
+            # 0.75, ceo_age 55, board_indep 75, pay_ratio 200, and so on --
+            # assigned before any source was consulted. Seven of them are
+            # overwritten below when a DEF 14A record exists; the other twelve
+            # were never overwritten by anything, so every company in the matrix
+            # reported the same invented number. Because the writer at the
+            # bottom of this file sets mask=1 for any non-None value, they
+            # entered the matrix asserting "observed", which defeats the model's
+            # mask-aware machinery entirely: it cannot discount a value that
+            # claims to be measured.
+            #
+            # None means the writer leaves mask=0, and the existing per-FY median
+            # fill then imputes a value that is correctly MARKED as imputed.
+            # That is the whole difference -- absence is recoverable, a plausible
+            # lie is not. The `ef.get(KEY, var)` calls below become
+            # `ef.get(KEY, None)` automatically, so a missing key also stays
+            # honest instead of falling back to a seed.
+            #
+            # Audit 2026-08-15: 23 of 118 columns were constant-with-mask=1.
+            # See docs/SYNTHETIC_DATA_AUDIT_2026-08-15.md.
+            inst_pct = None
+            inst_delta = None
+            insider_net = None
+            float_pct = None
+            top10_conc = None
+            short_int = None
+            ceo_age = None
+            ceo_tenure = None
+            ceo_founder = None
+            ceo_comp = None
+            ceo_eq = None
+            avg_neo = None
+            pay_ratio = None
+            board_indep = None
+            board_size = None
+            insider_own = None
+            ceo_pay_vs = None
+            neo_turn = None
+            ceo_dual = None
+            ceo_change_flag = None
+            time_since_ceo_change = None
 
             ef = exec_features.get((ticker, yr))
             if ef:
@@ -637,8 +695,8 @@ def build_v5(limit=None):
                 ceo_founder = ef.get("CEO_FOUNDER_FLAG", ceo_founder)
                 neo_turn = ef.get("NEO_TURNOVER", neo_turn)
                 board_size = ef.get("BOARD_SIZE", board_size)
-                neo_count_real = ef.get("NEO_COUNT", 5)
-                ceo_change_flag = ef.get("CEO_CHANGE_FLAG", 0)
+                neo_count_real = ef.get("NEO_COUNT")
+                ceo_change_flag = ef.get("CEO_CHANGE_FLAG")
                 # time since change: walk back
                 # find last change year
                 last_change_yr = None
@@ -657,11 +715,13 @@ def build_v5(limit=None):
                 else:
                     time_since_ceo_change = yr - last_change_yr
             else:
-                neo_count_real = 5
+                neo_count_real = None  # no filing -> unknown, not "5"
 
-            f4_count = form4_flat.get((ticker, yr))
-            if f4_count is not None:
-                insider_net = float(f4_count)
+            # Signed open-market net shares, not a filing count. Absent stays
+            # None so the writer leaves mask=0.
+            f4_net = form4_net.get((ticker, yr))
+            if f4_net is not None:
+                insider_net = float(f4_net)
 
             # Market history metrics
             m_hist = market_hist.get(ticker)
@@ -676,18 +736,22 @@ def build_v5(limit=None):
                     # use static as before
                     m_metrics = {
                         "price": mkt_static.get("last_close"),
-                        "RET_1M": 0.0,
-                        "RET_3M": 0.0,
-                        "RET_6M": 0.0,
+                        # Only the fields mkt_static actually carries. The
+                        # rest were 0.0 / 50 literals -- a "0% return" and a
+                        # "neutral RSI" are measurements, not absences, and the
+                        # writer marks any non-None value as observed.
+                        "RET_1M": None,
+                        "RET_3M": None,
+                        "RET_6M": None,
                         "RET_12M": mkt_static.get("ret_12m"),
-                        "VOL_30D": 0.0,
-                        "VOL_90D": 0.0,
+                        "VOL_30D": None,
+                        "VOL_90D": None,
                         "VOL_252D": mkt_static.get("vol_252d"),
-                        "BETA_1Y": 0.0,
+                        "BETA_1Y": None,
                         "VOLUME_AVG_30D": mkt_static.get("avg_vol_30d"),
-                        "MOMENTUM_12_1": 0.0,
+                        "MOMENTUM_12_1": None,
                         "PRICE_VS_52W_HIGH": mkt_static.get("price_vs_52w"),
-                        "RSI_14_PROXY": 50,
+                        "RSI_14_PROXY": None,
                         "FWD_RET_1M": None,
                         "FWD_RET_3M": None,
                         "FWD_RET_6M": None,
@@ -708,8 +772,8 @@ def build_v5(limit=None):
             beta_1y = m_metrics.get("BETA_1Y") if m_metrics else None
             vol_avg_30d = m_metrics.get("VOLUME_AVG_30D") if m_metrics else None
             mom_12_1 = m_metrics.get("MOMENTUM_12_1") if m_metrics else None
-            price_vs_52w = m_metrics.get("PRICE_VS_52W_HIGH") if m_metrics else 0.9
-            rsi_14 = m_metrics.get("RSI_14_PROXY") if m_metrics else 50
+            price_vs_52w = m_metrics.get("PRICE_VS_52W_HIGH") if m_metrics else None
+            rsi_14 = m_metrics.get("RSI_14_PROXY") if m_metrics else None
 
             fwd_ret_1m = m_metrics.get("FWD_RET_1M") if m_metrics else None
             fwd_ret_3m = m_metrics.get("FWD_RET_3M") if m_metrics else None
@@ -770,7 +834,9 @@ def build_v5(limit=None):
             }
             rate_10y = rate_map.get(yr, 3.0)
             vix_avg = vix_map.get(yr, 16)
-            credit_spread = 3.5
+            # No credit-spread source is wired. 3.5 was a hardcoded number
+            # that entered every row asserting 'observed'.
+            credit_spread = None
             gdp = {
                 2015: 2.9,
                 2016: 1.8,
@@ -877,7 +943,7 @@ def build_v5(limit=None):
                 "EV_SALES": ev_sales,
                 "EARNINGS_YIELD": earn_yield,
                 "FCF_YIELD": fcf_yield,
-                "DIV_YIELD": 0.015,
+                "DIV_YIELD": None,
                 "NEO_COUNT": neo_count_real,
                 "CEO_AGE": ceo_age,
                 "CEO_TENURE": ceo_tenure,
@@ -898,27 +964,27 @@ def build_v5(limit=None):
                 "FLOAT_PCT": float_pct,
                 "TOP10_INST_CONC": top10_conc,
                 "SHORT_INTEREST_PCT": short_int,
-                "MDA_LENGTH": 5,
-                "MDA_SENTIMENT": 0.05,
-                "RISK_FACTOR_COUNT": 20,
-                "RISK_CHANGE_YOY": 0,
-                "FOG_INDEX_PROXY": 18,
-                "TONE_UNCERTAINTY": 0.15,
-                "SECTOR_REL_RET_12M": 0,
-                "SECTOR_CONCENTRATION": 0.2,
-                "SECTOR_BETA": 1.0,
+                "MDA_LENGTH": None,
+                "MDA_SENTIMENT": None,
+                "RISK_FACTOR_COUNT": None,
+                "RISK_CHANGE_YOY": None,
+                "FOG_INDEX_PROXY": None,
+                "TONE_UNCERTAINTY": None,
+                "SECTOR_REL_RET_12M": None,
+                "SECTOR_CONCENTRATION": None,
+                "SECTOR_BETA": None,
                 "RATE_10Y": rate_10y,
                 "VIX_AVG_FY": vix_avg,
                 "CREDIT_SPREAD_PROXY": credit_spread,
                 "GDP_GROWTH_FY": gdp,
-                "EARN_SURPRISE_STREAK": 0,
-                "GUIDANCE_RAISE_FLAG": 0,
-                "EPS_REVISION_UP_PCT": 0.5,
-                "PRICE_VS_52W_HIGH": price_vs_52w if price_vs_52w is not None else 0.9,
-                "RSI_14_PROXY": rsi_14 if rsi_14 is not None else 50,
-                "ACCIDENT_DISCLOSURE": 0,
+                "EARN_SURPRISE_STREAK": None,
+                "GUIDANCE_RAISE_FLAG": None,
+                "EPS_REVISION_UP_PCT": None,
+                "PRICE_VS_52W_HIGH": price_vs_52w,
+                "RSI_14_PROXY": rsi_14,
+                "ACCIDENT_DISCLOSURE": None,
                 "ALTMAN_Z": altman,
-                "PIOTROSKI_F_SCORE_PROXY": 5,
+                "PIOTROSKI_F_SCORE_PROXY": None,
             }
             for k in ALL_FEATURES:
                 if k not in row_feat:
@@ -1036,12 +1102,24 @@ def build_v5(limit=None):
         [fl["FWD_DD_6M"] if fl["FWD_DD_6M"] is not None else np.nan for fl in fwd_labels],
         dtype=np.float32,
     )
-    triple_barrier = np.array(
-        [fl["TRIPLE_BARRIER"] if fl["TRIPLE_BARRIER"] is not None else -1 for fl in fwd_labels],
-        dtype=np.int64,
-    )
-    ceo_change_flag = np.array([fl["CEO_CHANGE_FLAG"] for fl in fwd_labels], dtype=np.float32)
-    time_since_ceo = np.array([fl["TIME_SINCE_CEO_CHANGE"] for fl in fwd_labels], dtype=np.float32)
+    # TRIPLE_BARRIER is a LABEL, and the consumer already states its own
+    # missing-value contract: train_career_mtnn_v6.py:166-168 does
+    #     tb = fwd["triple_barrier"][orig_idx]
+    #     if not np.isnan(tb):
+    #         triple[b, pos] = int(tb)
+    # It tests for NaN. This array was written as int64 with -1 for missing, and
+    # np.isnan() on an int64 array is never True -- so the guard was dead code
+    # and the -1 sentinel was consumed as a real class alongside 0 and 1.
+    # Measured on the shipped matrix: 511 of 4831 rows (10.6%) of the label were
+    # that sentinel. float32 + NaN honours the contract the trainer already has.
+    def _f32_nan(vals):
+        return np.array([np.nan if v is None else float(v) for v in vals], dtype=np.float32)
+
+    triple_barrier = _f32_nan([fl["TRIPLE_BARRIER"] for fl in fwd_labels])
+    # These two now carry None when no DEF 14A record backs them, so they need
+    # the same treatment -- np.array([None], dtype=np.float32) raises.
+    ceo_change_flag = _f32_nan([fl["CEO_CHANGE_FLAG"] for fl in fwd_labels])
+    time_since_ceo = _f32_nan([fl["TIME_SINCE_CEO_CHANGE"] for fl in fwd_labels])
 
     # coverage stats
     total_tickers = len(set(tickers))
@@ -1051,7 +1129,7 @@ def build_v5(limit=None):
     market_hist_tickers = set(market_hist.keys())
     tickers_with_mhist = len(set(tickers) & market_hist_tickers)
     rows_with_mhist = sum(1 for t in tickers if t in market_hist_tickers)
-    form4_keys_str = {(t, str(fy)) for t, fy in form4_flat.keys()}
+    form4_keys_str = {(t, str(fy)) for t, fy in form4_count.keys()}
     rows_with_form4 = sum(1 for t, fy in zip(tickers, fyears, strict=False) if (t, fy) in form4_keys_str)
 
     # real flags
@@ -1121,12 +1199,13 @@ def build_v5(limit=None):
             "rows_with_real_neo": rows_with_neo_precise,
             "tickers_with_market_hist": tickers_with_mhist,
             "rows_with_market_hist": rows_with_mhist,
-            "tickers_with_form4": len({t for t, _ in form4_flat.keys()}),
+            "tickers_with_form4": len({t for t, _ in form4_count.keys()}),
             "rows_with_form4": rows_with_form4,
         },
         "sources": {
             "def14a_parsed": len(exec_features),
-            "form4_index": len(form4_flat),
+            "form4_index": len(form4_count),
+            "form4_open_market_net": len(form4_net),
             "market_history": len(market_hist),
         },
         "forward_labels": [

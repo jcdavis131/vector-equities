@@ -187,17 +187,34 @@ def get_time_enc_for_seq(seq, Z_raw, fwd, feat_idx_map):
         vix = raw_feat("VIX_AVG_FY")
         price_vs = raw_feat("PRICE_VS_52W_HIGH")
         rsi = raw_feat("RSI_14_PROXY")
-        # from fwd dict
+        # from fwd dict.
+        #
+        # ceo_change_flag and time_since_ceo are NaN wherever no DEF 14A record
+        # backs them -- 4033 of 4831 rows, since filings skew to recent years.
+        # That NaN is the ARTIFACT being honest: the builder no longer writes a
+        # 0.0 that asserts "no CEO change" for a company it knows nothing about.
+        #
+        # But these feed the career positional embedding, which has no mask
+        # channel, so the consumer has to choose a numeric stand-in -- and an
+        # unguarded NaN propagates through np.clip into every downstream tensor
+        # and turns the whole loss NaN (observed: loss nan from epoch 1).
+        #
+        # So the substitution happens HERE, explicitly and visibly, rather than
+        # being baked into the stored data where it would be indistinguishable
+        # from a measurement. 0.0 is the neutral embedding position, not a claim
+        # that the CEO did not change.
         ceo_change = 0.0
         time_since = 0.0
         if "ceo_change_flag" in fwd:
             try:
-                ceo_change = float(fwd["ceo_change_flag"][orig_idx])
+                v = float(fwd["ceo_change_flag"][orig_idx])
+                ceo_change = 0.0 if np.isnan(v) else v
             except Exception:
                 pass
         if "time_since_ceo" in fwd:
             try:
-                time_since = float(fwd["time_since_ceo"][orig_idx])
+                v = float(fwd["time_since_ceo"][orig_idx])
+                time_since = 0.0 if np.isnan(v) else v
             except Exception:
                 pass
         # normalize

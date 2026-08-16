@@ -1,0 +1,400 @@
+{
+ "rows": 4831,
+ "features": 118,
+ "families": 17,
+ "dead_or_constant": [
+  {
+   "feature": "CASH_CONVERSION_CYCLE",
+   "family": "efficiency",
+   "coverage": 0.0,
+   "why": "coverage below usable threshold"
+  },
+  {
+   "feature": "NEO_COUNT",
+   "family": "management_neo",
+   "coverage": 0.0,
+   "why": "coverage below usable threshold"
+  },
+  {
+   "feature": "CEO_AGE",
+   "family": "management_neo",
+   "coverage": 0.0,
+   "why": "coverage below usable threshold"
+  },
+  {
+   "feature": "CEO_TENURE",
+   "family": "management_neo",
+   "coverage": 0.0,
+   "why": "coverage below usable threshold"
+  },
+  {
+   "feature": "CEO_FOUNDER_FLAG",
+   "family": "management_neo",
+   "coverage": 0.0,
+   "why": "coverage below usable threshold"
+  },
+  {
+   "feature": "CEO_EQUITY_PCT",
+   "family": "management_neo",
+   "coverage": 0.0,
+   "why": "coverage below usable threshold"
+  },
+  {
+   "feature": "CEO_PAY_RATIO",
+   "family": "management_neo",
+   "coverage": 0.0,
+   "why": "coverage below usable threshold"
+  },
+  {
+   "feature": "BOARD_INDEP_PCT",
+   "family": "management_neo",
+   "coverage": 0.0,
+   "why": "coverage below usable threshold"
+  },
+  {
+   "feature": "BOARD_SIZE",
+   "family": "management_neo",
+   "coverage": 0.0,
+   "why": "coverage below usable threshold"
+  },
+  {
+   "feature": "INSIDER_OWN_PCT",
+   "family": "management_neo",
+   "coverage": 0.0,
+   "why": "coverage below usable threshold"
+  },
+  {
+   "feature": "CEO_PAY_VS_SECTOR",
+   "family": "management_neo",
+   "coverage": 0.0,
+   "why": "coverage below usable threshold"
+  },
+  {
+   "feature": "NEO_TURNOVER",
+   "family": "management_neo",
+   "coverage": 0.0,
+   "why": "coverage below usable threshold"
+  },
+  {
+   "feature": "CEO_DUALITY",
+   "family": "management_neo",
+   "coverage": 0.0,
+   "why": "coverage below usable threshold"
+  },
+  {
+   "feature": "INST_PCT",
+   "family": "ownership",
+   "coverage": 0.0,
+   "why": "coverage below usable threshold"
+  },
+  {
+   "feature": "INST_DELTA_QOQ",
+   "family": "ownership",
+   "coverage": 0.0,
+   "why": "coverage below usable threshold"
+  },
+  {
+   "feature": "INSIDER_NET_12M",
+   "family": "ownership",
+   "coverage": 0.0,
+   "why": "coverage below usable threshold"
+  },
+  {
+   "feature": "FLOAT_PCT",
+   "family": "ownership",
+   "coverage": 0.0,
+   "why": "coverage below usable threshold"
+  },
+  {
+   "feature": "TOP10_INST_CONC",
+   "family": "ownership",
+   "coverage": 0.0,
+   "why": "coverage below usable threshold"
+  },
+  {
+   "feature": "SHORT_INTEREST_PCT",
+   "family": "ownership",
+   "coverage": 0.0,
+   "why": "coverage below usable threshold"
+  },
+  {
+   "feature": "MDA_LENGTH",
+   "family": "disclosure_text",
+   "coverage": 0.0,
+   "why": "coverage below usable threshold"
+  },
+  {
+   "feature": "MDA_SENTIMENT",
+   "family": "disclosure_text",
+   "coverage": 0.0,
+   "why": "coverage below usable threshold"
+  },
+  {
+   "feature": "RISK_FACTOR_COUNT",
+   "family": "disclosure_text",
+   "coverage": 0.0,
+   "why": "coverage below usable threshold"
+  },
+  {
+   "feature": "RISK_CHANGE_YOY",
+   "family": "disclosure_text",
+   "coverage": 0.0,
+   "why": "coverage below usable threshold"
+  },
+  {
+   "feature": "FOG_INDEX_PROXY",
+   "family": "disclosure_text",
+   "coverage": 0.0,
+   "why": "coverage below usable threshold"
+  },
+  {
+   "feature": "TONE_UNCERTAINTY",
+   "family": "disclosure_text",
+   "coverage": 0.0,
+   "why": "coverage below usable threshold"
+  },
+  {
+   "feature": "SECTOR_REL_RET_12M",
+   "family": "sector_context",
+   "coverage": 0.0,
+   "why": "coverage below usable threshold"
+  },
+  {
+   "feature": "SECTOR_CONCENTRATION",
+   "family": "sector_context",
+   "coverage": 0.0,
+   "why": "coverage below usable threshold"
+  },
+  {
+   "feature": "SECTOR_BETA",
+   "family": "sector_context",
+   "coverage": 0.0,
+   "why": "coverage below usable threshold"
+  },
+  {
+   "feature": "CREDIT_SPREAD_PROXY",
+   "family": "macro_regime",
+   "coverage": 0.0,
+   "why": "coverage below usable threshold"
+  },
+  {
+   "feature": "EARN_SURPRISE_STREAK",
+   "family": "form",
+   "coverage": 0.0,
+   "why": "coverage below usable threshold"
+  },
+  {
+   "feature": "GUIDANCE_RAISE_FLAG",
+   "family": "form",
+   "coverage": 0.0,
+   "why": "coverage below usable threshold"
+  },
+  {
+   "feature": "EPS_REVISION_UP_PCT",
+   "family": "form",
+   "coverage": 0.0,
+   "why": "coverage below usable threshold"
+  },
+  {
+   "feature": "ACCIDENT_DISCLOSURE",
+   "family": "form",
+   "coverage": 0.0,
+   "why": "coverage below usable threshold"
+  }
+ ],
+ "redundant_pairs": [
+  {
+   "a": "OP_INCOME",
+   "b": "EBIT",
+   "family_a": "income",
+   "family_b": "income",
+   "r": 1.0,
+   "n": 3783
+  },
+  {
+   "a": "EQUITY",
+   "b": "BOOK_VALUE",
+   "family_a": "balance",
+   "family_b": "balance",
+   "r": 1.0,
+   "n": 4822
+  },
+  {
+   "a": "ROIC",
+   "b": "ROIC_WACC_SPREAD",
+   "family_a": "profitability",
+   "family_b": "profitability",
+   "r": 1.0,
+   "n": 3368
+  },
+  {
+   "a": "PS",
+   "b": "EV_SALES",
+   "family_a": "valuation",
+   "family_b": "valuation",
+   "r": 0.9814,
+   "n": 3992
+  }
+ ],
+ "family_coverage_by_era": {
+  "balance": {
+   "older": 0.907,
+   "2023_only": 0.9002,
+   "2024_newest": 0.9014
+  },
+  "bbref_bridge": {
+   "older": 0.692,
+   "2023_only": 0.729,
+   "2024_newest": 0.72
+  },
+  "cashflow": {
+   "older": 0.7381,
+   "2023_only": 0.7423,
+   "2024_newest": 0.7391
+  },
+  "disclosure_text": {
+   "older": 0.0,
+   "2023_only": 0.0,
+   "2024_newest": 0.0
+  },
+  "efficiency": {
+   "older": 0.5378,
+   "2023_only": 0.5256,
+   "2024_newest": 0.5292
+  },
+  "form": {
+   "older": 0.289,
+   "2023_only": 0.3307,
+   "2024_newest": 0.332
+  },
+  "growth": {
+   "older": 0.598,
+   "2023_only": 0.8111,
+   "2024_newest": 0.836
+  },
+  "income": {
+   "older": 0.7371,
+   "2023_only": 0.7349,
+   "2024_newest": 0.7285
+  },
+  "leverage_liquidity": {
+   "older": 0.7066,
+   "2023_only": 0.7106,
+   "2024_newest": 0.6689
+  },
+  "macro_regime": {
+   "older": 0.75,
+   "2023_only": 0.75,
+   "2024_newest": 0.75
+  },
+  "management_neo": {
+   "older": 0.0004,
+   "2023_only": 0.1301,
+   "2024_newest": 0.1354
+  },
+  "market_price": {
+   "older": 0.7927,
+   "2023_only": 0.9894,
+   "2024_newest": 0.994
+  },
+  "ownership": {
+   "older": 0.0,
+   "2023_only": 0.0,
+   "2024_newest": 0.0
+  },
+  "per_share": {
+   "older": 0.7984,
+   "2023_only": 0.9064,
+   "2024_newest": 0.9092
+  },
+  "profitability": {
+   "older": 0.7475,
+   "2023_only": 0.7616,
+   "2024_newest": 0.756
+  },
+  "sector_context": {
+   "older": 0.0,
+   "2023_only": 0.0,
+   "2024_newest": 0.0
+  },
+  "valuation": {
+   "older": 0.7094,
+   "2023_only": 0.8292,
+   "2024_newest": 0.8322
+  }
+ },
+ "coverage_cliffs_newest": [],
+ "newest_year": 2024,
+ "within_family_redundancy": {
+  "balance": {
+   "n_features": 10,
+   "mean_abs_r": 0.5576,
+   "max_abs_r": 1.0
+  },
+  "bbref_bridge": {
+   "n_features": 2,
+   "mean_abs_r": 0.1982,
+   "max_abs_r": 0.1982
+  },
+  "cashflow": {
+   "n_features": 7,
+   "mean_abs_r": 0.2251,
+   "max_abs_r": 0.9393
+  },
+  "efficiency": {
+   "n_features": 5,
+   "mean_abs_r": 0.1098,
+   "max_abs_r": 0.3628
+  },
+  "form": {
+   "n_features": 6,
+   "mean_abs_r": 0.2693,
+   "max_abs_r": 0.2693
+  },
+  "growth": {
+   "n_features": 9,
+   "mean_abs_r": 0.1655,
+   "max_abs_r": 0.4841
+  },
+  "income": {
+   "n_features": 11,
+   "mean_abs_r": 0.3754,
+   "max_abs_r": 1.0
+  },
+  "leverage_liquidity": {
+   "n_features": 7,
+   "mean_abs_r": 0.1904,
+   "max_abs_r": 0.9389
+  },
+  "macro_regime": {
+   "n_features": 4,
+   "mean_abs_r": 0.1536,
+   "max_abs_r": 0.1761
+  },
+  "management_neo": {
+   "n_features": 14,
+   "mean_abs_r": 0.5945,
+   "max_abs_r": 0.5945
+  },
+  "market_price": {
+   "n_features": 10,
+   "mean_abs_r": 0.2593,
+   "max_abs_r": 0.9702
+  },
+  "per_share": {
+   "n_features": 5,
+   "mean_abs_r": 0.1586,
+   "max_abs_r": 0.7517
+  },
+  "profitability": {
+   "n_features": 5,
+   "mean_abs_r": 0.3367,
+   "max_abs_r": 1.0
+  },
+  "valuation": {
+   "n_features": 8,
+   "mean_abs_r": 0.1871,
+   "max_abs_r": 0.9814
+  }
+ }
+}
