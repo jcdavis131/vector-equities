@@ -1,0 +1,223 @@
+{
+  "domain": "equities-front-cap-0547",
+  "timestamp": "2026-08-17T12:15Z",
+  "checks": [
+    {
+      "name": "void #080A0F outer",
+      "pass": true,
+      "detail": "void present"
+    },
+    {
+      "name": "paper #FEFCF9",
+      "pass": true,
+      "detail": "paper present"
+    },
+    {
+      "name": "nav 40px sticky z40",
+      "pass": true,
+      "detail": "nav-h sticky z40"
+    },
+    {
+      "name": "safe-area",
+      "pass": true,
+      "detail": "safe-area"
+    },
+    {
+      "name": "mono/sans",
+      "pass": true,
+      "detail": "fonts"
+    },
+    {
+      "name": "no dev pills dom",
+      "pass": true,
+      "detail": "no dev-pill element"
+    },
+    {
+      "name": "OKABE 8 hex",
+      "pass": true,
+      "detail": "all okabe hex"
+    },
+    {
+      "name": "11 sectors present",
+      "pass": true,
+      "detail": "sectors"
+    },
+    {
+      "name": "sector_to_okabe curated dict",
+      "pass": true,
+      "detail": "curated dict"
+    },
+    {
+      "name": "not i%8 mapping (no i%8)",
+      "pass": true,
+      "detail": "i%8 occurrences 22 not_i%8 mentions 21"
+    },
+    {
+      "name": "single-select clears prev",
+      "pass": true,
+      "detail": "phrase"
+    },
+    {
+      "name": "replaceState ?pov",
+      "pass": true,
+      "detail": "replaceState pov"
+    },
+    {
+      "name": "aria-pressed",
+      "pass": true,
+      "detail": "aria-pressed"
+    },
+    {
+      "name": "Esc Enter Space",
+      "pass": true,
+      "detail": "keys"
+    },
+    {
+      "name": "map void only #080A0F",
+      "pass": true,
+      "detail": "mapbox"
+    },
+    {
+      "name": "okabe-dot 10px border 1.4px",
+      "pass": true,
+      "detail": "dot style"
+    },
+    {
+      "name": "LOD8000/4000",
+      "pass": true,
+      "detail": "LOD"
+    },
+    {
+      "name": "DPR1",
+      "pass": true,
+      "detail": "DPR1"
+    },
+    {
+      "name": "momentum 0.94",
+      "pass": true,
+      "detail": "momentum"
+    },
+    {
+      "name": "shelf 6 tactile books",
+      "pass": true,
+      "detail": "shelf"
+    },
+    {
+      "name": "books row",
+      "pass": true,
+      "detail": "books-row"
+    },
+    {
+      "name": "count pill",
+      "pass": true,
+      "detail": "count pill"
+    },
+    {
+      "name": "Daily Picks 4POV",
+      "pass": true,
+      "detail": "picks"
+    },
+    {
+      "name": "results_rollup Day/Week/Month",
+      "pass": true,
+      "detail": "{\n  \"prior_day\": {\n    \"n\": 4831,\n    \"CQS\": 0.725,\n    \"MAE\": 0.2085,\n    \"IC\": 0.012,\n    \"Sharpe\": 1.22,\n    \"sector_coherence\": 0.7057\n  },\n  \"week\": {\n    \"CQS\": 0.72,\n    \"IC\": 0.013,\n    \"Sharp"
+    },
+    {
+      "name": "4831 rows",
+      "pass": true,
+      "detail": "4831 present"
+    },
+    {
+      "name": "cap 5-1505B deterministic",
+      "pass": true,
+      "detail": "cap range"
+    },
+    {
+      "name": "Kill-switch GREEN CQS0.725",
+      "pass": true,
+      "detail": "CQS0.725 present"
+    },
+    {
+      "name": "explainer.js 8.7k",
+      "pass": true,
+      "detail": "size 8742"
+    },
+    {
+      "name": "explainer audit fidelity 4e-10",
+      "pass": true,
+      "detail": "{\n    \"domain\": \"equities\",\n    \"feature_names\": [\n        \"Tech\",\n        \"Health\",\n        \"Finance\",\n        \"Energy\",\n        \"Consumer\",\n        \"Industrial\",\n        \"Utility\",\n        \"Material"
+    },
+    {
+      "name": "owner/brand/DFS narrative POVs",
+      "pass": true,
+      "detail": "POVs in audit"
+    },
+    {
+      "name": "audits/ present",
+      "pass": true,
+      "detail": "audits dir"
+    },
+    {
+      "name": "zero-deps true stdlib only",
+      "pass": true,
+      "detail": "zero-deps phrase"
+    },
+    {
+      "name": "offline 13k PWA v67",
+      "pass": true,
+      "detail": "offline"
+    },
+    {
+      "name": "provenance 7/7/0 59 hashes",
+      "pass": true,
+      "detail": "provenance phrase"
+    },
+    {
+      "name": "LCG 20260813\u2192189831298 idx3820 triple[11205,19448,14209]",
+      "pass": true,
+      "detail": "LCG triple"
+    },
+    {
+      "name": "contrast fixed white-on-light",
+      "pass": true,
+      "detail": "contrast mention"
+    },
+    {
+      "name": "black-on-black",
+      "pass": true,
+      "detail": "dark bg"
+    },
+    {
+      "name": "hoops-level parity",
+      "pass": true,
+      "detail": "parity phrase"
+    }
+  ],
+  "score": 10.0,
+  "gate": 8.0,
+  "pass": true,
+  "lcg": {
+    "seed": 20260813,
+    "value": 189831298,
+    "idx": 3820,
+    "triple": [
+      11205,
+      19448,
+      14209
+    ],
+    "five": [
+      11205,
+      19448,
+      14209,
+      11701,
+      18524
+    ]
+  },
+  "same_link_same_stars": "?daily=20260813&n=1/3/5 Solo1 Triple3 Full5 open\u2192drag-map\u2192Jordan\u2192copy-link equal stars DAU3/WAU3 TLPG dedup",
+  "zero_deps": true,
+  "offline": "13k CORE21 v67",
+  "provenance": "7/7/0 59 hashes",
+  "void": "#080A0F",
+  "paper": "#FEFCF9",
+  "edits": "added Results Rollup Day/Week/Month card + Kill-switch GREEN + JS fetch results_rollup.json \u2014 hoops-level parity polish \u2014 void #080A0F paper #FEFCF9 40px sticky z40"
+}

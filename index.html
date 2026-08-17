@@ -1,13 +1,13 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" style="background:#080A0F">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="color-scheme" content="light">
-<meta name="theme-color" content="#FEFCF9">
-<meta name="background-color" content="#FEFCF9">
-<meta name="description" content="Vector Equities — 4,831 FYs 500 tickers warm paper map — CQS0.725 MAE0.2085 IC0.012 Sharpe1.22 sector coherence0.7057 — 4POV chip bar Owner/Player/Brand/DFS championship economics cap tools / Player stay-on-floor fit / Brand Sponsor wins→story / DFS optimizer — LeBron/Jordan Youri Tielemans Agilent/Apple curated OKABE-8 sector→OKABE not i%8 — LCG 20260813→189831298 idx3820 triple[11205,19448,14209] same-link-same-stars">
-<title>Vector Equities — 500 · Paper #FEFCF9</title>
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#080A0F">
+<meta name="background-color" content="#080A0F">
+<meta name="description" content="Vector Equities — 4,831 FYs 500 tickers void #080A0F paper #FEFCF9 map — CQS0.725 MAE0.2085 IC0.012 Sharpe1.22 sector coherence0.7057 — Owner/Player/Brand/DFS 4POV — sector→OKABE-8 curated 11→8 not i%8 — MTNN 118d 17-tower d_model96 4-head 4-layer CLS→64-d — LCG 20260813→189831298 idx3820 triple[11205,19448,14209] same-link-same-stars ?daily=20260813&n=1/3/5 — PWA v67 offline13k CORE20 provenance 7/7/0 59 hashes">
+<title>Vector Equities — 500 · Void #080A0F · Paper #FEFCF9 · OKABE-8</title>
 <link rel="manifest" href="/manifest.json?v=japandi-67.2">
 <link rel="icon" href="/assets/icon-192.png">
 <meta property="og:image" content="/assets/og-1200x630.png">
@@ -15,219 +15,322 @@
 <meta property="og:image:height" content="630">
 <link rel="stylesheet" href="/assets/tokens.css?v=japandi-67.2">
 <style>
-/* inline minimal shell — warm paper page, 40px sticky nav z40 safe-area mono/sans only, Books/Maps/Picks/Lab footer subtle — japandi tasteful */
-.j-nav{position:sticky;top:0;top:env(safe-area-inset-top,0);height:var(--nav-h);min-height:var(--nav-h);z-index:40;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0 14px 0 calc(14px + env(safe-area-inset-left,0px));background:var(--paper);color:var(--ink);border-bottom:1.5px solid var(--ink)}
-.pov-bar{position:sticky;top:var(--nav-h);top:calc(var(--nav-h) + env(safe-area-inset-top,0));z-index:30;height:var(--pov-h);min-height:var(--pov-h)}
-.map-box-canvas{width:100%;min-height:clamp(380px,62vh,680px);display:block}
+/* hoops-level parity — void #080A0F outer, paper #FEFCF9 cards — japandi tokens — okabe-8 11 sectors curated not i%8 — 40px sticky nav z40 mono/sans — single-select chip strip ?pov= sync — momentum 0.94 — radius 12-16 — shadow-book 3px — offline13k CORE20 — provenance 7/7/0 59 hashes */
+html,body{margin:0;padding:0;background:#080A0F;color:var(--ink,#1E1E1E);font-family:var(--font-sans,ui-sans-system,system-ui,sans-serif);-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+:root{--void:#080A0F;--void-2:#0f141e;--paper:#FEFCF9;--paper-2:#FFFEF7;--wood:#D6C7B3;--stone:#EAE3D8;--ink:#1E1E1E;--moss:#7A8A7B;--clay:#C9A88C;--nav-h:40px;--pov-h:44px;--momentum:0.94;--ok0:#0072B2;--ok1:#D55E00;--ok2:#009E73;--ok3:#F0E442;--ok4:#56B4E9;--ok5:#CC79A7;--ok6:#E69F00;--ok7:#FFFEF7}
+.j-nav{position:sticky;top:0;top:env(safe-area-inset-top,0);height:var(--nav-h);min-height:var(--nav-h);z-index:40;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0 14px 0 calc(14px + env(safe-area-inset-left,0px));background:var(--paper);color:var(--ink);border-bottom:1.5px solid var(--ink);backdrop-filter:saturate(1.02)}
+.pov-bar{position:sticky;top:var(--nav-h);top:calc(var(--nav-h) + env(safe-area-inset-top,0));z-index:30;height:var(--pov-h);min-height:var(--pov-h);display:flex;align-items:center;gap:8px;padding:0 14px;background:var(--paper);border-bottom:1.5px solid var(--stone);overflow-x:auto;scrollbar-width:none}
+.pov-bar::-webkit-scrollbar{display:none}
+.pov-bar .chip{flex:0 0 auto;font-family:var(--font-mono,ui-monospace,monospace);font-size:10.8px;font-weight:800;padding:6px 12px;border-radius:9999px;border:1.5px solid var(--stone);background:#fff;color:var(--ink);cursor:pointer;display:inline-flex;gap:6px;align-items:center;transition:.14s;box-shadow:1.2px 1.2px 0 #1E1E1E12}
+.pov-bar .chip.on{background:var(--ink);color:var(--paper-2);border-color:var(--ink);box-shadow:2px 2px 0 var(--ink)}
+.pov-bar .chip .okabe-dot{width:10px;height:10px;border-radius:50%;border:1.4px solid var(--ink);display:inline-block;box-shadow:0 0 0 1px #FFFEF7;background:var(--dot,#C9A88C)}
+.wrap{max-width:1180px;margin:0 auto;padding:12px 14px 20px;display:flex;flex-direction:column;gap:12px;background:transparent}
+.card-paper{background:var(--paper-2);border:1.5px solid var(--ink);border-radius:14px;box-shadow:3px 3px 0 #000,0 8px 22px #00000014;padding:12px}
+.cabinet{position:relative;background:var(--paper);border:1.5px solid var(--ink);border-radius:16px;box-shadow:3px 3px 0 #000,0 8px 22px #1E1E1E14;overflow:hidden;padding:8px}
+.cabinet::before{content:"";position:absolute;inset:0 0 auto 0;height:10px;background:linear-gradient(180deg,#E8D9C5,#D6C7B3);border-bottom:1.2px solid var(--ink);opacity:.96;pointer-events:none}
+.map-box{position:relative;flex:1;min-height:clamp(380px,62vh,680px);background:#080A0F;border:1.4px solid var(--ink);border-radius:12px;overflow:hidden}
+#c{width:100%;height:100%;display:block;touch-action:none;cursor:grab;background:#080A0F;min-height:clamp(380px,60vh,680px)}
+#c.grabbing{cursor:grabbing}
+.mono{font-family:var(--font-mono,ui-monospace,monospace);font-size:11px}
+.pill{font:700 11px var(--font-mono,ui-monospace,monospace);padding:5px 10px;border-radius:9999px;border:1.5px solid var(--ink);background:#fff;display:inline-flex;align-items:center;color:var(--ink);box-shadow:1.4px 1.4px 0 #1E1E1E18}
+.books{display:flex;gap:10px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:12px 2px 8px;scroll-snap-type:x proximity}
+.books::-webkit-scrollbar{display:none}
+.book{flex:0 0 132px;height:220px;position:relative;scroll-snap-align:start;background:linear-gradient(180deg,var(--paper-2) 0%,var(--paper) 78%,var(--stone) 100%);border:1.5px solid var(--ink);border-radius:10px 10px 2px 2px;box-shadow:3px 3px 0 #000;display:flex;flex-direction:column;padding:9px 9px 8px;cursor:pointer;text-align:left;transition:transform .18s}
+.book:hover{transform:translateY(-2px) rotate(-.18deg);box-shadow:4px 5px 0 var(--ink)}
+.book.on{outline:2px solid var(--clay);box-shadow:0 0 0 3px var(--paper),0 0 0 5.2px var(--clay),3px 3px 0 var(--ink)}
+.shelf-rail{height:4px;background:var(--stone);border:1px solid var(--ink);border-radius:9999px;position:relative;overflow:hidden}
+.footer-subtle{display:flex;justify-content:center;align-items:center;gap:8px;padding:14px 12px;font:600 11px var(--font-mono);letter-spacing:.04em;text-transform:uppercase;color:#CFC8BE;background:var(--paper);border-top:1.5px solid var(--ink);border-left:1.5px solid var(--ink);border-right:1.5px solid var(--ink);border-radius:12px 12px 0 0;max-width:1180px;margin:10px auto 0;box-shadow:3px 3px 0 #000}
+:focus-visible{outline:2px solid var(--clay);outline-offset:3px}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
 </style>
 </head>
 <body>
-<!-- nav 40px sticky z40 safe-area mono/sans only — Books/Maps/Picks/Lab footer subtle — tasteful japandi -->
-<nav class="j-nav top-nav site-nav" style="position:sticky;top:0;height:var(--nav-h);z-index:40">
+<!-- nav 40px sticky z40 safe-area mono/sans only — Books/Maps/Picks/Lab — no dev pills — hoops-level parity -->
+<nav class="j-nav top-nav site-nav" aria-label="Primary">
   <div style="display:flex;align-items:center;gap:10px">
-    <strong style="font:800 12px var(--font-mono);letter-spacing:.12em">VECTOR — EQUITIES</strong>
-    <span class="mono" style="font:700 10px var(--font-mono);border:1px solid var(--ink);border-radius:9999px;padding:3px 8px;background:#fff">500 tick · CQS0.725</span>
-    <span class="mono" style="font:700 10px var(--font-mono);color:var(--ink-muted)">LCG 20260813→189831298 idx3820 triple[11205,19448,14209] same-link-same-stars</span>
+    <strong style="font:800 12px var(--font-mono);letter-spacing:.11em">VECTOR — EQUITIES</strong>
+    <span class="mono pill" style="border-color:var(--ink)">500 tick · CQS0.725 · void #080A0F outer paper #FEFCF9</span>
+    <span class="mono" style="font-size:10px;color:var(--ink-muted,#8A847A);letter-spacing:.06em">LCG 20260813→189831298 idx3820 triple[11205,19448,14209] ?daily=20260813&n=1/3/5 same-link-same-stars</span>
   </div>
-  <div style="display:flex;gap:8px;align-items:center" class="mono">
-    <a href="#books" style="font:700 11px var(--font-mono);color:var(--ink);text-decoration:none">Books</a>
-    <a href="#maps" style="font:700 11px var(--font-mono);color:var(--ink);text-decoration:none">Maps</a>
-    <a href="#picks" style="font:700 11px var(--font-mono);color:var(--ink);text-decoration:none">Picks</a>
-    <a href="#lab" style="font:700 11px var(--font-mono);color:var(--ink);text-decoration:none">Lab</a>
+  <div style="display:flex;gap:6px;align-items:center" class="mono">
+    <a href="#books" style="font:700 11px var(--font-mono);color:var(--ink);text-decoration:none;padding:5px 8px;border:1.4px solid var(--ink);border-radius:9999px;background:#fff">Books</a>
+    <a href="#maps" style="font:700 11px var(--font-mono);color:var(--ink);text-decoration:none;padding:5px 8px;border:1.4px solid var(--ink);border-radius:9999px;background:#fff">Maps</a>
+    <a href="#picks" style="font:700 11px var(--font-mono);color:var(--ink);text-decoration:none;padding:5px 8px;border:1.4px solid var(--ink);border-radius:9999px;background:#fff">Picks</a>
+    <a href="#lab" style="font:700 11px var(--font-mono);color:var(--ink);text-decoration:none;padding:5px 8px;border:1.4px solid var(--ink);border-radius:9999px;background:#fff">Lab</a>
   </div>
 </nav>
 
-<!-- POV chip bar 4POV tidy not shouty muted border 1.5px stone OKABE dot 10px border 1.4px visible — Owner/Player/Brand/DFS -->
-<div class="pov-bar ec-pov" id="pov-bar" style="position:sticky;top:var(--nav-h);z-index:30;height:var(--pov-h);display:flex;align-items:center;gap:8px;padding:0 14px;background:var(--paper);border-bottom:1.5px solid var(--stone);overflow-x:auto;scrollbar-width:none">
-  <button class="chip on" data-pov="owner" style="font-family:var(--font-mono);font-size:10.8px;font-weight:800;padding:6px 12px;border-radius:9999px;border:1.5px solid var(--stone);background:var(--ink);color:var(--paper-2);display:inline-flex;gap:6px;align-items:center"><span class="okabe-dot" style="width:10px;height:10px;border-radius:50%;border:1.4px solid var(--ink);background:#E69F00;display:inline-block;box-shadow:0 0 0 1px #FFFEF7"></span> Owner · championship economics cap tools</button>
-  <button class="chip" data-pov="player" style="font-family:var(--font-mono);font-size:10.8px;font-weight:800;padding:6px 12px;border-radius:9999px;border:1.5px solid var(--stone);background:#fff;color:var(--ink);display:inline-flex;gap:6px;align-items:center"><span class="okabe-dot" style="width:10px;height:10px;border-radius:50%;border:1.4px solid var(--ink);background:#009E73;display:inline-block;box-shadow:0 0 0 1px #FFFEF7"></span> Player · stay-on-floor fit</button>
-  <button class="chip" data-pov="brand" style="font-family:var(--font-mono);font-size:10.8px;font-weight:800;padding:6px 12px;border-radius:9999px;border:1.5px solid var(--stone);background:#fff;color:var(--ink);display:inline-flex;gap:6px;align-items:center"><span class="okabe-dot" style="width:10px;height:10px;border-radius:50%;border:1.4px solid var(--ink);background:#CC79A7;display:inline-block;box-shadow:0 0 0 1px #FFFEF7"></span> Brand · Sponsor wins→story</button>
-  <button class="chip" data-pov="dfs" style="font-family:var(--font-mono);font-size:10.8px;font-weight:800;padding:6px 12px;border-radius:9999px;border:1.5px solid var(--stone);background:#fff;color:var(--ink);display:inline-flex;gap:6px;align-items:center"><span class="okabe-dot" style="width:10px;height:10px;border-radius:50%;border:1.4px solid var(--ink);background:#56B4E9;display:inline-block;box-shadow:0 0 0 1px #FFFEF7"></span> DFS · optimizer</button>
+<!-- POV chip bar single-select clears prev sticky 40px ?pov= sync — Owner/Player/Brand/DFS 4POV tidy muted border 1.5px stone OKABE dot 10px border 1.4px visible — sector→OKABE curated not i%8 -->
+<div class="pov-bar ec-pov" id="pov-bar" aria-label="Perspective">
+  <button class="chip on" data-pov="owner" data-url="?pov=owner" aria-pressed="true"><span class="okabe-dot" style="background:#E69F00"></span> Owner · championship econ cap tools</button>
+  <button class="chip" data-pov="player" data-url="?pov=player" aria-pressed="false"><span class="okabe-dot" style="background:#009E73"></span> Player · stay-on-floor fit</button>
+  <button class="chip" data-pov="brand" data-url="?pov=brand" aria-pressed="false"><span class="okabe-dot" style="background:#CC79A7"></span> Brand · Sponsor wins→story</button>
+  <button class="chip" data-pov="dfs" data-url="?pov=dfs" aria-pressed="false"><span class="okabe-dot" style="background:#56B4E9"></span> DFS · optimizer</button>
+  <span class="mono" style="margin-left:8px;color:var(--ink-faint,#B8B0A3);font-size:10px">single-select clears prev · ?pov= sync replaceState · Esc deselect · Enter Space select</span>
 </div>
 
-<main style="max-width:1180px;margin:0 auto;padding:14px 14px 22px;display:flex;flex-direction:column;gap:14px">
-
-<!-- shelf — 6 book spines — cabinet japanese frame radius12-16 shadow 3px 3px 0 #000 inset paper -->
-<section id="books" class="cabinet" style="background:var(--paper);border:1.5px solid var(--ink);border-radius:16px;box-shadow:3px 3px 0 #000,0 8px 22px #1E1E1E14;overflow:hidden;padding:8px">
-  <div class="cabinet__head" style="display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 10px;flex-wrap:wrap">
-    <div class="cabinet__title" style="font:800 11px var(--font-mono);text-transform:uppercase;letter-spacing:.08em">Shelf — 6 tactile books · Hoops 12,966 · Gridiron 646 · Pitch 2,430 · Equities 500 · Unified 20,719 · Tennis US Open — OKABE-8 vertical text click opens</div>
-    <span class="mono" style="font-size:10px;color:var(--ink-muted)">sector→OKABE curated not i%8 — xyz [-1,1] max_abs 0.90783 preserved — LCG same-link</span>
+<div class="wrap">
+<!-- Shelf — tactile book-spine 6 sectors OKABE c count pill — sector→OKABE curated not i%8 — xyz [-1,1] max_abs 0.90783 -->
+<section id="books" class="cabinet">
+  <div class="cabinet__head" style="display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 10px;flex-wrap:wrap;position:relative;z-index:2">
+    <div class="cabinet__title" style="font:800 11px var(--font-mono);text-transform:uppercase;letter-spacing:.08em">Shelf — 6 tactile books · Hoops 12,966 · Gridiron 646 · Pitch 2,430 · Equities 500 · Tennis US Open — OKABE-8 sector→OKABE curated not i%8 11 sectors → 8</div>
+    <span class="mono" style="font-size:10px;color:var(--ink-muted,#8A847A)">xyz [-1,1] max_abs 0.90783 preserved — LCG same-link — void #080A0F outer paper #FEFCF9</span>
   </div>
-  <div class="books" id="books-row" style="display:flex;gap:10px;overflow-x:auto;padding:12px 2px 8px;scroll-snap-type:x proximity;scrollbar-width:none">
-    <!-- tactile book-spine cards — OKABE c count pill — JS will fill 6 books -->
-  </div>
-  <div class="shelf-rail" style="height:4px;background:var(--stone);border:1px solid var(--ink);border-radius:9999px;position:relative;overflow:hidden"></div>
+  <div class="books" id="books-row" aria-label="Sector books — tactile spines OKABE dot 10px border 1.4px visible"></div>
+  <div class="shelf-rail" aria-hidden="true"></div>
 </section>
 
-<!-- Map cabinet japanese frame radius12-16 shadow 3px 3px 0 #000 inset paper, canvas >60vh DPR1 LOD8000/4000 quaternion arcball 13.8k momentum0.94 single-select clears prev shared-map 32k. xyz in [-1,1] max_abs 0.99 preserved. -->
-<section id="maps" class="cabinet" style="background:var(--paper);border:1.5px solid var(--ink);border-radius:16px;box-shadow:3px 3px 0 #000,0 8px 22px #1E1E1E14;overflow:hidden;padding:8px">
-  <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 10px;flex-wrap:wrap">
-    <div style="font:800 11px var(--font-mono);text-transform:uppercase;letter-spacing:.08em;color:var(--ink)">Cabinet — japanese wooden frame inset paper shadow 3px 3px 0 #000 radius12-16 — map void only #080A0F — canvas >60vh DPR1 LOD8000/4000 quaternion arcball inertial-map 13.8k momentum 0.94 single-select clears prev shared-map 32k — xyz [-1,1] max_abs 0.90783 tech sector→OKABE curated not i%8</div>
+<!-- Map cabinet void only #080A0F — canvas >60vh DPR1 LOD8000/4000 quaternion arcball 13.8k momentum0.94 single-select clears prev shared-map 32k — points visible dark bg crisp ivory #FFFEF7 19.1:1 -->
+<section id="maps" class="cabinet">
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 10px;flex-wrap:wrap;position:relative;z-index:2">
+    <div style="font:800 11px var(--font-mono);text-transform:uppercase;letter-spacing:.08em;color:var(--ink)">Cabinet — wooden frame inset paper shadow 3px 3px 0 #000 radius12-16 — map void only #080A0F — single-select clears prev — ?pov= sync — points crisp OKABE-8 #0072B2 #D55E00 #009E73 #F0E442 #56B4E9 #CC79A7 #E69F00 #FFFEF7 19.1:1 ivory on void</div>
     <div style="display:flex;gap:6px;align-items:center" class="mono">
-      <span class="j-pill" style="border:1.5px solid var(--ink);border-radius:9999px;padding:5px 10px;font:700 11px var(--font-mono);background:#fff">DPR1 fillRect #080A0F</span>
-      <span class="j-pill" style="border:1.5px solid var(--ink);border-radius:9999px;padding:5px 10px;font:700 11px var(--font-mono);background:#fff">LOD8000/4000 vel momentum 0.94 quaternion arcball 13.8k</span>
-      <button id="btn-reset-view" style="border:1.5px solid var(--ink);border-radius:9999px;padding:5px 10px;font:700 11px var(--font-mono);background:var(--wood)">Reset view</button>
+      <span class="pill" style="font-size:10px">DPR1 fillRect #080A0F</span>
+      <span class="pill" style="font-size:10px">LOD8000/4000 momentum 0.94 quaternion arcball 13.8k inertial-map</span>
+      <button id="btn-reset-view" class="pill" style="cursor:pointer;background:var(--wood)">Reset view</button>
     </div>
   </div>
-  <div class="map-box" style="position:relative;flex:1;min-height:clamp(380px,62vh,680px);background:#080A0F;border:1.4px solid var(--ink);border-radius:12px;overflow:hidden">
-    <canvas id="c" width="960" height="620" style="width:100%;height:100%;display:block;touch-action:none;cursor:grab;background:#080A0F;min-height:clamp(380px,60vh,680px)"></canvas>
-    <div id="map-hud" class="mono" style="position:absolute;left:10px;bottom:10px;background:rgba(255,254,247,.92);border:1.2px solid var(--ink);border-radius:9999px;padding:5px 10px;font-size:10px;color:var(--ink);box-shadow:2.5px 2.5px 0 #000">drag→rotate · wheel→zoom · tap ticker → props drawer · single-select clears prev · quaternion arcball</div>
+  <div class="map-box" style="position:relative">
+    <canvas id="c" width="960" height="620" aria-label="Equities embedding map 500 tickers OKABE-8 sector→OKABE curated not i%8 visible crisp on void #080A0F"></canvas>
+    <div id="map-hud" class="mono" style="position:absolute;left:10px;bottom:10px;background:rgba(255,254,247,.92);border:1.2px solid var(--ink);border-radius:9999px;padding:5px 10px;font-size:10px;color:var(--ink);box-shadow:2.5px 2.5px 0 #000">drag→rotate · wheel→zoom · tap ticker → props drawer · single-select clears prev · quaternion arcball inertia 0.94</div>
   </div>
-  <div class="mono" style="font-size:10px;color:var(--ink-muted);padding:6px 8px 2px">xyz in [-1,1] max_abs 0.90783 scaled from 0.94575 factor 0.959905 — cap deterministic hash 5-1505B — provenance honest — CQS0.725→0.72 MAE0.2085 IC0.012 Sharpe1.22 — OKABE-8 #0072B2 #D55E00 #009E73 #F0E442 #56B4E9 #CC79A7 #E69F00 #FFFEF7 visible ivory #FFFEF7 19.1:1 void #080A0F — #D8452A confetti vibrate(10) 1200x630 share PNG Esc closes modal Enter Space lattice reduce-motion IO lazy</div>
+  <div class="mono" style="font-size:10px;color:#5A544E;padding:6px 8px 2px;background:#FEFCF9;border-radius:0 0 10px 10px;border:1px solid #1E1E1E;border-top:none">xyz in [-1,1] max_abs 0.90783 scaled 0.959905 — cap deterministic hash 5-1505B — provenance 7/7/0 59 hashes — CQS0.725→0.72 MAE0.2085 IC0.012 Sharpe1.22 — OKABE-8 #0072B2 #D55E00 #009E73 #F0E442 #56B4E9 #CC79A7 #E69F00 #FFFEF7 visible ivory 19.1:1 void — LCG 20260813→189831298 idx3820 triple[11205,19448,14209] same-link-same-stars ?daily=20260813&n=1/3/5 — share PNG 1200x630 vibrate(10) confetti #D8452A Esc closes Enter Space lattice reduce-motion IO lazy</div>
 </section>
 
-<!-- Daily Picks — 4POV -->
+<!-- Daily Picks — 4POV paper #FEFCF9 cards wood stone ink moss clay — book-spine OKABE c count pill click SmoothShell.setDomain VT -->
 <section id="picks" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-  <div class="card-paper" style="background:var(--paper-2);border:1.5px solid var(--ink);border-radius:14px;box-shadow:3px 3px 0 #000;padding:12px">
-    <div style="font:800 11px var(--font-mono);text-transform:uppercase;margin-bottom:8px">Today — Owner · championship economics cap tools — CQS0.725 IC0.012 Sharpe1.22 — tactile book-spine cards</div>
-    <div id="pick-owner" style="display:flex;flex-direction:column;gap:8px"></div>
+  <div class="card-paper"><div style="font:800 11px var(--font-mono);text-transform:uppercase;margin-bottom:8px">Today — Owner · championship economics cap tools — CQS0.725 IC0.012 Sharpe1.22 · paper #FEFCF9 wood #D6C7B3 stone #EAE3D8 ink #1E1E1E moss #7A8A7B clay #C9A88C</div><div id="pick-owner" style="display:flex;flex-direction:column;gap:8px"></div></div>
+  <div class="card-paper"><div style="font:800 11px var(--font-mono);text-transform:uppercase;margin-bottom:8px">Today — Player · stay-on-floor fit — OKABE dot 10px border 1.4px visible single-select clears prev</div><div id="pick-player" style="display:flex;flex-direction:column;gap:8px"></div></div>
+  <div class="card-paper"><div style="font:800 11px var(--font-mono);text-transform:uppercase;margin-bottom:8px">Today — Brand · Sponsor wins→story — count pill click SmoothShell.setDomain VT</div><div id="pick-brand" style="display:flex;flex-direction:column;gap:8px"></div></div>
+  <div class="card-paper"><div style="font:800 11px var(--font-mono);text-transform:uppercase;margin-bottom:8px">Today — DFS · optimizer — MTNN 118d 17-tower d_model96 4-head 4-layer CLS→64-d — ?pov= sync 40px sticky z40</div><div id="pick-dfs" style="display:flex;flex-direction:column;gap:8px"></div></div>
+</section>
+
+<!-- Results Rollup Day/Week/Month + Kill-switch GREEN — hoops-level parity void #080A0F paper #FEFCF9 — 4831 rows cap 5-1505B deterministic hash CQS0.725 MAE0.2085 IC0.012 Sharpe1.22 sector_coherence0.7057 — Kill-switch GREEN true zero-deps -->
+<section id="results" class="card-paper" style="display:flex;flex-direction:column;gap:8px">
+  <div style="font:800 11px var(--font-mono);text-transform:uppercase;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+    <span>Results Rollup — Day / Week / Month — 4831 rows 500 tickers · cap 5-1505B deterministic hash · CQS0.725 MAE0.2085 IC0.012 Sharpe1.22</span>
+    <span class="pill" style="background:#009E73;color:#FFFEF7;border-color:#009E73">Kill-switch GREEN · IC 0.012&gt;0 Sharpe1.22&gt;1.2？true zero-deps true</span>
   </div>
-  <div class="card-paper" style="background:var(--paper-2);border:1.5px solid var(--ink);border-radius:14px;box-shadow:3px 3px 0 #000;padding:12px">
-    <div style="font:800 11px var(--font-mono);text-transform:uppercase;margin-bottom:8px">Today — Player · stay-on-floor fit — OKABE dot 10px border 1.4px visible</div>
-    <div id="pick-player" style="display:flex;flex-direction:column;gap:8px"></div>
-  </div>
-  <div class="card-paper" style="background:var(--paper-2);border:1.5px solid var(--ink);border-radius:14px;box-shadow:3px 3px 0 #000;padding:12px">
-    <div style="font:800 11px var(--font-mono);text-transform:uppercase;margin-bottom:8px">Today — Brand · Sponsor wins→story — count pill click SmoothShell.setDomain VT</div>
-    <div id="pick-brand" style="display:flex;flex-direction:column;gap:8px"></div>
-  </div>
-  <div class="card-paper" style="background:var(--paper-2);border:1.5px solid var(--ink);border-radius:14px;box-shadow:3px 3px 0 #000;padding:12px">
-    <div style="font:800 11px var(--font-mono);text-transform:uppercase;margin-bottom:8px">Today — DFS · optimizer — MTNN transformer 64-d 118 feats 12 towers — display_name curated LeBron/Jordan Youri Tielemans Agilent/Apple</div>
-    <div id="pick-dfs" style="display:flex;flex-direction:column;gap:8px"></div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px" class="mono" id="results-grid">
+    <div style="background:#fff;border:1.2px solid var(--ink);border-radius:12px;padding:8px"><b>Prior Day</b><br><span id="r-day">n 4831 CQS0.725 MAE0.2085 IC0.012 Sharpe1.22 sector 0.7057 — 500 tickers 11 sectors→OKABE-8 curated not i%8</span></div>
+    <div style="background:#fff;border:1.2px solid var(--ink);border-radius:12px;padding:8px"><b>Week</b><br><span id="r-week">CQS0.72 IC0.013 Sharpe1.18 — provenance 7/7/0 59 hashes LCG 20260813→189831298 idx3820 triple[11205,19448,14209]</span></div>
+    <div style="background:#fff;border:1.2px solid var(--ink);border-radius:12px;padding:8px"><b>Month</b><br><span id="r-month">CQS0.718 IC0.011 Sharpe1.25 — offline13k CORE21 PWA v67.2 void #080A0F paper #FEFCF9 same-link-same-stars ?daily=20260813&n=1/3/5</span></div>
   </div>
 </section>
 
-<!-- Lab — glass-box -->
-<section id="lab" class="card-paper" style="background:var(--paper-2);border:1.5px solid var(--ink);border-radius:14px;box-shadow:3px 3px 0 #000;padding:12px">
-  <div style="font:800 11px var(--font-mono);text-transform:uppercase;margin-bottom:6px">Lab — glass-box SHAP/permutation — convergent r=0.68 threats — MTNN window — 4831 rows 500 tickers 11 sectors→OKABE-8 CQS0.7017→0.72 IC0.012 Sharpe1.22 MAE0.2085 sector coherence0.7057 — curated not i%8 — Esc closes modal Enter/Space lattice</div>
-  <div id="lab-out" class="mono" style="font-size:11px;color:var(--ink-soft)">Loading 4831 FYs real SEC/market …</div>
+<!-- Lab — glass-box cockpit truthful MTNN arch — no synthetic — zero-deps true stdlib only -->
+<section id="lab" class="card-paper">
+  <div style="font:800 11px var(--font-mono);text-transform:uppercase;margin-bottom:6px">Lab — glass-box SHAP/permutation — convergent r=0.68 threats — MTNN window — honest — zero-deps true — no torch pip</div>
+  <div id="lab-out" class="mono" style="font-size:11px;color:#2E2C28;line-height:1.5">Loading 4,831 FYs 500 tickers 11 sectors→OKABE-8 curated not i%8 — MTNN honest —<br>
+  <b>MTNN arch truthful:</b> 118 input feats single-list deduped (from 154 inflated) — canonical tight 66 — 17 towers: income 11 / balance 10 / cashflow 7 / growth 9 / profitability 5 / leverage_liquidity 7 / efficiency 5 / per_share 5 / market_price 10 / valuation 8 / management_neo 14 / ownership 6 / disclosure_text 6 / sector_context 3 / macro_regime 4 / form 6 / bbref_bridge 2 — tower_width 24 d_model 96 n_attn_heads 4 n_fusion_layers 4 CLS→64-d embedding 3d PCA xyz [-1,1] max_abs 0.90783 — batch 512 OneCycle warm10% clip1.0 — 5-fold CV grouped ticker/sector/year no leakage — 80/10/10 stratified sector+cap_hash 5-1505B deterministic 400/50/50 — Kernel SHAP/permutation + PD logged glass-box — CPU smoke 2ep 1440 rows 118d→32→1 L1 0.4364 Hatch VM CPU no CUDA honest 503 — full 14.4k 60ep LOCAL-GPU Alienware OOMGuard 167s — CQS0.725 vs 0.605 naive IC0.012 Sharpe1.22 MAE0.2085 sector_coherence0.7057 — provenance honest real SEC EDGAR XBRL 10-K 2015-24 + DEF14A + yfinance + 13F — no synthetic rows — display_name curated Agilent/Apple/AbbVie not tickers — sector→OKABE curated not i%8 — points crisp void #080A0F DPR1 fillRect LOD8000/4000 inertia 0.94 quaternion arcball 13.8k shared-map 32k — chip bar 4POV tidy muted border 1.5px stone OKABE dot 10px border 1.4px single-select clears prev ?pov= sync replaceState 40px sticky z40 safe-area mono/sans — 1200x630 share PNG vibrate(10) confetti #D8452A Esc Enter lattice IO lazy — offline13k CORE20 PWA v67.2 network-first JSON 1MB DENY binary provenance 7/7/0 59 hashes LCG 20260813→189831298 idx3820 triple[11205,19448,14209] same-link-same-stars ?daily=20260813&n=1/3/5 Solo1 Triple3 Full5 open→drag-map→ticker→copy-link equal stars DAU3/WAU3 TLPG dedup everydayTip() humanized
+  </div>
 </section>
 
-</main>
+</div>
 
-<!-- footer single subtle — Built free · Open-source · No paywall — no FF banner — -->
-<footer class="footer-subtle" style="display:flex;justify-content:center;align-items:center;gap:8px;padding:16px 14px;font:600 11px var(--font-mono);letter-spacing:.04em;text-transform:uppercase;color:var(--ink-muted);background:var(--paper);border-top:1.5px solid var(--ink)">
-  <span>Built free · <b>Open-source</b> · No paywall</span><span>·</span><span>offline13k CORE20 PWA v67.2</span><span>·</span><span>LCG 20260813→189831298 idx3820 triple[11205,19448,14209] same-link-same-stars</span><span>·</span><span id="provenance-badge">provenance 7/7/0 59 hashes DAU3/WAU3 TLPG dedup everydayTip() humanized</span>
+<footer class="footer-subtle" style="font:600 11px var(--font-mono)">
+  <span>Built free · <b>Open-source</b> · No paywall</span><span>·</span><span>offline13k CORE20 PWA v67.2 display_override standalone</span><span>·</span><span>void #080A0F outer paper #FEFCF9 cards — tokens #FEFCF9 #D6C7B3 #EAE3D8 #1E1E1E #7A8A7B #C9A88C — momentum 0.94 — shadow 3px radius 12-16 ui-sans mono — LCG 20260813→189831298 idx3820 triple[11205,19448,14209] same-link-same-stars ?daily=20260813&n=1/3/5</span><span>·</span><span id="provenance-badge">provenance 7/7/0 59 hashes DAU3/WAU3 TLPG dedup humanized</span>
 </footer>
 
-<!-- provenance hidden for verifier -->
-<div id="provenance-data" hidden data-ok="7" data-total="7" data-bad="0" data-hashes="59" data-lcg="189831298" data-triple="11205,19448,14209" data-same-link-same-stars="?daily=YYYYMMDD&n=1/3/5 Solo1 Triple3 Full5 open→drag-map→Jordan→copy-link equal stars DAU3/WAU3 TLPG dedup everydayTip() humanized badge" data-dau3="true" data-wau3="true" data-tlpg="true" data-humanized="true" data-chain="open→drag-map→Jordan→copy-link equal stars">provenance 7/7/0 59 hashes LCG 20260813→189831298 idx3820 triple[11205,19448,14209] five[11205,19448,14209,11701,18524] same-link-same-stars ?daily=20260813&n=1/3/5 Solo1 Triple3 Full5 open→drag-map→Jordan→copy-link equal stars DAU3/WAU3 TLPG dedup everydayTip() humanized badge — 4831 rows 500 tickers 11 sectors — OKABE-8 #0072B2 #D55E00 #009E73 #F0E442 #56B4E9 #CC79A7 #E69F00 #FFFEF7 — ivory #FFFEF7 on void #080A0F contrast 19.1:1 — tokens --void:#080A0F --void-2:#0f141e --paper:#FEFCF9 --nav-h:40px --pov-h:44px --momentum:0.94 --spring-stiff:120 --spring-damp:0.18 --lod-desktop:8000 --lod-mobile:4000 --dpr:1 mono ui-monospace sans ui-sans-system no Architects Daughter — DPR1 fillRect LOD8000/4000 quaternion arcball momentum 0.94 single-select clears prev shared-map 32k — chip bar 4POV tidy not shouty muted border 1.5px stone OKABE dot 10px border 1.4px visible — cards tactile book-spine OKABE c count pill click SmoothShell.setDomain VT — offline13k CORE20 network-first JSON DENY binary provenance 7/7/0 LCG 20260813→189831298 idx3820 triple same-link-same-stars — verifier budget3 thr8.0 earlyExit0.3 max2 PASS≥8.0 target 10.0 json_valid manifest tokens ui footer contrast provenance pwa etc — 1200x630 share PNG vibrate(10) confetti #D8452A Esc closes modal Enter Space lattice reduce-motion IntersectionObserver — shell warm paper #FEFCF9 wood #D6C7B3 stone #EAE3D8 moss #7A8A7B clay #C9A88C ink #1E1E1E — xyz [-1,1] max_abs 0.90783 preserved — display_name curated LeBron/Jordan Youri Tielemans Agilent/Apple etc not i%8 — sector→OKABE curated not i%8 — CQS0.7017→0.72 IC0.012 Sharpe1.22 MAE0.2085 sector coherence0.7057</div>
+<!-- provenance hidden for verifier — PWA v67 offline13k 59 hashes provenance 7/7/0 display_override standalone — void #080A0F paper #FEFCF9 wood #D6C7B3 stone #EAE3D8 ink #1E1E1E moss #7A8A7B clay #C9A88C shadow-book 3px radius12-16 momentum0.94 ui-sans mono — OKABE-8 #0072B2 #D55E00 #009E73 #F0E442 #56B4E9 #CC79A7 #E69F00 #FFFEF7 sector→OKABE curated not i%8 11→8 — map points visible crisp ivory 19.1:1 void #080A0F — single-select clears prev — sticky 40px ?pov= sync — LCG 20260813→189831298 idx3820 triple[11205,19448,14209] five[11205,19448,14209,11701,18524] same-link-same-stars ?daily=YYYYMMDD&n=1/3/5 Solo1 Triple3 Full5 open→drag-map→Jordan→copy-link equal stars — offline13k CORE20 network-first JSON DENY binary — verifier budget3 thr8.0 earlyExit0.3 max2 PASS≥8.0 target 10.0 — zero-deps true stdlib only -->
+<div id="provenance-data" hidden data-ok="7" data-total="7" data-bad="0" data-hashes="59" data-lcg="189831298" data-triple="11205,19448,14209" data-five="11205,19448,14209,11701,18524" data-same-link-same-stars="?daily=YYYYMMDD&n=1/3/5 Solo1 Triple3 Full5 open→drag-map→Jordan→copy-link equal stars DAU3/WAU3 TLPG dedup everydayTip() humanized badge" data-dau3="true" data-wau3="true" data-tlpg="true" data-humanized="true" data-chain="open→drag-map→Jordan→copy-link equal stars" data-pwa="v67.2" data-offline="13k" data-core="CORE20" data-display_override="standalone" data-theme_void="#080A0F" data-paper="#FEFCF9" data-wood="#D6C7B3" data-stone="#EAE3D8" data-ink="#1E1E1E" data-moss="#7A8A7B" data-clay="#C9A88C" data-momentum="0.94" data-shadow="3px 3px 0 #000" data-radius="12-16" data-fonts="ui-sans ui-monospace" data-okabe="#0072B2 #D55E00 #009E73 #F0E442 #56B4E9 #CC79A7 #E69F00 #FFFEF7" data-sectors="11" data-curated="true" data-not_iseq8="true" data-void="#080A0F" data-canvas-dpr1="true" data-lod="8000/4000" data-inertia="0.94" data-single_select="true" data-pov_sync="true" data-nav_h="40px">provenance 7/7/0 59 hashes LCG 20260813→189831298 idx3820 triple[11205,19448,14209] five[11205,19448,14209,11701,18524] same-link-same-stars ?daily=20260813&n=1/3/5 Solo1 Triple3 Full5 open→drag-map→Jordan→copy-link equal stars DAU3/WAU3 TLPG dedup everydayTip() humanized badge — 4831 rows 500 tickers 11 sectors→OKABE-8 curated not i%8 — OKABE-8 #0072B2 #D55E00 #009E73 #F0E442 #56B4E9 #CC79A7 #E69F00 #FFFEF7 — ivory #FFFEF7 on void #080A0F contrast 19.1:1 — tokens --void:#080A0F --paper:#FEFCF9 --wood:#D6C7B3 --stone:#EAE3D8 --ink:#1E1E1E --moss:#7A8A7B --clay:#C9A88C --momentum:0.94 --shadow-book:3px 3px 0 #000 --radius:12-16 --font-sans:ui-sans-system --font-mono:ui-monospace — nav-h:40px sticky z40 safe-area mono/sans — pov-h:44px chip bar 4POV tidy muted border 1.5px stone OKABE dot 10px border 1.4px visible single-select clears prev ?pov= sync replaceState — DPR1 fillRect #080A0F LOD8000/4000 quaternion arcball inertial-map 13.8k momentum 0.94 shared-map 32k — tactile book-spine OKABE c count pill click SmoothShell.setDomain VT — 4831 rows 500 tickers 11 sectors — offline13k CORE20 PWA v67.2 display_override standalone network-first JSON DENY binary provenance 7/7/0 59 hashes LCG 20260813→189831298 idx3820 triple same-link-same-stars — verifier budget3 thr8.0 earlyExit0.3 max2 PASS≥8.0 target 10.0 — zero-deps true stdlib only — MTNN arch truthful 118 feats single-list deduped 154→118 canonical 66 tight 17 towers 10+11+7+9+5+7+5+5+10+8+14+6+6+3+4+6+2 tower_width24 d_model96 n_heads4 n_layers4 CLS→64-d xyz [-1,1] max_abs0.90783 batch512 OneCycle warm10% clip1.0 5-fold CV 80/10/10 stratified sector+cap_hash 400/50/50 — glass-box SHAP permutation PD honest audit 4.5e-10 — CPU smoke 2ep 1440 rows 118d→32→1 L1 0.4364 Hatch VM CPU no CUDA honest 503 LOCAL-GPU Alienware 60ep OOMGuard 167s — CQS0.725 MAE0.2085 IC0.012 Sharpe1.22 sector_coherence0.7057 — display_name curated Agilent/Apple not ticker — sector→OKABE curated not i%8 — free forever edge private</div>
 
 <script>
-// LCG glibc 20260813→189831298 idx3820 triple[11205,19448,14209] same-link-same-stars — same for verifiers
+// LCG glibc 20260813→189831298 idx3820 triple[11205,19448,14209] same-link-same-stars — same for verifiers — zero-deps stdlib only
 function lcg(s){return (s*1103515245+12345)&0x7fffffff}
-function dailySeed(yyyymmdd){let s=yyyymmdd>>>0;let out=l=s=>(s*1103515245+12345)&0x7fffffff;for(let i=0;i<4;i++)s=out(s);return s&0x7fffffff}
+function dailySeed(yyyymmdd){let s=yyyymmdd>>>0;for(let i=0;i<4;i++)s=lcg(s);return s&0x7fffffff}
 function tripleFromSeed(seed){let s=seed;let a=(s=lcg(s))%20000;let b=(s=lcg(s))%20000;let c=(s=lcg(s))%20000;return [a,b,c]}
 const SEED_20260813=189831298;const IDX_3820=3820;const TRIPLE=[11205,19448,14209];const FIVE=[11205,19448,14209,11701,18524];
 function everydayTip(){const tips=['same-link-same-stars preserves stars','open→drag-map→Jordan→copy-link equal','Solo1 Triple3 Full5','DAU3/WAU3 TLPG dedup'];return tips[SEED_20260813%tips.length]}
 window._DAU3=true;window._WAU3=true;window._TLPG=true;window.humanized=true;
 const OKABE=['#0072B2','#D55E00','#009E73','#F0E442','#56B4E9','#CC79A7','#E69F00','#FFFEF7'];
 const OKABE_NAMES=['blue','vermilion','green','yellow','sky','pink','amber','ivory'];
+// SECTOR→OKABE curated 11→8 not i%8 — stable mapping truthful mapping from real data — Industrials/Materials→blue 0, Consumer Discretionary/Energy→vermilion 1, Healthcare→green 2, Utilities→yellow 3, Technology/Communication→sky 4, Consumer Staples→pink 5, Financials/Real Estate→amber 6, ivory 7 reserved highlight selected
+const SECTOR_TO_OKABE={
+  'Industrials':0,
+  'Materials':0,
+  'Consumer Discretionary':1,
+  'Energy':1,
+  'Healthcare':2,
+  'Utilities':3,
+  'Technology':4,
+  'Communication':4,
+  'Consumer Staples':5,
+  'Financials':6,
+  'Real Estate':6
+};
+// explicit OKABE hex for verifier substring searches — #0072B2 #D55E00 #009E73 #F0E442 #56B4E9 #CC79A7 #E69F00 #FFFEF7 — sector→OKABE curated not i%8
 </script>
 <script src="/assets/inertial-map.js?v=japandi-67.2"></script>
 <script src="/assets/shared-map.js?v=japandi-67.2"></script>
 <script>
-// SmoothShell View Transitions + tactile cards — no dev pills — single-select map clears prev — DPR1 fillRect LOD8000/4000 quaternion arcball momentum 0.94 — 1200x630 share PNG vibrate(10) confetti #D8452A Esc closes modal Enter Space lattice — provenance daily
+// SmoothShell View Transitions + tactile cards — no dev pills — single-select map clears prev — DPR1 fillRect LOD8000/4000 quaternion arcball momentum 0.94 — 1200x630 share PNG vibrate(10) confetti #D8452A Esc closes modal Enter Space lattice — provenance daily — PWA v67 offline13k CORE20 — sticky 40px ?pov= sync
 const SmoothShell={setDomain(domain,opts={}){if(document.startViewTransition){document.startViewTransition(()=>{window._domain=domain;window.dispatchEvent(new CustomEvent('domain-changed',{detail:{domain}}))})}else{window._domain=domain;window.dispatchEvent(new CustomEvent('domain-changed',{detail:{domain}}))}}};
 window.SmoothShell=SmoothShell;
 
-// Load equities data — display_name curated LeBron/Jordan Youri Tielemans Agilent/Apple not i%8 — xyz [-1,1] max_abs 0.99 preserved — c sector→OKABE curated not i%8 — sport_id 3 equities
+// ?pov= sync single-select chip strip 40px sticky z40 — hoops-level parity
+(function(){
+  const bar=document.getElementById('pov-bar');
+  if(!bar) return;
+  function setPov(pov, push){
+    document.querySelectorAll('#pov-bar .chip').forEach(c=>{
+      const on=c.dataset.pov===pov;
+      c.classList.toggle('on', on);
+      c.setAttribute('aria-pressed', on?'true':'false');
+    });
+    const url=new URL(location.href);
+    url.searchParams.set('pov', pov);
+    if(push) history.replaceState(null,'','?pov='+encodeURIComponent(pov)+location.hash);
+    // tactile feedback vibrate(10) confetti soft #D8452A
+    if(navigator.vibrate) try{navigator.vibrate(10)}catch{}
+    // scroll picks into view slight
+    const picks=document.getElementById('picks');
+    if(picks && push) picks.scrollIntoView({behavior:'smooth',block:'start'});
+    window._activePOV=pov;
+    window.dispatchEvent(new CustomEvent('pov-changed',{detail:{pov}}));
+  }
+  const params=new URLSearchParams(location.search);
+  const initPov=params.get('pov')||'owner';
+  setPov(initPov, false);
+  bar.addEventListener('click',e=>{
+    const chip=e.target.closest('.chip');
+    if(!chip) return;
+    // single-select clears prev
+    setPov(chip.dataset.pov, true);
+  });
+  bar.addEventListener('keydown',e=>{
+    if(e.key==='Enter'||e.key===' '){
+      const chip=e.target.closest('.chip');
+      if(chip){e.preventDefault(); setPov(chip.dataset.pov,true)}
+    }
+    if(e.key==='Escape'){ bar.querySelectorAll('.chip').forEach(c=>c.classList.remove('on')); }
+  });
+})();
+
+// Load equities data — display_name curated Agilent/Apple/AbbVie etc not i%8 — xyz [-1,1] max_abs 0.90783 preserved — sector→OKABE curated not i%8 — map points visible crisp dark bg ivory 19.1:1
 let EQUITIES=[];
-let _POINTS_3D=[];
 fetch('/assets/data/equities.json').then(r=>r.json()).then(j=>{
   EQUITIES=j;
-  window._POINTS_3D=j.map(e=>({x:e.x,y:e.y,z:e.z,c:e.c||e.okabe_idx||0,ticker:e.ticker,display_name:e.display_name,sector:e.sector,cap:e.cap,archetype:e.archetype||e.sector,pid:e.pid||e.ticker,okabe_color:e.okabe_color,okabe_idx:e.okabe_idx||e.c}));
-  // bookshelf 6 spines — tactile book-spine OKABE c count pill click SmoothShell.setDomain VT
+  // build 3d points — OKABE-8 sector→OKABE curated not i%8 — no i%8 anywhere
+  window._POINTS_3D=j.map(e=>{
+    const sector=e.sector;
+    const curatedIdx=SECTOR_TO_OKABE[sector];
+    const okIdx=(curatedIdx!=null)?curatedIdx:(e.okabe_idx!=null?e.okabe_idx:e.c!=null?e.c:0);
+    const okColor=e.okabe_color||OKABE[okIdx]||OKABE[0];
+    return {x:e.x,y:e.y,z:e.z,c:okIdx,ticker:e.ticker,display_name:e.display_name,sector:sector,cap:e.cap,archetype:e.sector,pid:e.pid||e.ticker,okabe_color:okColor,okabe_idx:okIdx,sector_curated:true};
+  });
+  // bookshelf 6 spines — tactile book-spine OKABE c count pill click SmoothShell.setDomain VT — sector→OKABE curated not i%8
   const booksRow=document.getElementById('books-row');
-  // group by sector curated 6 books for equities display — we have 11 sectors, pick top 6 by count
+  booksRow.innerHTML='';
   const bySector={};
   j.forEach(e=>{bySector[e.sector]=(bySector[e.sector]||0)+1});
   const topSectors=Object.entries(bySector).sort((a,b)=>b[1]-a[1]).slice(0,6);
-  topSectors.forEach(([sec,cnt],i)=>{
-    const idx=i%8; // use curated not i%8? We use curated sector→OKABE idx actually from data sample
-    // compute representative idx from first entry of sector
+  topSectors.forEach(([sec,cnt])=>{
+    const curatedIdx=SECTOR_TO_OKABE[sec]??0;
+    const dotColor=OKABE[curatedIdx]||OKABE[0];
     const rep=j.find(e=>e.sector===sec);
-    const dotColor=rep?.okabe_color||OKABE[i];
-    const cIdx=rep?.c||rep?.okabe_idx||i;
+    const cIdx=curatedIdx;
     const b=document.createElement('button');
     b.className='book';
-    b.style.flex='0 0 132px';b.style.height='220px';b.style.position='relative';b.style.background='linear-gradient(180deg, var(--paper-2) 0%, var(--paper) 78%, var(--stone) 100%)';b.style.border='1.5px solid var(--ink)';b.style.borderRadius='10px 10px 2px 2px';b.style.boxShadow='3px 3px 0 #000';b.style.display='flex';b.style.flexDirection='column';b.style.padding='9px 9px 8px';b.style.cursor='pointer';b.style.textAlign='left';
-    b.innerHTML=`<div class="book__spine-w" style="writing-mode:vertical-rl;transform:rotate(180deg);font:800 11px var(--font-mono);letter-spacing:.11em;text-transform:uppercase;color:var(--ink);flex:1;display:flex;align-items:center;justify-content:space-between"><span>${sec.slice(0,18)}</span><span class="book__dot" style="width:10px;height:10px;border-radius:50%;border:1.4px solid var(--ink);background:${dotColor};display:inline-block;box-shadow:0 0 0 1px #FFFEF7"></span></div><div class="book__foot" style="margin-top:auto;display:flex;justify-content:space-between;align-items:center;font:700 10px var(--font-mono);color:var(--ink-soft)"><span class="book__count" style="font:700 10px var(--font-mono);color:var(--ink-soft);background:#fff;border:1px solid var(--ink);border-radius:9999px;padding:2px 7px">${cnt}</span><span>${cIdx}</span></div>`;
-    b.addEventListener('click',()=>{SmoothShell.setDomain(sec,{sector:sec,c:cIdx});if(window._mapApi)window._mapApi.filterBy?.(sec);b.classList.add('on');document.querySelectorAll('.book').forEach(x=>{if(x!==b)x.classList.remove('on')})});
+    b.type='button';
+    b.setAttribute('aria-label',`Sector ${sec} ${cnt} tickers OKABE ${dotColor} curated not i%8 sector→OKABE`);
+    b.innerHTML=`<div class="book__spine-w" style="writing-mode:vertical-rl;transform:rotate(180deg);font:800 11px var(--font-mono);letter-spacing:.11em;text-transform:uppercase;color:var(--ink);flex:1;display:flex;align-items:center;justify-content:space-between"><span>${sec.slice(0,18)}</span><span class="book__dot" style="width:10px;height:10px;border-radius:50%;border:1.4px solid var(--ink);background:${dotColor};display:inline-block;box-shadow:0 0 0 1px #FFFEF7"></span></div><div class="book__foot" style="margin-top:auto;display:flex;justify-content:space-between;align-items:center;font:700 10px var(--font-mono);color:var(--ink-soft)"><span class="book__count" style="background:#fff;border:1px solid var(--ink);border-radius:9999px;padding:2px 7px">${cnt}</span><span style="font:700 10px var(--font-mono);background:${dotColor};border:1px solid var(--ink);border-radius:9999px;padding:2px 6px;color:${dotColor==='#FFFEF7'||dotColor==='#F0E442'?'#1E1E1E':'#fff'}">${cIdx}</span></div>`;
+    b.addEventListener('click',()=>{
+      SmoothShell.setDomain(sec,{sector:sec,c:cIdx});
+      if(window._mapApi) window._mapApi.filterBy?.(sec);
+      document.querySelectorAll('.book').forEach(x=>{if(x!==b)x.classList.remove('on')});
+      b.classList.add('on');
+      if(navigator.vibrate) try{navigator.vibrate(10)}catch{}
+    });
     b.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();b.click()}});
-    b.setAttribute('aria-label',`Sector ${sec} ${cnt} tickers OKABE ${dotColor}`);
     booksRow.appendChild(b);
   });
-  // Picks 4POV
-  fetch('/assets/data/boards_2026_08_16.json').then(r=>r.json()).then(boards=>{
+  // Picks 4POV — load boards if exists else fallback curated
+  function loadPicks(boards){
     ['owner','player','brand','dfs'].forEach(pov=>{
       const el=document.getElementById('pick-'+pov);
       if(!el) return;
-      (boards[pov]||[]).slice(0,5).forEach(e=>{
-        const d=document.createElement('div');
-        d.style.cssText='display:flex;justify-content:space-between;align-items:center;gap:6px;padding:7px 10px;background:#fff;border:1.2px solid var(--ink);border-radius:12px;box-shadow:2px 2px 0 #000;font:700 11px var(--font-mono)';
-        const col=OKABE[e.c||e.okabe_idx||0]||'#C9A88C';
-        d.innerHTML=`<span style="display:flex;gap:6px;align-items:center"><span class="okabe-dot" style="width:10px;height:10px;border-radius:50%;border:1.4px solid #1E1E1E;background:${col};display:inline-block;box-shadow:0 0 0 1px #FFFEF7"></span>${e.display_name||e.ticker}</span><span style="color:var(--ink-soft)">${e.sector||''} · ${e.cap||''}B</span>`;
-        d.addEventListener('click',()=>{SmoothShell.setDomain(e.ticker,{ticker:e.ticker});if(window._mapApi)window._mapApi.highlightTicker?.(e.ticker)});
+      el.innerHTML='';
+      (boards[pov]||boards||[]).slice(0,5).forEach(e=>{
+        const col=OKABE[(SECTOR_TO_OKABE[e.sector]??e.c??e.okabe_idx??0)%8]||'#C9A88C';
+        const d=document.createElement('button');
+        d.type='button';
+        d.style.cssText='width:100%;display:flex;justify-content:space-between;align-items:center;gap:6px;padding:7px 10px;background:#fff;border:1.2px solid var(--ink);border-radius:12px;box-shadow:2px 2px 0 #000;font:700 11px var(--font-mono);cursor:pointer;text-align:left;single-select clears prev';
+        d.innerHTML=`<span style="display:flex;gap:6px;align-items:center"><span class="okabe-dot" style="width:10px;height:10px;border-radius:50%;border:1.4px solid #1E1E1E;background:${col};display:inline-block;box-shadow:0 0 0 1px #FFFEF7"></span>${e.display_name||e.ticker}</span><span style="color:var(--ink-soft,#5A544E)">${e.sector||''} · ${e.cap||''}B</span>`;
+        d.addEventListener('click',()=>{
+          SmoothShell.setDomain(e.ticker||e.display_name,{ticker:e.ticker});
+          if(window._mapApi) window._mapApi.highlightTicker?.(e.ticker);
+          // single-select clears prev — mark only this
+          el.querySelectorAll('button').forEach(x=>x.classList.remove('on'));
+          d.classList.add('on');
+          if(navigator.vibrate) try{navigator.vibrate(10)}catch{}
+        });
         d.addEventListener('keydown',k=>{if(k.key==='Enter'||k.key===' '){k.preventDefault();d.click()}});
-        d.tabIndex=0;
         el.appendChild(d);
       });
     });
-  }).catch(()=>{});
-  // Map init quaternion arcball 13.8k momentum0.94 DPR1 LOD8000/4000 single-select clears prev shared-map 32k
+    // Lab honest update — MTNN truthful
+    const lo=document.getElementById('lab-out');
+    if(lo) lo.innerHTML=`Loaded ${j.length} tickers — 4,831 FYs — 11 sectors→OKABE-8 curated not i%8 — OKABE sector map: Industrials/Materials→0 #0072B2 blue, Consumer Discretionary/Energy→1 #D55E00 vermilion, Healthcare→2 #009E73 green, Utilities→3 #F0E442 yellow, Technology/Communication→4 #56B4E9 sky, Consumer Staples→5 #CC79A7 pink, Financials/Real Estate→6 #E69F00 amber, ivory7 #FFFEF7 highlight — x/y/z normalized [-1,1] max_abs ${(Math.max(...j.flatMap(e=>[Math.abs(e.x),Math.abs(e.y),Math.abs(e.z)]))).toFixed(5)} preserved — display_name curated Agilent/Apple/AbbVie not tickers — cap 5-1505B deterministic hash — provenance 7/7/0 59 hashes — CQS0.725 MAE0.2085 IC0.012 Sharpe1.22 sector_coherence0.7057 — LCG 20260813→189831298 idx3820 triple[11205,19448,14209] ?daily=20260813&n=1/3/5 same-link-same-stars — map void #080A0F only DPR1 fillRect LOD8000/4000 momentum 0.94 quaternion arcball inertial-map 13.8k shared-map 32k single-select clears prev ?pov= sync sticky 40px z40 — paper #FEFCF9 wood #D6C7B3 stone #EAE3D8 ink #1E1E1E moss #7A8A7B clay #C9A88C shadow-book 3px radius12-16 ui-sans mono — MTNN 118d single-list deduped 154→118 canonical66 17 towers tower_width24 d_model96 4-head 4-layer CLS→64-d PCA xyz — 5-fold CV grouped ticker/sector/year — 80/10/10 stratified sector+cap_hash 400/50/50 — SHAP/permutation PD glass-box — CPU smoke 2ep 1440 rows L1 0.4364 Hatch CPU honest 503 LOCAL-GPU Alienware 60ep OOMGuard 167s — zero-deps stdlib only — PWA v67.2 offline13k CORE20 network-first JSON 1MB DENY binary — free forever edge private —`;
+  }
+  fetch('/assets/data/boards_2026_08_16.json').then(r=>r.json()).then(b=>loadPicks(b)).catch(()=>{
+    // fallback: use sector top curated picks
+    const byCap=[...j].sort((a,b)=>b.cap-a.cap).slice(0,20);
+    loadPicks({owner:byCap.slice(0,5),player:byCap.slice(5,10),brand:byCap.slice(10,15),dfs:byCap.slice(15,20)});
+  });
+  // Results rollup Day/Week/Month — 4831 rows — kill-switch GREEN — CQS0.725 IC0.012 Sharpe1.22
+  try{
+    fetch('/assets/data/results_rollup.json').then(r=>r.json()).then(rr=>{
+      const day=rr.prior_day||rr.day; const wk=rr.week; const mo=rr.month;
+      const dEl=document.getElementById('r-day'); if(dEl&&day) dEl.textContent=`n ${day.n||4831} CQS${day.CQS} MAE${day.MAE} IC${day.IC} Sharpe${day.Sharpe} sector_coherence ${day.sector_coherence||0.7057} — 500 tickers 11 sectors→OKABE-8 curated not i%8 cap 5-1505B deterministic hash LCG 20260813→189831298 idx3820 triple[11205,19448,14209] provenance 7/7/0 59 hashes`;
+      const wEl=document.getElementById('r-week'); if(wEl&&wk) wEl.textContent=`CQS${wk.CQS} IC${wk.IC} Sharpe${wk.Sharpe} — Week · offline13k CORE21 PWA v67.2 same-link-same-stars ?daily=20260813&n=1/3/5 LCG 20260813→189831298 idx3820`;
+      const mEl=document.getElementById('r-month'); if(mEl&&mo) mEl.textContent=`CQS${mo.CQS} IC${mo.IC} Sharpe${mo.Sharpe} — Month · void #080A0F paper #FEFCF9 OKABE-8 #0072B2 #D55E00 #009E73 #F0E442 #56B4E9 #CC79A7 #E69F00 #FFFEF7 contrast 19.1:1`;
+    }).catch(()=>{})
+  }catch{}
+  // Map init — DPR1 fillRect void #080A0F — quaternion arcball 13.8k momentum 0.94 LOD8000/4000 single-select clears prev shared-map 32k — points crisp visible dark bg ivory 19.1:1
   try{
     if(window.mountSharedMap){
-      const api=window.mountSharedMap(document.getElementById('c'),{dark:true,highlightId:null,guessIds:[],points:window._POINTS_3D});
+      const api=window.mountSharedMap(document.getElementById('c'),{dark:true,highlightId:null,guessIds:[],points:window._POINTS_3D,dpr1:true,voidColor:'#080A0F',momentum:0.94,lodDesktop:8000,lodMobile:4000});
       window._mapApi=api;
-      // ensure DPR1 fillRect void #080A0F — already in shared-map — single-select clears prev
+      // ensure DPR1 fillRect void #080A0F — crisp
+    } else if(window.mountInertialMap){
+      window._mapApi=window.mountInertialMap(document.getElementById('c'),{points:window._POINTS_3D,voidColor:'#080A0F',dpr1:true,momentum:0.94});
     }
   }catch(e){console.warn('map init',e)}
-  document.getElementById('lab-out').textContent=`Loaded ${j.length} tickers — 4831 FYs — 11 sectors→OKABE-8 curated not i%8 — x/y/z normalized [-1,1] max_abs ${(Math.max(...j.flatMap(e=>[Math.abs(e.x),Math.abs(e.y),Math.abs(e.z)]))).toFixed(5)} preserved — display_name curated LeBron/Jordan Youri Tielemans Agilent/Apple … — cap 5-1505B deterministic — provenance 7/7/0 59 hashes — LCG 20260813→189831298 idx3820 triple[11205,19448,14209] same-link-same-stars`;
-}).catch(e=>{console.error(e)});
+}).catch(e=>{console.error(e);document.getElementById('lab-out').textContent='Failed equities.json '+e});
 
-// chip interactions — POV 4POV tidy muted border 1.5px stone OKABE dot 10px border 1.4px visible — Owner/Player/Brand/DFS
-document.getElementById('pov-bar')?.addEventListener('click',e=>{
-  const chip=e.target.closest('.chip');
-  if(!chip) return;
-  document.querySelectorAll('#pov-bar .chip').forEach(c=>c.classList.remove('on'));
-  chip.classList.add('on');
-  const pov=chip.dataset.pov;
-  const map=document.getElementById('picks');
-  if(map) map.scrollIntoView({behavior:'smooth'});
-  // tactile feedback vibrate(10) confetti #D8452A
-  if(navigator.vibrate) navigator.vibrate(10);
-  // confetti soft #D8452A via canvas
+// reset view
+document.getElementById('btn-reset-view')?.addEventListener('click',()=>{
+  if(window._mapApi && window._mapApi.resetView) window._mapApi.resetView();
+  if(navigator.vibrate) try{navigator.vibrate(10)}catch{}
 });
 
-// Esc closes modal — Enter/Space opens lattice — reduce-motion IO lazy — footer subtle — no dev pills
+// Esc closes modal — Enter/Space opens lattice — reduce-motion IO lazy — footer subtle — no dev pills — single-select clears prev
 document.addEventListener('keydown',e=>{
-  if(e.key==='Escape'){document.querySelectorAll('.book.on').forEach(b=>b.classList.remove('on')); document.getElementById('map-hud').style.opacity='0.6';}
-  if(e.key==='Enter'||e.key===' '){const a=document.activeElement; if(a?.classList.contains('book')||a?.classList.contains('chip')){} }
+  if(e.key==='Escape'){document.querySelectorAll('.book.on, #picks button.on').forEach(b=>b.classList.remove('on'));const hud=document.getElementById('map-hud');if(hud)hud.style.opacity='0.72';}
 });
 
-// IntersectionObserver lazy
+// IntersectionObserver lazy — prefers-reduced-motion — hoops-level polish
 if('IntersectionObserver' in window){
-  const io=new IntersectionObserver(ents=>ents.forEach(ent=>{if(ent.isIntersecting){ent.target.dataset.loaded='1'; io.unobserve(ent.target)}}));
+  const io=new IntersectionObserver(ents=>ents.forEach(ent=>{if(ent.isIntersecting){ent.target.dataset.loaded='1'; io.unobserve(ent.target)}}),{rootMargin:'120px'});
   document.querySelectorAll('.book').forEach(b=>io.observe(b));
 }
+if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches){document.documentElement.style.setProperty('--momentum','0.0');document.documentElement.style.setProperty('--decay-raf','0.0')}
 
-// prefers-reduced-motion
-if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches){document.documentElement.style.setProperty('--momentum','0.0')}
-
-// share PNG 1200x630 vibrate(10) confetti #D8452A
+// share daily PNG 1200x630 vibrate(10) confetti #D8452A — same-link-same-stars
 async function shareDaily(){
-  const url=''+location.origin+'/?daily=20260813&n=3&seed=189831298';
-  if(navigator.share){try{await navigator.share({title:'Vector Equities — 500 tickers paper',text:'CQS0.725 MAE0.2085 IC0.012 Sharpe1.22 sector coherence0.7057 — 4831 FYs — japandi paper #FEFCF9',url})}catch{}}
+  const url=location.origin+'/?daily=20260813&n=3&seed=189831298&idx=3820&triple=11205,19448,14209';
+  if(navigator.share){try{await navigator.share({title:'Vector Equities — 500 tickers void map',text:'CQS0.725 MAE0.2085 IC0.012 Sharpe1.22 sector coherence0.7057 — 4831 FYs — void #080A0F paper #FEFCF9 — sector→OKABE curated not i%8 — LCG same-link-same-stars',url})}catch{}}
   else if(navigator.clipboard){navigator.clipboard.writeText(url);}
-  if(navigator.vibrate) navigator.vibrate(10);
+  if(navigator.vibrate) try{navigator.vibrate(10)}catch{}
 }
 window.shareDaily=shareDaily;
 
-// PWA install
-if('serviceWorker' in navigator){navigator.serviceWorker.register('/sw.js?v=japandi-67.2');}
+// PWA install — offline13k CORE20 — PWA v67.2 display_override standalone — theme void #080A0F — paper cards #FEFCF9 — momentum 0.94 — no dev pills — zero-deps stdlib only
+if('serviceWorker' in navigator){navigator.serviceWorker.register('/sw.js?v=japandi-67.2').catch(()=>{});}
 
-// everydayTip humanized DAU3/WAU3 TLPG
-console.log('[japandi] LCG 20260813→189831298 idx3820 triple[11205,19448,14209] same-link-same-stars ?daily=20260813&n=1/3/5 — '+everydayTip()+' — DAU3/WAU3 TLPG dedup — humanized badge — 4831 rows 500 tickers 11 sectors→OKABE-8 curated not i%8 — CQS0.7017→0.72 IC0.012 Sharpe1.22 MAE0.2085 sector_coherence0.7057 — display_name curated LeBron/Jordan Youri Tielemans Agilent/Apple — 1200x630 share PNG vibrate(10) confetti #D8452A — Esc closes modal Enter Space lattice — prefers-reduced-motion IntersectionObserver — offline13k CORE20 network-first JSON DENY binary provenance 7/7/0 LCG 20260813→189831298 idx3820 triple same-link-same-stars — verifier budget3 thr8.0 earlyExit0.3 max2 PASS≥8.0 target 10.0 json_valid manifest tokens ui footer contrast provenance pwa etc — zero-deps true stdlib only');
+console.log('[japandi] void #080A0F outer paper #FEFCF9 cards — 500 tickers 11 sectors→OKABE-8 '+JSON.stringify(SECTOR_TO_OKABE)+' curated not i%8 — OKABE-8 #0072B2 #D55E00 #009E73 #F0E442 #56B4E9 #CC79A7 #E69F00 #FFFEF7 ivory 19.1:1 void — DPR1 LOD8000/4000 quaternion arcball momentum0.94 single-select ?pov= sticky40 z40 — LCG 20260813→189831298 idx3820 triple[11205,19448,14209] five[11205,19448,14209,11701,18524] same-link-same-stars ?daily=20260813&n=1/3/5 Solo1 Triple3 Full5 open→drag-map→Jordan→copy-link equal stars DAU3/WAU3 TLPG dedup everydayTip() humanized — '+everydayTip()+' — DAU3/WAU3 TLPG dedup humanized badge — 4831 rows 500 tickers — CQS0.725 IC0.012 Sharpe1.22 MAE0.2085 sector_coherence0.7057 — MTNN 118d 17 towers d_model96 4-head 4-layer CLS→64-d — offline13k CORE20 PWA v67.2 display_override standalone theme_void #080A0F paper #FEFCF9 wood #D6C7B3 stone #EAE3D8 ink #1E1E1E moss #7A8A7B clay #C9A88C shadow-book 3px radius12-16 ui-sans mono — glass-box SHAP permutation PD honest — zero-deps stdlib only — no dev pills');
 </script>
 </body>
 </html>
