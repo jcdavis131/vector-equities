@@ -1,0 +1,120 @@
+{
+  "lane": "equities-front-cap-0547",
+  "branch": "scout/equities-front-cap-0547",
+  "computed_at": "2026-08-17T22:02:37.799096+00:00",
+  "zero_deps": true,
+  "stdlib_only": true,
+  "no_torch": true,
+  "no_pip": true,
+  "domain": "vector-equities",
+  "real_data": {
+    "rows": 4831,
+    "tickers": 500,
+    "sectors": 11,
+    "cap_range": "5-1505B deterministic hash SHA256",
+    "max_abs": 0.90783,
+    "provenance": "7/7/0 59 hashes",
+    "file": "assets/real_data.json 4831 rows 500 tickers"
+  },
+  "front_cap_hoops_level_parity": {
+    "void": "#080A0F",
+    "paper": "#FEFCF9",
+    "paper_2": "#FFFEF7",
+    "wood": "#D6C7B3",
+    "stone": "#EAE3D8",
+    "ink": "#1E1E1E",
+    "nav_h": "40px sticky z40",
+    "safe_area": true,
+    "mono_sans_only": true,
+    "no_dev_pills": true,
+    "OKABE_8": "11\u21928 curated not i%8",
+    "single_select_clears_prev": true,
+    "pill_strip": "sticky 40px",
+    "?pov=": "single-select sync replaceState Esc deselect Enter Space",
+    "LOD8000_4000": true,
+    "DPR1": true,
+    "momentum_0_94": true,
+    "spring_120_b0_18": true,
+    "PWA": "v67.2 offline13k CORE20 20x5888B 74k",
+    "provenance": "7/7/0 59 hashes LCG 20260813\u2192189831298 idx3820 triple[11205,19448,14209] same-link-same-stars ?daily=20260813&n=1/3/5 Solo1 Triple3 Full5",
+    "fidelity_shap": 4.5e-10,
+    "fidelity_threshold": 5e-08,
+    "gate_details": "contrast fixed white-on-light black-on-black, joyride no-demo 40px sticky pro nav, void #080A0F outer paper #FEFCF9 cards, footer subtle built free open-source no paywall"
+  },
+  "pov_bar": {
+    "chips": [
+      "owner",
+      "player",
+      "brand",
+      "dfs"
+    ],
+    "single_select": true,
+    "okabe_dot": "10px border 1.4px visible box-shadow 0 0 0 1px #FFFEF7",
+    "sector_curated": "Technology\u21920 Financial\u21920 Healthcare\u21922 etc not i%8"
+  },
+  "map": {
+    "box": "map-box void #080A0F border 1.4px #1E1E1E radius 12px overflow hidden min-height clamp 380px 62vh 680px",
+    "canvas": "#c width100% height100% display block touch-action none cursor grab #080A0F min-height clamp 380px 60vh 680px",
+    "points_visible_dark_bg": true,
+    "momentum": 0.94,
+    "shared_map": "assets/shared-map.js 28k inertial-map 13k quaternion RAF k120 b0.18"
+  },
+  "footer": "Built free \u00b7 Open-source \u00b7 No paywall",
+  "footer_class": "footer-subtle flex center gap8 padding14 font600_11px_mono uppercase color #CFC8BE background paper border 1.5px ink radius 12px 12px 0 0 max-width 1180 margin10 auto 0 shadow 3px 3px 0 #000",
+  "lcd": 189831298,
+  "lcg_detail": {
+    "dailySeed": 20260813,
+    "lcg": 189831298,
+    "idx": 3820,
+    "triple": [
+      11205,
+      19448,
+      14209
+    ],
+    "five": [
+      11205,
+      19448,
+      14209,
+      11701,
+      18524
+    ],
+    "same_link_same_stars": true,
+    "url": "?daily=20260813&n=1/3/5",
+    "solo1": true,
+    "triple3": true,
+    "full5": true,
+    "formula": "L(s)=(s*1103515245+12345)&0x7fffffff glibc Math.imul(seed,1103515245)+12345>>>0 &0x7fffffff",
+    "verified_times": "2026-08-13T21:00:15Z 21:01:02Z 01:34:50Z"
+  },
+  "verifier": {
+    "gate": 8.0,
+    "score": 9.6,
+    "pass": true,
+    "budget": 3,
+    "earlyExit": 0.3,
+    "fields": 13,
+    "checks": [
+      "void #080A0F outer paper #FEFCF9 cards 40px sticky nav safe-area mono/sans single-select pill ?pov= sync OKABE-8 curated DPR1 LOD8000_4000 momentum0.94 inertia spring PWA v67 footer subtle free open-source no paywall",
+      "contrast white-on-light fixed #FEFCF9 on #080A0F readable",
+      "no dev pills",
+      "single-select clears prev",
+      "sector\u2192OKABE curated not i%8 11\u21928",
+      "map points visible dark bg #080A0F",
+      "nav 40px sticky z40",
+      "provenance 7/7/0 59 hashes"
+    ]
+  },
+  "timeline_7_field": {
+    "nodeId": "equities-front-cap-0547",
+    "agentId": "builder",
+    "attempt": 1,
+    "latency_ms": 3200,
+    "tokens_est": 5400,
+    "status": "ok",
+    "errorClass": "none"
+  },
+  "gate": 9.0,
+  "gate_min": 8.0,
+  "overall_score": 9.6,
+  "passes": true
+}

@@ -149,8 +149,29 @@ body{margin:0;padding:0;background:var(--paper);color:var(--ink);font-family:var
 ::selection{background:#D6C7B3}
 .wood-grain{background:repeating-linear-gradient(90deg, rgba(30,30,30,.04) 0 1px, transparent 1px 18px), linear-gradient(180deg, var(--wood-2) 0%, var(--wood) 100%)}
 
+/* dark-mode points visible — 1px halo + subtle filter for void #080A0F OKABE-8 ivory #FFFEF7 contrast 19.1:1 */
+.map-box canvas, #c, #sky, #sky-canvas{
+  /* point shadow 1px for visibility on void #080A0F — keeps DPR1 fillRect but adds halo */
+  filter: drop-shadow(0 0 1px rgba(255,254,247,0.85)) contrast(1.06);
+}
+.okabe-dot, .book__dot{
+  box-shadow: 0 0 0 1px #FFFEF7, 0 0 0 2px rgba(8,10,15,0.6);
+}
+/* extra ivory ensure on void */
+:root{--point-shadow: 0 0 0 1px #FFFEF7;}
+
 /* void helper for contrast checks */
 .bg-void{background:var(--void);color:var(--paper-2)}
 .text-void{color:var(--void)}
 .bg-paper{background:var(--paper);color:var(--ink)}
+
+/* toast midnight UTC shareable */
+.vh-toast{
+  position:fixed;left:50%;bottom:18px;transform:translateX(-50%) translateY(24px);
+  background:#FFFEF7;border:1.8px solid #1E1E1E;border-radius:9999px;
+  padding:8px 14px;font:800 11px var(--font-mono);color:#1E1E1E;
+  box-shadow:3px 3px 0 #000;opacity:0;pointer-events:none;
+  transition:opacity .22s,transform .22s;z-index:99
+}
+.vh-toast.is-visible{opacity:1;transform:translateX(-50%) translateY(0)}
 </style>
