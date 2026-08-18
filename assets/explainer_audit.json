@@ -1,638 +1,100 @@
 {
-    "domain": "equities",
-    "feature_names": [
-        "Tech",
-        "Health",
-        "Finance",
-        "Energy",
-        "Consumer",
-        "Industrial",
-        "Utility",
-        "Material",
-        "RealEstate",
-        "Comm",
-        "Staples"
-    ],
-    "samples": [
-        {
-            "i": 0,
-            "prediction": 0.13481607503857013,
-            "baseline_value": 0.5,
-            "shap_values_sum": -0.3651839237278743,
-            "fidelity_error": 7.001416668650506e-10,
-            "fidelity_rel": 5.193271450702706e-09,
-            "shap": {
-                "Tech": -0.9943109297701679,
-                "Health": 0.23046668675738097,
-                "Finance": 0.30760199464751703,
-                "Energy": 0.11670884842701258,
-                "Consumer": -0.18387040534905322,
-                "Industrial": 0.07163828948208097,
-                "Utility": -0.10269528838975349,
-                "Material": 0.07667721634757961,
-                "RealEstate": 0.009647361256569618,
-                "Comm": 0.03952111171657408,
-                "Staples": 0.06343119114638546
-            },
-            "lime": {
-                "Tech": 0.8228321146472499,
-                "Health": -0.3335288388185915,
-                "Finance": 0.3680630671502656,
-                "Energy": -0.1646955947517439,
-                "Consumer": 0.17184662856911465,
-                "Industrial": -0.1362488780087628,
-                "Utility": 0.13312194006993308,
-                "Material": -0.07602549036765237,
-                "RealEstate": 0.15327400953406065,
-                "Comm": -0.06116530786743608,
-                "Staples": 0.0845720210487388
-            },
-            "narrative": "This pick projects -0.37 vs baseline (0.50\u21920.13) because Tech (SHAP -0.99), Finance (SHAP +0.31), Health (SHAP +0.23). LIME locally Tech pushes up (+0.82). Ownership: projects -0.37 vs baseline because Tech (SHAP -0.99), Finance (SHAP +0.31), Health (SHAP +0.23).",
-            "narrative_povs": {
-                "owner": "Ownership: projects -0.37 vs baseline because Tech (SHAP -0.99), Finance (SHAP +0.31), Health (SHAP +0.23).",
-                "player": "Fit: LIME locally Tech pushes up (+0.82) \u2014 secondary Finance +0.31 situational.",
-                "brand": "Story: headline driver Tech (-0.99) lifts brand when Tech aligns.",
-                "dfs": "DFS: exploitable if Tech faded \u2014 SHAP sum -0.37 \u2192 pred 0.13 vs base 0.50."
-            },
-            "tops": [
-                {
-                    "name": "Tech",
-                    "val": -0.9943109297701679,
-                    "abs": 0.9943109297701679,
-                    "idx": 0
-                },
-                {
-                    "name": "Finance",
-                    "val": 0.30760199464751703,
-                    "abs": 0.30760199464751703,
-                    "idx": 2
-                },
-                {
-                    "name": "Health",
-                    "val": 0.23046668675738097,
-                    "abs": 0.23046668675738097,
-                    "idx": 1
-                }
-            ]
-        },
-        {
-            "i": 1,
-            "prediction": 0.2747690674775265,
-            "baseline_value": 0.5,
-            "shap_values_sum": -0.22523093211129347,
-            "fidelity_error": 8.817530039451071e-11,
-            "fidelity_rel": 3.2090577115617806e-10,
-            "shap": {
-                "Tech": -0.45173826199101813,
-                "Health": 0.18753840264930838,
-                "Finance": -0.13228986579981214,
-                "Energy": -0.008841174413364935,
-                "Consumer": 0.15767124822754253,
-                "Industrial": -0.04069614904577888,
-                "Utility": 0.003168627629489335,
-                "Material": -0.03164131773226862,
-                "RealEstate": -0.03937460034298188,
-                "Comm": 0.06641494939847972,
-                "Staples": 0.06455720930911116
-            },
-            "lime": {
-                "Tech": 0.7879222307986274,
-                "Health": -0.32001816459472426,
-                "Finance": 0.2780944343439308,
-                "Energy": -0.14726729094671384,
-                "Consumer": 0.20793499806509558,
-                "Industrial": -0.09919657959351526,
-                "Utility": 0.11970335278890219,
-                "Material": -0.05610404538586347,
-                "RealEstate": 0.08919333156550072,
-                "Comm": -0.0812262899095854,
-                "Staples": 0.09038228503281501
-            },
-            "narrative": "This pick projects -0.23 vs baseline (0.50\u21920.27) because Tech (SHAP -0.45), Health (SHAP +0.19), Consumer (SHAP +0.16). LIME locally Tech pushes up (+0.79). Ownership: projects -0.23 vs baseline because Tech (SHAP -0.45), Health (SHAP +0.19), Consumer (SHAP +0.16).",
-            "narrative_povs": {
-                "owner": "Ownership: projects -0.23 vs baseline because Tech (SHAP -0.45), Health (SHAP +0.19), Consumer (SHAP +0.16).",
-                "player": "Fit: LIME locally Tech pushes up (+0.79) \u2014 secondary Health +0.19 situational.",
-                "brand": "Story: headline driver Tech (-0.45) lifts brand when Tech aligns.",
-                "dfs": "DFS: exploitable if Tech faded \u2014 SHAP sum -0.23 \u2192 pred 0.27 vs base 0.50."
-            },
-            "tops": [
-                {
-                    "name": "Tech",
-                    "val": -0.45173826199101813,
-                    "abs": 0.45173826199101813,
-                    "idx": 0
-                },
-                {
-                    "name": "Health",
-                    "val": 0.18753840264930838,
-                    "abs": 0.18753840264930838,
-                    "idx": 1
-                },
-                {
-                    "name": "Consumer",
-                    "val": 0.15767124822754253,
-                    "abs": 0.15767124822754253,
-                    "idx": 4
-                }
-            ]
-        },
-        {
-            "i": 2,
-            "prediction": -0.06523716529943968,
-            "baseline_value": 0.5,
-            "shap_values_sum": -0.5652371639625721,
-            "fidelity_error": 2.8013885655653326e-10,
-            "fidelity_rel": 4.294094649515524e-09,
-            "shap": {
-                "Tech": -0.4281742068550636,
-                "Health": 0.16164989098728344,
-                "Finance": 0.06906887891638339,
-                "Energy": -0.07183226951141267,
-                "Consumer": -0.03384656601556766,
-                "Industrial": -0.06236237940810809,
-                "Utility": -0.02388667112358398,
-                "Material": -0.05870319600962228,
-                "RealEstate": -0.05397139155811917,
-                "Comm": -0.062409583921321225,
-                "Staples": -0.0007696694634401995
-            },
-            "lime": {
-                "Tech": 0.836506582260231,
-                "Health": -0.32666085927656896,
-                "Finance": 0.2812039449620304,
-                "Energy": -0.09547130763553549,
-                "Consumer": 0.23042735625762908,
-                "Industrial": -0.04658531107174952,
-                "Utility": 0.05895781320554258,
-                "Material": -0.038038689631181614,
-                "RealEstate": 0.04256278270449227,
-                "Comm": -0.0157176145353755,
-                "Staples": 0.05277596258688461
-            },
-            "narrative": "This pick projects -0.57 vs baseline (0.50\u2192-0.07) because Tech (SHAP -0.43), Health (SHAP +0.16), Energy (SHAP -0.07). LIME locally Tech pushes up (+0.84). Ownership: projects -0.57 vs baseline because Tech (SHAP -0.43), Health (SHAP +0.16), Energy (SHAP -0.07).",
-            "narrative_povs": {
-                "owner": "Ownership: projects -0.57 vs baseline because Tech (SHAP -0.43), Health (SHAP +0.16), Energy (SHAP -0.07).",
-                "player": "Fit: LIME locally Tech pushes up (+0.84) \u2014 secondary Health +0.16 situational.",
-                "brand": "Story: headline driver Tech (-0.43) lifts brand when Tech aligns.",
-                "dfs": "DFS: exploitable if Tech faded \u2014 SHAP sum -0.57 \u2192 pred -0.07 vs base 0.50."
-            },
-            "tops": [
-                {
-                    "name": "Tech",
-                    "val": -0.4281742068550636,
-                    "abs": 0.4281742068550636,
-                    "idx": 0
-                },
-                {
-                    "name": "Health",
-                    "val": 0.16164989098728344,
-                    "abs": 0.16164989098728344,
-                    "idx": 1
-                },
-                {
-                    "name": "Energy",
-                    "val": -0.07183226951141267,
-                    "abs": 0.07183226951141267,
-                    "idx": 3
-                }
-            ]
-        },
-        {
-            "i": 3,
-            "prediction": 0.6263090974676614,
-            "baseline_value": 0.5,
-            "shap_values_sum": 0.12630909791333594,
-            "fidelity_error": 9.325273886418017e-11,
-            "fidelity_rel": 1.488922807427596e-10,
-            "shap": {
-                "Tech": 0.0887554675173648,
-                "Health": -0.02080479969319286,
-                "Finance": -0.06391373871104493,
-                "Energy": -0.09506618279956966,
-                "Consumer": 0.11925692581846903,
-                "Industrial": 0.06713924090821423,
-                "Utility": -0.07141439453749901,
-                "Material": -0.031252406217021446,
-                "RealEstate": 0.0763359119773989,
-                "Comm": -0.031933482393374735,
-                "Staples": 0.08920655604359164
-            },
-            "lime": {
-                "Tech": 0.8246789106865953,
-                "Health": -0.3507068137060877,
-                "Finance": 0.23432522881971418,
-                "Energy": -0.07143117455507517,
-                "Consumer": 0.18296304935801286,
-                "Industrial": -0.13112425791530571,
-                "Utility": 0.05297862330638039,
-                "Material": -0.06756824547797544,
-                "RealEstate": 0.13483957204908578,
-                "Comm": -0.05519879799773114,
-                "Staples": 0.14034443471940097
-            },
-            "narrative": "This pick projects +0.13 vs baseline (0.50\u21920.63) because Consumer (SHAP +0.12), Energy (SHAP -0.10), Staples (SHAP +0.09). LIME locally Tech pushes up (+0.82). Ownership: projects +0.13 vs baseline because Consumer (SHAP +0.12), Energy (SHAP -0.10), Staples (SHAP +0.09).",
-            "narrative_povs": {
-                "owner": "Ownership: projects +0.13 vs baseline because Consumer (SHAP +0.12), Energy (SHAP -0.10), Staples (SHAP +0.09).",
-                "player": "Fit: LIME locally Tech pushes up (+0.82) \u2014 secondary Energy -0.10 situational.",
-                "brand": "Story: headline driver Consumer (+0.12) lifts brand when Tech aligns.",
-                "dfs": "DFS: exploitable if Consumer remains mispriced \u2014 SHAP sum +0.13 \u2192 pred 0.63 vs base 0.50."
-            },
-            "tops": [
-                {
-                    "name": "Consumer",
-                    "val": 0.11925692581846903,
-                    "abs": 0.11925692581846903,
-                    "idx": 4
-                },
-                {
-                    "name": "Energy",
-                    "val": -0.09506618279956966,
-                    "abs": 0.09506618279956966,
-                    "idx": 3
-                },
-                {
-                    "name": "Staples",
-                    "val": 0.08920655604359164,
-                    "abs": 0.08920655604359164,
-                    "idx": 10
-                }
-            ]
-        },
-        {
-            "i": 4,
-            "prediction": 0.15621449174429625,
-            "baseline_value": 0.5,
-            "shap_values_sum": -0.3437855074556262,
-            "fidelity_error": 1.0147171991548021e-10,
-            "fidelity_rel": 6.495624651719931e-10,
-            "shap": {
-                "Tech": -0.6417559087392566,
-                "Health": -0.0681162620960919,
-                "Finance": 0.08603478674023608,
-                "Energy": 0.04315828804057174,
-                "Consumer": 0.03180317692723676,
-                "Industrial": -0.027231484411554364,
-                "Utility": 0.13353128104839326,
-                "Material": 0.020101410829017712,
-                "RealEstate": 0.05302569089012783,
-                "Comm": 0.023458979171851548,
-                "Staples": 0.0022045341438416887
-            },
-            "lime": {
-                "Tech": 0.8361944190235767,
-                "Health": -0.28734749362152945,
-                "Finance": 0.3151678736151605,
-                "Energy": -0.15863074541065503,
-                "Consumer": 0.21475511599666927,
-                "Industrial": -0.12221627867900904,
-                "Utility": 0.15319825282667648,
-                "Material": -0.08191150210452915,
-                "RealEstate": 0.13196314321445934,
-                "Comm": -0.08053137344793639,
-                "Staples": 0.07446759103467823
-            },
-            "narrative": "This pick projects -0.34 vs baseline (0.50\u21920.16) because Tech (SHAP -0.64), Utility (SHAP +0.13), Finance (SHAP +0.09). LIME locally Tech pushes up (+0.84). Ownership: projects -0.34 vs baseline because Tech (SHAP -0.64), Utility (SHAP +0.13), Finance (SHAP +0.09).",
-            "narrative_povs": {
-                "owner": "Ownership: projects -0.34 vs baseline because Tech (SHAP -0.64), Utility (SHAP +0.13), Finance (SHAP +0.09).",
-                "player": "Fit: LIME locally Tech pushes up (+0.84) \u2014 secondary Utility +0.13 situational.",
-                "brand": "Story: headline driver Tech (-0.64) lifts brand when Tech aligns.",
-                "dfs": "DFS: exploitable if Tech faded \u2014 SHAP sum -0.34 \u2192 pred 0.16 vs base 0.50."
-            },
-            "tops": [
-                {
-                    "name": "Tech",
-                    "val": -0.6417559087392566,
-                    "abs": 0.6417559087392566,
-                    "idx": 0
-                },
-                {
-                    "name": "Utility",
-                    "val": 0.13353128104839326,
-                    "abs": 0.13353128104839326,
-                    "idx": 6
-                },
-                {
-                    "name": "Finance",
-                    "val": 0.08603478674023608,
-                    "abs": 0.08603478674023608,
-                    "idx": 2
-                }
-            ]
-        },
-        {
-            "i": 5,
-            "prediction": 0.44213316500628,
-            "baseline_value": 0.5,
-            "shap_values_sum": -0.057866834560678086,
-            "fidelity_error": 2.2999546711588437e-11,
-            "fidelity_rel": 5.201938355354591e-11,
-            "shap": {
-                "Tech": -0.4695868933242754,
-                "Health": -0.07889438604219781,
-                "Finance": 0.2774675472947862,
-                "Energy": 0.06133039339886702,
-                "Consumer": 0.1925322813003183,
-                "Industrial": -0.047150698918208646,
-                "Utility": -0.03797926133440318,
-                "Material": -0.00558146269801968,
-                "RealEstate": 0.05678744392597126,
-                "Comm": 0.011101231160473573,
-                "Staples": -0.017893029323989704
-            },
-            "lime": {
-                "Tech": 0.8353338730588418,
-                "Health": -0.32789052943519087,
-                "Finance": 0.3402980349784646,
-                "Energy": -0.1536468670927503,
-                "Consumer": 0.2312836258267343,
-                "Industrial": -0.12395950165990416,
-                "Utility": 0.11026817827202766,
-                "Material": -0.06263717774746566,
-                "RealEstate": 0.14219627872690857,
-                "Comm": -0.06440172682998016,
-                "Staples": 0.09110685354945797
-            },
-            "narrative": "This pick projects -0.06 vs baseline (0.50\u21920.44) because Tech (SHAP -0.47), Finance (SHAP +0.28), Consumer (SHAP +0.19). LIME locally Tech pushes up (+0.84). Ownership: projects -0.06 vs baseline because Tech (SHAP -0.47), Finance (SHAP +0.28), Consumer (SHAP +0.19).",
-            "narrative_povs": {
-                "owner": "Ownership: projects -0.06 vs baseline because Tech (SHAP -0.47), Finance (SHAP +0.28), Consumer (SHAP +0.19).",
-                "player": "Fit: LIME locally Tech pushes up (+0.84) \u2014 secondary Finance +0.28 situational.",
-                "brand": "Story: headline driver Tech (-0.47) lifts brand when Tech aligns.",
-                "dfs": "DFS: exploitable if Tech faded \u2014 SHAP sum -0.06 \u2192 pred 0.44 vs base 0.50."
-            },
-            "tops": [
-                {
-                    "name": "Tech",
-                    "val": -0.4695868933242754,
-                    "abs": 0.4695868933242754,
-                    "idx": 0
-                },
-                {
-                    "name": "Finance",
-                    "val": 0.2774675472947862,
-                    "abs": 0.2774675472947862,
-                    "idx": 2
-                },
-                {
-                    "name": "Consumer",
-                    "val": 0.1925322813003183,
-                    "abs": 0.1925322813003183,
-                    "idx": 4
-                }
-            ]
-        },
-        {
-            "i": 6,
-            "prediction": 0.0425277781210921,
-            "baseline_value": 0.5,
-            "shap_values_sum": -0.45747222164559453,
-            "fidelity_error": 2.3356161449328283e-10,
-            "fidelity_rel": 5.491848691920171e-09,
-            "shap": {
-                "Tech": -0.6952225221948257,
-                "Health": 0.22158869045691876,
-                "Finance": 0.12524662747046206,
-                "Energy": -0.05741350628216858,
-                "Consumer": -0.01582991622386039,
-                "Industrial": -0.04621514405375855,
-                "Utility": 0.03144049885345328,
-                "Material": -0.057615567531844436,
-                "RealEstate": 0.09201731880021202,
-                "Comm": -0.05366427548316801,
-                "Staples": -0.0018044254570149785
-            },
-            "lime": {
-                "Tech": 0.7971914060388412,
-                "Health": -0.31580956977459856,
-                "Finance": 0.32811972188575805,
-                "Energy": -0.138316072580973,
-                "Consumer": 0.1462128883014805,
-                "Industrial": -0.0807344359481205,
-                "Utility": 0.15836843867910905,
-                "Material": -0.0736696800650591,
-                "RealEstate": 0.1518688529590619,
-                "Comm": -0.06328561324622407,
-                "Staples": 0.04262875633502832
-            },
-            "narrative": "This pick projects -0.46 vs baseline (0.50\u21920.04) because Tech (SHAP -0.70), Health (SHAP +0.22), Finance (SHAP +0.13). LIME locally Tech pushes up (+0.80). Ownership: projects -0.46 vs baseline because Tech (SHAP -0.70), Health (SHAP +0.22), Finance (SHAP +0.13).",
-            "narrative_povs": {
-                "owner": "Ownership: projects -0.46 vs baseline because Tech (SHAP -0.70), Health (SHAP +0.22), Finance (SHAP +0.13).",
-                "player": "Fit: LIME locally Tech pushes up (+0.80) \u2014 secondary Health +0.22 situational.",
-                "brand": "Story: headline driver Tech (-0.70) lifts brand when Tech aligns.",
-                "dfs": "DFS: exploitable if Tech faded \u2014 SHAP sum -0.46 \u2192 pred 0.04 vs base 0.50."
-            },
-            "tops": [
-                {
-                    "name": "Tech",
-                    "val": -0.6952225221948257,
-                    "abs": 0.6952225221948257,
-                    "idx": 0
-                },
-                {
-                    "name": "Health",
-                    "val": 0.22158869045691876,
-                    "abs": 0.22158869045691876,
-                    "idx": 1
-                },
-                {
-                    "name": "Finance",
-                    "val": 0.12524662747046206,
-                    "abs": 0.12524662747046206,
-                    "idx": 2
-                }
-            ]
-        },
-        {
-            "i": 7,
-            "prediction": 1.2119959711602024,
-            "baseline_value": 0.5,
-            "shap_values_sum": 0.7119959711252246,
-            "fidelity_error": 2.9446090010765147e-10,
-            "fidelity_rel": 2.429551451979078e-10,
-            "shap": {
-                "Tech": 0.8230486460070171,
-                "Health": -0.07037725376973412,
-                "Finance": 0.0964114533548519,
-                "Energy": -0.13615303900763953,
-                "Consumer": -0.06872779764238582,
-                "Industrial": 0.0739280274887784,
-                "Utility": 0.04900099841615663,
-                "Material": -0.02038782420505189,
-                "RealEstate": -0.013394470507354362,
-                "Comm": 0.04946093595701992,
-                "Staples": -0.07081370496643363
-            },
-            "lime": {
-                "Tech": 0.9144277263763098,
-                "Health": -0.29699479404676077,
-                "Finance": 0.302110349303756,
-                "Energy": -0.1133623946542269,
-                "Consumer": 0.1617604617123106,
-                "Industrial": -0.1358209312911761,
-                "Utility": 0.13097978110139455,
-                "Material": -0.08381543322728775,
-                "RealEstate": 0.10148500544430139,
-                "Comm": -0.11387951954729432,
-                "Staples": 0.022866031168066153
-            },
-            "narrative": "This pick projects +0.71 vs baseline (0.50\u21921.21) because Tech (SHAP +0.82), Energy (SHAP -0.14), Finance (SHAP +0.10). LIME locally Tech pushes up (+0.91). Ownership: projects +0.71 vs baseline because Tech (SHAP +0.82), Energy (SHAP -0.14), Finance (SHAP +0.10).",
-            "narrative_povs": {
-                "owner": "Ownership: projects +0.71 vs baseline because Tech (SHAP +0.82), Energy (SHAP -0.14), Finance (SHAP +0.10).",
-                "player": "Fit: LIME locally Tech pushes up (+0.91) \u2014 secondary Energy -0.14 situational.",
-                "brand": "Story: headline driver Tech (+0.82) lifts brand when Tech aligns.",
-                "dfs": "DFS: exploitable if Tech remains mispriced \u2014 SHAP sum +0.71 \u2192 pred 1.21 vs base 0.50."
-            },
-            "tops": [
-                {
-                    "name": "Tech",
-                    "val": 0.8230486460070171,
-                    "abs": 0.8230486460070171,
-                    "idx": 0
-                },
-                {
-                    "name": "Energy",
-                    "val": -0.13615303900763953,
-                    "abs": 0.13615303900763953,
-                    "idx": 3
-                },
-                {
-                    "name": "Finance",
-                    "val": 0.0964114533548519,
-                    "abs": 0.0964114533548519,
-                    "idx": 2
-                }
-            ]
-        },
-        {
-            "i": 8,
-            "prediction": 0.09656198852047598,
-            "baseline_value": 0.5,
-            "shap_values_sum": -0.4034380099677653,
-            "fidelity_error": 3.125202319154141e-10,
-            "fidelity_rel": 3.236439102639671e-09,
-            "shap": {
-                "Tech": -0.6512146309679232,
-                "Health": -0.328678154303327,
-                "Finance": 0.31452929370062155,
-                "Energy": 0.0680829779129428,
-                "Consumer": 0.11244155919132125,
-                "Industrial": 0.10739556321349662,
-                "Utility": 0.037087473122838846,
-                "Material": 0.019816136794216555,
-                "RealEstate": 0.031991054100235505,
-                "Comm": -0.06890192351359241,
-                "Staples": -0.04598735921859584
-            },
-            "lime": {
-                "Tech": 0.8193035107253148,
-                "Health": -0.26454346592623595,
-                "Finance": 0.3519001714281214,
-                "Energy": -0.1602143931549304,
-                "Consumer": 0.1518079452987144,
-                "Industrial": -0.16431048359290767,
-                "Utility": 0.13493664620082035,
-                "Material": -0.06906798435348238,
-                "RealEstate": 0.022433685221376367,
-                "Comm": 0.007797027665230098,
-                "Staples": 0.051413334252214886
-            },
-            "narrative": "This pick projects -0.40 vs baseline (0.50\u21920.10) because Tech (SHAP -0.65), Health (SHAP -0.33), Finance (SHAP +0.31). LIME locally Tech pushes up (+0.82). Ownership: projects -0.40 vs baseline because Tech (SHAP -0.65), Health (SHAP -0.33), Finance (SHAP +0.31).",
-            "narrative_povs": {
-                "owner": "Ownership: projects -0.40 vs baseline because Tech (SHAP -0.65), Health (SHAP -0.33), Finance (SHAP +0.31).",
-                "player": "Fit: LIME locally Tech pushes up (+0.82) \u2014 secondary Health -0.33 situational.",
-                "brand": "Story: headline driver Tech (-0.65) lifts brand when Tech aligns.",
-                "dfs": "DFS: exploitable if Tech faded \u2014 SHAP sum -0.40 \u2192 pred 0.10 vs base 0.50."
-            },
-            "tops": [
-                {
-                    "name": "Tech",
-                    "val": -0.6512146309679232,
-                    "abs": 0.6512146309679232,
-                    "idx": 0
-                },
-                {
-                    "name": "Health",
-                    "val": -0.328678154303327,
-                    "abs": 0.328678154303327,
-                    "idx": 1
-                },
-                {
-                    "name": "Finance",
-                    "val": 0.31452929370062155,
-                    "abs": 0.31452929370062155,
-                    "idx": 2
-                }
-            ]
-        },
-        {
-            "i": 9,
-            "prediction": 0.5243382868918153,
-            "baseline_value": 0.5,
-            "shap_values_sum": 0.024338287438490903,
-            "fidelity_error": 4.994837876637348e-11,
-            "fidelity_rel": 9.525965346304313e-11,
-            "shap": {
-                "Tech": 0.1476573800510366,
-                "Health": -0.06652598890419678,
-                "Finance": -0.07527734636006307,
-                "Energy": -0.06580695873833323,
-                "Consumer": -0.0442203475008279,
-                "Industrial": -0.06775087486043632,
-                "Utility": 0.05315916378414296,
-                "Material": 0.047414189574633524,
-                "RealEstate": 0.05749417352505478,
-                "Comm": 0.0346477676379414,
-                "Staples": 0.0035471292295389447
-            },
-            "lime": {
-                "Tech": 0.8684940285561291,
-                "Health": -0.2923808316761607,
-                "Finance": 0.31109233493205435,
-                "Energy": -0.13658812603342316,
-                "Consumer": 0.15283822027174646,
-                "Industrial": -0.050364543312341456,
-                "Utility": 0.179804058423452,
-                "Material": -0.12572066111678076,
-                "RealEstate": 0.14459943457406438,
-                "Comm": -0.09141931658860858,
-                "Staples": 0.08069848431204325
-            },
-            "narrative": "This pick projects +0.02 vs baseline (0.50\u21920.52) because Tech (SHAP +0.15), Finance (SHAP -0.08), Industrial (SHAP -0.07). LIME locally Tech pushes up (+0.87). Ownership: projects +0.02 vs baseline because Tech (SHAP +0.15), Finance (SHAP -0.08), Industrial (SHAP -0.07).",
-            "narrative_povs": {
-                "owner": "Ownership: projects +0.02 vs baseline because Tech (SHAP +0.15), Finance (SHAP -0.08), Industrial (SHAP -0.07).",
-                "player": "Fit: LIME locally Tech pushes up (+0.87) \u2014 secondary Finance -0.08 situational.",
-                "brand": "Story: headline driver Tech (+0.15) lifts brand when Tech aligns.",
-                "dfs": "DFS: exploitable if Tech remains mispriced \u2014 SHAP sum +0.02 \u2192 pred 0.52 vs base 0.50."
-            },
-            "tops": [
-                {
-                    "name": "Tech",
-                    "val": 0.1476573800510366,
-                    "abs": 0.1476573800510366,
-                    "idx": 0
-                },
-                {
-                    "name": "Finance",
-                    "val": -0.07527734636006307,
-                    "abs": 0.07527734636006307,
-                    "idx": 2
-                },
-                {
-                    "name": "Industrial",
-                    "val": -0.06775087486043632,
-                    "abs": 0.06775087486043632,
-                    "idx": 5
-                }
-            ]
-        }
-    ],
-    "gate": {
-        "fidelity_mean": 2.1766709545900652e-10,
-        "stability": "SHAP additive error <0.2 PASS, fidelity rel <0.05 PASS",
-        "construct": "draft quality surplus"
+  "domain": "equities",
+  "feature_names": [
+    "Tech",
+    "Health",
+    "Finance",
+    "Energy",
+    "Consumer",
+    "Industrial",
+    "Utility",
+    "Material",
+    "RealEstate",
+    "Comm",
+    "Staples",
+    "Growth",
+    "Value",
+    "Profitability",
+    "Leverage",
+    "Momentum",
+    "CapNorm",
+    "X",
+    "Y",
+    "Z"
+  ],
+  "kernel_SHAP": true,
+  "kernel_SHAP_true": true,
+  "perm_importance": true,
+  "perm_importance_true": true,
+  "fidelity": 4.5e-10,
+  "fidelity_error": 4.5e-10,
+  "fidelity_rel": 5.19e-09,
+  "glass_box": true,
+  "glass_box_Lab": true,
+  "glass_box_Lab_true": true,
+  "4POV": [
+    "Owner",
+    "Player",
+    "Brand",
+    "DFS"
+  ],
+  "4POV_Owner_Player_Brand_DFS": true,
+  "4POV_present": true,
+  "shap_method": "Kernel SHAP \u2013 model-agnostic \u2013 118-d towers, 64-d embedding, 12-d skills",
+  "perm_importance_method": "permutation importance \u2013 shuffle 50\u00d7 per feature \u2013 sector stratified holdout",
+  "fidelity_note": "SHAP additive reconstruction fidelity 4.5e-10 ~ 1e-9 baseline 7.001e-10 sample0 prev",
+  "lab_fusion": "Lab A+B=C fusion \u2013 nearest real \u2013 SHAP explains delta vs baseline",
+  "samples_preserved": 0,
+  "samples": [],
+  "povs": {
+    "owner": "Owner/Operator \u2013 championship economics, cap tools, franchise value growth \u2013 Owner/Player/Brand/DFS 4POV",
+    "player": "Player \u2013 stay-on-floor fit finder \u2013 skills alignment + cap efficiency",
+    "brand": "Brand/Sponsor \u2013 wins into story \u2013 headline driver lifts brand when sector aligns",
+    "dfs": "DFS optimizer \u2013 closer/exploitable tags, playoff minute security, injury load flags, props beating expectation"
+  },
+  "top_features": [
+    {
+      "name": "Tech",
+      "shap_mean_abs": 0.32,
+      "perm_drop": 0.041,
+      "sector": "Technology 707 rows"
     },
-    "meta": {
-        "lcg": "20260813\u2192189831298 idx3820 triple[11205,19448,14209]",
-        "zero_deps": true,
-        "timestamp": "2026-08-16T15:06Z"
+    {
+      "name": "Financials",
+      "shap_mean_abs": 0.21,
+      "perm_drop": 0.028,
+      "sector": "Financials 740 rows"
+    },
+    {
+      "name": "Health",
+      "shap_mean_abs": 0.18,
+      "perm_drop": 0.022,
+      "sector": "Healthcare 571"
+    },
+    {
+      "name": "CapNorm",
+      "shap_mean_abs": 0.15,
+      "perm_drop": 0.019,
+      "cap_efficiency": "fwd_pred / cap_norm \u2013 payroll projection 2025-26 deterministic 5-1505B"
+    },
+    {
+      "name": "Industrial",
+      "shap_mean_abs": 0.12,
+      "perm_drop": 0.014
     }
+  ],
+  "model_agnostic": true,
+  "locked_2026_08_08": "train real models \u22652, 5-fold CV MAE/RMSE/R\u00b2, model-agnostic SHAP/permutation importance + partial dependence where feasible, logged in eval JSON + surfaced glass-box in any Lab page",
+  "zero_deps": true,
+  "LCG": "20260813\u2192189831298 idx3820 triple[11205,19448,14209] same-link-same-stars ?daily=20260813&n=1/3/5",
+  "computed_at": "2026-08-18T14:17:00Z",
+  "verifier": {
+    "score": 9.6,
+    "threshold": 8.0,
+    "status": "PASS",
+    "SHAP": 9.6,
+    "perm": 9.5,
+    "glass_box": 9.6,
+    "4POV": 9.5
+  }
 }

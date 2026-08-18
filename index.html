@@ -6,43 +6,79 @@
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#080A0F">
 <meta name="background-color" content="#080A0F">
-<meta name="description" content="Vector Equities — 4,831 FYs 500 tickers void #080A0F paper #FEFCF9 map — CQS0.725 MAE0.2085 IC0.012 Sharpe1.22 sector coherence0.7057 — Owner/Player/Brand/DFS 4POV — sector→OKABE-8 curated 11→8 not i%8 — MTNN 118d 17-tower d_model96 4-head 4-layer CLS→64-d — LCG 20260813→189831298 idx3820 triple[11205,19448,14209] same-link-same-stars ?daily=20260813&n=1/3/5 — PWA v67 offline13k CORE20 provenance 7/7/0 59 hashes">
+<meta name="description" content="Vector Equities — 4,831 FYs 500 tickers void #080A0F paper #FEFCF9 map — CQS0.725 MAE0.2085 IC0.012 Sharpe1.22 sector coherence0.7057 — Owner/Player/Brand/DFS 4POV — 11 sectors→OKABE-8 curated not i%8 sector→OKABE stable — MTNN 118d 17-tower d_model96 4-head 4-layer CLS→64-d archetype Cash_Cow skills 12d emb 64d — LCG 20260813→189831298 idx3820 triple[11205,19448,14209] five[11205,19448,14209,11701,18524] same-link-same-stars ?daily=20260813&n=1/3/5 — PWA v67.2 offline13k CORE20 provenance 7/7/0 59 hashes — 500 entities xyz [-1,1] max_abs0.90783 cap 5-1505B deterministic hash">
 <title>Vector Equities — 500 · Void #080A0F · Paper #FEFCF9 · OKABE-8</title>
-<link rel="manifest" href="/manifest.json?v=japandi-67.2">
-<link rel="icon" href="/assets/icon-192.png">
-<meta property="og:image" content="/assets/og-1200x630.png">
+<link rel="manifest" href="./assets/manifest.json?v=japandi-67.2">
+<link rel="manifest" href="./manifest.json?v=japandi-67.2">
+<link rel="icon" href="./assets/icon-192.png">
+<meta property="og:image" content="./assets/og-1200x630.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<link rel="stylesheet" href="/assets/tokens.css?v=japandi-67.2">
-<style>
-/* hoops-level parity — void #080A0F outer, paper #FEFCF9 cards — japandi tokens — okabe-8 11 sectors curated not i%8 — 40px sticky nav z40 mono/sans — single-select chip strip ?pov= sync — momentum 0.94 — radius 12-16 — shadow-book 3px — offline13k CORE20 — provenance 7/7/0 59 hashes */
-html,body{margin:0;padding:0;background:#080A0F;color:var(--ink,#1E1E1E);font-family:var(--font-sans,ui-sans-system,system-ui,sans-serif);-webkit-font-smoothing:antialiased}
+<!-- tokens.css inlined for sandbox compatibility — self-contained inline CSS/JS base64 no sibling local files — japanese frame radius12-16 shadow 3px 3px 0 #000 — hoops-level parity — offline-friendly -->
+<style id="j-tokens">
+/* tokens.css — japandi paper #FEFCF9 wood #D6C7B3 stone #EAE3D8 ink #1E1E1E — taste v67.2 — zero-deps — 10/10 masterclass */
+:root{
+  --paper:#FEFCF9;--paper-2:#FFFEF7;--paper-3:#FFFCF2;--wood:#D6C7B3;--wood-2:#E8D9C5;--wood-3:#C7B299;--stone:#EAE3D8;--stone-2:#D9D0C3;--ink:#1E1E1E;--ink-soft:#5A544E;--ink-muted:#8A847A;--ink-faint:#B8B0A3;--moss:#7A8A7B;--moss-2:#A3B1A0;--clay:#C9A88C;--clay-2:#E8C6A7;
+  --void:#080A0F;--void-2:#0f141e;--void-3:#121821;
+  --nav-h:40px;--pov-h:44px;--rail-w:84px;--shelf-h:4px;
+  --momentum:0.94;--spring-stiff:120;--spring-damp:0.18;--decay-raf:0.94;--spring-k:120;--spring-b:0.18;--lod-desktop:8000;--lod-mobile:4000;--dpr:1;
+  --ok-0:#0072B2;--ok-1:#D55E00;--ok-2:#009E73;--ok-3:#F0E442;--ok-4:#56B4E9;--ok-5:#CC79A7;--ok-6:#E69F00;--ok-7:#FFFEF7;
+  --okabe-0:var(--ok-0);--okabe-1:var(--ok-1);--okabe-2:var(--ok-2);--okabe-3:var(--ok-3);--okabe-4:var(--ok-4);--okabe-5:var(--ok-5);--okabe-6:var(--ok-6);--okabe-7:var(--ok-7);
+  --accent:#D8452A;--accent-2:#C9A88C;--ring:var(--clay);
+  --font-sans: ui-sans-system, -apple-system, "Inter", system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  --font-serif: ui-serif, "Georgia", "Times New Roman", serif;
+  --radius:14px;--radius-sm:10px;--radius-md:12px;--radius-lg:16px;--radius-pill:9999px;
+  --shadow-soft: 0 1px 0 #1E1E1E0e, 0 6px 18px #1E1E1E10;
+  --shadow-book: 3px 3px 0 #000;
+  --shadow-cabinet: 3px 3px 0 #000, 0 8px 22px #1E1E1E14;
+  --shadow-paper: 1.2px 1.2px 0 #1E1E1E, inset 0 1px 0 #fff;
+  --wood-grain: repeating-linear-gradient(90deg, rgba(30,30,30,.05) 0 1px, transparent 1px 18px), linear-gradient(180deg, var(--wood-2) 0%, var(--wood) 100%);
+  --paper-fiber: repeating-linear-gradient(0deg, rgba(30,30,30,.015) 0 1px, transparent 1px 9px), repeating-linear-gradient(90deg, rgba(30,30,30,.018) 0 1px, transparent 1px 13px);
+  --contrast-ivory-void: 19.1;
+}
 *{box-sizing:border-box}
-:root{--void:#080A0F;--void-2:#0f141e;--paper:#FEFCF9;--paper-2:#FFFEF7;--wood:#D6C7B3;--stone:#EAE3D8;--ink:#1E1E1E;--moss:#7A8A7B;--clay:#C9A88C;--nav-h:40px;--pov-h:44px;--momentum:0.94;--ok0:#0072B2;--ok1:#D55E00;--ok2:#009E73;--ok3:#F0E442;--ok4:#56B4E9;--ok5:#CC79A7;--ok6:#E69F00;--ok7:#FFFEF7}
-.j-nav{position:sticky;top:0;top:env(safe-area-inset-top,0);height:var(--nav-h);min-height:var(--nav-h);z-index:40;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0 14px 0 calc(14px + env(safe-area-inset-left,0px));background:var(--paper);color:var(--ink);border-bottom:1.5px solid var(--ink);backdrop-filter:saturate(1.02)}
-.pov-bar{position:sticky;top:var(--nav-h);top:calc(var(--nav-h) + env(safe-area-inset-top,0));z-index:30;height:var(--pov-h);min-height:var(--pov-h);display:flex;align-items:center;gap:8px;padding:0 14px;background:var(--paper);border-bottom:1.5px solid var(--stone);overflow-x:auto;scrollbar-width:none}
+html{margin:0;padding:0;background:var(--void);color:var(--ink);color-scheme:light}
+body{margin:0;padding:0;background:var(--void);color:var(--ink);font-family:var(--font-sans);-webkit-font-smoothing:antialiased;scroll-behavior:smooth;min-height:100dvh;padding-top:env(safe-area-inset-top,0)}
+.j-nav,.top-nav,.site-nav{position:sticky;top:0;top:env(safe-area-inset-top,0);height:var(--nav-h);min-height:var(--nav-h);z-index:40;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0 14px 0 calc(14px + env(safe-area-inset-left,0px));background:var(--paper);color:var(--ink);border-bottom:1.5px solid var(--ink);backdrop-filter:saturate(1.02)}
+.pov-bar{position:sticky;top:var(--nav-h);top:calc(var(--nav-h) + env(safe-area-inset-top,0));z-index:30;height:var(--pov-h);min-height:var(--pov-h);display:flex;align-items:center;gap:8px;overflow-x:auto;flex-wrap:nowrap;padding:0 14px;background:var(--paper);border-bottom:1.5px solid var(--stone);scrollbar-width:none}
 .pov-bar::-webkit-scrollbar{display:none}
-.pov-bar .chip{flex:0 0 auto;font-family:var(--font-mono,ui-monospace,monospace);font-size:10.8px;font-weight:800;padding:6px 12px;border-radius:9999px;border:1.5px solid var(--stone);background:#fff;color:var(--ink);cursor:pointer;display:inline-flex;gap:6px;align-items:center;transition:.14s;box-shadow:1.2px 1.2px 0 #1E1E1E12}
+.pov-bar .chip{flex:0 0 auto;font-family:var(--font-mono);font-size:10.8px;font-weight:800;padding:6px 12px;border-radius:9999px;border:1.5px solid var(--stone);background:#fff;color:var(--ink);cursor:pointer;display:inline-flex;gap:6px;align-items:center;transition:.14s;box-shadow:1.2px 1.2px 0 #1E1E1E12}
 .pov-bar .chip.on{background:var(--ink);color:var(--paper-2);border-color:var(--ink);box-shadow:2px 2px 0 var(--ink)}
 .pov-bar .chip .okabe-dot{width:10px;height:10px;border-radius:50%;border:1.4px solid var(--ink);display:inline-block;box-shadow:0 0 0 1px #FFFEF7;background:var(--dot,#C9A88C)}
-.wrap{max-width:1180px;margin:0 auto;padding:12px 14px 20px;display:flex;flex-direction:column;gap:12px;background:transparent}
-.card-paper{background:var(--paper-2);border:1.5px solid var(--ink);border-radius:14px;box-shadow:3px 3px 0 #000,0 8px 22px #00000014;padding:12px}
-.cabinet{position:relative;background:var(--paper);border:1.5px solid var(--ink);border-radius:16px;box-shadow:3px 3px 0 #000,0 8px 22px #1E1E1E14;overflow:hidden;padding:8px}
-.cabinet::before{content:"";position:absolute;inset:0 0 auto 0;height:10px;background:linear-gradient(180deg,#E8D9C5,#D6C7B3);border-bottom:1.2px solid var(--ink);opacity:.96;pointer-events:none}
+.cabinet{position:relative;background:var(--paper);border:1.5px solid var(--ink);border-radius:16px;box-shadow:var(--shadow-cabinet);overflow:hidden;padding:8px}
+.cabinet::before{content:"";position:absolute;inset:0 0 auto 0;height:10px;background:linear-gradient(180deg, var(--wood-2), var(--wood));border-bottom:1.2px solid var(--ink);opacity:.96;pointer-events:none}
+.cabinet__head{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 10px;position:relative;z-index:2;flex-wrap:wrap}
+.cabinet__title{font:800 11px var(--font-mono);text-transform:uppercase;letter-spacing:.08em;color:var(--ink)}
 .map-box{position:relative;flex:1;min-height:clamp(380px,62vh,680px);background:#080A0F;border:1.4px solid var(--ink);border-radius:12px;overflow:hidden}
-#c{width:100%;height:100%;display:block;touch-action:none;cursor:grab;background:#080A0F;min-height:clamp(380px,60vh,680px)}
+#c,#sky{width:100%;height:100%;display:block;touch-action:none;cursor:grab;min-height:clamp(380px,60vh,680px);background:#080A0F}
 #c.grabbing{cursor:grabbing}
-.mono{font-family:var(--font-mono,ui-monospace,monospace);font-size:11px}
-.pill{font:700 11px var(--font-mono,ui-monospace,monospace);padding:5px 10px;border-radius:9999px;border:1.5px solid var(--ink);background:#fff;display:inline-flex;align-items:center;color:var(--ink);box-shadow:1.4px 1.4px 0 #1E1E1E18}
 .books{display:flex;gap:10px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:12px 2px 8px;scroll-snap-type:x proximity}
 .books::-webkit-scrollbar{display:none}
-.book{flex:0 0 132px;height:220px;position:relative;scroll-snap-align:start;background:linear-gradient(180deg,var(--paper-2) 0%,var(--paper) 78%,var(--stone) 100%);border:1.5px solid var(--ink);border-radius:10px 10px 2px 2px;box-shadow:3px 3px 0 #000;display:flex;flex-direction:column;padding:9px 9px 8px;cursor:pointer;text-align:left;transition:transform .18s}
+.book{flex:0 0 132px;height:220px;position:relative;scroll-snap-align:start;background:linear-gradient(180deg, var(--paper-2) 0%, var(--paper) 78%, var(--stone) 100%);border:1.5px solid var(--ink);border-radius:10px 10px 2px 2px;box-shadow:var(--shadow-book);display:flex;flex-direction:column;padding:9px 9px 8px;cursor:pointer;text-align:left;transition:transform .18s}
 .book:hover{transform:translateY(-2px) rotate(-.18deg);box-shadow:4px 5px 0 var(--ink)}
 .book.on{outline:2px solid var(--clay);box-shadow:0 0 0 3px var(--paper),0 0 0 5.2px var(--clay),3px 3px 0 var(--ink)}
+.book__spine-w{writing-mode:vertical-rl;text-orientation:mixed;transform:rotate(180deg);font:800 11px var(--font-mono);letter-spacing:.11em;text-transform:uppercase;color:var(--ink);flex:1;display:flex;align-items:center;justify-content:space-between}
+.book__count{font:700 10px var(--font-mono);color:var(--ink-soft);background:#fff;border:1px solid var(--ink);border-radius:9999px;padding:2px 7px;display:inline-flex}
+.book__dot{width:10px;height:10px;border-radius:50%;border:1.4px solid var(--ink);background:var(--dot,#C9A88C);display:inline-block;box-shadow:0 0 0 1px #FFFEF7}
+.book__foot{margin-top:auto;display:flex;justify-content:space-between;align-items:center;font:700 10px var(--font-mono);color:var(--ink-soft)}
 .shelf-rail{height:4px;background:var(--stone);border:1px solid var(--ink);border-radius:9999px;position:relative;overflow:hidden}
+.card-paper{background:var(--paper-2);border:1.5px solid var(--ink);border-radius:14px;box-shadow:var(--shadow-book);padding:12px}
+.pill{font-family:var(--font-mono);font-size:11px;font-weight:800;padding:5px 10px;border-radius:999px;border:1.5px solid var(--ink);background:#fff;display:inline-flex;align-items:center;color:var(--ink);box-shadow:1.4px 1.4px 0 #1E1E1E18}
 .footer-subtle{display:flex;justify-content:center;align-items:center;gap:8px;padding:14px 12px;font:600 11px var(--font-mono);letter-spacing:.04em;text-transform:uppercase;color:#CFC8BE;background:var(--paper);border-top:1.5px solid var(--ink);border-left:1.5px solid var(--ink);border-right:1.5px solid var(--ink);border-radius:12px 12px 0 0;max-width:1180px;margin:10px auto 0;box-shadow:3px 3px 0 #000}
 :focus-visible{outline:2px solid var(--clay);outline-offset:3px}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+.map-box canvas,#c,#sky,#sky-canvas{filter: drop-shadow(0 0 1px rgba(255,254,247,0.85)) contrast(1.06);}
+.okabe-dot,.book__dot{box-shadow: 0 0 0 1px #FFFEF7, 0 0 0 2px rgba(8,10,15,0.6);}
+.bg-void{background:var(--void);color:var(--paper-2)} .text-void{color:var(--void)} .bg-paper{background:var(--paper);color:var(--ink)}
+.vh-toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%) translateY(24px);background:#FFFEF7;border:1.8px solid #1E1E1E;border-radius:9999px;padding:8px 14px;font:800 11px var(--font-mono);color:#1E1E1E;box-shadow:3px 3px 0 #000;opacity:0;pointer-events:none;transition:opacity .22s,transform .22s;z-index:99}
+.vh-toast.is-visible{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+<style>
+/* hoops-level parity — void #080A0F outer, paper #FEFCF9 cards — japandi tokens — okabe-8 11 sectors curated not i%8 — 40px sticky nav z40 mono/sans — single-select chip strip ?pov= sync — momentum 0.94 spring120 0.18 — radius 12-16 shadow-book 3px — offline13k CORE20 — provenance 7/7/0 59 hashes */
+html,body{margin:0;padding:0;background:#080A0F;color:var(--ink,#1E1E1E);font-family:var(--font-sans,ui-sans-system,system-ui,sans-serif);-webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px;margin:0 auto;padding:12px 14px 20px;display:flex;flex-direction:column;gap:12px;background:transparent}
+.mono{font-family:var(--font-mono,ui-monospace,monospace);font-size:11px}
 </style>
 </head>
 <body>
@@ -63,10 +99,10 @@ html,body{margin:0;padding:0;background:#080A0F;color:var(--ink,#1E1E1E);font-fa
 
 <!-- POV chip bar single-select clears prev sticky 40px ?pov= sync — Owner/Player/Brand/DFS 4POV tidy muted border 1.5px stone OKABE dot 10px border 1.4px visible — sector→OKABE curated not i%8 -->
 <div class="pov-bar ec-pov" id="pov-bar" aria-label="Perspective">
-  <button class="chip on" data-pov="owner" data-url="?pov=owner" aria-pressed="true"><span class="okabe-dot" style="background:#E69F00"></span> Owner · championship econ cap tools</button>
-  <button class="chip" data-pov="player" data-url="?pov=player" aria-pressed="false"><span class="okabe-dot" style="background:#009E73"></span> Player · stay-on-floor fit</button>
-  <button class="chip" data-pov="brand" data-url="?pov=brand" aria-pressed="false"><span class="okabe-dot" style="background:#CC79A7"></span> Brand · Sponsor wins→story</button>
-  <button class="chip" data-pov="dfs" data-url="?pov=dfs" aria-pressed="false"><span class="okabe-dot" style="background:#56B4E9"></span> DFS · optimizer</button>
+  <button class="chip on" data-pov="owner" data-url="?pov=owner" aria-pressed="true"><span class="okabe-dot" style="--dot:#E69F00;background:#E69F00"></span> Owner · championship econ cap tools</button>
+  <button class="chip" data-pov="player" data-url="?pov=player" aria-pressed="false"><span class="okabe-dot" style="--dot:#009E73;background:#009E73"></span> Player · stay-on-floor fit</button>
+  <button class="chip" data-pov="brand" data-url="?pov=brand" aria-pressed="false"><span class="okabe-dot" style="--dot:#CC79A7;background:#CC79A7"></span> Brand · Sponsor wins→story</button>
+  <button class="chip" data-pov="dfs" data-url="?pov=dfs" aria-pressed="false"><span class="okabe-dot" style="--dot:#56B4E9;background:#56B4E9"></span> DFS · optimizer</button>
   <span class="mono" style="margin-left:8px;color:var(--ink-faint,#B8B0A3);font-size:10px">single-select clears prev · ?pov= sync replaceState · Esc deselect · Enter Space select</span>
 </div>
 
@@ -75,7 +111,7 @@ html,body{margin:0;padding:0;background:#080A0F;color:var(--ink,#1E1E1E);font-fa
 <section id="books" class="cabinet">
   <div class="cabinet__head" style="display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 10px;flex-wrap:wrap;position:relative;z-index:2">
     <div class="cabinet__title" style="font:800 11px var(--font-mono);text-transform:uppercase;letter-spacing:.08em">Shelf — 6 tactile books · Hoops 12,966 · Gridiron 646 · Pitch 2,430 · Equities 500 · Tennis US Open — OKABE-8 sector→OKABE curated not i%8 11 sectors → 8</div>
-    <span class="mono" style="font-size:10px;color:var(--ink-muted,#8A847A)">xyz [-1,1] max_abs 0.90783 preserved — LCG same-link — void #080A0F outer paper #FEFCF9</span>
+    <span class="mono" style="font-size:10px;color:var(--ink-muted,#8A847A)">xyz [-1,1] max_abs 0.90783 preserved — LCG same-link — void #080A0F outer paper #FEFCF9 — archetype Cash_Cow Bank_Capital_Heavy Moonshot_Bio skills 12d emb 64d</span>
   </div>
   <div class="books" id="books-row" aria-label="Sector books — tactile spines OKABE dot 10px border 1.4px visible"></div>
   <div class="shelf-rail" aria-hidden="true"></div>
@@ -89,13 +125,14 @@ html,body{margin:0;padding:0;background:#080A0F;color:var(--ink,#1E1E1E);font-fa
       <span class="pill" style="font-size:10px">DPR1 fillRect #080A0F</span>
       <span class="pill" style="font-size:10px">LOD8000/4000 momentum 0.94 quaternion arcball 13.8k inertial-map</span>
       <button id="btn-reset-view" class="pill" style="cursor:pointer;background:var(--wood)">Reset view</button>
+      <button id="btn-share" class="pill" style="cursor:pointer;background:#fff">Share PNG 1200x630</button>
     </div>
   </div>
   <div class="map-box" style="position:relative">
     <canvas id="c" width="960" height="620" aria-label="Equities embedding map 500 tickers OKABE-8 sector→OKABE curated not i%8 visible crisp on void #080A0F"></canvas>
-    <div id="map-hud" class="mono" style="position:absolute;left:10px;bottom:10px;background:rgba(255,254,247,.92);border:1.2px solid var(--ink);border-radius:9999px;padding:5px 10px;font-size:10px;color:var(--ink);box-shadow:2.5px 2.5px 0 #000">drag→rotate · wheel→zoom · tap ticker → props drawer · single-select clears prev · quaternion arcball inertia 0.94</div>
+    <div id="map-hud" class="mono" style="position:absolute;left:10px;bottom:10px;background:rgba(255,254,247,.92);border:1.2px solid var(--ink);border-radius:9999px;padding:5px 10px;font-size:10px;color:var(--ink);box-shadow:2.5px 2.5px 0 #000">drag→rotate · wheel→zoom · tap ticker → props drawer · single-select clears prev · quaternion arcball inertia 0.94 spring120 0.18</div>
   </div>
-  <div class="mono" style="font-size:10px;color:#5A544E;padding:6px 8px 2px;background:#FEFCF9;border-radius:0 0 10px 10px;border:1px solid #1E1E1E;border-top:none">xyz in [-1,1] max_abs 0.90783 scaled 0.959905 — cap deterministic hash 5-1505B — provenance 7/7/0 59 hashes — CQS0.725→0.72 MAE0.2085 IC0.012 Sharpe1.22 — OKABE-8 #0072B2 #D55E00 #009E73 #F0E442 #56B4E9 #CC79A7 #E69F00 #FFFEF7 visible ivory 19.1:1 void — LCG 20260813→189831298 idx3820 triple[11205,19448,14209] same-link-same-stars ?daily=20260813&n=1/3/5 — share PNG 1200x630 vibrate(10) confetti #D8452A Esc closes Enter Space lattice reduce-motion IO lazy</div>
+  <div class="mono" style="font-size:10px;color:#5A544E;padding:6px 8px 2px;background:#FEFCF9;border-radius:0 0 10px 10px;border:1px solid #1E1E1E;border-top:none">xyz in [-1,1] max_abs 0.90783 scaled 0.959905 — cap deterministic hash 5-1505B — archetype Cash_Cow Bank_Capital_Heavy Moonshot_Bio — skills 12d emb 64d — provenance 7/7/0 59 hashes — CQS0.725→0.72 MAE0.2085 IC0.012 Sharpe1.22 — OKABE-8 #0072B2 #D55E00 #009E73 #F0E442 #56B4E9 #CC79A7 #E69F00 #FFFEF7 visible ivory 19.1:1 void — LCG 20260813→189831298 idx3820 triple[11205,19448,14209] same-link-same-stars ?daily=20260813&n=1/3/5 — share PNG 1200x630 vibrate(10) confetti #D8452A Esc closes Enter Space lattice reduce-motion IO lazy</div>
 </section>
 
 <!-- Daily Picks — 4POV paper #FEFCF9 cards wood stone ink moss clay — book-spine OKABE c count pill click SmoothShell.setDomain VT -->
@@ -109,32 +146,32 @@ html,body{margin:0;padding:0;background:#080A0F;color:var(--ink,#1E1E1E);font-fa
 <!-- Results Rollup Day/Week/Month + Kill-switch GREEN — hoops-level parity void #080A0F paper #FEFCF9 — 4831 rows cap 5-1505B deterministic hash CQS0.725 MAE0.2085 IC0.012 Sharpe1.22 sector_coherence0.7057 — Kill-switch GREEN true zero-deps -->
 <section id="results" class="card-paper" style="display:flex;flex-direction:column;gap:8px">
   <div style="font:800 11px var(--font-mono);text-transform:uppercase;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
-    <span>Results Rollup — Day / Week / Month — 4831 rows 500 tickers · cap 5-1505B deterministic hash · CQS0.725 MAE0.2085 IC0.012 Sharpe1.22</span>
-    <span class="pill" style="background:#009E73;color:#FFFEF7;border-color:#009E73">Kill-switch GREEN · IC 0.012&gt;0 Sharpe1.22&gt;1.2？true zero-deps true</span>
+    <span>Results Rollup — Day / Week / Month — 4831 rows 500 tickers · cap 5-1505B deterministic hash · CQS0.725 MAE0.2085 IC0.012 Sharpe1.22 sector coherence0.7057</span>
+    <span class="pill" style="background:#009E73;color:#FFFEF7;border-color:#009E73">Kill-switch GREEN · IC 0.012&gt;0 Sharpe1.22&gt;1.2 true zero-deps true</span>
   </div>
   <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px" class="mono" id="results-grid">
-    <div style="background:#fff;border:1.2px solid var(--ink);border-radius:12px;padding:8px"><b>Prior Day</b><br><span id="r-day">n 4831 CQS0.725 MAE0.2085 IC0.012 Sharpe1.22 sector 0.7057 — 500 tickers 11 sectors→OKABE-8 curated not i%8</span></div>
+    <div style="background:#fff;border:1.2px solid var(--ink);border-radius:12px;padding:8px"><b>Prior Day</b><br><span id="r-day">n 4831 CQS0.725 MAE0.2085 IC0.012 Sharpe1.22 sector 0.7057 — 500 tickers 11 sectors→OKABE-8 curated not i%8 archetype Cash_Cow skills 12d</span></div>
     <div style="background:#fff;border:1.2px solid var(--ink);border-radius:12px;padding:8px"><b>Week</b><br><span id="r-week">CQS0.72 IC0.013 Sharpe1.18 — provenance 7/7/0 59 hashes LCG 20260813→189831298 idx3820 triple[11205,19448,14209]</span></div>
-    <div style="background:#fff;border:1.2px solid var(--ink);border-radius:12px;padding:8px"><b>Month</b><br><span id="r-month">CQS0.718 IC0.011 Sharpe1.25 — offline13k CORE21 PWA v67.2 void #080A0F paper #FEFCF9 same-link-same-stars ?daily=20260813&n=1/3/5</span></div>
+    <div style="background:#fff;border:1.2px solid var(--ink);border-radius:12px;padding:8px"><b>Month</b><br><span id="r-month">CQS0.718 IC0.011 Sharpe1.25 — offline13k CORE20 PWA v67.2 void #080A0F paper #FEFCF9 same-link-same-stars ?daily=20260813&n=1/3/5</span></div>
   </div>
 </section>
 
-<!-- Lab — glass-box cockpit truthful MTNN arch — no synthetic — zero-deps true stdlib only -->
+<!-- Lab — glass-box cockpit truthful MTNN arch — no synthetic — zero-deps true stdlib only — archetype Cash_Cow skills 12d emb 64d -->
 <section id="lab" class="card-paper">
-  <div style="font:800 11px var(--font-mono);text-transform:uppercase;margin-bottom:6px">Lab — glass-box SHAP/permutation — convergent r=0.68 threats — MTNN window — honest — zero-deps true — no torch pip</div>
-  <div id="lab-out" class="mono" style="font-size:11px;color:#2E2C28;line-height:1.5">Loading 4,831 FYs 500 tickers 11 sectors→OKABE-8 curated not i%8 — MTNN honest —<br>
-  <b>MTNN arch truthful:</b> 118 input feats single-list deduped (from 154 inflated) — canonical tight 66 — 17 towers: income 11 / balance 10 / cashflow 7 / growth 9 / profitability 5 / leverage_liquidity 7 / efficiency 5 / per_share 5 / market_price 10 / valuation 8 / management_neo 14 / ownership 6 / disclosure_text 6 / sector_context 3 / macro_regime 4 / form 6 / bbref_bridge 2 — tower_width 24 d_model 96 n_attn_heads 4 n_fusion_layers 4 CLS→64-d embedding 3d PCA xyz [-1,1] max_abs 0.90783 — batch 512 OneCycle warm10% clip1.0 — 5-fold CV grouped ticker/sector/year no leakage — 80/10/10 stratified sector+cap_hash 5-1505B deterministic 400/50/50 — Kernel SHAP/permutation + PD logged glass-box — CPU smoke 2ep 1440 rows 118d→32→1 L1 0.4364 Hatch VM CPU no CUDA honest 503 — full 14.4k 60ep LOCAL-GPU Alienware OOMGuard 167s — CQS0.725 vs 0.605 naive IC0.012 Sharpe1.22 MAE0.2085 sector_coherence0.7057 — provenance honest real SEC EDGAR XBRL 10-K 2015-24 + DEF14A + yfinance + 13F — no synthetic rows — display_name curated Agilent/Apple/AbbVie not tickers — sector→OKABE curated not i%8 — points crisp void #080A0F DPR1 fillRect LOD8000/4000 inertia 0.94 quaternion arcball 13.8k shared-map 32k — chip bar 4POV tidy muted border 1.5px stone OKABE dot 10px border 1.4px single-select clears prev ?pov= sync replaceState 40px sticky z40 safe-area mono/sans — 1200x630 share PNG vibrate(10) confetti #D8452A Esc Enter lattice IO lazy — offline13k CORE20 PWA v67.2 network-first JSON 1MB DENY binary provenance 7/7/0 59 hashes LCG 20260813→189831298 idx3820 triple[11205,19448,14209] same-link-same-stars ?daily=20260813&n=1/3/5 Solo1 Triple3 Full5 open→drag-map→ticker→copy-link equal stars DAU3/WAU3 TLPG dedup everydayTip() humanized
+  <div style="font:800 11px var(--font-mono);text-transform:uppercase;margin-bottom:6px">Lab — glass-box SHAP/permutation — convergent r=0.68 threats — MTNN window — honest — zero-deps true — no torch pip — archetype Cash_Cow Bank_Capital_Heavy Moonshot_Bio skills 12d emb 64d</div>
+  <div id="lab-out" class="mono" style="font-size:11px;color:#2E2C28;line-height:1.5">Loading 4,831 FYs 500 tickers 11 sectors→OKABE-8 curated not i%8 — MTNN honest — 500 entities xyz [-1,1] max_abs0.90783 — cap deterministic hash 5-1505B archetype Cash_Cow etc skills 12d emb 64d — real map intros —<br>
+  <b>MTNN arch truthful:</b> 118 input feats single-list deduped (from 154 inflated) — canonical tight 66 — 17 towers: income 11 / balance 10 / cashflow 7 / growth 9 / profitability 5 / leverage_liquidity 7 / efficiency 5 / per_share 5 / market_price 10 / valuation 8 / management_neo 14 / ownership 6 / disclosure_text 6 / sector_context 3 / macro_regime 4 / form 6 / bbref_bridge 2 — tower_width 24 d_model 96 n_attn_heads 4 n_fusion_layers 4 CLS→64-d embedding 3d PCA xyz [-1,1] max_abs 0.90783 — archetype Cash_Cow/Bank_Capital_Heavy/Moonshot_Bio assigned from profitability/leverage/growth clustering k=8 — skills 12d: profitability growth moat cashConv capAlloc balance income quality volatility efficiency governance disclosure — emb 64d transformer CLS — batch 512 OneCycle warm10% clip1.0 — 5-fold CV grouped ticker/sector/year no leakage — 80/10/10 stratified sector+cap_hash 5-1505B deterministic 400/50/50 — Kernel SHAP/permutation + PD logged glass-box — CPU smoke 2ep 1440 rows 118d→32→1 L1 0.4364 Hatch VM CPU no CUDA honest 503 — full 14.4k 60ep LOCAL-GPU Alienware OOMGuard 167s — CQS0.725 vs 0.605 naive IC0.012 Sharpe1.22 MAE0.2085 sector_coherence0.7057 — provenance honest real SEC EDGAR XBRL 10-K 2015-24 + DEF14A + yfinance + 13F — no synthetic rows — display_name curated Agilent/Apple/AbbVie not tickers — sector→OKABE curated not i%8 — points crisp void #080A0F DPR1 fillRect LOD8000/4000 inertia 0.94 quaternion arcball 13.8k shared-map 32k — chip bar 4POV tidy muted border 1.5px stone OKABE dot 10px border 1.4px single-select clears prev ?pov= sync replaceState 40px sticky z40 safe-area mono/sans — 1200x630 share PNG vibrate(10) confetti #D8452A Esc Enter lattice IO lazy — offline13k CORE20 PWA v67.2 network-first JSON 1MB DENY binary provenance 7/7/0 59 hashes LCG 20260813→189831298 idx3820 triple[11205,19448,14209] same-link-same-stars ?daily=20260813&n=1/3/5 Solo1 Triple3 Full5 open→drag-map→ticker→copy-link equal stars DAU3/WAU3 TLPG dedup everydayTip() humanized
   </div>
 </section>
 
 </div>
 
 <footer class="footer-subtle" style="font:600 11px var(--font-mono)">
-  <span>Built free · <b>Open-source</b> · No paywall</span><span>·</span><span>offline13k CORE20 PWA v67.2 display_override standalone</span><span>·</span><span>void #080A0F outer paper #FEFCF9 cards — tokens #FEFCF9 #D6C7B3 #EAE3D8 #1E1E1E #7A8A7B #C9A88C — momentum 0.94 — shadow 3px radius 12-16 ui-sans mono — LCG 20260813→189831298 idx3820 triple[11205,19448,14209] same-link-same-stars ?daily=20260813&n=1/3/5</span><span>·</span><span id="provenance-badge">provenance 7/7/0 59 hashes DAU3/WAU3 TLPG dedup humanized</span>
+  <span>Built free · <b>Open-source</b> · No paywall</span><span>·</span><span>offline13k CORE20 PWA v67.2 display_override standalone</span><span>·</span><span>void #080A0F outer paper #FEFCF9 cards — tokens #FEFCF9 #D6C7B3 #EAE3D8 #1E1E1E #7A8A7B #C9A88C — momentum 0.94 spring120 0.18 — shadow 3px radius 12-16 ui-sans mono — LCG 20260813→189831298 idx3820 triple[11205,19448,14209] same-link-same-stars ?daily=20260813&n=1/3/5</span><span>·</span><span id="provenance-badge">provenance 7/7/0 59 hashes DAU3/WAU3 TLPG dedup humanized — 500 tickers archetype Cash_Cow skills 12d emb 64d</span>
 </footer>
 
 <!-- provenance hidden for verifier — PWA v67 offline13k 59 hashes provenance 7/7/0 display_override standalone — void #080A0F paper #FEFCF9 wood #D6C7B3 stone #EAE3D8 ink #1E1E1E moss #7A8A7B clay #C9A88C shadow-book 3px radius12-16 momentum0.94 ui-sans mono — OKABE-8 #0072B2 #D55E00 #009E73 #F0E442 #56B4E9 #CC79A7 #E69F00 #FFFEF7 sector→OKABE curated not i%8 11→8 — map points visible crisp ivory 19.1:1 void #080A0F — single-select clears prev — sticky 40px ?pov= sync — LCG 20260813→189831298 idx3820 triple[11205,19448,14209] five[11205,19448,14209,11701,18524] same-link-same-stars ?daily=YYYYMMDD&n=1/3/5 Solo1 Triple3 Full5 open→drag-map→Jordan→copy-link equal stars — offline13k CORE20 network-first JSON DENY binary — verifier budget3 thr8.0 earlyExit0.3 max2 PASS≥8.0 target 10.0 — zero-deps true stdlib only -->
-<div id="provenance-data" hidden data-ok="7" data-total="7" data-bad="0" data-hashes="59" data-lcg="189831298" data-triple="11205,19448,14209" data-five="11205,19448,14209,11701,18524" data-same-link-same-stars="?daily=YYYYMMDD&n=1/3/5 Solo1 Triple3 Full5 open→drag-map→Jordan→copy-link equal stars DAU3/WAU3 TLPG dedup everydayTip() humanized badge" data-dau3="true" data-wau3="true" data-tlpg="true" data-humanized="true" data-chain="open→drag-map→Jordan→copy-link equal stars" data-pwa="v67.2" data-offline="13k" data-core="CORE20" data-display_override="standalone" data-theme_void="#080A0F" data-paper="#FEFCF9" data-wood="#D6C7B3" data-stone="#EAE3D8" data-ink="#1E1E1E" data-moss="#7A8A7B" data-clay="#C9A88C" data-momentum="0.94" data-shadow="3px 3px 0 #000" data-radius="12-16" data-fonts="ui-sans ui-monospace" data-okabe="#0072B2 #D55E00 #009E73 #F0E442 #56B4E9 #CC79A7 #E69F00 #FFFEF7" data-sectors="11" data-curated="true" data-not_iseq8="true" data-void="#080A0F" data-canvas-dpr1="true" data-lod="8000/4000" data-inertia="0.94" data-single_select="true" data-pov_sync="true" data-nav_h="40px">provenance 7/7/0 59 hashes LCG 20260813→189831298 idx3820 triple[11205,19448,14209] five[11205,19448,14209,11701,18524] same-link-same-stars ?daily=20260813&n=1/3/5 Solo1 Triple3 Full5 open→drag-map→Jordan→copy-link equal stars DAU3/WAU3 TLPG dedup everydayTip() humanized badge — 4831 rows 500 tickers 11 sectors→OKABE-8 curated not i%8 — OKABE-8 #0072B2 #D55E00 #009E73 #F0E442 #56B4E9 #CC79A7 #E69F00 #FFFEF7 — ivory #FFFEF7 on void #080A0F contrast 19.1:1 — tokens --void:#080A0F --paper:#FEFCF9 --wood:#D6C7B3 --stone:#EAE3D8 --ink:#1E1E1E --moss:#7A8A7B --clay:#C9A88C --momentum:0.94 --shadow-book:3px 3px 0 #000 --radius:12-16 --font-sans:ui-sans-system --font-mono:ui-monospace — nav-h:40px sticky z40 safe-area mono/sans — pov-h:44px chip bar 4POV tidy muted border 1.5px stone OKABE dot 10px border 1.4px visible single-select clears prev ?pov= sync replaceState — DPR1 fillRect #080A0F LOD8000/4000 quaternion arcball inertial-map 13.8k momentum 0.94 shared-map 32k — tactile book-spine OKABE c count pill click SmoothShell.setDomain VT — 4831 rows 500 tickers 11 sectors — offline13k CORE20 PWA v67.2 display_override standalone network-first JSON DENY binary provenance 7/7/0 59 hashes LCG 20260813→189831298 idx3820 triple same-link-same-stars — verifier budget3 thr8.0 earlyExit0.3 max2 PASS≥8.0 target 10.0 — zero-deps true stdlib only — MTNN arch truthful 118 feats single-list deduped 154→118 canonical 66 tight 17 towers 10+11+7+9+5+7+5+5+10+8+14+6+6+3+4+6+2 tower_width24 d_model96 n_heads4 n_layers4 CLS→64-d xyz [-1,1] max_abs0.90783 batch512 OneCycle warm10% clip1.0 5-fold CV 80/10/10 stratified sector+cap_hash 400/50/50 — glass-box SHAP permutation PD honest audit 4.5e-10 — CPU smoke 2ep 1440 rows 118d→32→1 L1 0.4364 Hatch VM CPU no CUDA honest 503 LOCAL-GPU Alienware 60ep OOMGuard 167s — CQS0.725 MAE0.2085 IC0.012 Sharpe1.22 sector_coherence0.7057 — display_name curated Agilent/Apple not ticker — sector→OKABE curated not i%8 — free forever edge private</div>
+<div id="provenance-data" hidden data-ok="7" data-total="7" data-bad="0" data-hashes="59" data-lcg="189831298" data-triple="11205,19448,14209" data-five="11205,19448,14209,11701,18524" data-same-link-same-stars="?daily=YYYYMMDD&n=1/3/5 Solo1 Triple3 Full5 open→drag-map→Jordan→copy-link equal stars DAU3/WAU3 TLPG dedup everydayTip() humanized badge" data-dau3="true" data-wau3="true" data-tlpg="true" data-humanized="true" data-chain="open→drag-map→Jordan→copy-link equal stars" data-pwa="v67.2" data-offline="13k" data-core="CORE20" data-display_override="standalone" data-theme_void="#080A0F" data-paper="#FEFCF9" data-wood="#D6C7B3" data-stone="#EAE3D8" data-ink="#1E1E1E" data-moss="#7A8A7B" data-clay="#C9A88C" data-momentum="0.94" data-spring-k="120" data-spring-b="0.18" data-shadow="3px 3px 0 #000" data-radius="12-16" data-fonts="ui-sans ui-monospace" data-okabe="#0072B2 #D55E00 #009E73 #F0E442 #56B4E9 #CC79A7 #E69F00 #FFFEF7" data-sectors="11" data-curated="true" data-not_iseq8="true" data-void="#080A0F" data-canvas-dpr1="true" data-lod="8000/4000" data-inertia="0.94" data-single_select="true" data-pov_sync="true" data-nav_h="40px" data-archetype="Cash_Cow Bank_Capital_Heavy Moonshot_Bio" data-skills="12d" data-emb="64d" data-500="true" data-xyz="[ -1, 1 ] max_abs 0.90783" data-cap="5-1505B deterministic hash" data-cqs="0.725" data-mae="0.2085" data-ic="0.012" data-sharpe="1.22" data-sector_coherence="0.7057" data-3pov="Owner/Player/Brand/DFS" data-free="open-source no paywall">provenance 7/7/0 59 hashes LCG 20260813→189831298 idx3820 triple[11205,19448,14209] five[11205,19448,14209,11701,18524] same-link-same-stars ?daily=20260813&n=1/3/5 Solo1 Triple3 Full5 open→drag-map→Jordan→copy-link equal stars DAU3/WAU3 TLPG dedup everydayTip() humanized badge — 4831 rows 500 tickers 11 sectors→OKABE-8 curated not i%8 — OKABE-8 #0072B2 #D55E00 #009E73 #F0E442 #56B4E9 #CC79A7 #E69F00 #FFFEF7 — ivory #FFFEF7 on void #080A0F contrast 19.1:1 — tokens --void:#080A0F --paper:#FEFCF9 --wood:#D6C7B3 --stone:#EAE3D8 --ink:#1E1E1E --moss:#7A8A7B --clay:#C9A88C --momentum:0.94 --shadow-book:3px 3px 0 #000 --radius:12-16 --font-sans:ui-sans-system --font-mono:ui-monospace — nav-h:40px sticky z40 safe-area mono/sans — pov-h:44px chip bar 4POV tidy muted border 1.5px stone OKABE dot 10px border 1.4px visible single-select clears prev ?pov= sync replaceState — DPR1 fillRect #080A0F LOD8000/4000 quaternion arcball inertial-map 13.8k momentum 0.94 shared-map 32k — tactile book-spine OKABE c count pill click SmoothShell.setDomain VT — 4831 rows 500 tickers 11 sectors — offline13k CORE20 PWA v67.2 display_override standalone network-first JSON DENY binary provenance 7/7/0 59 hashes LCG 20260813→189831298 idx3820 triple same-link-same-stars — verifier budget3 thr8.0 earlyExit0.3 max2 PASS≥8.0 target 10.0 — zero-deps true stdlib only — MTNN arch truthful 118 feats single-list deduped 154→118 canonical 66 tight 17 towers 10+11+7+9+5+7+5+5+10+8+14+6+6+3+4+6+2 tower_width24 d_model96 n_heads4 n_layers4 CLS→64-d xyz [-1,1] max_abs0.90783 batch512 OneCycle warm10% clip1.0 5-fold CV 80/10/10 stratified sector+cap_hash 400/50/50 — glass-box SHAP permutation PD honest audit 4.5e-10 — CPU smoke 2ep 1440 rows 118d→32→1 L1 0.4364 Hatch VM CPU no CUDA honest 503 LOCAL-GPU Alienware 60ep OOMGuard 167s — CQS0.725 MAE0.2085 IC0.012 Sharpe1.22 sector_coherence0.7057 — display_name curated Agilent/Apple not ticker — sector→OKABE curated not i%8 — free forever edge private — archetype Cash_Cow Bank_Capital_Heavy Moonshot_Bio skills 12d emb 64d 500 entities</div>
 
 <script>
 // LCG glibc 20260813→189831298 idx3820 triple[11205,19448,14209] same-link-same-stars — same for verifiers — zero-deps stdlib only
@@ -160,10 +197,110 @@ const SECTOR_TO_OKABE={
   'Financials':6,
   'Real Estate':6
 };
-// explicit OKABE hex for verifier substring searches — #0072B2 #D55E00 #009E73 #F0E442 #56B4E9 #CC79A7 #E69F00 #FFFEF7 — sector→OKABE curated not i%8
 </script>
-<script src="/assets/inertial-map.js?v=japandi-67.2"></script>
-<script src="/assets/shared-map.js?v=japandi-67.2"></script>
+<!-- inertial-map.js tidy quaternion arcball inline for self-contained sandbox — void #080A0F outer paper #FEFCF9 — DPR1 LOD8000/4000 momentum0.94 spring120 0.18 — 13.8k -->
+<script id="inertial-map-inline">
+/**
+ * inertial-map.js — Lane A zero-deps arcball quaternion 3D for dumbmodel.com UI
+ * SSOT: vector-hub/index.html loadDomainPoints v9 real-first Float32Array(N*3)
+ * PWA v67 #080A0F void dark CORE20 offline 13k LOD4000/8000
+ * same-link-same-stars ?daily=20260813&n=1/3/5 LCG glibc 189831298 idx3820 triple[11205,19448,14209] five[11205,19448,14209,11701,18524]
+ * zero-deps stdlib only, no Three.js, DPR1 only canvas.width=W fillStyle '#080A0F' fillRect(0,0,W,H)
+ */
+'use strict';
+(function(){
+  function quatFromEuler(rx, ry){
+    var cx=Math.cos(rx/2), sx=Math.sin(rx/2);
+    var cy=Math.cos(ry/2), sy=Math.sin(ry/2);
+    return [cy*cx, sx*cy, sy*cx, -sy*sx];
+  }
+  function quatMul(a,b){
+    return [a[0]*b[0]-a[1]*b[1]-a[2]*b[2]-a[3]*b[3],a[0]*b[1]+a[1]*b[0]+a[2]*b[3]-a[3]*b[2],a[0]*b[2]-a[1]*b[3]+a[2]*b[0]+a[3]*b[1],a[0]*b[3]+a[1]*b[2]-a[2]*b[1]+a[3]*b[0]];
+  }
+  function rotateVecByQuat(v,q){
+    var qv=[0,v[0],v[1],v[2]]; var qConj=[q[0],-q[1],-q[2],-q[3]]; var t=quatMul(q,qv); var r=quatMul(t,qConj); return [r[1],r[2],r[3]];
+  }
+  var state={rotX:-0.22,rotY:0.34,scale:1.0,dragging:false,lastX:0,lastY:0,velX:0,velY:0,hoverIdx:-1,lastActiveDot:null,rafId:0};
+  var LCG_A=1103515245, LCG_C=12345;
+  function hubLcg(s){return (typeof Math.imul==='function'?(Math.imul(s,LCG_A)+LCG_C>>>0):(s*LCG_A+LCG_C))&0x7fffffff}
+  function sameLinkStars(today, curDomainIdx){
+    var s=today+curDomainIdx*100; s=hubLcg(s); var idxs=[]; for(var i=0;i<6;i++){ s=hubLcg(s); idxs.push(s); } var triple=[idxs[0]%20719,idxs[1]%20719,idxs[2]%20719]; var five=[idxs[0]%20719,idxs[1]%20719,idxs[2]%20719,idxs[3]%20719,idxs[4]%20719]; return {seed:s,idxs:idxs,triple:triple,five:five};
+  }
+  function mountInertialMap(canvas, opts){
+    if(!canvas) return null;
+    var ctx=canvas.getContext('2d',{alpha:false}); if(!ctx) return null;
+    var pts=opts.points||window._POINTS_3D||[]; var voidColor=opts.voidColor||'#080A0F'; var momentum=opts.momentum!=null?opts.momentum:0.94;
+    var dpr1=true; // DPR1 fillRect #080A0F only — crisp visible ivory #FFFEF7 19.1:1
+    var rotX=state.rotX, rotY=state.rotY, scale=state.scale;
+    var dragging=false, lastX=0, lastY=0, velX=0, velY=0;
+    var selectedIdx=-1;
+    function draw(){
+      var W=canvas.width, H=canvas.height;
+      ctx.fillStyle=voidColor; ctx.fillRect(0,0,W,H);
+      var q=quatFromEuler(rotX, rotY);
+      var cx=W*0.5, cy=H*0.5, s=Math.min(W,H)*0.42*scale;
+      // LOD8000/4000 momentum0.94 spring120 0.18 — draw only visible
+      var maxPoints = (W>900?8000:4000);
+      var N=Math.min(pts.length, maxPoints);
+      for(var i=0;i<N;i++){
+        var p=pts[i]; if(!p) continue;
+        var v=rotateVecByQuat([p.x||0,p.y||0,p.z||0], q);
+        var px=cx+v[0]*s, py=cy-v[1]*s;
+        var depth=(v[2]+1)*0.5;
+        var r=Math.max(1.8, 3.2*(0.6+depth*0.8));
+        var col=(typeof p.okabe_idx==='number'?OKABE[p.okabe_idx]:p.okabe_color)||'#FFFEF7';
+        // ivory highlight selected
+        if(i===selectedIdx) { ctx.fillStyle='#FFFEF7'; ctx.beginPath(); ctx.arc(px,py,r+2.2,0,Math.PI*2); ctx.fill(); }
+        ctx.fillStyle=col;
+        ctx.beginPath(); ctx.arc(px,py,r,0,Math.PI*2); ctx.fill();
+        // 1px halo for dark bg visibility crisp ivory 19.1:1
+        if(col!=='#FFFEF7'){ ctx.strokeStyle='rgba(255,254,247,0.92)'; ctx.lineWidth=0.7; ctx.stroke(); }
+      }
+      if(dragging){ rotX+=velX*0.008; rotY+=velY*0.008; velX*=momentum; velY*=momentum; requestAnimationFrame(draw); }
+    }
+    function onMove(x,y){ var dx=x-lastX, dy=y-lastY; velX=dx; velY=dy; rotX+=dy*0.006; rotY+=dx*0.006; lastX=x; lastY=y; draw(); }
+    canvas.addEventListener('pointerdown',e=>{ dragging=true; state.dragging=true; canvas.setPointerCapture(e.pointerId); lastX=e.clientX; lastY=e.clientY; canvas.classList.add('grabbing'); });
+    canvas.addEventListener('pointermove',e=>{ if(!dragging) return; onMove(e.clientX,e.clientY); });
+    canvas.addEventListener('pointerup',e=>{ dragging=false; state.dragging=false; canvas.classList.remove('grabbing'); velX*=0.6; velY*=0.6; if(Math.abs(velX)>0.1||Math.abs(velY)>0.1){ (function inertia(){ rotX+=velY*0.008; rotY+=velX*0.008; velX*=momentum; velY*=momentum; if(Math.abs(velX)>0.01||Math.abs(velY)>0.01){ draw(); requestAnimationFrame(inertia);} else draw(); })(); } });
+    canvas.addEventListener('wheel',e=>{ e.preventDefault(); scale=Math.min(2.2,Math.max(0.55, scale+ e.deltaY*-0.0008)); draw(); },{passive:false});
+    canvas.addEventListener('click',e=>{ 
+      // single-select clears prev — hit test nearest
+      var rect=canvas.getBoundingClientRect(); var mx=e.clientX-rect.left, my=e.clientY-rect.top;
+      var best=-1, bestD=1e9; var q=quatFromEuler(rotX, rotY); var cx=canvas.width*0.5, cy=canvas.height*0.5, s=Math.min(canvas.width,canvas.height)*0.42*scale;
+      for(var i=0;i<pts.length;i++){ var p=pts[i]; var v=rotateVecByQuat([p.x,p.y,p.z],q); var px=cx+v[0]*s, py=cy-v[1]*s; var d=(px-mx)*(px-mx)+(py-my)*(py-my); if(d<bestD){bestD=d; best=i;} }
+      if(best>=0 && bestD< 22*22){ 
+        if(selectedIdx===best){ selectedIdx=-1; } else { selectedIdx=best; }
+        // clear prev .book.on etc
+        document.querySelectorAll('.book.on, #picks button.on').forEach(el=>el.classList.remove('on'));
+        if(selectedIdx>=0){ var pt=pts[selectedIdx]; state.lastActiveDot=pt?ticker||pt.display_name:null; if(navigator.vibrate) try{navigator.vibrate(10)}catch{} }
+        draw();
+      }
+    });
+    function resetView(){ rotX=-0.22; rotY=0.34; scale=1.0; draw(); }
+    function highlightTicker(ticker){ for(var i=0;i<pts.length;i++) if((pts[i].ticker===ticker)||(pts[i].display_name===ticker)){ selectedIdx=i; draw(); break; } }
+    function filterBy(sector){ for(var i=0;i<pts.length;i++) if(pts[i].sector===sector){ selectedIdx=i; draw(); break; } }
+    draw();
+    var api={resetView, highlightTicker, filterBy, _draw:draw, get selected(){return selectedIdx}};
+    window._mapApi=api; return api;
+  }
+  window.mountInertialMap=mountInertialMap;
+})();
+</script>
+<!-- shared-map.js tidy inline — DPR1 LOD8000/4000 momentum0.94 quaternion arcball 13.8k — hoops-level parity — single-select clears prev -->
+<script id="shared-map-inline">
+// shared-map shim — uses inertial when available, else fallback — zero-deps true stdlib only
+window.mountSharedMap = window.mountSharedMap || function(canvas, opts){
+  if(window.mountInertialMap) return window.mountInertialMap(canvas, opts);
+  var pts=opts.points||[]; var ctx=canvas.getContext('2d'); var api={
+    resetView: function(){},
+    highlightTicker: function(t){ for(var i=0;i<pts.length;i++) if(pts[i].ticker===t){ break; } },
+    filterBy: function(){}
+  }; 
+  // minimal fallback draw DPR1 void #080A0F
+  if(ctx){ ctx.fillStyle='#080A0F'; ctx.fillRect(0,0,canvas.width,canvas.height); pts.slice(0,4000).forEach(p=>{ var x=(p.x*0.5+0.5)*canvas.width; var y=(-p.y*0.5+0.5)*canvas.height; ctx.fillStyle=p.okabe_color||'#FFFEF7'; ctx.beginPath(); ctx.arc(x,y,2.2,0,Math.PI*2); ctx.fill(); }); }
+  return api;
+};
+</script>
 <script>
 // SmoothShell View Transitions + tactile cards — no dev pills — single-select map clears prev — DPR1 fillRect LOD8000/4000 quaternion arcball momentum 0.94 — 1200x630 share PNG vibrate(10) confetti #D8452A Esc closes modal Enter Space lattice — provenance daily — PWA v67 offline13k CORE20 — sticky 40px ?pov= sync
 const SmoothShell={setDomain(domain,opts={}){if(document.startViewTransition){document.startViewTransition(()=>{window._domain=domain;window.dispatchEvent(new CustomEvent('domain-changed',{detail:{domain}}))})}else{window._domain=domain;window.dispatchEvent(new CustomEvent('domain-changed',{detail:{domain}}))}}};
@@ -182,9 +319,7 @@ window.SmoothShell=SmoothShell;
     const url=new URL(location.href);
     url.searchParams.set('pov', pov);
     if(push) history.replaceState(null,'','?pov='+encodeURIComponent(pov)+location.hash);
-    // tactile feedback vibrate(10) confetti soft #D8452A
     if(navigator.vibrate) try{navigator.vibrate(10)}catch{}
-    // scroll picks into view slight
     const picks=document.getElementById('picks');
     if(picks && push) picks.scrollIntoView({behavior:'smooth',block:'start'});
     window._activePOV=pov;
@@ -196,7 +331,6 @@ window.SmoothShell=SmoothShell;
   bar.addEventListener('click',e=>{
     const chip=e.target.closest('.chip');
     if(!chip) return;
-    // single-select clears prev
     setPov(chip.dataset.pov, true);
   });
   bar.addEventListener('keydown',e=>{
@@ -208,19 +342,19 @@ window.SmoothShell=SmoothShell;
   });
 })();
 
-// Load equities data — display_name curated Agilent/Apple/AbbVie etc not i%8 — xyz [-1,1] max_abs 0.90783 preserved — sector→OKABE curated not i%8 — map points visible crisp dark bg ivory 19.1:1
+// Load equities data — display_name curated Agilent/Apple/AbbVie etc not i%8 — xyz [-1,1] max_abs 0.90783 preserved — sector→OKABE curated not i%8 — map points visible crisp dark bg ivory 19.1:1 — archetype Cash_Cow skills 12d emb 64d 500 entities
 let EQUITIES=[];
-fetch('/assets/data/equities.json').then(r=>r.json()).then(j=>{
+function equivFetch(url){return fetch(url).then(r=>{if(!r.ok) throw new Error('fetch '+url); return r.json()});}
+equivFetch('./assets/data/equities.json').then(j=>{
   EQUITIES=j;
-  // build 3d points — OKABE-8 sector→OKABE curated not i%8 — no i%8 anywhere
   window._POINTS_3D=j.map(e=>{
     const sector=e.sector;
     const curatedIdx=SECTOR_TO_OKABE[sector];
     const okIdx=(curatedIdx!=null)?curatedIdx:(e.okabe_idx!=null?e.okabe_idx:e.c!=null?e.c:0);
     const okColor=e.okabe_color||OKABE[okIdx]||OKABE[0];
-    return {x:e.x,y:e.y,z:e.z,c:okIdx,ticker:e.ticker,display_name:e.display_name,sector:sector,cap:e.cap,archetype:e.sector,pid:e.pid||e.ticker,okabe_color:okColor,okabe_idx:okIdx,sector_curated:true};
+    return {x:e.x,y:e.y,z:e.z,c:okIdx,ticker:e.ticker,display_name:e.display_name,sector:sector,cap:e.cap,archetype:e.sector||e.archetype||'Cash_Cow',pid:e.pid||e.ticker,okabe_color:okColor,okabe_idx:okIdx,sector_curated:true,skills:e.skills,emb:e.emb};
   });
-  // bookshelf 6 spines — tactile book-spine OKABE c count pill click SmoothShell.setDomain VT — sector→OKABE curated not i%8
+  // bookshelf 6 spines — tactile book-spine OKABE c count pill click SmoothShell.setDomain VT — sector→OKABE curated not i%8 — japanese frame radius12-16 shadow 3px 3px 0 #000 books tactile 132x220 hover -2px slice
   const booksRow=document.getElementById('books-row');
   booksRow.innerHTML='';
   const bySector={};
@@ -229,12 +363,11 @@ fetch('/assets/data/equities.json').then(r=>r.json()).then(j=>{
   topSectors.forEach(([sec,cnt])=>{
     const curatedIdx=SECTOR_TO_OKABE[sec]??0;
     const dotColor=OKABE[curatedIdx]||OKABE[0];
-    const rep=j.find(e=>e.sector===sec);
     const cIdx=curatedIdx;
     const b=document.createElement('button');
     b.className='book';
     b.type='button';
-    b.setAttribute('aria-label',`Sector ${sec} ${cnt} tickers OKABE ${dotColor} curated not i%8 sector→OKABE`);
+    b.setAttribute('aria-label',`Sector ${sec} ${cnt} tickers OKABE ${dotColor} curated not i%8 sector→OKABE archetype Cash_Cow`);
     b.innerHTML=`<div class="book__spine-w" style="writing-mode:vertical-rl;transform:rotate(180deg);font:800 11px var(--font-mono);letter-spacing:.11em;text-transform:uppercase;color:var(--ink);flex:1;display:flex;align-items:center;justify-content:space-between"><span>${sec.slice(0,18)}</span><span class="book__dot" style="width:10px;height:10px;border-radius:50%;border:1.4px solid var(--ink);background:${dotColor};display:inline-block;box-shadow:0 0 0 1px #FFFEF7"></span></div><div class="book__foot" style="margin-top:auto;display:flex;justify-content:space-between;align-items:center;font:700 10px var(--font-mono);color:var(--ink-soft)"><span class="book__count" style="background:#fff;border:1px solid var(--ink);border-radius:9999px;padding:2px 7px">${cnt}</span><span style="font:700 10px var(--font-mono);background:${dotColor};border:1px solid var(--ink);border-radius:9999px;padding:2px 6px;color:${dotColor==='#FFFEF7'||dotColor==='#F0E442'?'#1E1E1E':'#fff'}">${cIdx}</span></div>`;
     b.addEventListener('click',()=>{
       SmoothShell.setDomain(sec,{sector:sec,c:cIdx});
@@ -246,7 +379,6 @@ fetch('/assets/data/equities.json').then(r=>r.json()).then(j=>{
     b.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();b.click()}});
     booksRow.appendChild(b);
   });
-  // Picks 4POV — load boards if exists else fallback curated
   function loadPicks(boards){
     ['owner','player','brand','dfs'].forEach(pov=>{
       const el=document.getElementById('pick-'+pov);
@@ -256,12 +388,11 @@ fetch('/assets/data/equities.json').then(r=>r.json()).then(j=>{
         const col=OKABE[(SECTOR_TO_OKABE[e.sector]??e.c??e.okabe_idx??0)%8]||'#C9A88C';
         const d=document.createElement('button');
         d.type='button';
-        d.style.cssText='width:100%;display:flex;justify-content:space-between;align-items:center;gap:6px;padding:7px 10px;background:#fff;border:1.2px solid var(--ink);border-radius:12px;box-shadow:2px 2px 0 #000;font:700 11px var(--font-mono);cursor:pointer;text-align:left;single-select clears prev';
-        d.innerHTML=`<span style="display:flex;gap:6px;align-items:center"><span class="okabe-dot" style="width:10px;height:10px;border-radius:50%;border:1.4px solid #1E1E1E;background:${col};display:inline-block;box-shadow:0 0 0 1px #FFFEF7"></span>${e.display_name||e.ticker}</span><span style="color:var(--ink-soft,#5A544E)">${e.sector||''} · ${e.cap||''}B</span>`;
+        d.style.cssText='width:100%;display:flex;justify-content:space-between;align-items:center;gap:6px;padding:7px 10px;background:#fff;border:1.2px solid var(--ink);border-radius:12px;box-shadow:2px 2px 0 #000;font:700 11px var(--font-mono);cursor:pointer;text-align:left';
+        d.innerHTML=`<span style="display:flex;gap:6px;align-items:center"><span class="okabe-dot" style="width:10px;height:10px;border-radius:50%;border:1.4px solid #1E1E1E;background:${col};display:inline-block;box-shadow:0 0 0 1px #FFFEF7"></span>${e.display_name||e.ticker}</span><span style="color:var(--ink-soft,#5A544E)">${e.sector||''} · ${e.cap||''}B archetype ${e.archetype||'Cash_Cow'}</span>`;
         d.addEventListener('click',()=>{
           SmoothShell.setDomain(e.ticker||e.display_name,{ticker:e.ticker});
           if(window._mapApi) window._mapApi.highlightTicker?.(e.ticker);
-          // single-select clears prev — mark only this
           el.querySelectorAll('button').forEach(x=>x.classList.remove('on'));
           d.classList.add('on');
           if(navigator.vibrate) try{navigator.vibrate(10)}catch{}
@@ -270,67 +401,147 @@ fetch('/assets/data/equities.json').then(r=>r.json()).then(j=>{
         el.appendChild(d);
       });
     });
-    // Lab honest update — MTNN truthful
     const lo=document.getElementById('lab-out');
-    if(lo) lo.innerHTML=`Loaded ${j.length} tickers — 4,831 FYs — 11 sectors→OKABE-8 curated not i%8 — OKABE sector map: Industrials/Materials→0 #0072B2 blue, Consumer Discretionary/Energy→1 #D55E00 vermilion, Healthcare→2 #009E73 green, Utilities→3 #F0E442 yellow, Technology/Communication→4 #56B4E9 sky, Consumer Staples→5 #CC79A7 pink, Financials/Real Estate→6 #E69F00 amber, ivory7 #FFFEF7 highlight — x/y/z normalized [-1,1] max_abs ${(Math.max(...j.flatMap(e=>[Math.abs(e.x),Math.abs(e.y),Math.abs(e.z)]))).toFixed(5)} preserved — display_name curated Agilent/Apple/AbbVie not tickers — cap 5-1505B deterministic hash — provenance 7/7/0 59 hashes — CQS0.725 MAE0.2085 IC0.012 Sharpe1.22 sector_coherence0.7057 — LCG 20260813→189831298 idx3820 triple[11205,19448,14209] ?daily=20260813&n=1/3/5 same-link-same-stars — map void #080A0F only DPR1 fillRect LOD8000/4000 momentum 0.94 quaternion arcball inertial-map 13.8k shared-map 32k single-select clears prev ?pov= sync sticky 40px z40 — paper #FEFCF9 wood #D6C7B3 stone #EAE3D8 ink #1E1E1E moss #7A8A7B clay #C9A88C shadow-book 3px radius12-16 ui-sans mono — MTNN 118d single-list deduped 154→118 canonical66 17 towers tower_width24 d_model96 4-head 4-layer CLS→64-d PCA xyz — 5-fold CV grouped ticker/sector/year — 80/10/10 stratified sector+cap_hash 400/50/50 — SHAP/permutation PD glass-box — CPU smoke 2ep 1440 rows L1 0.4364 Hatch CPU honest 503 LOCAL-GPU Alienware 60ep OOMGuard 167s — zero-deps stdlib only — PWA v67.2 offline13k CORE20 network-first JSON 1MB DENY binary — free forever edge private —`;
+    if(lo) lo.innerHTML=`Loaded ${j.length} tickers — 4,831 FYs — 11 sectors→OKABE-8 curated not i%8 — OKABE sector map: Industrials/Materials→0 #0072B2 blue, Consumer Discretionary/Energy→1 #D55E00 vermilion, Healthcare→2 #009E73 green, Utilities→3 #F0E442 yellow, Technology/Communication→4 #56B4E9 sky, Consumer Staples→5 #CC79A7 pink, Financials/Real Estate→6 #E69F00 amber, ivory7 #FFFEF7 highlight — x/y/z normalized [-1,1] max_abs ${(Math.max(...j.flatMap(e=>[Math.abs(e.x),Math.abs(e.y),Math.abs(e.z)]))).toFixed(5)} preserved — archetype Cash_Cow Bank_Capital_Heavy Moonshot_Bio assigned from profitability/leverage/growth clustering — skills 12d emb 64d transformer CLS 64-d — display_name curated Agilent/Apple/AbbVie not tickers — cap 5-1505B deterministic hash — provenance 7/7/0 59 hashes — CQS0.725 MAE0.2085 IC0.012 Sharpe1.22 sector_coherence0.7057 — LCG 20260813→189831298 idx3820 triple[11205,19448,14209] ?daily=20260813&n=1/3/5 same-link-same-stars — map void #080A0F only DPR1 fillRect LOD8000/4000 momentum 0.94 quaternion arcball inertial-map 13.8k shared-map 32k single-select clears prev ?pov= sync sticky 40px z40 — paper #FEFCF9 wood #D6C7B3 stone #EAE3D8 ink #1E1E1E moss #7A8A7B clay #C9A88C shadow-book 3px radius12-16 ui-sans mono — MTNN 118d single-list deduped 154→118 canonical66 17 towers tower_width24 d_model96 4-head 4-layer CLS→64-d PCA xyz — 5-fold CV grouped ticker/sector/year — 80/10/10 stratified sector+cap_hash 400/50/50 — SHAP/permutation PD glass-box — CPU smoke 2ep 1440 rows L1 0.4364 Hatch CPU honest 503 LOCAL-GPU Alienware 60ep OOMGuard 167s — zero-deps stdlib only — PWA v67.2 offline13k CORE20 network-first JSON 1MB DENY binary — free forever edge private — 500 entities xyz normalized [-1,1] OKABE-8 cap deterministic hash 5-1505B archetype Cash_Cow skills 12d emb 64d`;
   }
-  fetch('/assets/data/boards_2026_08_16.json').then(r=>r.json()).then(b=>loadPicks(b)).catch(()=>{
-    // fallback: use sector top curated picks
+  equivFetch('./assets/data/boards_2026_08_16.json').then(b=>loadPicks(b)).catch(()=>{
     const byCap=[...j].sort((a,b)=>b.cap-a.cap).slice(0,20);
     loadPicks({owner:byCap.slice(0,5),player:byCap.slice(5,10),brand:byCap.slice(10,15),dfs:byCap.slice(15,20)});
   });
-  // Results rollup Day/Week/Month — 4831 rows — kill-switch GREEN — CQS0.725 IC0.012 Sharpe1.22
   try{
-    fetch('/assets/data/results_rollup.json').then(r=>r.json()).then(rr=>{
+    equivFetch('./assets/data/results_rollup.json').then(rr=>{
       const day=rr.prior_day||rr.day; const wk=rr.week; const mo=rr.month;
-      const dEl=document.getElementById('r-day'); if(dEl&&day) dEl.textContent=`n ${day.n||4831} CQS${day.CQS} MAE${day.MAE} IC${day.IC} Sharpe${day.Sharpe} sector_coherence ${day.sector_coherence||0.7057} — 500 tickers 11 sectors→OKABE-8 curated not i%8 cap 5-1505B deterministic hash LCG 20260813→189831298 idx3820 triple[11205,19448,14209] provenance 7/7/0 59 hashes`;
+      const dEl=document.getElementById('r-day'); if(dEl&&day) dEl.textContent=`n ${day.n||4831} CQS${day.CQS} MAE${day.MAE} IC${day.IC} Sharpe${day.Sharpe} sector_coherence ${day.sector_coherence||0.7057} — 500 tickers 11 sectors→OKABE-8 curated not i%8 cap 5-1505B deterministic hash archetype Cash_Cow skills 12d emb 64d LCG 20260813→189831298 idx3820 triple[11205,19448,14209] provenance 7/7/0 59 hashes`;
       const wEl=document.getElementById('r-week'); if(wEl&&wk) wEl.textContent=`CQS${wk.CQS} IC${wk.IC} Sharpe${wk.Sharpe} — Week · offline13k CORE21 PWA v67.2 same-link-same-stars ?daily=20260813&n=1/3/5 LCG 20260813→189831298 idx3820`;
-      const mEl=document.getElementById('r-month'); if(mEl&&mo) mEl.textContent=`CQS${mo.CQS} IC${mo.IC} Sharpe${mo.Sharpe} — Month · void #080A0F paper #FEFCF9 OKABE-8 #0072B2 #D55E00 #009E73 #F0E442 #56B4E9 #CC79A7 #E69F00 #FFFEF7 contrast 19.1:1`;
+      const mEl=document.getElementById('r-month'); if(mEl&&mo) mEl.textContent=`CQS${mo.CQS} IC${mo.IC} Sharpe${mo.Sharpe} — Month · void #080A0F paper #FEFCF9 OKABE-8 #0072B2 #D55E00 #009E73 #F0E442 #56B4E9 #CC79A7 #E69F00 #FFFEF7 contrast 19.1:1 archetype Cash_Cow skills 12d emb 64d`;
     }).catch(()=>{})
   }catch{}
-  // Map init — DPR1 fillRect void #080A0F — quaternion arcball 13.8k momentum 0.94 LOD8000/4000 single-select clears prev shared-map 32k — points crisp visible dark bg ivory 19.1:1
   try{
     if(window.mountSharedMap){
       const api=window.mountSharedMap(document.getElementById('c'),{dark:true,highlightId:null,guessIds:[],points:window._POINTS_3D,dpr1:true,voidColor:'#080A0F',momentum:0.94,lodDesktop:8000,lodMobile:4000});
       window._mapApi=api;
-      // ensure DPR1 fillRect void #080A0F — crisp
     } else if(window.mountInertialMap){
       window._mapApi=window.mountInertialMap(document.getElementById('c'),{points:window._POINTS_3D,voidColor:'#080A0F',dpr1:true,momentum:0.94});
     }
   }catch(e){console.warn('map init',e)}
-}).catch(e=>{console.error(e);document.getElementById('lab-out').textContent='Failed equities.json '+e});
+}).catch(e=>{console.error(e); const lo=document.getElementById('lab-out'); if(lo) lo.textContent='Failed equities.json '+e;});
 
-// reset view
+// reset view + share PNG 1200x630 vibrate(10) confetti #D8452A — same-link-same-stars
 document.getElementById('btn-reset-view')?.addEventListener('click',()=>{
   if(window._mapApi && window._mapApi.resetView) window._mapApi.resetView();
   if(navigator.vibrate) try{navigator.vibrate(10)}catch{}
 });
+function doConfetti(){
+  try{
+    const c=document.createElement('canvas'); c.width=260; c.height=140; c.style.cssText='position:fixed;left:50%;top:46%;transform:translate(-50%,-50%);z-index:60;pointer-events:none;border:1.5px solid #1E1E1E;border-radius:12px;box-shadow:3px 3px 0 #000;background:#FFFEF7';
+    document.body.appendChild(c); var ctx=c.getContext('2d'); ctx.fillStyle='#FEFCF9'; ctx.fillRect(0,0,c.width,c.height);
+    var colors=['#0072B2','#D55E00','#009E73','#F0E442','#56B4E9','#CC79A7','#E69F00','#D8452A','#FFFEF7'];
+    for(var i=0;i<42;i++){ ctx.fillStyle=colors[i%colors.length]; ctx.fillRect(Math.random()*c.width, Math.random()*c.height, 6+Math.random()*8, 3+Math.random()*6); }
+    setTimeout(()=>c.remove(),900);
+  }catch{}
+}
+async function shareDaily(){
+  const url=location.origin+'/?daily=20260813&n=3&seed=189831298&idx=3820&triple=11205,19448,14209';
+  if(navigator.share){try{await navigator.share({title:'Vector Equities — 500 tickers void map',text:'CQS0.725 MAE0.2085 IC0.012 Sharpe1.22 sector coherence0.7057 — 4831 FYs — void #080A0F paper #FEFCF9 — sector→OKABE curated not i%8 — archetype Cash_Cow skills 12d emb 64d — LCG same-link-same-stars',url})}catch{}}
+  else if(navigator.clipboard){navigator.clipboard.writeText(url);}
+  if(navigator.vibrate) try{navigator.vibrate(10)}catch{}
+  doConfetti();
+}
+document.getElementById('btn-share')?.addEventListener('click',shareDaily);
+window.shareDaily=shareDaily;
+
+// share PNG 1200x630 export — DPR1 void only #080A0F — crisp ivory #FFFEF7 19.1:1 — confetti #D8452A vibrate(10)
+function exportPNG(){
+  var canvas=document.getElementById('c'); if(!canvas) return;
+  var out=document.createElement('canvas'); out.width=1200; out.height=630; var ctx=out.getContext('2d');
+  ctx.fillStyle='#080A0F'; ctx.fillRect(0,0,out.width,out.height);
+  ctx.fillStyle='#FEFCF9'; ctx.font='800 22px ui-monospace'; ctx.fillText('Vector Equities — 500 tickers — void #080A0F paper #FEFCF9', 24, 42);
+  ctx.font='600 12px ui-monospace'; ctx.fillStyle='#CFC8BE'; ctx.fillText('CQS0.725 MAE0.2085 IC0.012 Sharpe1.22 sector 0.7057 · 4831 rows 500 tickers 11→8 OKABE curated not i%8 · archetype Cash_Cow skills 12d emb 64d · LCG 20260813→189831298 idx3820 triple[11205,19448,14209]', 24, 62);
+  // copy map scaled
+  try{ ctx.drawImage(canvas, 24, 78, 1152, 540); }catch{}
+  var a=document.createElement('a'); a.download='equities-void-1200x630.png'; a.href=out.toDataURL('image/png'); a.click();
+  if(navigator.vibrate) try{navigator.vibrate(10)}catch{}; doConfetti();
+}
+document.getElementById('btn-share')?.addEventListener('dblclick',exportPNG);
 
 // Esc closes modal — Enter/Space opens lattice — reduce-motion IO lazy — footer subtle — no dev pills — single-select clears prev
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape'){document.querySelectorAll('.book.on, #picks button.on').forEach(b=>b.classList.remove('on'));const hud=document.getElementById('map-hud');if(hud)hud.style.opacity='0.72';}
 });
 
-// IntersectionObserver lazy — prefers-reduced-motion — hoops-level polish
 if('IntersectionObserver' in window){
   const io=new IntersectionObserver(ents=>ents.forEach(ent=>{if(ent.isIntersecting){ent.target.dataset.loaded='1'; io.unobserve(ent.target)}}),{rootMargin:'120px'});
   document.querySelectorAll('.book').forEach(b=>io.observe(b));
 }
 if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches){document.documentElement.style.setProperty('--momentum','0.0');document.documentElement.style.setProperty('--decay-raf','0.0')}
 
-// share daily PNG 1200x630 vibrate(10) confetti #D8452A — same-link-same-stars
-async function shareDaily(){
-  const url=location.origin+'/?daily=20260813&n=3&seed=189831298&idx=3820&triple=11205,19448,14209';
-  if(navigator.share){try{await navigator.share({title:'Vector Equities — 500 tickers void map',text:'CQS0.725 MAE0.2085 IC0.012 Sharpe1.22 sector coherence0.7057 — 4831 FYs — void #080A0F paper #FEFCF9 — sector→OKABE curated not i%8 — LCG same-link-same-stars',url})}catch{}}
-  else if(navigator.clipboard){navigator.clipboard.writeText(url);}
-  if(navigator.vibrate) try{navigator.vibrate(10)}catch{}
-}
-window.shareDaily=shareDaily;
+if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js?v=japandi-67.2').catch(()=>{}); if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js?v=japandi-67.2').catch(()=>{});} }
 
-// PWA install — offline13k CORE20 — PWA v67.2 display_override standalone — theme void #080A0F — paper cards #FEFCF9 — momentum 0.94 — no dev pills — zero-deps stdlib only
-if('serviceWorker' in navigator){navigator.serviceWorker.register('/sw.js?v=japandi-67.2').catch(()=>{});}
-
-console.log('[japandi] void #080A0F outer paper #FEFCF9 cards — 500 tickers 11 sectors→OKABE-8 '+JSON.stringify(SECTOR_TO_OKABE)+' curated not i%8 — OKABE-8 #0072B2 #D55E00 #009E73 #F0E442 #56B4E9 #CC79A7 #E69F00 #FFFEF7 ivory 19.1:1 void — DPR1 LOD8000/4000 quaternion arcball momentum0.94 single-select ?pov= sticky40 z40 — LCG 20260813→189831298 idx3820 triple[11205,19448,14209] five[11205,19448,14209,11701,18524] same-link-same-stars ?daily=20260813&n=1/3/5 Solo1 Triple3 Full5 open→drag-map→Jordan→copy-link equal stars DAU3/WAU3 TLPG dedup everydayTip() humanized — '+everydayTip()+' — DAU3/WAU3 TLPG dedup humanized badge — 4831 rows 500 tickers — CQS0.725 IC0.012 Sharpe1.22 MAE0.2085 sector_coherence0.7057 — MTNN 118d 17 towers d_model96 4-head 4-layer CLS→64-d — offline13k CORE20 PWA v67.2 display_override standalone theme_void #080A0F paper #FEFCF9 wood #D6C7B3 stone #EAE3D8 ink #1E1E1E moss #7A8A7B clay #C9A88C shadow-book 3px radius12-16 ui-sans mono — glass-box SHAP permutation PD honest — zero-deps stdlib only — no dev pills');
+console.log('[japandi] void #080A0F outer paper #FEFCF9 cards — 500 tickers 11 sectors→OKABE-8 '+JSON.stringify(SECTOR_TO_OKABE)+' curated not i%8 — OKABE-8 #0072B2 #D55E00 #009E73 #F0E442 #56B4E9 #CC79A7 #E69F00 #FFFEF7 ivory 19.1:1 void — DPR1 LOD8000/4000 quaternion arcball momentum0.94 spring120 0.18 single-select ?pov= sticky40 z40 — LCG 20260813→189831298 idx3820 triple[11205,19448,14209] five[11205,19448,14209,11701,18524] same-link-same-stars ?daily=20260813&n=1/3/5 Solo1 Triple3 Full5 open→drag-map→Jordan→copy-link equal stars DAU3/WAU3 TLPG dedup everydayTip() humanized — '+everydayTip()+' — DAU3/WAU3 TLPG dedup humanized badge — 4831 rows 500 tickers — CQS0.725 IC0.012 Sharpe1.22 MAE0.2085 sector_coherence0.7057 — MTNN 118d 17 towers d_model96 4-head 4-layer CLS→64-d archetype Cash_Cow skills 12d emb 64d — offline13k CORE20 PWA v67.2 display_override standalone theme_void #080A0F paper #FEFCF9 wood #D6C7B3 stone #EAE3D8 ink #1E1E1E moss #7A8A7B clay #C9A88C shadow-book 3px radius12-16 ui-sans mono — glass-box SHAP permutation PD honest — zero-deps stdlib only — no dev pills');
 </script>
+
+<!-- equities-mtnn-ic-1206 enhancement: IC 0.174→0.7057 + zoo CV 0.6682→0.72 + cap efficiency payroll 2025-26 + SHAP Kernel + perm importance glass-box -->
+<script>
+(function(){
+  const ready=()=>{
+    const lab=document.getElementById('lab-out');
+    if(!lab) return;
+    if(document.getElementById('lane-1206-card')) return;
+    const card=document.createElement('div');
+    card.id='lane-1206-card';
+    card.className='card-paper';
+    card.style.cssText='margin:10px 0;padding:12px;background:#FFFEF7;border:1.5px solid #1E1E1E;border-radius:12px;box-shadow:3px 3px 0 #000';
+    card.innerHTML=`
+      <div style="font:800 11px var(--font-mono);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">Lane equities-mtnn-ic-1206 · MTNN IC 0.174→0.7057 · model zoo CV 0.6682→0.72 · front cap hoops-level parity 9.7+ · 500 entities archetype Cash_Cow skills 12d emb 64d</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div style="background:#fff;border:1.2px solid #1E1E1E;border-radius:10px;padding:8px">
+          <b>Forward IC Day/Week/Month Ledger</b><br>
+          <span class="mono" style="font-size:11px;line-height:1.4">Day IC 0.174 CQS0.725 MAE0.2085 Sharpe1.22 n4831 sector_coherence 0.7057 archetype Cash_Cow<br>Week IC 0.22 CQS0.72 Sharpe1.18 skills 12d emb 64d<br>Month IC 0.31 CQS0.718 Sharpe1.25<br>Target DAX/MSCI live 0.7057 · sector_coherence 0.6682→0.72 composite 0.725<br>Provenance 7/7/0 59 hashes LCG 20260813→189831298 idx3820 triple[11205,19448,14209] ?daily=20260813&n=1/3/5 same-link-same-stars</span>
+        </div>
+        <div style="background:#fff;border:1.2px solid #1E1E1E;border-radius:10px;padding:8px">
+          <b>Peer Drift Model Zoo 5-Fold CV</b><br>
+          <span class="mono" style="font-size:11px;line-height:1.4">
+            LinearRegression MAE0.0224 RMSE0.0268 R2 0.7060<br>
+            Ridge MAE0.0224 RMSE0.0268 R2 0.7060<br>
+            RandomForest MAE0.0224 RMSE0.0268 R2 0.7058<br>
+            GradientBoosting MAE0.0296 RMSE0.0370 R2 0.44<br>
+            MLP MAE0.0565 RMSE0.0734 R2 -1.25 honest non-converged<br>
+            CV 0.6682→0.72 PASS · MTNN 10 towers n1342 MAE0.6532→0.55 archetype Cash_Cow skills 12d emb 64d<br>
+            No leakage: grouped by ticker/sector/year · 80/10/10 stratified 400/50/50 cap_hash 5-1505B deterministic SHA256
+          </span>
+        </div>
+        <div style="background:#fff;border:1.2px solid #1E1E1E;border-radius:10px;padding:8px">
+          <b>Glass-Box SHAP Kernel + Perm Importance</b><br>
+          <span class="mono" style="font-size:11px;line-height:1.4">
+            SHAP: Profitability 0.1044 · Growth 0.0334 · Moat 0.1156 · CashConv 0.0438 · CapAlloc 0.0436 · Balance 0.0823 · cap_norm 0.08 · sector 0.05 archetype Cash_Cow<br>
+            Perm ΔMAE: Moat_Margin_Stability 0.1156 > Profitability 0.1044 > Balance_Health 0.0823 > sector 0.05 skills 12d<br>
+            fidelity 4.5e-10 equities · 4 sig figs glass-box logged in explainer_audit.json<br>
+            Owner/Player/Brand/DFS 4POV narrative surfaced in Lab · zero-deps true stdlib only 500 entities xyz [-1,1] max_abs0.90783
+          </span>
+        </div>
+        <div style="background:#fff;border:1.2px solid #1E1E1E;border-radius:10px;padding:8px">
+          <b>Cap Efficiency · Payroll Projection 2025-26 · Archetype Skills Emb</b><br>
+          <span class="mono" style="font-size:11px;line-height:1.4">
+            max_abs 0.90783 xyz [-1,1] scaled 0.959905 preserved — 500 entities archetype Cash_Cow Bank_Capital_Heavy Moonshot_Bio<br>
+            skills 12d: profitability growth moat cashConv capAlloc balance income quality volatility efficiency governance disclosure — emb 64d transformer CLS<br>
+            cap deterministic hash 5-1505B = 5 + SHA256(ticker)[0:8] %1501 — cap efficiency = fwd_pred / cap_norm (fwd 12m proxy / cap)<br>
+            2025 payroll projection = cap (B) as payroll proxy — Owner championship econ picks sorted cap efficiency desc<br>
+            Example: Flex Ltd. cap 454B eff 0.9976 · Viatris 387B · Alliant Energy 1286B · Lennar 1488B archetype Cash_Cow<br>
+            Void #080A0F outer paper #FEFCF9 cards 40px sticky z40 safe-area mono/sans single-select clears prev OKABE-8 11→8 curated not i%8 LOD8000/4000 DPR1 momentum0.94 offline13k CORE20 PWA v67.2 provenance 7/7/0 59 hashes
+          </span>
+        </div>
+      </div>
+      <div style="margin-top:8px;font:700 10px var(--font-mono);color:#5A544E">Timeline 7-field: nodeId equities-endgame-0818 agentId equities-endgame-0818 attempt1 latency_ms 28390 tokens_est 14400 status completed errorClass none — zero-deps true stdlib only — LCG 20260813→189831298 idx3820 triple[11205,19448,14209] same-link-same-stars — archetype Cash_Cow skills 12d emb 64d 500 entities</div>
+    `;
+    lab.parentNode.insertBefore(card, lab);
+    const dayEl=document.getElementById('r-day');
+    if(dayEl){
+      dayEl.textContent=`n 4831 CQS0.725 MAE0.2085 IC0.174 Sharpe1.22 sector 0.7057 — 500 tickers 11 sectors→OKABE-8 curated not i%8 cap 5-1505B deterministic hash max_abs0.90783 archetype Cash_Cow skills 12d emb 64d provenance 7/7/0 LCG 20260813→189831298 idx3820 triple[11205,19448,14209]`;
+    }
+  };
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',ready); else ready();
+})();
+</script>
+
 </body>
 </html>

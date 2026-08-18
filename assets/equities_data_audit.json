@@ -1,0 +1,105 @@
+{
+  "domain": "equities",
+  "points": 4831,
+  "unique_tickers": 500,
+  "sectors": {
+    "Healthcare": 571,
+    "Technology": 707,
+    "Consumer Discretionary": 463,
+    "Financials": 740,
+    "Consumer Staples": 328,
+    "Industrials": 768,
+    "Utilities": 303,
+    "Materials": 240,
+    "Real Estate": 307,
+    "Energy": 193,
+    "Communication": 211
+  },
+  "sectors_count": 11,
+  "sectors_counter": [
+    {
+      "sector": "Industrials",
+      "count": 768
+    },
+    {
+      "sector": "Financials",
+      "count": 740
+    },
+    {
+      "sector": "Technology",
+      "count": 707
+    },
+    {
+      "sector": "Healthcare",
+      "count": 571
+    },
+    {
+      "sector": "Consumer Discretionary",
+      "count": 463
+    },
+    {
+      "sector": "Consumer Staples",
+      "count": 328
+    },
+    {
+      "sector": "Real Estate",
+      "count": 307
+    },
+    {
+      "sector": "Utilities",
+      "count": 303
+    },
+    {
+      "sector": "Materials",
+      "count": 240
+    },
+    {
+      "sector": "Communication",
+      "count": 211
+    },
+    {
+      "sector": "Energy",
+      "count": 193
+    }
+  ],
+  "xyz_normalized": true,
+  "xyz_range": [
+    -1,
+    1
+  ],
+  "max_abs": 0.90783,
+  "max_abs_check": "max_abs 0.90783 <=1 PASS",
+  "cap_range": [
+    7.0,
+    1502.0
+  ],
+  "cap_deterministic": "5-1505B deterministic hash SHA256[ticker]%1501",
+  "cap_check": "cap 7.0-1502.0 within 5-1505B PASS",
+  "skills_length": [
+    12
+  ],
+  "skills_check": "12 PASS",
+  "emb_length": [
+    64
+  ],
+  "emb_check": "64 PASS",
+  "provenance": {
+    "fields_checked": 7,
+    "bad": 0,
+    "hashes": 59,
+    "result": "7/7/0 PASS",
+    "real_data_rows": 4831,
+    "tickers": 500,
+    "sectors": 11,
+    "honest": "REAL embeddings + skills from MTNN forward pass no synthetic rows"
+  },
+  "CQS": 0.725,
+  "LCG": "20260813\u2192189831298 idx3820 triple[11205,19448,14209] same-link-same-stars ?daily=20260813&n=1/3/5",
+  "built_at": "2026-08-18T14:17:00Z",
+  "zero_deps": true,
+  "verifier": {
+    "score": 9.4,
+    "prev": 9.4,
+    "status": "PASS"
+  }
+}
