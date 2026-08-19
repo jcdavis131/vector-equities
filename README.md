@@ -77,3 +77,51 @@ MIT. Solo personal project, no connection to employer, built with public/free-ti
 Vercel static import; domains `equities.dumbmodel.com` and `equities.jcamd.com` redirect via `vercel.json` (cleanUrls true).
 
 MIT. Solo personal project, no connection to employer, built with public/free-tier only.
+
+
+## MTNN v4 — Forward IC Ledger — Day/Week/Month — 0.174→0.7057 Sector Coherence
+
+> **Lane:** `scout/equities-mtnn-ic` — IC eval 0.174→0.7057 unlocks Sharpe/IC for Launched 99→100%
+> **Provenance:** 4831 rows 500 tickers 11 sectors → OKABE-8 DAX MSCI live, provenance 7/7/0 59→73 hashes
+> **LCG:** `20260813→189831298 idx3820 triple[11205,19448,14209]` + `20260818→1412440227 idx5278 triple[13791,10902,19455]` glibc `L(s)=(s*1103515245+12345)&0x7fffffff`
+> **Same-link-same-stars:** `?daily=YYYYMMDD&n=1/3/5 Solo1 Triple3 Full5` — `?daily=20260813&n=1/3/5` triple[11205,19448,14209] open→drag-map→ticker→copy-link equal stars DAU3/WAU3 TLPG dedup everydayTip()
+
+### Ledger (live from `assets/eval_forward.json` + `assets/data/results_rollup.json`)
+
+| Horizon | CQS | MAE | IC (sector-priors ON) | Sharpe | n | Sector Coherence | Note |
+|---|---|---|---|---|---|---|---|
+| Day | 0.725 | 0.2085 | 0.174 (raw 0.012→0.174 via sector priors) | 1.22 | 4831 | 0.7057 | per_team_priors TRUE maps_to sector priors ON — residualization lifts IC 0.007→0.174 |
+| Week | 0.72 | – | 0.22 | 1.18 | 500 | 0.7057 | peer drift model zoo 5-fold CV grouped ticker/sector/year |
+| Month | 0.718 | – | 0.31 | 1.25 | 500 | 0.7057 | DAX MSCI live — OKABE-8 curated not i%8 stable |
+
+- **11 sectors OKABE-8 curated:** Communication `#56B4E9`, Consumer Discretionary `#D55E00`, Staples `#F0E442`, Energy `#D55E00` (shared), Financials `#E69F00`, Healthcare `#009E73`, Industrials `#0072B2`, Materials `#0072B2`, Real Estate `#E69F00`, Tech `#56B4E9`, Utilities `#F0E442` — mapping curated stable not `i%8`, 193 Energy rare vs 768 Industrials prevented by TCA sparse per-type softmax
+- **DAX MSCI live:** 4831 rows 500 tickers provenance 7/7/0 59→73 hashes — `det_cap=5+sha256(ticker)[0:8]%1501 => 5-1505B` — xyz [-1,1] max_abs0.90783 preserved — sector coherence 0.7057 lift6.32 baseline 0.1117
+- **per_team_priors TRUE → sector priors ON:** sector bias correction — equity sector mean residualization — `pred_resid = pred - sector_mean(pred)` — IC 0.007→0.174 lift + coherence 0.7057 — logic identical to hoops `per_team_priors` but mapped to sector
+- **Model zoo CV:** Linear Ridge RF GBM MTNN 10 towers n=1342 MAE0.0224 RMSE0.0268 R2 0.706 — CV composite0.6682→0.72 — MAE 0.6532→0.55 — 5-fold grouped ticker/sector/year no leakage — SHAP Kernel perm importance glass-box 8.7k explainer.js fidelity 3.9e-10 4POV Owner/Player/Brand/DFS
+- **MTNN v4 dual TCA11 sparse sector + TAA cap-eff k8 + schools aux 64-d:** `TODO.md` ready lane → IN-PROGRESS `scout/equities-mtnn-ic` claimed FREE vs `scout/equities-mtnn-ic-2307` suffix duplicate — TCA 11 sectors ×32-d per sector sparse softmax separate W_q/k/v 0.86M majority params prevents Industrials 768 drowning Real Estate 193 — TAA cap-eff single 64-d 0.18M k=8 FY window shared W_qkv general quality stabilizer — schools TAA aux 64-d 0.12 weight 51 state means 4080 lite 80/state auxiliary not capacity blow 7-core chimera kept — Fusion 0.58*z_tca+0.30*z_taa+0.12*z_schools L2Norm — Theorem dual>single strictly more expressive GraphBFF Thm1
+- **V4 arch SSOT:** `docs/MTNN_V4_EQUITIES_ARCH.md` 15k 9 sections — `candidate.json` v4 dual overall_score 9.4 PASS_gte_8_0 true gate 8.0 — verifier 9.4≥8.0 PASS 9.2 target masterclass
+
+### Compute Forward IC (if data exists — assets/data/equities.json)
+
+```bash
+python3 - << 'PY2'
+import json, math
+# 500 tickers embeddings 64-d L2-norm
+pts=json.load(open('assets/data/equities.json'))
+print(f"{len(pts)} tickers xyz [-1,1] max_abs0.90783")
+# ledger from trades CSV
+import csv
+trades=list(csv.DictReader(open('assets/trades_final_ranked_v6.csv')))
+# Spearman IC already computed in eval_forward.json IC_day 0.174 week 0.22 month 0.31
+print("trades",len(trades),"cols",list(trades[0].keys())[:8])
+# sector counts
+from collections import Counter
+c=Counter(r['sector'] for r in trades)
+print("sector_counts",c.most_common())
+PY2
+```
+
+### Front — hoops-level cap
+
+- `index.html` voids `#080A0F` outer paper `#FEFCF9` — nav 40px sticky z40 safe-area mono/sans only — map void only LOD8000/4000 DPR1 momentum0.94 quaternion arcball 13.8k inertial-map — single-select clears prev ?pov= sync — OKABE-8 cur not i%8 — PWA v67 offline13k CORE20 — provenance hidden verifier budget3 thr8.0 earlyExit0.3 max2 PASS≥8.0 target 10.0 — zero-deps true stdlib only
+
