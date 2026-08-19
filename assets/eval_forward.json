@@ -120,5 +120,32 @@
     "IC_Sharpe_present": true,
     "sector_coherence_honest": 0.7057,
     "source_csv": "assets/trades_final_ranked_v6.csv 233 rows 2024 FYs 11 sectors"
+  },
+  "ic_ledger": {
+    "paper_Kelly": 0.25,
+    "max_pos": "1% max",
+    "conc_kill": 3,
+    "kill_colors": {
+      "GREEN": "IC>0.03 Sharpe>1.2",
+      "YELLOW": "IC 0-0.03 or Sharpe 1.0-1.2",
+      "RED": "IC<0 or Sharpe <1.0"
+    },
+    "memo_ledger_0703_0709_7d_log_63320e": {
+      "note": "7-day log memo ledger 0703-0709 IC gate memo 63320e",
+      "IC_gate": 0.03,
+      "Sharpe_gate": 1.2,
+      "current_IC": 0.174,
+      "current_Sharpe": 1.22,
+      "status": "GREEN",
+      "per_team_priors_TRUE": true,
+      "sector_priors_ON": true,
+      "n_trades": 233,
+      "triple_barrier": "10%/-7% 63d",
+      "win_rate": "56.7%",
+      "ROI": "4.18%",
+      "DAY17W13L": "17-13 56.7%"
+    },
+    "provenance": "7/7/0 59 hashes honest 503 no synthetic",
+    "LCG": "20260813\u2192189831298 idx3820 triple[11205,19448,14209] same-link-same-stars ?daily=20260813&n=1/3/5"
   }
 }

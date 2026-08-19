@@ -106,7 +106,8 @@
     "per_team_priors_TRUE": true,
     "sector_coherence": 0.74,
     "sector_coherence_target": "0.7057\u21920.74",
-    "sustainable": "12M sector-neutral Rank_12M"
+    "sustainable": "12M sector-neutral Rank_12M",
+    "IC_ledger_FILE": "assets/ic_ledger.json"
   },
   "lane": "equities-v4-arch",
   "lcg": {
@@ -191,5 +192,6 @@
     "pass": true
   },
   "version": "v4",
-  "zero_deps": true
+  "zero_deps": true,
+  "ic_ledger": "assets/ic_ledger.json"
 }
