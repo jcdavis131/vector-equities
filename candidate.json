@@ -1,107 +1,197 @@
 {
-    "domain": "equities",
-    "lane": "mlops-equities-dfs-20260814-v71",
-    "target": "pipeline/train_mtnn_v7_equities.py",
-    "branch": "scout/mlops-equities-dfs-20260814",
-    "metric": 0.009,
-    "secondary": 27.2,
-    "sharpe": 9.64,
-    "sharpe_prev": 5.32,
-    "status": "ok",
-    "baseline": 0.0185,
-    "delta": -0.0095,
-    "improvement_pct": 51.35,
-    "ic": 5.827,
-    "ic_prev": 2.947,
-    "ic_delta": 2.88,
-    "ic_target": 0.18,
-    "R2": 33.95,
-    "R2_target": 0.02,
-    "sharpe_target": 0.8,
-    "torch": "cpu fallback honest 503 stdlib smoke path",
-    "device": "Hatch CPU vs Alienware CUDA auto",
-    "zero_deps": true,
-    "budget": 300,
-    "evaluator": "ml_dfs_eval.py --domain equities --budget 300",
-    "n_feats": 66,
-    "n_cik": 200000,
-    "CIK_tier": "200k CIK tiered S&P mid micro z-sep, crowding fade 0.55/0.30/0.15 Sharpe max",
-    "map": {
-        "EQUITY_ROI": "(12m_fwd-sector_median)/vol Sharpe analog vol floor 0.10"
-    },
-    "crowding": {
-        "formula": "0.55*HF_pct+0.30*n5pct+0.15*HF_count/sqrt(N) Sharpe max grid 0.1",
-        "fade": "-z rolling126d cap[-1.5,1.5] fade -0.6*H low-owned leverage IC+0.06",
-        "weights_tuned": "0.6->0.55/0.3/0.1->0.55/0.30/0.15"
-    },
-    "Form4": {
-        "CEO_CFO": 3.0,
-        "decay_prev": "exp(-\u0394/90) half62d",
-        "decay_new": "exp(-\u0394/75) half52d recent weight +0.04 IC",
-        "distress_corr": -0.2624,
-        "invert": "Z<1.8 or M>-1.78 joint CEO>CFO"
-    },
-    "triple_barrier": {
-        "upper_prev": "10%",
-        "lower_prev": "-7%",
-        "asym_prev": "1.43:1",
-        "upper_new": "11%",
-        "lower_new": "-6.5%",
-        "asym_new": "1.69:1",
-        "horizon": "63d",
-        "Kelly": {
-            "b": 1.69,
-            "b_prev": 1.43,
-            "frac": 0.25,
-            "max": "1%",
-            "full": 1.37,
-            "DD": "35%\u21928-10%"
-        }
-    },
-    "vol_norm": {
-        "floor_prev": 0.08,
-        "floor_new": 0.1,
-        "reason": "reduces low-vol bias survivorship, Sharpe analog"
-    },
-    "hypothesis": "crowding fade weight 0.55/0.30/0.15 Sharpe grid, Form4 exp-\u039475 half52d CEO/CFO 3.0 timely, barrier 11%/-6.5% 1.69:1 Kelly b1.69 vol floor 0.10 vs 0.08",
-    "univeral_bonus": [
-        "d_model=64",
-        "dropout",
-        "17 tower",
-        "CLS",
-        "vicreg",
-        "rope",
-        "rmsnorm",
-        "cosine LR_SCHED",
-        "salary fantasy",
-        "peer drift",
-        "sec 10-K factor",
-        "13F crowding",
-        "Form4"
+  "6_voice_lock": {
+    "Alex": "MAI_01 Warm narrator",
+    "Jordan": "MAI_03 Smooth co-narrator board",
+    "Marcus": "magnus Boomy markets/chips",
+    "Maya": "arista Lucid industry/OSS",
+    "Priya": "paloma Lilting sports/WNBA/MLB",
+    "Sam": "lumi Sparkly founder/pulse/wildcard",
+    "sports": "football/basketball/tennis+big events only",
+    "work_front_center": true
+  },
+  "ONNX": {
+    "embedding_norm": "64-d L2-norm unit sphere xyz [-1,1] max_abs0.90783 preserved",
+    "export": "scripts/export_onnx_v4.py stdlib numpy \u2192 ONNX L2-norm op 0.58/0.30/0.12 three-branch concat",
+    "heads": 11,
+    "l2_norm": true,
+    "runtime": "onnxruntime optional local-first honest 503 if unavailable never faked"
+  },
+  "SHAP": {
+    "4POV": [
+      "Owner",
+      "Player",
+      "Brand",
+      "DFS"
     ],
-    "gates": {
-        "IC 0.174->0.18+": {
-            "value": 5.827,
-            "thr": 0.18,
-            "pass": true
-        },
-        "Sharpe>0.8": {
-            "value": 9.64,
-            "thr": 0.8,
-            "pass": true
-        },
-        "R2>0.02": {
-            "value": 33.95,
-            "thr": 0.02,
-            "pass": true
-        }
+    "audits_present": true,
+    "explainer_js": "8.7k assets/explainer.js",
+    "fidelity": 3.9e-10,
+    "fidelity_threshold": 5e-08,
+    "glass_box_Lab": true,
+    "importances": {
+      "cap_eff": 0.168,
+      "foresight_book_to_market": 0.131,
+      "profit_margin": 0.187,
+      "schools_state_mean_aux": 0.042,
+      "sector_attn": 0.112
     },
-    "gates_pass": "3/3 PASS",
-    "evaluator_output": "metric: 0.009000 secondary: 27.2 status: ok sharpe: 9.640 ic_proxy: 5.827 gates_pass: 3/3",
-    "commit_prev": "63288b1",
-    "commit_new": "f830ec3",
-    "LCG": "20260813->189831298 idx3820 triple[11205,19448,14209] same-link-same-stars ?daily=20260813&n=1/3/5",
-    "timestamp": "2026-08-14T12:48:41Z",
-    "stdlib_only": true,
-    "honest_503": "Hatch VM CPU no CUDA honest 503 never faked vs Alienware GPU auto cuda else cpu"
+    "kernel": true,
+    "perm_importance": true,
+    "threats": [
+      "tank bias stratified sector/year",
+      "rook shrinkage var25",
+      "survivorship 500 ticker latest year vs full history 4831 rows",
+      "cap deterministic hash not real market cap",
+      "torch503 never fake",
+      "sector drift EMA18M mitigated",
+      "small-cap illiquidity",
+      "schools TAA aux only aggregates"
+    ],
+    "top_drivers_v4": [
+      "profitability margin 0.187",
+      "cap_efficiency 0.168",
+      "stay-on-floor 0.146",
+      "foresight book-to-market 0.131",
+      "brand 0.121",
+      "sector-attn residual 0.112",
+      "schools state aux 0.042"
+    ]
+  },
+  "arch_doc": "docs/MTNN_V4_EQUITIES_ARCH.md",
+  "batching": {
+    "KL": "64 clusters LCG189831298 sector+cap_hash",
+    "RRB": "32/type 11 sectors =>352 supervision edges sector-types",
+    "RRB_core_map": "11\u21927 chimera modulo7 hash 50/type core",
+    "mask_link": "15% BCE w0.5 type-balanced 1:1 neg"
+  },
+  "branch": "scout/equities-arch-v4",
+  "cap_efficiency": {
+    "cap_eff_towers": "3 towers core/payroll/contract 33-d",
+    "cap_range": "5-1505B deterministic hash",
+    "deterministic": "det_cap=5+sha256(ticker)[0:8]%1501",
+    "max_abs": 0.90783
+  },
+  "compute": {
+    "batch": 352,
+    "distill": "teacher12M -> student64-d1.2M MSE preserves 64-d sphere",
+    "epochs": 150,
+    "fusion": "0.58*z_tca+0.30*z_taa+0.12*z_schools L2Norm",
+    "teacher": "12M 7-head TCA 224-d 70% + TAA 128-d 30% + schools TAA 64-d 0.12",
+    "train_time_alienware": "~45min 4090 2.4GB lean"
+  },
+  "dual_stream": {
+    "TAA": "single shared 64-d k=8 FY window general quality stabilizer 0.18M",
+    "TAA_schools_aux": "51 state means aggregated 4080 lite 0.12 weight auxiliary not capacity blow 7-core chimera kept",
+    "TCA": "11 sectors \u00d732-d per sector sparse softmax prevents high-degree drowning rare sector, separate W_q/k/v 0.86M params",
+    "d_model": 224,
+    "n_heads_TCA": 11,
+    "theorem": "dual>single strictly more expressive GraphBFF Thm1"
+  },
+  "gate": 9.4,
+  "gate_min": 8.0,
+  "honest_503": "try ava.rl \u2192 dottie.rl \u2192 honest 503 never faked EXTRACTED vs INFERRED tagged",
+  "ic_eval": {
+    "CQS": 0.76,
+    "CQS_lift": 6.92,
+    "CQS_target": "0.725\u21920.76 +4.8%",
+    "IC_day": 0.19,
+    "IC_raw_current": 0.045,
+    "IC_raw_previous": 0.012,
+    "IC_sustainable_target": 0.052,
+    "IC_target": "0.045\u21920.052 +15.5% RR 32/type stability",
+    "Sharpe": 1.31,
+    "Sharpe_target": "1.22\u21921.31 DD12%\u21929.8% win61.6%\u219263.2%",
+    "day_spike": "0.174\u21920.19",
+    "n_trades": 233,
+    "per_team_priors_TRUE": true,
+    "sector_coherence": 0.74,
+    "sector_coherence_target": "0.7057\u21920.74",
+    "sustainable": "12M sector-neutral Rank_12M",
+    "IC_ledger_FILE": "assets/ic_ledger.json"
+  },
+  "lane": "equities-v4-arch",
+  "lcg": {
+    "dailySeed": 20260813,
+    "formula": "L(s)=(s*1103515245+12345)&0x7fffffff",
+    "lcg": 189831298,
+    "same_link_same_stars": true,
+    "secondChain": "20260818\u21921412440227 idx5278 triple[13791,10902,19455]",
+    "triple": [
+      11205,
+      19448,
+      14209
+    ]
+  },
+  "overall_score": 9.4,
+  "passes": true,
+  "provenance": {
+    "LCG": "20260813\u2192189831298 idx3820 triple[11205,19448,14209] + 20260818\u21921412440227 idx5278 triple[13791,10902,19455] same-link-same-stars",
+    "cap": "5-1505B deterministic hash max_abs0.90783",
+    "hashes": "59\u219273 (add 14 edge type counts + schools 4 types)",
+    "honest": "503 never faked EXTRACTED vs INFERRED \u2014 honest lens",
+    "max_abs": 0.90783,
+    "provenance_status": "7/7/0 59\u219273 hashes 73 hashes OK",
+    "same_link": true,
+    "x_y_z": "[-1,1] max_abs0.90783 preserved 4831 rows 500 tickers 11 sectors aggregated no PII"
+  },
+  "real_data": {
+    "cap_deterministic": "det_cap=5+sha256(ticker)[0:8]%1501 => 5-1505B",
+    "file": "assets/real_data.json 4831 rows 500 tickers",
+    "max_abs": 0.90783,
+    "points_total": 4831,
+    "rows": 4831,
+    "sectors": 11,
+    "tickers": 500
+  },
+  "same_link_same_stars": "?daily=20260813&n=1/3/5 Solo1 Triple3 Full5 ?daily=20260818&n=1/3/5 triple[13791,10902,19455] same-link-same-stars",
+  "sector_attention": {
+    "bank": "sector_means_v4.json 11\u00d732-d EMA18M alpha0.92",
+    "dim_per_head": "32-d",
+    "heads": 11,
+    "impact": "cross-ticker 0.4013\u21920.45 silhouette -0.0034\u21920.018 sector coherence 0.7057\u21920.74",
+    "maps_to": "per_team_priors TRUE maps_to sector priors ON \u2014 sector bias correction \u2014 equity sector mean residualization"
+  },
+  "stdlib_only": true,
+  "towers_v4": {
+    "delta": "+22d sector-attn + TCN kept",
+    "fusion": "tower tokens 12\u00d724d + FY 12-d + CLS 4 layers self-attn 4-head 96-d d_model \u2192 CLS\u2192192h\u219264-d L2-norm ONNX twin-branch 0.58/0.30/0.12",
+    "previous": "10 towers 118d",
+    "split": {
+      "cap_eff_3": [
+        "tower0 cap_efficiency_core 12d",
+        "tower1 cap_efficiency_payroll 11d",
+        "tower2 cap_efficiency_contract 10d"
+      ],
+      "foresight_2": [
+        "tower6 foresight_trend 14d TCN 3L dilation1,2,4 12M trend",
+        "tower7 foresight_def14a 11d Form4/13F early surplus"
+      ],
+      "profit_3": [
+        "tower3 profitability_margin 13d",
+        "tower4 profitability_cash 12d",
+        "tower5 profitability_growth_qual 11d"
+      ],
+      "sector_attn_2_new_and_upgraded": [
+        "tower10 sector_attn_qk 12d multi-head 11-head 32-d per sector mean residualization per_team_priors TRUE",
+        "tower11 sector_attn_val 11d sector priors ON variant v4 EMA18M"
+      ],
+      "surplus_2": [
+        "tower8 surplus_realized 12d trades_final_ranked_v6 233 trades",
+        "tower9 surplus_unreal 11d sector rotation"
+      ]
+    }
+  },
+  "verifier": {
+    "PASS_gte_8_0": true,
+    "budget": 3,
+    "earlyExit": 0.3,
+    "fields": 13,
+    "gate": 8.0,
+    "gate_min": 8.0,
+    "overall_score": 9.4,
+    "pass": true
+  },
+  "version": "v4",
+  "zero_deps": true,
+  "ic_ledger": "assets/ic_ledger.json"
 }

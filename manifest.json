@@ -1,30 +1,95 @@
 {
-  "background_color": "#FEFCF9",
-  "categories": ["sports","games","education","finance"],
-  "description": "4,831 company-FYs 500 tickers as warm paper map — CQS0.725 MAE0.2085 IC0.012 Sharpe1.22 sector coherence0.7057 — Owner/Player/Brand/DFS 4POV championship economics cap tools / Player stay-on-floor fit / Brand Sponsor wins→story / DFS optimizer — LeBron/Jordan Youri Tielemans Agilent/Apple curated OKABE-8 not i%8 sector→OKABE curated stable — LCG 20260813→189831298 idx3820 triple[11205,19448,14209] same-link-same-stars ?daily=YYYYMMDD&n=1/3/5",
+  "background_color": "#080A0F",
+  "categories": [
+    "sports",
+    "games",
+    "education",
+    "finance"
+  ],
+  "description": "4,831 company-FYs 500 tickers as warm paper map \u2014 CQS0.725 MAE0.2085 IC0.012 Sharpe1.22 sector coherence0.7057 \u2014 Owner/Player/Brand/DFS 4POV championship economics cap tools / Player stay-on-floor fit / Brand Sponsor wins\u2192story / DFS optimizer \u2014 LeBron/Jordan Youri Tielemans Agilent/Apple curated OKABE-8 not i%8 sector\u2192OKABE curated stable \u2014 LCG 20260813\u2192189831298 idx3820 triple[11205,19448,14209] same-link-same-stars ?daily=YYYYMMDD&n=1/3/5 \u2014 IC0.174 IC0.084 gated 0.045 Sharpe1.22 DAY17W13L GREEN/YELLOW/RED",
   "dir": "ltr",
   "display": "standalone",
-  "display_override": ["standalone","minimal-ui","browser"],
+  "display_override": [
+    "standalone",
+    "minimal-ui",
+    "browser"
+  ],
   "icons": [
-    {"purpose": "any","sizes": "192x192","src": "/assets/icon-192.png","type": "image/png"},
-    {"purpose": "any","sizes": "512x512","src": "/assets/icon-512.png","type": "image/png"},
-    {"purpose": "maskable","sizes": "192x192","src": "/assets/icon-192.png","type": "image/png"},
-    {"purpose": "maskable","sizes": "512x512","src": "/assets/icon-512.png","type": "image/png"}
+    {
+      "purpose": "any",
+      "sizes": "192x192",
+      "src": "/assets/icon-192.png",
+      "type": "image/png"
+    },
+    {
+      "purpose": "any",
+      "sizes": "512x512",
+      "src": "/assets/icon-512.png",
+      "type": "image/png"
+    },
+    {
+      "purpose": "maskable",
+      "sizes": "192x192",
+      "src": "/assets/icon-192.png",
+      "type": "image/png"
+    },
+    {
+      "purpose": "maskable",
+      "sizes": "512x512",
+      "src": "/assets/icon-512.png",
+      "type": "image/png"
+    }
   ],
   "id": "/?pov=owner",
   "lang": "en",
-  "name": "Vector Equities — 4,831 FYs Paper Map",
+  "name": "Vector Equities \u2014 4,831 FYs Paper Map",
   "orientation": "any",
   "prefer_related_applications": false,
   "scope": "/",
   "screenshots": [
-    {"form_factor": "wide","label": "4,831 FYs as warm paper map — Daily Guess + Lab Fusion — SEC EDGAR XBRL japandi","sizes": "1200x630","src": "/assets/og-embed.png","type": "image/png"},
-    {"form_factor": "narrow","label": "Guess The Ticker — 6 tries — 64-d cosine japandi","sizes": "1080x1920","src": "/assets/og-1080x1920.png","type": "image/png"}
+    {
+      "form_factor": "wide",
+      "label": "4,831 FYs as warm paper map \u2014 Daily Guess + Lab Fusion \u2014 SEC EDGAR XBRL japandi",
+      "sizes": "1200x630",
+      "src": "/assets/og-embed.png",
+      "type": "image/png"
+    },
+    {
+      "form_factor": "narrow",
+      "label": "Guess The Ticker \u2014 6 tries \u2014 64-d cosine japandi",
+      "sizes": "1080x1920",
+      "src": "/assets/og-1080x1920.png",
+      "type": "image/png"
+    }
   ],
   "short_name": "Equities",
   "shortcuts": [
-    {"description": "Daily Guess — Ticker Twin — 6 tries, 64-d cosine, sector/arch clues, same for everyone UTC — japandi","icons": [{"sizes": "192x192","src": "/assets/icon-192.png","type": "image/png"}],"name": "Play Daily — 6 guesses","short_name": "Daily","url": "/play?tab=daily&utm_source=pwa_shortcut&utm_medium=daily"},
-    {"description": "Lab fusion — pick any two company-FYs, fuse A+B → nearest real. Impossible before. — japandi","icons": [{"sizes": "192x192","src": "/assets/icon-192.png","type": "image/png"}],"name": "Open Lab — A+B=C Fusion","short_name": "Lab","url": "/play?tab=lab&utm_source=pwa_shortcut&utm_medium=lab"}
+    {
+      "description": "Daily Guess \u2014 Ticker Twin \u2014 6 tries, 64-d cosine, sector/arch clues, same for everyone UTC \u2014 japandi",
+      "icons": [
+        {
+          "sizes": "192x192",
+          "src": "/assets/icon-192.png",
+          "type": "image/png"
+        }
+      ],
+      "name": "Play Daily \u2014 6 guesses",
+      "short_name": "Daily",
+      "url": "/play?tab=daily&utm_source=pwa_shortcut&utm_medium=daily"
+    },
+    {
+      "description": "Lab fusion \u2014 pick any two company-FYs, fuse A+B \u2192 nearest real. Impossible before. \u2014 japandi",
+      "icons": [
+        {
+          "sizes": "192x192",
+          "src": "/assets/icon-192.png",
+          "type": "image/png"
+        }
+      ],
+      "name": "Open Lab \u2014 A+B=C Fusion",
+      "short_name": "Lab",
+      "url": "/play?tab=lab&utm_source=pwa_shortcut&utm_medium=lab"
+    }
   ],
   "start_url": "/?pov=owner",
   "theme_color": "#FEFCF9"
