@@ -193,5 +193,11 @@
   },
   "version": "v4",
   "zero_deps": true,
-  "ic_ledger": "assets/ic_ledger.json"
+  "ic_ledger": "assets/ic_ledger.json",
+  "n_towers": 4,
+  "news_tower": {
+    "dim": 16,
+    "weight": 0.15,
+    "fusion": "0.60*tca+0.25*taa+0.15*news L2"
+  }
 }
