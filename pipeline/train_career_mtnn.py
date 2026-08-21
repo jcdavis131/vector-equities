@@ -28,102 +28,15 @@ from dataset_career import (
 )
 from feature_spec import SECTORS
 from model_career import EquitiesCareerMTNN
+from vector_core.losses import temporal_info_nce
 
-
-def temporal_info_nce(c_seq, valid_mask, sector_ids, temp=0.08, hard_boost=0.3, delta_decay=3.0):
-    """
-    c_seq: (B, L, D) normalized
-    valid_mask: (B, L) bool
-    sector_ids: (B,) int sector per ticker
-    Returns loss
-    """
-    B, L, _D = c_seq.shape
-    device = c_seq.device
-    # flatten valid embeddings
-    # For each ticker, create adjacent pairs (t, t+1) as positives
-    anchors = []
-    positives = []
-    anchor_sector = []
-    anchor_pos_index = []  # for logging
-    # Build list of all valid embeddings for negative pool
-    # Also need mapping from (b,l) to flat index in all_valid
-    valid_flat_idx = -torch.ones((B, L), dtype=torch.long, device=device)
-    all_valid_embs = []
-    all_valid_sector = []
-    all_valid_coords = []  # (b,l)
-
-    flat_counter = 0
-    for b in range(B):
-        for seq_pos in range(L):
-            if valid_mask[b, seq_pos]:
-                valid_flat_idx[b, seq_pos] = flat_counter
-                flat_counter += 1
-                all_valid_embs.append(c_seq[b, seq_pos])
-                all_valid_sector.append(sector_ids[b])
-                all_valid_coords.append((b, seq_pos))
-
-    if flat_counter < 2:
-        return c_seq.sum() * 0.0, 0, 0
-
-    all_valid_embs = torch.stack(all_valid_embs)  # (N_valid, D)
-    all_valid_sector = torch.tensor(all_valid_sector, device=device)
-
-    # Build positive pairs: for each b, for each l where l and l+1 valid
-    for b in range(B):
-        for seq_pos in range(L - 1):
-            if valid_mask[b, seq_pos] and valid_mask[b, seq_pos + 1]:
-                # anchor = (b,l), positive = (b,l+1)
-                anchors.append(c_seq[b, seq_pos])
-                positives.append(c_seq[b, seq_pos + 1])
-                anchor_sector.append(sector_ids[b])
-                anchor_pos_index.append(int(valid_flat_idx[b, seq_pos + 1]))  # index in all_valid
-
-    if len(anchors) == 0:
-        return c_seq.sum() * 0.0, 0, flat_counter
-
-    anchors = torch.stack(anchors)  # (N_pairs, D)
-    torch.stack(positives)
-
-    # Compute logits anchors @ all_valid.T / temp
-    logits = anchors @ all_valid_embs.T / temp  # (N_pairs, N_valid)
-
-    # temporal weighting? For adjacent, delta=1 => weight exp(-1/3)=0.716. We'll incorporate as scaling of loss later.
-    # For hard negatives: same sector different ticker -> boost logit by hard_boost
-    # Build hard mask: anchor_sector[i] == all_valid_sector[j] and different ticker (not same b)
-    # Need ticker identity for negative pool: we have coords
-    # rebuild anchor b list
-    anchor_b = []
-    idx = 0
-    for b in range(B):
-        for seq_pos in range(L - 1):
-            if valid_mask[b, seq_pos] and valid_mask[b, seq_pos + 1]:
-                anchor_b.append(b)
-                idx += 1
-
-    anchor_b_t = torch.tensor(anchor_b, device=device)
-    # For each anchor pair i, for each valid j, if sector same and ticker different => hard
-    # ticker different means all_valid_coords[j][0] != anchor_b[i]
-    # Create matrix (N_pairs, N_valid) bool
-    all_valid_b = torch.tensor([c[0] for c in all_valid_coords], device=device)  # (N_valid)
-    # sector match
-    sector_match = torch.tensor(anchor_sector, device=device).unsqueeze(1) == all_valid_sector.unsqueeze(
-        0
-    )  # (N_pairs, N_valid)
-    diff_ticker = anchor_b_t.unsqueeze(1) != all_valid_b.unsqueeze(0)
-    hard_mask = sector_match & diff_ticker
-    logits = logits + hard_mask.float() * hard_boost
-
-    # target indices
-    target = torch.tensor(anchor_pos_index, device=device, dtype=torch.long)
-
-    loss = F.cross_entropy(logits, target)
-
-    # Also add symmetric? For simplicity, also compute reverse (positive as anchor, anchor as negative) could
-    # help, but keep one direction.
-
-    # Optional: weight by temporal distance (all adjacent => same weight). If we also include longer deltas,
-    # weighting would matter.
-    return loss, len(anchors), flat_counter
+# temporal_info_nce: adopted from vector-core v0.2 (vector_core.losses.temporal_info_nce),
+# imported above. It is a faithful port of the former local body: adjacent valid (l, l+1)
+# steps per ticker are the anchor/positive pairs, the negative pool is every valid step in
+# the batch, and same-sector different-ticker steps get hard_boost added to their logit.
+# It returns the same (loss, n_anchor_pairs, n_valid_steps) tuple. delta_decay is accepted
+# but unused in both (positives are always adjacent), so behaviour is bit-identical
+# (parity max abs diff 0.0). The call site below is unchanged.
 
 
 def compute_ic(pred, target):
@@ -168,7 +81,9 @@ def main():
 
     torch.manual_seed(Args.seed)
     np.random.seed(Args.seed)
-    device = "cuda" if torch.cuda.is_available() else "cpu"
+    device = Args.device or (
+        "cuda" if torch.cuda.is_available() else "cpu"
+    )  # auto: GPU on personal local (CUDA avail), CPU in Hatch VM
     print(f"Device {device}")
 
     (

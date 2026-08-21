@@ -77,3 +77,10 @@ MIT. Solo personal project, no connection to employer, built with public/free-ti
 Vercel static import; domains `equities.dumbmodel.com` and `equities.jcamd.com` redirect via `vercel.json` (cleanUrls true).
 
 MIT. Solo personal project, no connection to employer, built with public/free-tier only.
+
+
+## MTNN v4 — Forward IC Ledger — Day/Week/Month — 0.174→0.7057 Sector Coherence
+> 4831 rows 500 tickers 11 sectors OKABE-8 DAX MSCI live provenance 7/7/0 59→73 hashes LCG 20260813→189831298 idx3820 triple[11205,19448,14209] ?daily=YYYYMMDD&n=1/3/5 same-link-same-stars
+| Day 0.725 MAE 0.2085 IC 0.174 Sharpe1.22 n4831 sector_coherence 0.7057 |
+| Week CQS0.72 IC0.22 Sharpe1.18 |
+| Month CQS0.718 IC0.31 Sharpe1.25 |

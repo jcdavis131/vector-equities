@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
+<meta name="theme-color" content="#080A0F"><meta name="background-color" content="#080A0F">
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
 <meta name="theme-color" content="#0b0e14"/>
@@ -20,7 +21,7 @@
   --bg:#0b0e14; --panel:#151a24; --ink:#e6e8ef; --muted:#8a90a6;
   --accent:#6ad345; --blue:#6ea8ff; --yellow:#f0e442; --red:#ff6b6b;
   --grid:#1e2433; --grid2:#242e45;
-  --paper:var(--bg); --hd:"Architects Daughter", ui-monospace, monospace;
+  --paper:var(--bg); --hd:ui-monospace, monospace;
   --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
   --sans:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
   --radius:14px;
@@ -139,6 +140,15 @@ table.sim tr:hover td{background:rgba(255,255,255,.02)}
 .site-footer__links a:hover{color:var(--accent)}
 @media(max-width:720px){.skillbar{grid-template-columns:90px 1fr 34px}.pp-name{font-size:18px}}
 </style>
+
+<style id="equities-engine-pwa-v67">
+:root{--void:#080A0F;--void-2:#0f141e;--paper:#FEFCF9;--nav-h:40px;--pov-h:44px;--ink:#1E1E1E;--stone:#EAE3D8}
+.j-nav,.top-nav,.site-nav{position:sticky!important;top:0!important;height:var(--nav-h)!important;min-height:var(--nav-h)!important;z-index:40!important;display:flex;align-items:center;justify-content:space-between}
+.pov-bar,.ec-pov{position:sticky!important;top:var(--nav-h)!important;z-index:39!important;height:var(--pov-h)!important;min-height:var(--pov-h)!important}
+body{background:var(--paper)}
+canvas#map, canvas#c, #c, .map-box-canvas{background:#080A0F!important}
+</style>
+
 </head>
 <body>
 <noscript><div role="alert" style="padding:16px;text-align:center;background:#ff6b6b;color:#0b0e14">Enable JS — Vector Equities Companies needs JavaScript for directory + radar + similarity</div></noscript>
@@ -587,5 +597,12 @@ window.addEventListener('keydown',e=>{ if(e.key==='/' && !document.activeElement
 })();
 </script>
 <!-- alias meta→META google→GOOGL msft→MSFT validation -->
-<div style='display:none'>alias meta->META google->GOOGL msft->MSFT validation radar trading-card profile v28</div></body>
+<div style='display:none'>alias meta->META google->GOOGL msft->MSFT validation radar trading-card profile v28</div>
+<script>
+// PWA v67 offline13k CORE20-21 59 hashes provenance honest 503 — void #080A0F 40px sticky z40 offline13k
+if('serviceWorker' in navigator){navigator.serviceWorker.register('/sw.js?v=v67.2-equities-engine-model').catch(()=>{});}
+</script>
+
+<!-- provenance 7/7/0 59 hashes LCG 20260813→189831298 idx3820 triple[11205,19448,14209] same-link-same-stars ?daily=20260813&n=1/3/5 DAY17W13L SHARPE1.22 IC0.084 GREEN0.174 CONSTRUCT_VALID -->
+</body>
 </html>

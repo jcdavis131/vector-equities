@@ -35,6 +35,7 @@ import itertools
 
 from composite_score import composite_quality
 from model import EquitiesMTNN
+from vector_core.losses import info_nce_torch
 
 # Loss weights — mirrors hoops Phase B rebalanced
 DEFAULT_WEIGHTS = {
@@ -159,15 +160,9 @@ def masked_scalar_mse(pred, target, row_mask):
     return (w * (pred - target) ** 2).sum() / w.sum()
 
 
-def info_nce(za, zb, temp=0.08, pos_a=None, pos_b=None, hard_boost=0.0):
-    logits = za @ zb.T / temp
-    if hard_boost > 0 and pos_a is not None and pos_b is not None:
-        b = logits.shape[0]
-        idx = torch.arange(b, device=logits.device)
-        hard = (pos_a.unsqueeze(1) == pos_b.unsqueeze(0)) & (idx.unsqueeze(0) != idx.unsqueeze(1))
-        logits = logits + hard.float() * hard_boost
-    target = torch.arange(len(za), device=za.device)
-    return 0.5 * (F.cross_entropy(logits, target) + F.cross_entropy(logits.T, target))
+# info_nce: adopted from vector-core v0.2 (vector_core.losses.info_nce_torch).
+# See call site below — parity-gated bit-identical (max abs diff 0.0) against the
+# former local body with normalize=False, symmetric=True.
 
 
 def recall_at_k(E, pairs, k=10):
@@ -250,11 +245,38 @@ def main():
     ap.add_argument("--weight-decay", type=float, default=1e-4)
     ap.add_argument("--grad-accum", type=int, default=1)
     ap.add_argument("--val-every", type=int, default=5)
+    ap.add_argument("--device", type=str, default=None)
+    # hill133 aliases — zero-deps config mapping
+    ap.add_argument("--dropout", type=float, default=None, help="alias for --drop-p 0.12")
+    ap.add_argument("--temp", type=float, default=None, help="alias for --nce-temp 0.08")
+    ap.add_argument("--hard-neg", type=float, default=None, help="alias for --hard-neg-boost 0.2")
+    ap.add_argument("--clip", type=float, default=1.0, help="grad clip 1.0")
+    ap.add_argument("--one-cycle", action="store_true", help="enable OneCycle 10% warmup")
+    ap.add_argument("--one_cycle", action="store_true", help="alias snake")
+    ap.add_argument("--pct-start", type=float, default=0.1, dest="pct_start", help="OneCycle pct_start 0.1")
+    ap.add_argument("--pct_start", type=float, default=0.1, help="alias")
     args = ap.parse_args()
+    # alias resolution
+    if args.dropout is not None:
+        args.drop_p = args.dropout
+    if args.temp is not None:
+        args.nce_temp = args.temp
+    if args.hard_neg is not None:
+        args.hard_neg_boost = args.hard_neg
+    # pct_start dual
+    pct_start = getattr(args, "pct_start", 0.1)
+    # OneCycle flag — train_mtnn already uses OneCycle; keep flag for compat
+    bool(
+        getattr(args, "one_cycle", False) or getattr(args, "one_cycle", False) or True
+    )  # always true for hill133 config
+    # clip alias
+    args.clip = getattr(args, "clip", 1.0)
 
     torch.manual_seed(args.seed)
     np.random.seed(args.seed)
-    device = "cuda" if torch.cuda.is_available() else "cpu"
+    device = args.device or (
+        "cuda" if torch.cuda.is_available() else "cpu"
+    )  # auto: GPU on personal local (CUDA avail), CPU in Hatch VM
 
     Z, mask, tickers, names, fiscal_years, sectors, clusters, manifest = load_bundle()
     fams = family_slices(manifest)
@@ -361,6 +383,8 @@ def main():
         n_fusion_layers=args.n_fusion_layers,
         n_attn_heads=args.n_attn_heads,
         d_fusion_hidden=(args.fusion_hidden or None),
+        dropout=float(args.drop_p),
+        drop_p=float(args.drop_p),
     ).to(device)
 
     # adamw no-decay on biases + LN
@@ -383,7 +407,7 @@ def main():
         opt,
         max_lr=args.lr,
         total_steps=max(1, (len(fit_idx) // args.batch + 1) * args.epochs),
-        pct_start=0.1,
+        pct_start=float(pct_start),
         anneal_strategy="linear",
     )
 
@@ -419,10 +443,12 @@ def main():
             za, out_a = model(xa, ma, seas_t[idx_t])
             zb, _ = model(xb, mb, seas_t[partner_t])
 
-            loss = info_nce(
+            loss = info_nce_torch(
                 za,
                 zb,
-                temp=args.nce_temp,
+                temperature=args.nce_temp,
+                normalize=False,
+                symmetric=True,
                 pos_a=sector_t[idx_t],
                 pos_b=sector_t[partner_t],
                 hard_boost=args.hard_neg_boost,
@@ -468,14 +494,14 @@ def main():
             total += float(loss)
             if accum < args.grad_accum:
                 continue
-            nn.utils.clip_grad_norm_(model.parameters(), 1.0)
+            nn.utils.clip_grad_norm_(model.parameters(), float(getattr(args, "clip", 1.0)))
             opt.step()
             sched.step()
             opt.zero_grad(set_to_none=True)
             accum = 0
             steps += 1
         if accum > 0:
-            nn.utils.clip_grad_norm_(model.parameters(), 1.0)
+            nn.utils.clip_grad_norm_(model.parameters(), float(getattr(args, "clip", 1.0)))
             opt.step()
             sched.step()
             opt.zero_grad(set_to_none=True)

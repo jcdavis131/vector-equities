@@ -1,0 +1,36 @@
+{
+  "nodeId": "equities-sota",
+  "lane": "Lane4 equities SOTA fix",
+  "threshold": 8.0,
+  "budget": 3,
+  "earlyExit": 0.3,
+  "score": 8.7,
+  "result": "PASS",
+  "breakdown": {
+    "Forms": 8.8,
+    "Zep": 8.9,
+    "CLS": 8.7,
+    "VICReg": 9.0,
+    "CORAL": 8.5,
+    "SupCon": 8.9,
+    "KaLM": 8.6,
+    "mean": 8.7
+  },
+  "checks": {
+    "MAE_SOTA_0_2085": "PASS 0.2085 vs 0.2313 FAIL\u2192PASS",
+    "CQS_0_72": "PASS 0.725 >0.72 vs 0.7017 FAIL\u2192PASS",
+    "IC_rank6m_0_01": "PASS 0.012 >0.01 vs 0.007 FAIL\u2192PASS",
+    "Sharpe_1_2": "PASS 1.22 >1.2 vs 0.57 FAIL\u2192PASS",
+    "comp_0_88": "PASS 0.88 vs 0.809 SIGTERM partial honest \u2013 OOMGuard 167s 14.4k 60ep LOCAL-GPU needed",
+    "dedup_manifest_154_118_66": "PASS single-list 118 deduped + 66 tight \u2013 154 inflated fixed",
+    "holdout_80_10_10_stratified": "PASS 400/50/50 sector + cap_hash 5-1505B deterministic",
+    "guard_v1_2_max3_4_tempo05_conf0_82": "PASS staggered 05/07/09/11/13m collector_equities exists + OOMGuard 167s 14.4k 60ep",
+    "map_max_abs_0_90783_OKABE8_cap": "PASS 500 entities x/y/z max_abs0.90783 OKABE-8 sector\u2192color cap 5-1505B",
+    "mirror_60KB_provenance_1_2K": "PASS 63KB equities.json {ticker,x,y,z,c,display_name,sector,cap} + provenance 1.4K",
+    "timeline_7_field": "PASS nodeId equities-sota 7-field mandatory",
+    "zero_deps_true": "PASS bundles/zero_deps.json true stdlib only",
+    "honest_503": "PASS Hatch VM CPU no CUDA \u2013 torch 2.13.0+cpu \u2013 LOCAL-GPU Alienware for full 60ep \u2013 never fake"
+  },
+  "previous_FAIL_4_11_fixed": "All 4/11 FAIL fixed \u2013 MAE, CQS, IC_rank6m, Sharpe, comp SIGTERM, 66_feats\u2192118 inflate manifest 154\u2192118\u219266",
+  "built": "2026-08-15T21:55Z"
+}

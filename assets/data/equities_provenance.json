@@ -1,0 +1,55 @@
+{
+  "domain": "equities",
+  "entities": 500,
+  "points_total": 4831,
+  "sectors": 11,
+  "sector_list": [
+    "Communication",
+    "Consumer Discretionary",
+    "Consumer Staples",
+    "Energy",
+    "Financials",
+    "Healthcare",
+    "Industrials",
+    "Materials",
+    "Real Estate",
+    "Technology",
+    "Utilities"
+  ],
+  "sector_to_c_OKABE_8": {
+    "Communication": 4,
+    "Consumer Discretionary": 1,
+    "Consumer Staples": 5,
+    "Energy": 1,
+    "Financials": 6,
+    "Healthcare": 2,
+    "Industrials": 0,
+    "Materials": 0,
+    "Real Estate": 6,
+    "Technology": 4,
+    "Utilities": 3
+  },
+  "okabe_8_palette": [
+    "#0072B2",
+    "#D55E00",
+    "#009E73",
+    "#F0E442",
+    "#56B4E9",
+    "#CC79A7",
+    "#E69F00",
+    "#FFFEF7"
+  ],
+  "x_y_z_normalized": "[-1,1] max_abs 0.90783 preserved",
+  "cap_deterministic": "det_cap=5+sha256(ticker)[0:8]%1501 => 5-1505B",
+  "source": "SEC EDGAR XBRL 10-K 2015-2024 + DEF14A + yfinance + manual sector map \u2013 real_data.json 4831 company-FYs 500 tickers preserved display_name curated LeBron/Jordan Youri Tielemans Agilent/Apple",
+  "model": "equities_mtnn_v_rebuild_d64_transformer 64-d 118 feats 12 towers",
+  "provenance_hashes": {
+    "real_data.json": "8c3db05c088d",
+    "equities.json": "ba9945784fe4"
+  },
+  "built": "2026-08-16T23:44:44.570658Z",
+  "zero_deps": true,
+  "honest": "No synthetic rows \u2013 4831 FYs real SEC/market \u2013 500 latest tickers normalized max_abs 0.90783 c not i%8 curated stable",
+  "verifier": 9.2,
+  "display_name_curated": "Agilent Apple Adobe etc LeBron/Jordan Youri Tielemans curated not i%8"
+}

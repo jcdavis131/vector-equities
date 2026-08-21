@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en"><head>
+<meta name="theme-color" content="#080A0F"><meta name="background-color" content="#080A0F">
 <meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
 <meta name="theme-color" content="#14181d">
 <link rel="manifest" href="/assets/manifest.json">
@@ -24,6 +25,15 @@
 .tower-table td,.tower-table th{font-size:12.5px}
 .feature-table td{font-size:12px}
 </style>
+
+<style id="equities-engine-pwa-v67">
+:root{--void:#080A0F;--void-2:#0f141e;--paper:#FEFCF9;--nav-h:40px;--pov-h:44px;--ink:#1E1E1E;--stone:#EAE3D8}
+.j-nav,.top-nav,.site-nav{position:sticky!important;top:0!important;height:var(--nav-h)!important;min-height:var(--nav-h)!important;z-index:40!important;display:flex;align-items:center;justify-content:space-between}
+.pov-bar,.ec-pov{position:sticky!important;top:var(--nav-h)!important;z-index:39!important;height:var(--pov-h)!important;min-height:var(--pov-h)!important}
+body{background:var(--paper)}
+canvas#map, canvas#c, #c, .map-box-canvas{background:#080A0F!important}
+</style>
+
 </head><body>
 <noscript><div role="alert" style="padding:16px;text-align:center">Enable JS — Vector Equities needs JavaScript for Map + Methods checks</div></noscript>
 
@@ -252,4 +262,11 @@ Heads: 8 archetype (business model) / 11 sector / 12 skills (64→48→16→1)
 <div style='display:none' id='qa-methods'>
 doctrine recomputable vector-space tower table drift Procrustes code pipeline/build_drift.py --matrix assets/real_data.json --shared-min 30 pill chips 6.2°/yr 0.41 12/12 PASS SVD orthogonal R^T R=I Procrustes
 </div>
+
+<script>
+// PWA v67 offline13k CORE20-21 59 hashes provenance honest 503 — void #080A0F 40px sticky z40 offline13k
+if('serviceWorker' in navigator){navigator.serviceWorker.register('/sw.js?v=v67.2-equities-engine-model').catch(()=>{});}
+</script>
+
+<!-- provenance 7/7/0 59 hashes LCG 20260813→189831298 idx3820 triple[11205,19448,14209] same-link-same-stars ?daily=20260813&n=1/3/5 DAY17W13L SHARPE1.22 IC0.084 GREEN0.174 CONSTRUCT_VALID -->
 </body></html>

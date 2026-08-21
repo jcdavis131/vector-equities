@@ -202,6 +202,8 @@ class EquitiesMTNN(nn.Module):
         n_fusion_layers: int = 4,
         n_attn_heads: int = 4,
         d_fusion_hidden: int | None = None,
+        dropout: float = 0.12,
+        drop_p: float | None = None,
     ):
         super().__init__()
         self.families = sorted(fam_dims)
@@ -227,6 +229,8 @@ class EquitiesMTNN(nn.Module):
                 **({} if d_fusion_hidden is None else {"d_hidden": d_fusion_hidden}),
             )
         elif fusion_mode == "transformer":
+            # dropout alias: hill133 config dropout0.12 passed from train_mtnn
+            _drop = float(drop_p if drop_p is not None else dropout)
             self.fusion = TransformerFusion(
                 len(self.families),
                 d_tower,
@@ -235,6 +239,7 @@ class EquitiesMTNN(nn.Module):
                 d_model=d_model,
                 n_layers=n_fusion_layers,
                 n_heads=n_attn_heads,
+                dropout=_drop,
                 **({} if d_fusion_hidden is None else {"ff": d_fusion_hidden}),
             )
         else:

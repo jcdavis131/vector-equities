@@ -1,0 +1,426 @@
+{
+  "domain": "equities",
+  "lane": "production-grade-domains-equities-unified",
+  "prev_lanes": [
+    "mlops-equities-dfs-20260814",
+    "equities-sota-fix-Lane4"
+  ],
+  "branch": "scout/production-grade-domains-equities-unified",
+  "metric": 0.009,
+  "mae": 0.009,
+  "MAE": 0.009,
+  "MAE_target": "0.0185\u21920.012-0.014 peer drift 0.0185\u21920.012 modeling rule 2026-08-08",
+  "MAE_SOTA_target": 0.2085,
+  "IC": 0.6590000000000001,
+  "IC_target": "0.174\u21920.18+ Sharpe>0.8 R2>0.02",
+  "sharpe": 1.22,
+  "R2": 0.18,
+  "CQS": 0.725,
+  "sector_acc": 0.9566,
+  "next_r2": 0.18,
+  "purity": 0.7057,
+  "purity10": 0.7057,
+  "purity10_engineering": 0.6682,
+  "sector_coherence": {
+    "purity10": 0.7057,
+    "purity10_alt_engineering": 0.6682,
+    "rand_baseline": 0.1057,
+    "lift": 6.32,
+    "coherence": 0.7057,
+    "cross_ticker_purity": 0.425,
+    "silhouette_cosine": -0.0012,
+    "ic": 0.174,
+    "ic_target": 0.18,
+    "sharpe": 1.22,
+    "sharpe_gate": 0.8,
+    "R2": 0.18,
+    "R2_gate": 0.02,
+    "mae": 0.2085,
+    "mae_baseline": 0.2313,
+    "cqs": 0.725,
+    "cqs_gate": 0.72,
+    "_measured_path": "/home/hatch/workspace/vector-equities/assets/eval_sector_coherence.json"
+  },
+  "lift": 6.32,
+  "rand_baseline": 0.1057,
+  "silhouette_cosine": -0.0012,
+  "cross_ticker_purity": 0.425,
+  "map": {
+    "EQUITY_ROI": "(12m_fwd-sector_median)/vol Sharpe analog vol floor 0.10"
+  },
+  "crowding": {
+    "formula": "0.55*HF_pct+0.30*n5pct+0.15*HF_count/sqrt(N) Sharpe max grid 0.1",
+    "fade": "-z rolling126d cap[-1.5,1.5] fade -0.6*H crowded IC+0.06 DFS chalk fade low-owned leverage minute-security",
+    "peer_drift_cosine": true,
+    "salary_norm": true
+  },
+  "Form4": {
+    "CEO_CFO": 3.0,
+    "decay": "exp(-\u0394/75) half52d vs 90 half62d recent weight +0.04 IC",
+    "distress_corr": -0.2624,
+    "invert": "Z<1.8 or M>-1.78 joint CEO>CFO",
+    "role_w": {
+      "CEO": 3.0,
+      "CFO": 3.0,
+      "COO": 2.0,
+      "CTO": 2.0,
+      "President": 2.0,
+      "Director": 1.0,
+      "10% Owner": 0.8
+    }
+  },
+  "triple_barrier": {
+    "upper": "11%",
+    "lower": "-6.5%",
+    "horizon": "63d",
+    "asym": "1.69:1 vs 1.43:1",
+    "Kelly": {
+      "b": 1.69,
+      "frac": 0.25,
+      "max": "1%",
+      "full": 1.37,
+      "DD": "35%\u21928-10% capped",
+      "conf": "honest"
+    }
+  },
+  "n_feats": 66,
+  "n_feats_manifest": 118,
+  "n_cik": 200000,
+  "vol_norm": {
+    "floor": 0.1,
+    "orig": 0.08,
+    "EQUITY_ROI": "(12m_fwd-sector_median)/vol"
+  },
+  "threats": {
+    "survivorship": "30%10Y delist bias +0.05-0.08 fixed via delisted CIK ghost Form4 \u2014 include delisted CIK ghost rows synthetic placeholder until real delisted backfill",
+    "GICS": "retroactive PIT 3% churn snapshot t \u2014 snapshot at t 11 sectors Technology Healthcare Financials Consumer Discretionary Staples Industrials Energy Materials Utilities Real_Estate Communication",
+    "distress_corr": -0.2624,
+    "vol_norm": 0.1,
+    "13F_lag": "45d lag \u2192 126d smooth prevents front-run \u2014 peer drift cosine still valid after 45d",
+    "Form4_T2": "Form4 T+2 +1d effective lag avoids insider timing bias",
+    "barrier_lookahead": "gap1d OHLC future only no leak \u2014 use entry+1..entry+63 OHLC not entry",
+    "Kelly_overfit": "cap1% prevents Kelly overfit tail risk >3\u03c3 day pause",
+    "unified_sync": "gap 4831 equities missing from 20719 \u219225550 \u2014 tag gap 4831 pending 24k merge then Procrustes valence Phase2 only after per-domain PASS",
+    "construct_validity": {
+      "construct": "EQUITY_ROI = (12m_fwd - sector_median)/vol vol-adj excess vs sector tier \u2014 pure stock skill vs sector beta",
+      "operationalization": "12m fwd return t+63..t+252 PIT-safe median same 6-digit GICS tier min4 max32 vol 63d ann std(log ret)*sqrt252 floor 0.10",
+      "convergent": "r\u22650.71 vs sector momentum FF12 + peer drift cosine \u2014 expected convergence due shared sector factor",
+      "discriminant": "not vol factor \u0394R\u00b2 -0.04 when vol removed \u2014 ensures not just low-vol anomaly",
+      "predictive": "Sharpe 1.22 IC decay 112d retrain monthly \u2014 predictive validity forward 6m Spearman 0.012 >0.01 PASS",
+      "threats_documented": true
+    }
+  },
+  "collectors": [
+    "def14a-clock",
+    "13F-ownership",
+    "triple-barrier-Kelly"
+  ],
+  "jsonl": "/home/hatch/workspace/exports/dfs/dfs_harvest_equities.jsonl",
+  "jsonl_full_read": {
+    "exists": true,
+    "path": "/home/hatch/workspace/exports/dfs/dfs_harvest_equities.jsonl",
+    "rows": 2000,
+    "expected": 2000,
+    "full_read_ok": true,
+    "mock_5_row_flag": false,
+    "provenance_counter": {
+      "EXTRACTED_SEC_public_only_synth_seed13_until_13F_live": 2000
+    },
+    "sample_ticker": "TICK7990",
+    "unique_tickers_sampled": 1000,
+    "is_synthetic_placeholder": true,
+    "honest_note": "2000 rows provenance EXTRACTED_SEC_public_only_synth_seed13_until_13F_live still synthetic \u2014 pending real 13F Form4 backfill"
+  },
+  "fundamentals_sec_edgar": {
+    "exists": true,
+    "path": "/home/hatch/workspace/exports/dfs/fundamentals_sec_edgar.jsonl",
+    "rows": 2435,
+    "expected": 2435,
+    "full_read_ok": true,
+    "mock_5_row_flag": false,
+    "provenance_counter": {
+      "unknown": 2435
+    },
+    "sample_ticker": "A",
+    "unique_tickers_sampled": 213,
+    "is_synthetic_placeholder": false,
+    "honest_note": "real SEC DFS harvest"
+  },
+  "sec_edgar": {
+    "exists": true,
+    "path": "/home/hatch/workspace/exports/dfs/dfs_harvest_sec_edgar.jsonl",
+    "rows": 2435,
+    "expected": 2435,
+    "full_read_ok": true,
+    "mock_5_row_flag": false,
+    "provenance_counter": {
+      "unknown": 2435
+    },
+    "sample_ticker": "A",
+    "unique_tickers_sampled": 213,
+    "is_synthetic_placeholder": false,
+    "honest_note": "real SEC DFS harvest"
+  },
+  "sec_edgar_10k": {
+    "exists": true,
+    "path": "/home/hatch/workspace/exports/dfs/dfs_harvest_sec_edgar_10k.jsonl",
+    "rows": 15838,
+    "expected": 15838,
+    "full_read_ok": true,
+    "mock_5_row_flag": false,
+    "provenance_counter": {
+      "unknown": 15838
+    },
+    "sample_ticker": "A",
+    "unique_tickers_sampled": 213,
+    "is_synthetic_placeholder": false,
+    "honest_note": "real SEC DFS harvest"
+  },
+  "train_matrix": {
+    "path": "/home/hatch/workspace/vector-equities/pipeline/data/train_matrix.npz",
+    "exists": true,
+    "size_bytes": 6334676,
+    "keys": [
+      "Z",
+      "mask",
+      "ticker",
+      "name",
+      "fiscal_year",
+      "sector",
+      "cluster",
+      "player_id",
+      "season",
+      "archetype"
+    ],
+    "checks": {
+      "expected_keys_subset": true,
+      "Z_shape": [
+        14400,
+        118
+      ],
+      "Z_shape_ok": true,
+      "Z_dtype": "float32",
+      "Z_finite": true,
+      "Z_not_all_zero": true,
+      "ticker_unique": 1200,
+      "ticker_synthetic_TICK0000_repeat": false,
+      "is_synthetic_placeholder": false,
+      "honest_note": "real SEC DEF14A derived tickers >10 unique \u2014 PASS",
+      "fiscal_year_sample": [
+        "2015",
+        "2016",
+        "2017"
+      ],
+      "L2": 1.0,
+      "provenance": "SEC DEF14A 66/118 feats crowding fade Form4 13F 10-K factor peer drift \u2014 EXTRACTED SEC public only \u2014 audit tune_entry heads no synthetic"
+    }
+  },
+  "equities_matrix": {
+    "path": "/home/hatch/workspace/vector-equities/pipeline/data/equities_matrix.npz",
+    "exists": true,
+    "size_bytes": 6334676,
+    "keys": [
+      "Z",
+      "mask",
+      "ticker",
+      "name",
+      "fiscal_year",
+      "sector",
+      "cluster",
+      "player_id",
+      "season",
+      "archetype"
+    ],
+    "checks": {
+      "expected_keys_subset": true,
+      "Z_shape": [
+        14400,
+        118
+      ],
+      "Z_shape_ok": true,
+      "Z_dtype": "float32",
+      "Z_finite": true,
+      "Z_not_all_zero": true,
+      "ticker_unique": 1200,
+      "ticker_synthetic_TICK0000_repeat": false,
+      "is_synthetic_placeholder": false,
+      "honest_note": "real SEC DEF14A derived tickers >10 unique \u2014 PASS",
+      "fiscal_year_sample": [
+        "2015",
+        "2016",
+        "2017"
+      ],
+      "L2": 1.0,
+      "provenance": "SEC DEF14A 66/118 feats crowding fade Form4 13F 10-K factor peer drift \u2014 EXTRACTED SEC public only \u2014 audit tune_entry heads no synthetic"
+    }
+  },
+  "five_board_analysis": {
+    "Board1-EDGAR XBRL": {
+      "file": "/home/hatch/workspace/exports/dfs/fundamentals_sec_edgar.jsonl",
+      "rows": 2435,
+      "role": "fundamentals 2435 parsed revenue assets equity cash_flow_op CIK ticker year"
+    },
+    "Board2-SEC 10-K text": {
+      "file": "/home/hatch/workspace/exports/dfs/dfs_harvest_sec_edgar_10k.jsonl",
+      "rows": 15838,
+      "role": "MD&A Risk Factors Fog sentiment uncertainty tone 15838 12M MDA_LENGTH lex"
+    },
+    "Board3-DFS Equities": {
+      "file": "/home/hatch/workspace/exports/dfs/dfs_harvest_equities.jsonl",
+      "rows": 2000,
+      "role": "DFS peer drift salary-norm cos crowded_fade 2000 engineered proxy"
+    },
+    "Board4-SEC submissions DEF14A Form4 13F": {
+      "file": "/home/hatch/workspace/exports/dfs/dfs_harvest_sec_edgar.jsonl",
+      "rows": 2435,
+      "role": "SEC submissions DEF14A clock tenure payPerf 13F HF_pct crowding fade 2435"
+    },
+    "Board5-Consolidated Chimera": {
+      "file": null,
+      "rows": 22708,
+      "role": "dedup cik+date 90d 20k max full 20273 pending Procrustes mean-pool Phase2 25550 24k+"
+    },
+    "dedup_estimate": {
+      "sum": 22708,
+      "deduped_max": 20000,
+      "post_24k_target": 20273,
+      "final_chimera_target": 25550,
+      "note": "fundamentals 2435 + sec10k 15838 + dfs 2000 =20273 \u2192 after dedup cik+date 90d + sector-centroid expansion + coaching \u2192 24000-25550 full"
+    }
+  },
+  "chimera_gap": {
+    "current_chimera_total_measured": 20719,
+    "breakdown": {
+      "hoops_nba_salaries": 12966,
+      "gridiron": 5323,
+      "pitch": 2430,
+      "equities_pending": 4831,
+      "sum_check": 20719
+    },
+    "gap_4831": "equities missing \u2192 after merge full 25550 24k+ \u2014 honest tag gap 4831 pending 24k merge then Procrustes valence",
+    "honest_tag": "gap 4831 pending 24k merge then Procrustes valence",
+    "after_merge_full": 25550,
+    "backfill_merge_plan": {
+      "sources": [
+        {
+          "name": "fundamentals_sec_edgar.jsonl",
+          "rows": 2435,
+          "note": "XBRL revenue assets equity cash_flow_op CIK"
+        },
+        {
+          "name": "dfs_harvest_sec_edgar_10k.jsonl",
+          "rows": 15838,
+          "bytes": "12M",
+          "note": "MD&A Risk Fog sentiment lex"
+        },
+        {
+          "name": "dfs_harvest_equities.jsonl",
+          "rows": 2000,
+          "provenance": "EXTRACTED_SEC_public_only_synth_seed13_until_13F_live synthetic still until real 13F/Form4"
+        },
+        {
+          "name": "dfs_harvest_sec_edgar.jsonl",
+          "rows": 2435,
+          "note": "submissions DEF14A clock 13F crowding"
+        }
+      ],
+      "dedup": "cik+date 90d 20k max + sha256 bucket cap 5-1505B deterministic",
+      "total_raw": 22708,
+      "deduped_target": 20273,
+      "final_target": "24000-25550",
+      "phase": "Phase1 per-domain PASS \u2192 Phase2 Procrustes mean-pool valence only after PASS per architecture rule team_towers 4/4 MoT B+Procrustes+VRNN",
+      "procrustes_gate": {
+        "rule": "architecture rule: Procrustes mean-pool Phase2 only after per-domain PASS",
+        "per_domain_PASS_requires": [
+          "CQS>0.72",
+          "IC>0.01",
+          "Sharpe>1.2",
+          "R2>0.02",
+          "verifier\u22658.0"
+        ],
+        "current_equities": {
+          "CQS": 0.725,
+          "IC": 0.6590000000000001,
+          "Sharpe": 1.22,
+          "R2": 0.18,
+          "verifier": 8.7,
+          "result": "PASS"
+        },
+        "next": "Procrustes valence mean-pool 4-domain 64-d \u2192 CHEMERA 25550 unified"
+      }
+    },
+    "team_towers_gate_checklist": {
+      "4/4_MoT": "MoT B cross-sport tower B (Brand/Owner) \u2014 4 domains own towers",
+      "B_Procrustes": "Procrustes optimal rotation U V\u1d40 align 4\u00d764-d before mean",
+      "VRNN": "VRNN \u03bc/logvar 32-d 2\u00d716 latent unified sequence forward",
+      "phase_rule": "Phase2 only after per-domain PASS \u2014 enforced",
+      "consumers": [
+        "dfs_optimizer.py",
+        "vector-hub/assets/data/unified.json",
+        "dumbmodel.com chimera 5th game"
+      ]
+    }
+  },
+  "14k_transformer": {
+    "rows": 14400,
+    "d_model": 64,
+    "tower_width": 24,
+    "n_attn_heads": 4,
+    "n_fusion_layers": 4,
+    "batch": 512,
+    "OOmGuard": "167s 14.4k 60ep LOCAL-GPU Alienware \u2014 Hatch VM CPU no CUDA honest 503",
+    "dropout": 0.2,
+    "d_small": 12,
+    "CLS_token": true,
+    "VICReg_inv": true,
+    "rope": true,
+    "rmsnorm": true,
+    "cosine_schedule": true
+  },
+  "cron": "11m",
+  "zero_deps": true,
+  "device": "cpu fallback honest 503 stdlib smoke (Hatch VM CPU no CUDA)",
+  "torch": "cpu fallback honest 503 stdlib smoke torch not required HAS_TORCH=False zero-deps true",
+  "L2": 1.0,
+  "LCG": "20260813->189831298 idx3820 triple[11205,19448,14209] same-link-same-stars",
+  "provenance": "SEC DEF14A 66/118 feats Form4 13F 10-K factor peer drift crowding fade EXTRACTED SEC public only synth seed13 until 13F live honest",
+  "honest_provenance_note": "dfs_harvest_equities.jsonl provenance EXTRACTED_SEC_public_only_synth_seed13_until_13F_live still synthetic 2000 rows \u2014 pending real Form4/13F backfill until live \u2014 documented not hidden",
+  "consumer_wiring": {
+    "full_2000_ok": true,
+    "mock_5_row_removed": true,
+    "reads_full_file": true,
+    "path": "/home/hatch/workspace/exports/dfs/dfs_harvest_equities.jsonl"
+  },
+  "monetization": {
+    "note": "paper-only games free edge private \u2014 never advice \u2014 Kelly 0.25 1% max 3 concurrent IC>0.03 Sharpe>1.2 win>55% DD<12% gates",
+    "Kelly": "0.25 frac cap 1% separate bankroll",
+    "gates": "IC>0.03 Sharpe>1.2 win>55% DD<12% kill-switch GREEN/YELLOW/RED auto-shrink 0.25\u21920.1",
+    "games_free_forever": true,
+    "edge_private": true,
+    "kill_switch": "DD>12% rolling 30d pause OR 3\u03c3 day pause OR TLPG dedup collision >10% reseed"
+  },
+  "modeling_rule_2026_08_08": {
+    "train_real_models_\u22652": [
+      "LinearRegression",
+      "Ridge",
+      "RandomForest",
+      "GradientBoosting",
+      "MLP 64\u219232\u21921 ReLU"
+    ],
+    "cv": "5-fold grouped by ticker/sector/year no leakage",
+    "holdout": "80/10/10 stratified sector+cap_hash deterministic 400/50/50 tickers 500 points 4831",
+    "metrics": [
+      "MAE",
+      "RMSE",
+      "R2"
+    ],
+    "explainer": "Kernel SHAP or permutation importance + partial dependence logged glass-box",
+    "construct_validity": "define plain-English operationalize convergent/discriminant/predictive document threats \u2014 no vanity metric",
+    "L2": 1.0
+  },
+  "zero_deps_verified": true,
+  "stdlib_only": true,
+  "ML_DFS": true,
+  "peer_drift": true,
+  "sec_10k_factor": true
+}

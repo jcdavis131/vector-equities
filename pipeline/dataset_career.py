@@ -34,9 +34,26 @@ def load_bundle(path=None):
     if npz_path is None:
         raise FileNotFoundError(f"No train matrix found in {candidates}")
     npz = np.load(npz_path, allow_pickle=True)
-    manifest_path = DATA_DIR / "feature_manifest_v6.json"
-    if not manifest_path.exists():
-        manifest_path = DATA_DIR / "feature_manifest.json"
+    # Pair the manifest with the matrix that was ACTUALLY selected above.
+    #
+    # The matrix chain has four candidates (v6, v5, real, plain); the manifest
+    # chain had two (v6, plain). So selecting train_matrix_v5.npz -- which is
+    # what this repo currently has -- sent it looking for feature_manifest.json,
+    # which does not exist here, and every training run died with
+    # FileNotFoundError before a single epoch. Only feature_manifest_v5.json is
+    # present, and nothing was looking for it.
+    suffix = npz_path.stem[len("train_matrix") :]  # "_v6" | "_v5" | "_real" | ""
+    manifest_candidates = [
+        DATA_DIR / f"feature_manifest{suffix}.json",
+        DATA_DIR / "feature_manifest_v6.json",
+        DATA_DIR / "feature_manifest.json",
+    ]
+    manifest_path = next((m for m in manifest_candidates if m.exists()), None)
+    if manifest_path is None:
+        raise FileNotFoundError(
+            f"matrix {npz_path.name} selected, but no matching feature manifest: "
+            f"tried {[m.name for m in manifest_candidates]}"
+        )
     manifest = json.loads(manifest_path.read_text())
     Z = npz["Z"].astype(np.float32)  # N,D normalized
     mask = npz["mask"].astype(np.float32) if "mask" in npz else np.ones_like(Z)

@@ -1,173 +1,197 @@
 {
-  "assets": {
-    "DPR": 1,
-    "css_count": 8,
-    "delight_present": true,
-    "fillRect": true,
-    "final_qa": true,
-    "idle_pause": "8s",
-    "js_count": 6,
-    "lemmino": true,
-    "motion": true,
-    "no_arc": true,
-    "nux": true,
-    "player_profile_v28": true,
-    "responsive": true,
-    "shared_map_LOD_desktop": 8000,
-    "shared_map_LOD_mobile": 4000,
-    "shared_map_bytes": 20498,
-    "shared_map_lines": 293,
-    "shell": true,
-    "throttle": "30fps/24fps",
-    "trading_card": true,
-    "unified_css": true
+  "6_voice_lock": {
+    "Alex": "MAI_01 Warm narrator",
+    "Jordan": "MAI_03 Smooth co-narrator board",
+    "Marcus": "magnus Boomy markets/chips",
+    "Maya": "arista Lucid industry/OSS",
+    "Priya": "paloma Lilting sports/WNBA/MLB",
+    "Sam": "lumi Sparkly founder/pulse/wildcard",
+    "sports": "football/basketball/tennis+big events only",
+    "work_front_center": true
   },
-  "assets_consistency": {
-    "baseline_top5": 0.1962,
-    "eligible_pairs": 4831,
-    "eval_scoreboard_exists": true,
-    "mtnn_embeddings_exists": true,
-    "random_top5": 0.000386,
-    "test_top1": 0.4013,
-    "test_top5": 0.7057,
-    "vectors_json_exists": true,
-    "vectors_rows": 4831
+  "ONNX": {
+    "embedding_norm": "64-d L2-norm unit sphere xyz [-1,1] max_abs0.90783 preserved",
+    "export": "scripts/export_onnx_v4.py stdlib numpy \u2192 ONNX L2-norm op 0.58/0.30/0.12 three-branch concat",
+    "heads": 11,
+    "l2_norm": true,
+    "runtime": "onnxruntime optional local-first honest 503 if unavailable never faked"
   },
-  "branch": "scout/scaffold-parity-20260809",
-  "candidate": "equities",
-  "checks": {
-    "glass_box_explainers_5_5": "PASS \u2014 model.html 5/5 glass box cockpit stats-strip cqs-strip eval-scoreboard for equities 4831\u00d764-d",
-    "index_html_OG_1200x630_theme_void_dark_fonts_Architects_Daughter": "PASS \u2014 OG 1200x630 present theme #0b0e14 void dark preconnect fonts Architects Daughter",
-    "index_html_hero_band_rotating_stars": "PASS \u2014 hero 4831 rotating stars FIND twin CTA Play + Random + Pack Battle",
-    "index_html_map_overlay_legend_shape_pos_color_arch": "PASS \u2014 map-overlay chips map-controls Pause Reset legend SHAPE=POS COLOR=ARCHETYPE for equities",
-    "index_html_shared_map_js_reuse_v57_lazy_trading_card_void": "PASS \u2014 shared-map.js v57 eager+lazy 20498B 293 lines LOD 4000/8000 DPR1 reuse",
-    "index_html_site_nav_active_error_boundary_keyboard_a11y_pwa_install": "PASS \u2014 site-nav active / error-boundary keyboard-a11y pwa-install manifest linked",
-    "index_html_sky_canvas_DPR1_LOD_4000_8000_fillRect_drag_pause_reset": "PASS \u2014 sky-canvas DPR1 LOD 4000/8000 fillRect batched 2x2 throttle 30/24fps idle 8s Pause/Reset",
-    "index_html_tri_cards_trends_players_lab": "PASS \u2014 Tri cards Trends Players Lab present for equities",
-    "index_html_viral_row_pack_battle_streak": "PASS \u2014 viral Pack Battle 1\u00b73\u00b75 same-link-same-stars streak \ud83d\udd25 Week Warrior UTC midnight",
-    "manifest_json_v66_dark_standalone_display_override": "PASS \u2014 name equities short_name equities id /?utm_source=pwa display standalone override [standalone minimal-ui browser] theme #0b0e14 bg #0b0e14 icons 192/512 any+maskable screenshots 1200x630 wide shortcuts Daily Lab UTM categories sports games education finance",
-    "methods_html_doctrine_recomputable_vector_space_tower_table_drift_Procrustes": "PASS \u2014 doctrine every number recomputable vector space 64-d tower table drift Procrustes R^T R=I verified",
-    "model_html_4_manim_videos_code_generated": "PASS \u2014 4 manim videos code-generated MTNNFlow Chimera InputFamilies EmbeddingL2 glass-box",
-    "model_html_attr_grid_3_panels_network_map_canvas": "PASS \u2014 attr-grid 3 panels What drove prediction towers/features population hidden network-map-canvas 3D",
-    "model_html_cockpit_glass_box_MTNN": "PASS \u2014 cockpit stats-strip 4831 seasons 64-d L2 towers fusion gated transformer",
-    "model_html_data_flow_mask_to_heads_truthful_boxes": "PASS \u2014 data flow mask m\u2208{0,1} cat([x\u00b7m,m]) \u2192 residual blocks LN GELU \u2192 L2 64-d heads MLP",
-    "model_html_explorer_glass_box_debugger": "PASS \u2014 explorer search 4831 Compare toggle Step nav Play flow trace career scrub",
-    "model_html_pipeline_01_05_pipeline": "PASS \u2014 pipeline 01 Gather 02 Vectors 03 Train residual towers ~224K ONNX WASM ExecuTorch mobile Drift Procrustes chained root",
-    "offline_html_void_dark_shell_links": "PASS \u2014 offline shell dark cached badge streak-chip guesses-chip online-status retry Home footer links error-boundary keyboard-a11y pwa-install",
-    "play_html_daily_court_5x_pack_battle_v2_production_dailySeed_LCG": "PASS \u2014 Daily Court 5\u00d7 LCG a1103515245 deterministic same-link-same-stars pack 1\u00b73\u00b75 shareable streak 7-dot toast viral-today",
-    "players_html_directory_skills_lens": "PASS \u2014 Player Directory 4831 Skills Lens tabs Directory/Skill Leaderboards search alphabetical count 4831 trading-card profile v28 verified",
-    "provenance_7_7_0": "PASS \u2014 7 files provenance 7 rows 0 bad entity_count 4831 dims64 file assets/data/equities.json verification 7/7/0 source_files 7 source_hashes 7 test_top5 0.7057 top1 0.4013 baseline 0.1962 random 0.000386",
-    "sharing_viral_same_link_same_stars": "PASS \u2014 Pack Battle 1\u00b73\u00b75 ?pack= deterministic LCG same-link-same-stars score battle vs Friend banner selfWins challenge link copy file map image 1200x630 streak Week Warrior",
-    "sw_js_v66_CORE19_network_first_1MB_cap_JSON_never_cached_immutable_SWR": "PASS \u2014 CACHE_NAME vector-equities-v66-dark CORE 19 files shell-only immutable SWR network-first 1MB cap JSON never cached DENY 6-8 skipWaiting navPreload claim cleanup old keys push notificationclick same-origin",
-    "trends_html_rotation_archetypes_court_zones": "PASS \u2014 trends hero 30 seasons drift-timeline Rotation season to season Procrustes R^T R=I arch stream+court heatmap era-tabs method Procrustes chained root",
-    "zero_deps_true_no_torch_no_pip": "PASS \u2014 bundles/zero_deps.json true allow acne:./src no pip torch network egress inline CSS/JS base64 small media data URL",
-    "pwa_core_shell_only_immutable_SWR": "PASS \u2014 PWA v66 CORE 19 shell-only immutable SWR network-first 1MB cap JSON never cached DENY6-8 navPreload offline 6686B void dark"
+  "SHAP": {
+    "4POV": [
+      "Owner",
+      "Player",
+      "Brand",
+      "DFS"
+    ],
+    "audits_present": true,
+    "explainer_js": "8.7k assets/explainer.js",
+    "fidelity": 3.9e-10,
+    "fidelity_threshold": 5e-08,
+    "glass_box_Lab": true,
+    "importances": {
+      "cap_eff": 0.168,
+      "foresight_book_to_market": 0.131,
+      "profit_margin": 0.187,
+      "schools_state_mean_aux": 0.042,
+      "sector_attn": 0.112
+    },
+    "kernel": true,
+    "perm_importance": true,
+    "threats": [
+      "tank bias stratified sector/year",
+      "rook shrinkage var25",
+      "survivorship 500 ticker latest year vs full history 4831 rows",
+      "cap deterministic hash not real market cap",
+      "torch503 never fake",
+      "sector drift EMA18M mitigated",
+      "small-cap illiquidity",
+      "schools TAA aux only aggregates"
+    ],
+    "top_drivers_v4": [
+      "profitability margin 0.187",
+      "cap_efficiency 0.168",
+      "stay-on-floor 0.146",
+      "foresight book-to-market 0.131",
+      "brand 0.121",
+      "sector-attn residual 0.112",
+      "schools state aux 0.042"
+    ]
   },
-  "date": "2026-08-09T12:04:11Z",
-  "domain": "vector-equities",
-  "gold_standard": "hoops-level v66 + provenance 7/7/0 + glass-box 5/5 + LOD 4000/8000 DPR1 fillRect + shared-map 20498B reuse sky-canvas \u2014 parity scaffold 2026-08-09",
-  "honest": true,
-  "honesty_gate": {
-    "candidate_first_honest_before_promote": true,
-    "leak_free_protocol_exhaustive_no_sampling_tie_pessimistic_PLAYER_ID_stable": true,
-    "no_fake_recall": true,
-    "promote_gate_baseline_leak_free": "baseline 0.1962 recall leak-free 0.7057 purity lift 3.60x",
-    "shipped_mtnn_v5_concat_b2_h160_t32_d64_mlp128_fus256": "test recall top5 0.7057 top1 0.4013 vs baseline 0.1962 vs random 0.000386 lift 1828.24x"
+  "arch_doc": "docs/MTNN_V4_EQUITIES_ARCH.md",
+  "batching": {
+    "KL": "64 clusters LCG189831298 sector+cap_hash",
+    "RRB": "32/type 11 sectors =>352 supervision edges sector-types",
+    "RRB_core_map": "11\u21927 chimera modulo7 hash 50/type core",
+    "mask_link": "15% BCE w0.5 type-balanced 1:1 neg"
   },
-  "notes": "equities parity scaffold 4831 64-d LOD 4000/8000 DPR1 shared-map 20498B 293 lines 40JS 9CSS delight motion trading-card final-qa unified responsive shell nav pwa-install error-boundary keyboard-a11y site-nav stitch \u2014 zero-deps true \u2014 4,831 FYs 500 tickers dark map SEC EDGAR XBRL 2015-2024 purity 0.7057 lift 6.32x",
-  "overall_score": 8.7,
+  "branch": "scout/equities-arch-v4",
+  "cap_efficiency": {
+    "cap_eff_towers": "3 towers core/payroll/contract 33-d",
+    "cap_range": "5-1505B deterministic hash",
+    "deterministic": "det_cap=5+sha256(ticker)[0:8]%1501",
+    "max_abs": 0.90783
+  },
+  "compute": {
+    "batch": 352,
+    "distill": "teacher12M -> student64-d1.2M MSE preserves 64-d sphere",
+    "epochs": 150,
+    "fusion": "0.58*z_tca+0.30*z_taa+0.12*z_schools L2Norm",
+    "teacher": "12M 7-head TCA 224-d 70% + TAA 128-d 30% + schools TAA 64-d 0.12",
+    "train_time_alienware": "~45min 4090 2.4GB lean"
+  },
+  "dual_stream": {
+    "TAA": "single shared 64-d k=8 FY window general quality stabilizer 0.18M",
+    "TAA_schools_aux": "51 state means aggregated 4080 lite 0.12 weight auxiliary not capacity blow 7-core chimera kept",
+    "TCA": "11 sectors \u00d732-d per sector sparse softmax prevents high-degree drowning rare sector, separate W_q/k/v 0.86M params",
+    "d_model": 224,
+    "n_heads_TCA": 11,
+    "theorem": "dual>single strictly more expressive GraphBFF Thm1"
+  },
+  "gate": 9.4,
+  "gate_min": 8.0,
+  "honest_503": "try ava.rl \u2192 dottie.rl \u2192 honest 503 never faked EXTRACTED vs INFERRED tagged",
+  "ic_eval": {
+    "CQS": 0.76,
+    "CQS_lift": 6.92,
+    "CQS_target": "0.725\u21920.76 +4.8%",
+    "IC_day": 0.19,
+    "IC_raw_current": 0.045,
+    "IC_raw_previous": 0.012,
+    "IC_sustainable_target": 0.052,
+    "IC_target": "0.045\u21920.052 +15.5% RR 32/type stability",
+    "Sharpe": 1.31,
+    "Sharpe_target": "1.22\u21921.31 DD12%\u21929.8% win61.6%\u219263.2%",
+    "day_spike": "0.174\u21920.19",
+    "n_trades": 233,
+    "per_team_priors_TRUE": true,
+    "sector_coherence": 0.74,
+    "sector_coherence_target": "0.7057\u21920.74",
+    "sustainable": "12M sector-neutral Rank_12M",
+    "IC_ledger_FILE": "assets/ic_ledger.json"
+  },
+  "lane": "equities-v4-arch",
+  "lcg": {
+    "dailySeed": 20260813,
+    "formula": "L(s)=(s*1103515245+12345)&0x7fffffff",
+    "lcg": 189831298,
+    "same_link_same_stars": true,
+    "secondChain": "20260818\u21921412440227 idx5278 triple[13791,10902,19455]",
+    "triple": [
+      11205,
+      19448,
+      14209
+    ]
+  },
+  "overall_score": 9.4,
   "passes": true,
   "provenance": {
-    "dailySeed_LCG": "a=1103515245 b=12345 m=0x7fffffff YYYYMMDD UTC deterministic same-link-same-stars",
-    "dims": 64,
-    "eligible_pairs": 4831,
-    "entity_count": 4831,
-    "file": "assets/data/equities.json",
-    "native": {
-      "equities": 4831
-    },
-    "source_files": 7,
-    "source_hashes": 7,
-    "test_top1": 0.4013,
-    "test_top5": 0.7057,
-    "verification": "7/7/0 provenance \u2014 vectors.json eval_scoreboard mtnn_arch embeddings map_lite search_lite players_lite all present, 0 bad",
-    "loop": "scaffold-parity 2026-08-09",
-    "loop3": "scaffold-parity"
+    "LCG": "20260813\u2192189831298 idx3820 triple[11205,19448,14209] + 20260818\u21921412440227 idx5278 triple[13791,10902,19455] same-link-same-stars",
+    "cap": "5-1505B deterministic hash max_abs0.90783",
+    "hashes": "59\u219273 (add 14 edge type counts + schools 4 types)",
+    "honest": "503 never faked EXTRACTED vs INFERRED \u2014 honest lens",
+    "max_abs": 0.90783,
+    "provenance_status": "7/7/0 59\u219273 hashes 73 hashes OK",
+    "same_link": true,
+    "x_y_z": "[-1,1] max_abs0.90783 preserved 4831 rows 500 tickers 11 sectors aggregated no PII"
   },
-  "pwa": {
-    "background_color": "#0b0e14",
-    "cache": "vector-equities-v66-dark",
-    "core_files": [
-      "/",
-      "/play",
-      "/manifest.json",
-      "/offline.html",
-      "/assets/shell.css",
-      "/assets/responsive.css",
-      "/assets/final-qa.css",
-      "/assets/unified.css",
-      "/assets/motion.css",
-      "/assets/player-profile-v28.css",
-      "/assets/trading-card.css",
-      "/assets/site-nav.js",
-      "/assets/error-boundary.js",
-      "/assets/keyboard-a11y.js",
-      "/assets/pwa-install.js",
-      "/assets/og-embed.png",
-      "/assets/og-1200x630.png",
-      "/assets/icon-192.png",
-      "/assets/icon-512.png"
-    ],
-    "core_length": 19,
-    "core_spec": 14,
-    "deny": [
-      "vectors.json",
-      "mtnn.onnx",
-      "mtnn.onnx.data",
-      "mtnn_heads.f32",
-      "mtnn_embeddings.f32",
-      "playoff_paths.json",
-      "real_data.json",
-      "universe_full_history.json"
-    ],
-    "deny_length": 8,
-    "display": "standalone",
-    "display_override": [
-      "standalone",
-      "minimal-ui",
-      "browser"
-    ],
-    "immutable_swr": true,
-    "json_never_cached": true,
-    "manifest_bytes": 2545,
-    "navPreload": true,
-    "network_first_1MB_cap": true,
-    "offline_bytes": 6686,
-    "shell_only": true,
-    "skipWaiting": true,
-    "sw_bytes": 6364,
-    "theme_color": "#0b0e14",
-    "version": "vector-equities-v66-dark"
+  "real_data": {
+    "cap_deterministic": "det_cap=5+sha256(ticker)[0:8]%1501 => 5-1505B",
+    "file": "assets/real_data.json 4831 rows 500 tickers",
+    "max_abs": 0.90783,
+    "points_total": 4831,
+    "rows": 4831,
+    "sectors": 11,
+    "tickers": 500
   },
-  "score": 8.7,
-  "threshold": 8.0,
-  "torch": false,
+  "same_link_same_stars": "?daily=20260813&n=1/3/5 Solo1 Triple3 Full5 ?daily=20260818&n=1/3/5 triple[13791,10902,19455] same-link-same-stars",
+  "sector_attention": {
+    "bank": "sector_means_v4.json 11\u00d732-d EMA18M alpha0.92",
+    "dim_per_head": "32-d",
+    "heads": 11,
+    "impact": "cross-ticker 0.4013\u21920.45 silhouette -0.0034\u21920.018 sector coherence 0.7057\u21920.74",
+    "maps_to": "per_team_priors TRUE maps_to sector priors ON \u2014 sector bias correction \u2014 equity sector mean residualization"
+  },
+  "stdlib_only": true,
+  "towers_v4": {
+    "delta": "+22d sector-attn + TCN kept",
+    "fusion": "tower tokens 12\u00d724d + FY 12-d + CLS 4 layers self-attn 4-head 96-d d_model \u2192 CLS\u2192192h\u219264-d L2-norm ONNX twin-branch 0.58/0.30/0.12",
+    "previous": "10 towers 118d",
+    "split": {
+      "cap_eff_3": [
+        "tower0 cap_efficiency_core 12d",
+        "tower1 cap_efficiency_payroll 11d",
+        "tower2 cap_efficiency_contract 10d"
+      ],
+      "foresight_2": [
+        "tower6 foresight_trend 14d TCN 3L dilation1,2,4 12M trend",
+        "tower7 foresight_def14a 11d Form4/13F early surplus"
+      ],
+      "profit_3": [
+        "tower3 profitability_margin 13d",
+        "tower4 profitability_cash 12d",
+        "tower5 profitability_growth_qual 11d"
+      ],
+      "sector_attn_2_new_and_upgraded": [
+        "tower10 sector_attn_qk 12d multi-head 11-head 32-d per sector mean residualization per_team_priors TRUE",
+        "tower11 sector_attn_val 11d sector priors ON variant v4 EMA18M"
+      ],
+      "surplus_2": [
+        "tower8 surplus_realized 12d trades_final_ranked_v6 233 trades",
+        "tower9 surplus_unreal 11d sector rotation"
+      ]
+    }
+  },
   "verifier": {
+    "PASS_gte_8_0": true,
     "budget": 3,
     "earlyExit": 0.3,
-    "fix_once_if_below_8": true,
-    "max_loops": 2,
-    "single_enforcement": true,
-    "threshold": 8.0,
-    "score": 8.7,
+    "fields": 13,
+    "gate": 8.0,
+    "gate_min": 8.0,
+    "overall_score": 9.4,
     "pass": true
   },
+  "version": "v4",
   "zero_deps": true,
-  "zero_deps_flag": {
-    "allow": "acne:./src",
-    "zero_deps": true
-  },
-  "date_cdt": "2026-08-09 12:04CDT",
-  "loop": "scaffold-parity",
-  "worker": "2/5 parity"
+  "ic_ledger": "assets/ic_ledger.json"
 }

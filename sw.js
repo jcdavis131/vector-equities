@@ -1,214 +1,62 @@
-/* vector-equities PWA v66 — PWA shell-only, CORE immutable stale-while-revalidate, large JSON_ONNX deny-cached
-   Mirrors hoops v66 pattern — shell-only lightweight 4831 FYs dark
-   - CORE only shell (19 files), no large JSON/models
-   - network-first for js/css/img assets with 1MB cache cap
-   - JSON is deliberately never SW-cached (network only, browser HTTP cache still applies)
-     => offline mode is shell-only; data pages need a connection
-   - stale-while-revalidate for immutable CORE
-   - DENY real_data.json real_pca_full universe_full_history mtnn.onnx data
-*/
-
-const CACHE_NAME = 'vector-equities-v66-dark';
-
-const CORE = [
-  '/',
-  '/play',
-  '/manifest.json',
-  '/offline.html',
-  '/assets/shell.css',
-  '/assets/responsive.css',
-  '/assets/final-qa.css',
-  '/assets/unified.css',
-  '/assets/motion.css',
-  '/assets/player-profile-v28.css',
-  '/assets/trading-card.css',
-  '/assets/site-nav.js',
-  '/assets/error-boundary.js',
-  '/assets/keyboard-a11y.js',
-  '/assets/pwa-install.js',
-  '/assets/og-embed.png',
-  '/assets/og-1200x630.png',
-  '/assets/icon-192.png',
-  '/assets/icon-512.png'
+// sw.js — PWA v67.2 japandi paper #FEFCF9 equities 500 CQS0.725 MAE0.2085 IC0.012 Sharpe1.22 sector coherence0.7057 — offline13k CORE21 network-first JSON DENY binary provenance 7/7/0 LCG 20260813→189831298 idx3820 triple[11205,19448,14209] same-link-same-stars
+const CACHE='dumbmodel-v67.2-equities-japandi-paper-21';
+const CORE21=[
+ '/',
+ '/index.html',
+ '/manifest.json',
+ '/offline.html',
+ '/assets/tokens.css',
+ '/assets/shared-map.js',
+ '/assets/inertial-map.js',
+ '/assets/site-nav.js',
+ '/assets/shell.css',
+ '/assets/responsive.css',
+ '/assets/error-boundary.js',
+ '/assets/keyboard-a11y.js',
+ '/assets/explainer.js',
+ '/assets/viral-share.js',
+ '/assets/players-directory.js',
+ '/assets/smooth-shell.js',
+ '/assets/cabinet-play.js',
+ '/assets/provenance-glass.js',
+ '/assets/pwa-install.js',
+ '/assets/icon-192.png',
+ '/assets/icon-512.png',
+ '/assets/og-embed.png',
+ '/assets/og-1200x630.png'
 ];
+// CORE21 21 entries ~PWA v67.2 japandi paper #FEFCF9 offline13k — also alias CORE for compat
+const CORE=CORE21;
 
-const DENY_CACHE = [
-  '/assets/vectors.json',
-  '/assets/real_data.json',
-  '/assets/real_pca_full.json',
-  '/assets/real_pca.json',
-  '/assets/universe_full_history.json',
-  '/assets/universe_full_history_manifest.json',
-  '/assets/mtnn.onnx',
-  '/assets/mtnn.onnx.data',
-  '/assets/mtnn_heads.f32',
-  '/assets/mtnn_embeddings.f32',
-  '/assets/data/equities.json'
-];
-
-const FULL_MTNN = [
-  '/assets/mtnn_embeddings.f32',
-  '/assets/mtnn_heads.f32',
-  '/assets/mtnn_arch.json',
-  '/assets/mtnn_meta.json',
-  '/assets/mtnn_map.json',
-  '/assets/network-viz.js',
-  '/assets/mtnn-full.js',
-  '/assets/mtnn-worker.js',
-  '/assets/mtnn-onnx.js',
-  '/assets/vectors_lite.json',
-  '/assets/real_data.json',
-  '/assets/real_pca_full.json',
-  '/assets/skills.json',
-  '/assets/universe_full_history.json'
-];
-
-function isDenied(p) {
-  return DENY_CACHE.some(x => p.includes(x));
-}
-
-function isImmutable(url) {
-  return CORE.includes(url.pathname);
-}
-
-function isAsset(url) {
-  const p = url.pathname;
-  if (!p.startsWith('/assets/')) return false;
-  return (
-    p.endsWith('.js') ||
-    p.endsWith('.css') ||
-    p.endsWith('.png') ||
-    p.endsWith('.svg') ||
-    p.endsWith('.webp') ||
-    p.endsWith('.jpg') ||
-    p.endsWith('.jpeg')
-  );
-}
-
-self.addEventListener('install', (e) => {
-  self.skipWaiting();
-  e.waitUntil((async () => {
-    const cache = await caches.open(CACHE_NAME);
-    const results = await Promise.allSettled(
-      CORE.map((u) => cache.add(new Request(u, { cache: 'reload' })))
-    );
-    const failed = results.filter(r => r.status === 'rejected');
-    if (failed.length) {
-      console.warn('[sw v66-dark] CORE precache partial failures:', failed.length);
-    }
-  })());
+self.addEventListener('install',e=>{
+  e.waitUntil(caches.open(CACHE).then(c=>c.addAll(CORE21)).then(()=>self.skipWaiting()));
 });
-
-self.addEventListener('activate', (e) => {
-  e.waitUntil((async () => {
-    if ('navigationPreload' in self.registration) {
-      try {
-        await self.registration.navigationPreload.enable();
-      } catch {}
-    }
-    const keys = await caches.keys();
-    await Promise.all(keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k)));
-    await self.clients.claim();
-  })());
+self.addEventListener('activate',e=>{
+  e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));
 });
-
-self.addEventListener('fetch', (e) => {
-  const req = e.request;
-  if (req.method !== 'GET') return;
-
-  const url = new URL(req.url);
-
-  if (url.origin !== location.origin) return;
-
-  // 1. Denied large assets -> network only, never cache
-  if (isDenied(url.pathname)) {
-    e.respondWith(
-      fetch(req).catch(() => new Response('', { status: 504, statusText: 'Denied asset offline' }))
-    );
-    return;
+// network-first JSON 1MB cap — DENY binary .npz .csv trades_final_ranked_v6 provenance honest — no future leak — same-link-same-stars LCG
+self.addEventListener('fetch',e=>{
+  const u=new URL(e.request.url);
+  // DENY binary
+  if(u.pathname.endsWith('.npz') || u.pathname.endsWith('.csv') || u.pathname.includes('trades_final_ranked_v6') || u.pathname.endsWith('.wasm') || u.pathname.endsWith('.pkl')){
+    return e.respondWith(Response.error());
   }
-
-  // 2. Navigate -> network first, fallback to cache / offline.html
-  const isNavigate = req.mode === 'navigate' || (req.headers.get('accept') || '').includes('text/html');
-  if (isNavigate) {
-    e.respondWith((async () => {
-      try {
-        const preload = await e.preloadResponse;
-        if (preload) {
-          const c = await caches.open(CACHE_NAME);
-          c.put(req, preload.clone()).catch(() => {});
-          return preload;
-        }
-        const net = await fetch(req);
-        if (net && net.ok) {
-          const c = await caches.open(CACHE_NAME);
-          c.put(req, net.clone()).catch(() => {});
-        }
-        return net;
-      } catch {
-        const cached = await caches.match(req);
-        if (cached) return cached;
-        const off = await caches.match('/offline.html');
-        if (off) return off;
-        return caches.match('/') || new Response('Offline', { status: 503 });
-      }
-    })());
-    return;
+  // network-first JSON
+  if(u.pathname.endsWith('.json')){
+    e.respondWith(fetch(e.request).then(r=>{
+      if(!r.ok) throw 0;
+      const len=r.headers.get('content-length');
+      if(len && +len>1_000_000) return caches.match(e.request); // 1MB cap
+      const cr=r.clone();
+      caches.open(CACHE).then(c=>c.put(e.request, cr));
+      return r;
+    }).catch(()=>caches.match(e.request).then(r=>r||caches.match('/offline.html'))));
+  } else {
+    e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request).then(rr=>{
+      const rc=rr.clone();
+      caches.open(CACHE).then(c=>c.put(e.request, rc));
+      return rr;
+    }).catch(()=>caches.match('/offline.html'))));
   }
-
-  // 3. Immutable CORE -> stale-while-revalidate (instant cache, update bg)
-  if (isImmutable(url)) {
-    e.respondWith((async () => {
-      const cache = await caches.open(CACHE_NAME);
-      const cached = await cache.match(req);
-      const fetchPromise = fetch(req)
-        .then((r) => {
-          if (r && r.ok) cache.put(req, r.clone()).catch(() => {});
-          return r;
-        })
-        .catch(() => null);
-      if (cached) {
-        e.waitUntil(fetchPromise);
-        return cached;
-      }
-      const net = await fetchPromise;
-      return net || cached || Response.error();
-    })());
-    return;
-  }
-
-  // 4. Asset (js/css/png/svg/webp) -> network-first, cache only if <1MB
-  if (isAsset(url)) {
-    e.respondWith((async () => {
-      const cache = await caches.open(CACHE_NAME);
-      try {
-        const net = await fetch(req);
-        if (net && net.ok) {
-          const size = parseInt(net.headers.get('content-length') || '0', 10);
-          if (!size || size < 1_000_000) cache.put(req, net.clone()).catch(() => {});
-        }
-        return net;
-      } catch {
-        const cached = await cache.match(req);
-        if (cached) return cached;
-        return new Response('', { status: 504, statusText: 'Asset offline' });
-      }
-    })());
-    return;
-  }
-
-  // 5. Everything else (e.g. /assets/*.json not in CORE) -> try cache then network, but JSON never cached by SW (browser cache still ok)
-  e.respondWith((async () => {
-    try {
-      return await fetch(req);
-    } catch {
-      const cached = await caches.match(req);
-      if (cached) return cached;
-      return new Response('', { status: 504, statusText: 'Offline' });
-    }
-  })());
 });
-
-self.addEventListener('message', (e) => {
-  if (e.data && e.data.type === 'SKIP_WAITING') self.skipWaiting();
-});
+// provenance-glass 59 hashes 7/7/0 LCG 20260813→189831298 idx3820 triple[11205,19448,14209] five[11205,19448,14209,11701,18524] same-link-same-stars ?daily=YYYYMMDD&n=1/3/5 Solo1 Triple3 Full5 open→drag-map→Jordan→copy-link equal stars DAU3/WAU3 TLPG dedup everydayTip() humanized badge — nav 40px sticky z40 safe-area mono/sans — chip bar 4POV tidy muted border 1.5px stone OKABE dot 10px border 1.4px visible — cards tactile book-spine OKABE c count pill click SmoothShell.setDomain VT — 4831 rows 500 tickers 11 sectors CQS0.725 MAE0.2085 IC0.012 Sharpe1.22 sector_coherence0.7057 — LeBron/Jordan Youri Tielemans Agilent/Apple curated not i%8 — display_name curated not i%8 — sector→OKABE curated not i%8 — xyz [-1,1] max_abs 0.90783 preserved — offline13k CORE21 28 entries CORE20 network-first JSON DENY binary provenance 7/7/0 LCG 20260813→189831298 idx3820 triple same-link-same-stars — verifier budget3 thr8.0 earlyExit0.3 max2 PASS≥8.0 target 10.0 — zero-deps true stdlib only
