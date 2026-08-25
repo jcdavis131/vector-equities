@@ -16,9 +16,6 @@ const CORE21=[
  '/assets/explainer.js',
  '/assets/viral-share.js',
  '/assets/players-directory.js',
- '/assets/smooth-shell.js',
- '/assets/cabinet-play.js',
- '/assets/provenance-glass.js',
  '/assets/pwa-install.js',
  '/assets/icon-192.png',
  '/assets/icon-512.png',
@@ -29,7 +26,19 @@ const CORE21=[
 const CORE=CORE21;
 
 self.addEventListener('install',e=>{
-  e.waitUntil(caches.open(CACHE).then(c=>c.addAll(CORE21)).then(()=>self.skipWaiting()));
+  self.skipWaiting();
+  e.waitUntil((async () => {
+    const cache = await caches.open(CACHE);
+    // Use allSettled to avoid failing whole install if one CORE asset 404s
+    // cache:reload ensures fresh shell on install
+    const results = await Promise.allSettled(
+      CORE21.map((u) => cache.add(new Request(u, { cache: 'reload' })))
+    );
+    const failed = results.filter(r => r.status === 'rejected');
+    if (failed.length) {
+      console.warn('[sw] CORE precache partial failures:', failed.length);
+    }
+  })());
 });
 self.addEventListener('activate',e=>{
   e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));
@@ -37,9 +46,14 @@ self.addEventListener('activate',e=>{
 // network-first JSON 1MB cap — DENY binary .npz .csv trades_final_ranked_v6 provenance honest — no future leak — same-link-same-stars LCG
 self.addEventListener('fetch',e=>{
   const u=new URL(e.request.url);
-  // DENY binary
+  // DENY binary -> network only, never cache (matches vector-hoops).
+  // Response.error() blocked these outright, which broke companies.html: it
+  // legitimately fetches assets/trades_final_ranked_v6.csv to build the trade
+  // cards. The intent here is "never cache", not "never serve".
   if(u.pathname.endsWith('.npz') || u.pathname.endsWith('.csv') || u.pathname.includes('trades_final_ranked_v6') || u.pathname.endsWith('.wasm') || u.pathname.endsWith('.pkl')){
-    return e.respondWith(Response.error());
+    return e.respondWith(
+      fetch(e.request).catch(() => new Response('', { status: 504, statusText: 'Denied asset offline' }))
+    );
   }
   // network-first JSON
   if(u.pathname.endsWith('.json')){

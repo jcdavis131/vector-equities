@@ -36,6 +36,7 @@ a{color:inherit;text-decoration:none} button{font:inherit}
 /* 44px mono sticky nav — japandi warm */
 .nav{position:sticky;top:0;z-index:40;height:var(--nav-h);display:flex;align-items:center;justify-content:space-between;padding:0 20px;background:var(--paper);border-bottom:var(--border);font-family:var(--font-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase}
 .nav-left{display:flex;align-items:center;gap:14px;font-weight:700}
+@media(max-width:720px){.nav-meta{display:none}.nav-left{gap:8px;min-width:0}.nav-mark{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.nav-right{gap:14px}}
 .nav-mark i{font-style:normal;color:var(--pop)}
 .nav-right{display:flex;gap:22px;align-items:center;color:var(--ink-60)}
 .nav-right a{position:relative;padding:2px 0;transition:color .15s} .nav-right a:hover{color:var(--ink)} .nav-right a.active{color:var(--ink)} .nav-right a.active:after{content:"";position:absolute;left:0;right:0;bottom:-4px;height:2px;background:var(--pop);border-radius:1px}
@@ -43,7 +44,8 @@ a{color:inherit;text-decoration:none} button{font:inherit}
 /* shell */
 .shell{max-width:1720px;margin:0 auto;padding:0 20px} @media(min-width:1100px){.shell{padding:0 28px}}
 /* hero — 56-64px serif tight -0.02em max 18ch */
-.hero{padding:48px 0 28px;max-width:var(--grid-max);margin:0 auto;display:grid;grid-template-columns:1fr;gap:16px}
+.hero{padding:48px 0 28px;max-width:var(--grid-max);margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr);gap:16px}
+.hero>*{min-width:0;overflow-wrap:anywhere}
 .kicker{font-family:var(--font-mono);font-size:11px;line-height:1;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-60);display:flex;gap:12px;align-items:center}
 .kicker b{color:var(--ink);font-weight:700} .kicker .rule{height:1px;flex:1;background:var(--stone-200);max-width:160px}
 .hed{font-family:var(--font-serif);font-size:64px;line-height:.95;letter-spacing:-.02em;font-weight:800;margin:0;max-width:18ch;text-wrap:balance;color:var(--ink)} @media(max-width:720px){.hed{font-size:42px;line-height:1.0}}
@@ -98,7 +100,7 @@ img,canvas{max-width:100%} /* focus */
 </head>
 <body>
 <nav class="nav" aria-label="Primary">
-  <div class="nav-left"><a class="nav-mark" href="#">EQUITIES.DUMBMODEL.COM ★ <i>★</i></a><span style="opacity:.35">/</span><span>japandi v4 map <span class="nav-dot"></span></span></div>
+  <div class="nav-left"><a class="nav-mark" href="#">EQUITIES.DUMBMODEL.COM ★ <i>★</i></a><span class="nav-meta" style="opacity:.35">/</span><span class="nav-meta">japandi v4 map <span class="nav-dot"></span></span></div>
   <div class="nav-right"><a class="active" href="#map">Map</a><a href="#roster">Ranks</a><a href="#news">News</a><a href="#about">About</a></div>
 </nav>
 <div class="shell">
