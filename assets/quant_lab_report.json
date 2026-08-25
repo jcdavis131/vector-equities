@@ -1,0 +1,350 @@
+{
+  "spec": "docs/SPEC_QUANT_RESEARCH_LAB.md",
+  "source": "@quantscience_ 2026-08-24 quant stack thread (post 2091917484538372518)",
+  "status": "candidate \u2014 research lane, not a shipped claim",
+  "config": {
+    "playbooks": [
+      "momentum",
+      "mean_reversion",
+      "quality",
+      "value"
+    ],
+    "features": [
+      "momentum:RET_3M",
+      "momentum:RET_6M",
+      "momentum:RET_12M",
+      "momentum:MOMENTUM_12_1",
+      "momentum:PRICE_VS_52W_HIGH",
+      "mean_reversion:RET_1M",
+      "mean_reversion:RSI_14_PROXY",
+      "quality:ROE",
+      "quality:ROA",
+      "quality:ROIC",
+      "quality:FCF_ROIC",
+      "quality:ROIC_WACC_SPREAD",
+      "quality:ALTMAN_Z",
+      "quality:PIOTROSKI_F_SCORE_PROXY",
+      "value:EARNINGS_YIELD",
+      "value:FCF_YIELD",
+      "value:PE",
+      "value:PB",
+      "value:EV_EBITDA"
+    ],
+    "top_n": 40,
+    "long_short": true,
+    "cost_bps": 0.0,
+    "min_coverage": 0.5,
+    "liquidity_pct": 0.0,
+    "ridge_lambda": 10.0,
+    "shuffle_target": false,
+    "model": "ridge closed-form (numpy) \u2014 documented substitute for XGBoost"
+  },
+  "step1_universe": {
+    "rows_total": 4831,
+    "rows_kept": 4372,
+    "periods": [
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024
+    ]
+  },
+  "step3_folds": [
+    {
+      "train_periods": [
+        2015,
+        2016,
+        2017
+      ],
+      "test_period": 2018,
+      "n_train": 1027,
+      "n_test": 461,
+      "ic": -0.06679511189555516
+    },
+    {
+      "train_periods": [
+        2015,
+        2016,
+        2017,
+        2018
+      ],
+      "test_period": 2019,
+      "n_train": 1488,
+      "n_test": 465,
+      "ic": 0.03303634940109898
+    },
+    {
+      "train_periods": [
+        2015,
+        2016,
+        2017,
+        2018,
+        2019
+      ],
+      "test_period": 2020,
+      "n_train": 1953,
+      "n_test": 473,
+      "ic": -0.10944919676701957
+    },
+    {
+      "train_periods": [
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020
+      ],
+      "test_period": 2021,
+      "n_train": 2426,
+      "n_test": 477,
+      "ic": 0.062269148600468054
+    },
+    {
+      "train_periods": [
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021
+      ],
+      "test_period": 2022,
+      "n_train": 2903,
+      "n_test": 483,
+      "ic": -0.07951890990285033
+    },
+    {
+      "train_periods": [
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022
+      ],
+      "test_period": 2023,
+      "n_train": 3386,
+      "n_test": 492,
+      "ic": -0.02234491867315735
+    },
+    {
+      "train_periods": [
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023
+      ],
+      "test_period": 2024,
+      "n_train": 3878,
+      "n_test": 494,
+      "ic": 0.10110557745873215
+    }
+  ],
+  "step5_validation": {
+    "ic_mean": -0.011671008825469035,
+    "ic_std": 0.07905795762408137,
+    "ic_ir": -0.14762598448298392,
+    "n_periods": 7
+  },
+  "step5_playbook_ic": {
+    "momentum": {
+      "ic_mean": 0.02724725747230274,
+      "ic_std": 0.10144140108646613,
+      "ic_ir": 0.26860095760189523,
+      "n_periods": 7,
+      "n_features": 5,
+      "inverted": false
+    },
+    "mean_reversion": {
+      "ic_mean": -0.11934180587132433,
+      "ic_std": 0.05038139870570603,
+      "ic_ir": -2.3687672223718566,
+      "n_periods": 7,
+      "n_features": 2,
+      "inverted": true
+    },
+    "quality": {
+      "ic_mean": -0.009505082953095226,
+      "ic_std": 0.09764143259322525,
+      "ic_ir": -0.09734681989656435,
+      "n_periods": 7,
+      "n_features": 7,
+      "inverted": false
+    },
+    "value": {
+      "ic_mean": -0.018418604914611864,
+      "ic_std": 0.05706077786332628,
+      "ic_ir": -0.32278923639507107,
+      "n_periods": 7,
+      "n_features": 5,
+      "inverted": false
+    }
+  },
+  "step5_importance": [
+    {
+      "feature": "momentum:MOMENTUM_12_1",
+      "weight": 0.27433836561233294,
+      "coef": 0.032947984853992536
+    },
+    {
+      "feature": "momentum:RET_3M",
+      "weight": 0.15661903409840333,
+      "coef": 0.01657335297610335
+    },
+    {
+      "feature": "momentum:RET_6M",
+      "weight": 0.1252220690218114,
+      "coef": -0.0139075836168287
+    },
+    {
+      "feature": "momentum:PRICE_VS_52W_HIGH",
+      "weight": 0.10498078210705394,
+      "coef": -0.011081315873388486
+    },
+    {
+      "feature": "momentum:RET_12M",
+      "weight": 0.07697383904629364,
+      "coef": -0.00925948280115896
+    },
+    {
+      "feature": "quality:ROA",
+      "weight": 0.0570005507288537,
+      "coef": -0.006296145648624956
+    },
+    {
+      "feature": "quality:ROIC_WACC_SPREAD",
+      "weight": 0.04912036239039345,
+      "coef": -0.01243687545733508
+    },
+    {
+      "feature": "quality:ROIC",
+      "weight": 0.026842745188246926,
+      "coef": 0.006794998659227971
+    },
+    {
+      "feature": "quality:ROE",
+      "weight": 0.024184878717731433,
+      "coef": 0.0052054072004733935
+    },
+    {
+      "feature": "quality:PIOTROSKI_F_SCORE_PROXY",
+      "weight": 0.023591134448622757,
+      "coef": 0.0028505956644830775
+    },
+    {
+      "feature": "quality:ALTMAN_Z",
+      "weight": 0.02206248830406841,
+      "coef": -0.002674727473868403
+    },
+    {
+      "feature": "mean_reversion:RSI_14_PROXY",
+      "weight": 0.021420544564362782,
+      "coef": 0.002191633736837265
+    },
+    {
+      "feature": "value:EV_EBITDA",
+      "weight": 0.013529297352369792,
+      "coef": 0.0036819247448629743
+    },
+    {
+      "feature": "mean_reversion:RET_1M",
+      "weight": 0.010551558546311164,
+      "coef": -0.0011200477677584745
+    },
+    {
+      "feature": "value:FCF_YIELD",
+      "weight": 0.004449823897920745,
+      "coef": -0.00238251616711153
+    }
+  ],
+  "step7_backtest": [
+    {
+      "period": 2018,
+      "n_universe": 461,
+      "basket_size": 40,
+      "gross_return": -0.03427539921249263,
+      "net_return": -0.03427539921249263,
+      "turnover": 1.0
+    },
+    {
+      "period": 2019,
+      "n_universe": 465,
+      "basket_size": 40,
+      "gross_return": -0.02176249767653643,
+      "net_return": -0.02176249767653643,
+      "turnover": 0.825
+    },
+    {
+      "period": 2020,
+      "n_universe": 473,
+      "basket_size": 40,
+      "gross_return": -0.09225593887967988,
+      "net_return": -0.09225593887967988,
+      "turnover": 0.875
+    },
+    {
+      "period": 2021,
+      "n_universe": 477,
+      "basket_size": 40,
+      "gross_return": 0.0005226513167144731,
+      "net_return": 0.0005226513167144731,
+      "turnover": 0.725
+    },
+    {
+      "period": 2022,
+      "n_universe": 483,
+      "basket_size": 40,
+      "gross_return": -0.06004011471959529,
+      "net_return": -0.06004011471959529,
+      "turnover": 0.825
+    },
+    {
+      "period": 2023,
+      "n_universe": 492,
+      "basket_size": 40,
+      "gross_return": 0.0906965764821507,
+      "net_return": 0.0906965764821507,
+      "turnover": 0.975
+    },
+    {
+      "period": 2024,
+      "n_universe": 494,
+      "basket_size": 40,
+      "gross_return": 0.1934771933592856,
+      "net_return": 0.1934771933592856,
+      "turnover": 0.725
+    }
+  ],
+  "step8_portfolio": {
+    "n_periods": 7,
+    "mean_period_return": 0.010908924381406648,
+    "std_period_return": 0.09881878786653166,
+    "cumulative_return": 0.049821199208265776,
+    "sharpe_per_period": 0.11039322194622189,
+    "sortino_per_period": 0.1859660017150776,
+    "sharpe_annualized": 0.1561195916704102,
+    "sortino_annualized": 0.262995641765761,
+    "max_drawdown": -0.1648894517033891,
+    "period_hit_rate": 0.42857142857142855,
+    "name_hit_rate": 0.7,
+    "mean_turnover": 0.8499999999999999,
+    "periods_per_year": 2.0,
+    "annualization_note": "periods_per_year = 252/126 = 2; annualized figures assume the signal is redeployed each holding period. Per-period figures are the measured quantity.",
+    "low_sample_warning": true
+  }
+}

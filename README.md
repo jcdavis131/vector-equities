@@ -61,6 +61,55 @@ Three dormant data tracks (like hoops) — each cache-ready and gated on committ
 
 `pipeline/update_dataset.py` growth loop: fetch -> rebuild -> gate -> ledger. Difficulty calibration is embedding-space guessability model targeting 40-80% expected-solve band (model estimate until telemetry qualifies it).
 
+## Quant research lab (8-step ML-in-the-loop)
+
+`pipeline/quant_lab.py` implements the research architecture from the @quantscience_
+2026-08-24 quant-stack thread, over the committed `bench/data/equities_bench_v1.npz`
+corpus (4,831 company-FYs, `horizon_tdays` 126). Spec: [`docs/SPEC_QUANT_RESEARCH_LAB.md`](docs/SPEC_QUANT_RESEARCH_LAB.md).
+
+```bash
+python3 pipeline/quant_lab.py --long-short --report   # writes assets/quant_lab_report.json
+python3 pipeline/quant_lab.py --playbook momentum --long-short
+python3 pipeline/quant_lab.py --shuffle-target        # leakage sentinel
+```
+
+Steps: universe selection -> playbook feature engineering (cross-sectionally z-scored,
+winsor +/-4) -> expanding walk-forward CV -> ridge -> validation (IC, IC-IR, feature
+importance) -> signal -> equal-weight top-N backtest -> portfolio analysis
+(Sharpe, Sortino, MaxDD, hit-rate, turnover).
+
+**Measured, candidate lane — nothing here promotes a shipped claim.** 7 walk-forward
+periods, long/short top-40, no costs:
+
+| Playbook | IC mean | IC-IR | note |
+|---|---|---|---|
+| momentum | +0.0272 | +0.269 | only positively-signed block |
+| quality | -0.0095 | -0.097 | flat |
+| value | -0.0184 | -0.323 | flat |
+| mean_reversion | -0.1193 | **-2.369** | **inverted** — see below |
+
+Blended long/short: cumulative +0.050, Sharpe/period +0.110, MaxDD -0.165, hit-rate
+0.43, turnover 0.85 over n=7 periods. That is approximately no edge, and the report
+says so: `low_sample_warning` fires below 8 periods, because a Sharpe over 7 points is
+not a meaningful estimate.
+
+Two honesty properties worth stating plainly:
+
+- **Long-only here is just beta.** The long-only variant shows hit-rate 1.00 and zero
+  drawdown, but the shuffled-target sentinel scores nearly the same (cum +1.002 vs
+  +1.468) — the returns are market drift over 2015-2024, not signal. The long/short
+  column above is the honest read.
+- **Mean-reversion is inverted, and is left that way.** At the 126-trading-day horizon
+  this corpus shows continuation, not reversal: `RET_1M` and `RSI_14_PROXY` keep going.
+  The playbook holds its textbook sign and the report flags `inverted: true`. Re-fitting
+  the sign to observed full-sample IC would be look-ahead bias, which is the exact
+  failure step 3 exists to prevent.
+
+Seasonality (the thread's third playbook) is **not** implemented: the corpus is annual
+company-FY, so no daily-bar playbook can be honestly backtested here. Execution
+(Prefect/IBKR) is out of scope, and no new dependency was added — ridge substitutes for
+XGBoost, the JSON report substitutes for MLflow. Gated by `tests/test_quant_lab.py`.
+
 ## Running locally
 
 ```bash
