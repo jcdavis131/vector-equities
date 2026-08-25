@@ -16,7 +16,7 @@ def synthetic_political(*args, **kwargs):
     print("[equities] Real fetch required — honest 503 never fabricate", file=sys.stderr)
     sys.exit(2)
 
-def _blocked_synthetic_political_orig_dummy():years=range(2015, 2025)):  # noqa: B008 (immutable range default)
+def _blocked_synthetic_political_orig_dummy(years=range(2015, 2025)):  # noqa: B008 (immutable range default)
     np.random.seed(123)
     # US presidential elections: 2016, 2020, 2024
     rows = []

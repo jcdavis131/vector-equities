@@ -42,7 +42,7 @@ def synthetic_industry_features(*args, **kwargs):
     print("[equities] Real fetch required — honest 503 never fabricate", file=sys.stderr)
     sys.exit(2)
 
-def _blocked_synthetic_industry_features_orig_dummy():years=range(2015, 2025)):  # noqa: B008 (immutable range default)
+def _blocked_synthetic_industry_features_orig_dummy(years=range(2015, 2025)):  # noqa: B008 (immutable range default)
     """Fallback synthetic that respects sector priors, for offline development"""
     np.random.seed(42)
     rows = []

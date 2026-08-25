@@ -16,7 +16,7 @@ def synthetic_trade(*args, **kwargs):
     print("[equities] Real fetch required — honest 503 never fabricate", file=sys.stderr)
     sys.exit(2)
 
-def _blocked_synthetic_trade_orig_dummy():years=range(2015, 2025)):  # noqa: B008 (immutable range default)
+def _blocked_synthetic_trade_orig_dummy(years=range(2015, 2025)):  # noqa: B008 (immutable range default)
     np.random.seed(456)
     rows = []
     for year in years:
