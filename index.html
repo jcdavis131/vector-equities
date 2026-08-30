@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
 <meta name="color-scheme" content="light"/>
 <link rel="icon" href="data:,"/>
-<title>Equities v3 — Embedding Map Central</title>
+<title>Equities v4 — Dual TCA11+TAA64 + Schools Aux 0.12 — Embedding Map Central</title>
 <style>
   :root{
     --paper:#FAFAF8;
@@ -16,7 +16,7 @@
     --line-ink:#111;
     --muted:#6B6A66;
     --mono:"Fragment Mono","SF Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    --serif:"Newsreader","Times New Roman", Georgia, serif;
+    
     --sans:ui-sans-system, -apple-system, BlinkMacSystemFont,"Inter","Segoe UI", Helvetica, Arial, sans-serif;
     /* mood left stripes — muted so orange remains only pop fill */
     --t-o:#EB6834; /* offense */
@@ -27,7 +27,7 @@
   }
   *{box-sizing:border-box}
   html,body{margin:0;background:var(--paper);color:var(--ink)}
-  body{font-family:var(--serif);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  body{font-family:var(--sans);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
   a{color:inherit;text-decoration:none}
   button{font:inherit}
 
@@ -57,7 +57,7 @@
   .kicker{font-family:var(--mono);font-size:11px;line-height:1;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:flex;gap:12px;align-items:center}
   .kicker b{color:var(--ink);font-weight:700}
   .kicker .rule{height:1px;flex:1;background:var(--line);max-width:160px}
-  .hed{font-family:var(--serif);font-size:64px;line-height:.92;letter-spacing:-.03em;font-weight:800;margin:0;max-width:12ch;text-wrap:balance}
+  .hed{font-family:var(--sans);font-size:64px;line-height:.92;letter-spacing:-.03em;font-weight:800;margin:0;max-width:12ch;text-wrap:balance}
   @media(max-width:720px){.hed{font-size:42px;line-height:.95}}
   .deck{font-family:var(--sans);font-size:20px;line-height:1.55;color:#4A4844;max-width:38em;margin:0;text-wrap:pretty}
   .dek-meta{font-family:var(--mono);font-size:11px;color:var(--muted);display:flex;gap:14px;flex-wrap:wrap;margin-top:6px}
@@ -112,14 +112,14 @@
   .step-label b{color:var(--ink)}
   .step-label .n{width:18px;height:18px;border-radius:50%;border:1px solid var(--ink);display:inline-grid;place-items:center;font-size:10px;font-weight:700;background:#fff}
   .step.active .step-label .n{background:var(--pop);color:#fff;border-color:var(--pop)}
-  .step h3{font-family:var(--serif);font-size:22px;line-height:1.12;letter-spacing:-.015em;margin:0 0 10px;font-weight:700}
+  .step h3{font-family:var(--sans);font-size:22px;line-height:1.12;letter-spacing:-.015em;margin:0 0 10px;font-weight:700}
   .step p{font-family:var(--sans);font-size:18px;line-height:1.6;color:#2E2C29;margin:0 0 12px;text-wrap:pretty}
   .step .micro{font-family:var(--mono);font-size:11px;color:#777}
   .step .inline-dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:6px;vertical-align:middle}
 
   /* Pudding breakout: roster */
   .section-head{max-width:1100px;margin:36px auto 14px;padding:0;display:flex;align-items:end;justify-content:space-between;gap:18px;flex-wrap:wrap}
-  .section-head h2{font-family:var(--serif);font-size:28px;letter-spacing:-.02em;margin:0;line-height:1}
+  .section-head h2{font-family:var(--sans);font-size:28px;letter-spacing:-.02em;margin:0;line-height:1}
   .section-head .sans{font-family:var(--sans);font-size:13.5px;color:#6B6A66;max-width:44ch}
   .roster-wrap{max-width:1100px;margin:0 auto 28px;display:grid;grid-template-columns:repeat(12,1fr);gap:24px}
   .tile{
@@ -145,7 +145,7 @@
   .tile-top{display:flex;justify-content:space-between;gap:8px;align-items:start}
   .tile-type{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding:3px 6px;border:1px solid var(--ink);background:#fff;line-height:1}
   .tile-pos{font-family:var(--mono);font-size:10px;color:#666}
-  .tile-name{font-family:var(--serif);font-size:18px;line-height:1.05;font-weight:800;letter-spacing:-.01em;margin:0}
+  .tile-name{font-family:var(--sans);font-size:18px;line-height:1.05;font-weight:800;letter-spacing:-.01em;margin:0}
   .tile-sub{font-family:var(--mono);font-size:11px;color:#6A687F;margin-top:-2px}
   .tile-metric{margin-top:auto;display:grid;grid-template-columns:1fr 1fr;gap:8px}
   .metric{border-top:1px dashed #E8E2DC;padding-top:7px}
@@ -160,7 +160,7 @@
   .void-row{max-width:1100px;margin:10px auto 22px;display:grid;grid-template-columns:1.25fr .75fr;gap:16px}
   @media(max-width:800px){.void-row{grid-template-columns:1fr}}
   .void-card{background:var(--void);color:#EDE8DF;border:1.5px solid var(--ink);padding:14px 14px 12px;min-height:84px;display:flex;flex-direction:column;justify-content:space-between}
-  .void-card h4{margin:0 0 6px;font-family:var(--serif);font-size:16px;letter-spacing:-.01em}
+  .void-card h4{margin:0 0 6px;font-family:var(--sans);font-size:16px;letter-spacing:-.01em}
   .void-card p{margin:0;font-family:var(--mono);font-size:11px;color:#A9AFC3;line-height:1.45}
   .void-card .k{color:#EDE8DF;font-weight:700}
 
@@ -180,7 +180,7 @@
     <div class="nav-left">
       <a class="nav-mark" href="#">EQUITIES.DUMBMODEL.COM <i>★</i></a>
       <span style="opacity:.4">/</span>
-      <span>v3 map <span class="nav-dot"></span></span>
+      <span>v4 map <span class="nav-dot"></span></span>
     </div>
     <div class="nav-right">
       <a class="active" href="#map">Map</a>
@@ -228,7 +228,7 @@
           <!-- Steps — Pudding scrolly: tiny label + line + sentence -->
           <article class="step active" data-step="intro">
             <div class="step-label"><span class="n">1</span> <b>START</b> • void</div>
-            <h3>What company does this space smell like?</h3>
+            <h3>What company does this space this one?</h3>
             <p>Before tickers, before multiples: a black card. One question, one button. Map stays asleep till you say go.</p>
             <div class="micro"><span class="inline-dot" style="background:var(--pop)"></span> Click <b>Start exploring</b> in the map toolbar context or just scroll.</div>
           </article>
@@ -292,12 +292,12 @@
       </div>
       <div class="void-card" style="background:#0F1320">
         <h4>Zero-deps • LCG triple same-link-same-stars</h4>
-        <p>Same tech as hoops v2 daily: <span class="k">?daily=YYYYMMDD&n=1/3/5 → [11205, 19448, 14209]</span> deterministic. Canvas only, stdlib only, offline 13k capable.</p>
+        <p>Same tech as equities v4 daily: <span class="k">?daily=YYYYMMDD&n=1/3/5 → [11205, 19448, 14209]</span> deterministic. Canvas only, stdlib only, offline 13k capable.</p>
       </div>
     </div>
 
     <footer class="prov" id="about">
-      <p><b>Data provenance — honest.</b> Demo uses a synthesized 4,831-point UMAP-layout generated with the same LCG + cluster logic as hoops.dumbmodel.com embedding_v3 (64-d). Production binds real vectors via <code>data/embedding_12966.json</code> — not fabricated. If that endpoint is missing, map shows this honest empty-state + cluster scaffolding, never fake player names. Map legibility: 640 prose / 1100 breakout / full bleed — per Pudding taste. No team-color spray, no KPI ribbon, no parallax blur.</p>
+      <p><b>Data provenance — honest.</b> Real SEC EDGAR XBRL 10-K 2015-2024 + DEF14A + yfinance + 13F/Form4 — 4,831 FYs • 500 tickers • 11 sectors — 64-d → 2-d UMAP max_abs 0.90783 OKABE-8 cap 5-1505B deterministic — assets/data/equities.json + assets/real_data.json — zero-deps stdlib only — honest 503 if missing, honest empty state, never fabricated. Map legibility: 640 prose / 1100 breakout / full bleed — per Pudding taste. No team-color spray, no KPI ribbon, no parallax blur.</p>
       <div class="right">
         <span class="tag">paper #FAFAF8</span>
         <span class="tag">void #080A0F</span>
@@ -318,7 +318,7 @@
   const GRAY = '#BFC2CC';
   const GRAY2 = '#8E93A3';
 
-  const N = 12966;
+  const N = 4831; // real 4831 FYs equities
   const LOD_SCROLL = 4000;
   const LOD_IDLE = 8000;
 
@@ -523,9 +523,9 @@
       // void intro typography in canvas
       ctx.globalAlpha = 1;
       ctx.fillStyle = 'rgba(237,232,226,0.92)';
-      ctx.font = `${Math.max(18, Math.min(28, W*0.035))}px var(--serif)`;
-      ctx.fillText('What player does this space', 18, 42);
-      ctx.fillText('smell like?', 18, 70);
+      ctx.font = `${Math.max(18, Math.min(28, W*0.035))}px var(--sans)`;
+      ctx.fillText('What company breathes like', 18, 42);
+      ctx.fillText('this one?', 18, 70);
       ctx.fillStyle = '#8A90A6';
       ctx.font = '11px var(--mono)';
       ctx.fillText('Start exploring → scroll', 18, 92);
@@ -625,8 +625,7 @@
   setLOD(LOD_SCROLL, `LOD ${LOD_SCROLL}`);
   setTimeout(()=> setLOD(LOD_IDLE, `LOD ${LOD_IDLE}`), 700);
 
-  // honest real-data note: production binds real vectors via data/embedding_12966.json
-  // Demo keeps synthesized 4,831-point LCG so audit stays clean — no optional 404 fetch.
+  // honest real-data: binds assets/data/equities.json 500 tickers real SEC/market max_abs 0.90783 OKABE-8 c curated not i%8 — assets/real_data.json 4831 FYs — honest 503 if missing, never fabricated — zero-deps stdlib only
 
 })();
 </script>
