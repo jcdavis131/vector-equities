@@ -47,13 +47,21 @@
   .nav-right a{position:relative;padding:2px 0}
   .nav-right a.active:after{content:"";position:absolute;left:0;right:0;bottom:-3px;height:2px;background:var(--pop)}
   .nav-dot{width:6px;height:6px;border-radius:50%;background:var(--pop);display:inline-block;margin-left:6px;vertical-align:middle}
+  @media(max-width:720px){
+    .nav{padding:0 12px}
+    .nav-meta{display:none}
+    .nav-left{gap:8px;min-width:0}
+    .nav-mark{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .nav-right{gap:14px}
+  }
 
   /* shell */
   .shell{max-width:1680px;margin:0 auto;padding:0 20px}
   @media(min-width:1100px){.shell{padding:0 28px}}
 
   /* Pudding typography */
-  .hero{padding:56px 0 28px;max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr;gap:18px}
+  .hero{padding:56px 0 28px;max-width:1100px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr);gap:18px}
+  .hero>*{min-width:0;overflow-wrap:anywhere}
   .kicker{font-family:var(--mono);font-size:11px;line-height:1;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:flex;gap:12px;align-items:center}
   .kicker b{color:var(--ink);font-weight:700}
   .kicker .rule{height:1px;flex:1;background:var(--line);max-width:160px}
@@ -179,8 +187,8 @@
   <nav class="nav" aria-label="Primary">
     <div class="nav-left">
       <a class="nav-mark" href="#">EQUITIES.DUMBMODEL.COM <i>★</i></a>
-      <span style="opacity:.4">/</span>
-      <span>v4 map <span class="nav-dot"></span></span>
+      <span class="nav-meta" style="opacity:.4">/</span>
+      <span class="nav-meta">v4 map <span class="nav-dot"></span></span>
     </div>
     <div class="nav-right">
       <a class="active" href="#map">Map</a>
