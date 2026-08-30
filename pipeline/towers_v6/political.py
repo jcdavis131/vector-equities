@@ -12,9 +12,11 @@ DATA_DIR = Path("pipeline/data/external")
 
 def synthetic_political(*args, **kwargs):
     import sys
+
     print("[equities] BLOCKED: synthetic_political removed — production-only per 2026-08-15", file=sys.stderr)
     print("[equities] Real fetch required — honest 503 never fabricate", file=sys.stderr)
     sys.exit(2)
+
 
 def _blocked_synthetic_political_orig_dummy(years=range(2015, 2025)):  # noqa: B008 (immutable range default)
     np.random.seed(123)
