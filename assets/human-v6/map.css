@@ -1,0 +1,2 @@
+.hv6-map-shell canvas { display: block; width: 100%; height: auto; }
+.hv6-map-overlay { position: absolute; inset: 0; pointer-events: none; }

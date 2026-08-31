@@ -1,0 +1,7 @@
+.hv6-peers { display: grid; gap: 10px; }
+.hv6-peer { display: grid; grid-template-columns: 1fr auto; gap: 10px; padding: 12px 14px; border: 1px solid var(--stone-line); border-radius: 12px; background: var(--paper-raised); }
+.hv6-peer__name { font-family: var(--font-serif); font-size: 15px; font-weight: 600; }
+.hv6-peer__rel { font-family: var(--font-mono); font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-muted); }
+.hv6-peer__sim { font-family: var(--font-mono); font-size: 11px; color: var(--ink-2); }
+.hv6-peer__diff { font-family: var(--font-mono); font-size: 11px; color: var(--ink-muted); }
+.hv6-peer--selected { border-color: var(--human-blue); box-shadow: 0 0 0 1px var(--human-blue-wash); }

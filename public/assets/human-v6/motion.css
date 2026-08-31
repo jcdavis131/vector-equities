@@ -1,0 +1,4 @@
+@media (prefers-reduced-motion: no-preference){
+  .hv6-btn, .hv6-card, .hv6-peer { transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease; }
+  .hv6-peer:hover { transform: translateY(-1px); border-color: var(--ink-muted); }
+}

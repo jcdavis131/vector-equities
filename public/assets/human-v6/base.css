@@ -1,0 +1,21 @@
+/* Human-Centered v6 — Base */
+html, body { background: var(--paper); color: var(--ink); font-family: var(--font-sans); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+.hv6-eyebrow { font-family: var(--font-mono); font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-muted); }
+.hv6-serif { font-family: var(--font-serif); }
+.hv6-human { font-family: var(--font-human); color: var(--human-blue); font-weight: 600; transform: rotate(-1.2deg); display: inline-block; letter-spacing: -0.01em; line-height: 0.9; }
+.hv6-hero { font-family: var(--font-serif); font-size: var(--text-hero); line-height: 0.95; letter-spacing: -0.02em; font-weight: 400; }
+.hv6-hero b, .hv6-hero strong { font-family: var(--font-sans); font-weight: 800; text-transform: uppercase; letter-spacing: -0.01em; }
+.hv6-body { font-size: 16.5px; line-height: 1.6; max-width: var(--reading-max); color: var(--ink-2); }
+.hv6-small { font-family: var(--font-mono); font-size: 11px; line-height: 1.5; color: var(--ink-muted); }
+.hv6-card { background: var(--paper-raised); border: 1px solid var(--stone-line); border-radius: var(--radius-card); box-shadow: var(--shadow-soft); }
+.hv6-pill { font-family: var(--font-mono); font-size: 10.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; border: 1px solid var(--stone-line); background: var(--paper-raised); color: var(--ink-muted); }
+.hv6-pill--human { border-color: var(--human-blue); color: var(--human-blue); background: var(--human-blue-soft); }
+.hv6-pill--ink { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.hv6-btn { font-family: var(--font-mono); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; padding: 10px 14px; border-radius: 8px; border: 1px solid var(--stone-line); background: var(--paper-raised); color: var(--ink); cursor: pointer; min-height: 40px; transition: all 140ms; }
+.hv6-btn:hover { border-color: var(--ink); transform: translateY(-1px); }
+.hv6-btn--primary { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.hv6-btn--human { background: var(--human-blue); color: white; border-color: var(--human-blue); }
+.hv6-btn--primary:hover { background: var(--ink-strong); }
+.hv6-map-shell { background: var(--void); border: 1px solid #12141A; border-radius: 16px; min-height: 70vh; position: relative; overflow: hidden; }
+.hv6-human-mark { position: relative; }
+.hv6-human-mark::after { content: ""; position: absolute; left: -4px; right: -6px; bottom: 0.08em; height: 0.32em; background: var(--human-blue-wash); transform: rotate(-0.8deg); z-index: -1; border-radius: 2px; }

@@ -1,0 +1,11 @@
+.hv6-individual { padding: 8px 0 0; }
+.hv6-individual__meta { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; align-items: center; }
+.hv6-display { font-family: var(--font-serif); font-size: clamp(28px,4.8vw,52px); line-height: 0.96; letter-spacing: -0.02em; margin: 6px 0 0; font-weight: 400; }
+.hv6-display .hv6-human { font-size: 1.08em; margin-left: 6px; }
+.hv6-individual__signals { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-top: 16px; }
+.hv6-signal { background: var(--paper-raised); border: 1px solid var(--stone-line); border-radius: 12px; padding: 12px 12px 10px; }
+.hv6-signal__label { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-muted); margin-bottom: 4px; }
+.hv6-signal__value { font-family: var(--font-serif); font-size: 15.5px; font-weight: 600; line-height: 1.2; color: var(--ink); }
+.hv6-signal__meaning { font-family: var(--font-mono); font-size: 11px; color: var(--ink-muted); margin-top: 3px; line-height: 1.35; }
+.hv6-signal--human .hv6-signal__value { color: var(--human-blue); }
+@media (max-width: 720px){ .hv6-individual__signals{grid-template-columns:1fr} }

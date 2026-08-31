@@ -1,0 +1,6 @@
+.hv6-evidence { margin-top: 22px; padding: 16px 16px 12px; border: 1px dashed var(--stone-line); border-radius: 12px; background: var(--paper-warm); }
+.hv6-evidence__title { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 800; color: var(--ink); margin-bottom: 10px; }
+.hv6-evidence__grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 10px; }
+.hv6-evidence__item { font-family: var(--font-mono); font-size: 11px; line-height: 1.5; color: var(--ink-2); }
+.hv6-evidence__item b { color: var(--ink); font-weight: 800; }
+@media (max-width: 720px){ .hv6-evidence__grid{grid-template-columns:1fr} }
