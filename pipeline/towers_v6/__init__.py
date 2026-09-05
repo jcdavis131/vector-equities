@@ -79,6 +79,7 @@ def _rng(seed=42):
 
 def synthetic_industry_rows(n=14400, sectors=None, years=None, seed=42):
     import sys
+
     print("[equities v6] BLOCKED: synthetic_industry_rows removed — production-only per 2026-08-15", file=sys.stderr)
     print("[equities v6] Real GDELT/yfinance/GPR fetch required — honest 503", file=sys.stderr)
     sys.exit(2)
@@ -86,6 +87,7 @@ def synthetic_industry_rows(n=14400, sectors=None, years=None, seed=42):
 
 def synthetic_matrix(N, sectors_arr, fy_arr, seed=42):
     import sys
+
     print("[equities v6] BLOCKED: synthetic_matrix removed — production-only per 2026-08-15", file=sys.stderr)
     print("[equities v6] Real GDELT/yfinance/trade fetch required — honest 503", file=sys.stderr)
     sys.exit(2).astype(np.float32)
