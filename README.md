@@ -22,7 +22,11 @@ Live at https://equities.dumbmodel.com
   - knn sector purity@10 = 0.7057 (baseline random 0.1117, lift 6.32×, n=4831)
   - cross-ticker purity@10 = 0.4013 (baseline 0.1117, lift 3.59×, same-ticker excluded)
   - silhouette cosine = -0.0034 vs perm -0.0204
-  - forward IC>0 gate (IC_rank 3m 0.0064, 12m 0.0062, triple-barrier hit 21.9%)
+  - forward IC>0 gate: **not passing.** `assets/eval_forward.json` (written by
+    `pipeline/eval_forward.py`, Spearman rank IC of the calibrated 6M prediction against
+    realized forward return on `trades_final_ranked_v6.csv`) reads ic_rank_6m -0.0166,
+    3m -0.0151, 12m -0.0146, triple-barrier hit 21.9%, `gate.ic_gt_zero: false`. The
+    3m 0.0064 / 12m 0.0062 previously listed here are not in any committed report.
   - composite = sector coherence + next-profile R² + market directional
 
 Shipped artifacts (`assets/real_data.json`, `assets/eval_sector_coherence.json`, `assets/real_data.json` points xyz + 12 grades) are committed so site runs static with optional client-side inference.
@@ -80,6 +84,13 @@ MIT. Solo personal project, no connection to employer, built with public/free-ti
 
 
 ## MTNN v4 — Forward IC Ledger — Day/Week/Month — 0.174→0.7057 Sector Coherence
+
+> **Unverified (2026-09-05).** No script in this repo produces the IC 0.174 / 0.22 / 0.31
+> figures below, and `pipeline/eval_reports/eval_equities_latest.json` carries an
+> `ic_proxy` of 5.827, which is outside the [-1, 1] range an information coefficient can
+> take, so that file is not an IC measurement either. The only reproducible forward-IC
+> number is the negative one in `assets/eval_forward.json` above. Treat this table as a
+> claim until `eval_forward.py` is rerun on the v4 trades.
 > 4831 rows 500 tickers 11 sectors OKABE-8 DAX MSCI live provenance 7/7/0 59→73 hashes LCG 20260813→189831298 idx3820 triple[11205,19448,14209] ?daily=YYYYMMDD&n=1/3/5 same-link-same-stars
 | Day 0.725 MAE 0.2085 IC 0.174 Sharpe1.22 n4831 sector_coherence 0.7057 |
 | Week CQS0.72 IC0.22 Sharpe1.18 |
