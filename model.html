@@ -553,8 +553,6 @@ a{color:var(--blue)}
 <script src="assets/keyboard-a11y.js"></script>
 <script src="assets/site-nav.js" defer></script>
 <script src="assets/pwa-install.js"></script>
-<script src="assets/mtnn.js" defer></script>
-<script src="assets/network-viz.js" defer></script>
 <script>
 (() => {
   // ----- helpers
@@ -563,7 +561,7 @@ a{color:var(--blue)}
 
   async function loadManifest(){
     try{
-      const r = await fetch('assets/manifest.json?v='+Date.now());
+      const r = await fetch('assets/manifest_v6_real.json?v='+Date.now());
       const j = await r.json();
       $('#deployed-name').textContent = j.model || 'equities_mtnn';
       const el = $('#arch-current-meta');
