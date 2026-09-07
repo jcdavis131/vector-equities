@@ -1,0 +1,253 @@
+{
+ "source": "assets/real_data.json",
+ "model": "equities_mtnn_v_rebuild_d64_transformer",
+ "selection": "per sector, the FY2024 company whose 64-d embedding is nearest that sector's mean embedding",
+ "skill_note": "skill scores are the model's skill_towers head outputs, not percentages; they are unbounded and shown as the model emits them",
+ "skill_keys": [
+  "Profitability",
+  "Growth",
+  "Moat_Margin_Stability",
+  "Cash_Conversion",
+  "Capital_Allocation",
+  "Balance_Health",
+  "Efficiency",
+  "Valuation_Discipline",
+  "Market_Momentum",
+  "Management_Quality",
+  "Shareholder_Yield",
+  "Disclosure_Quality"
+ ],
+ "tiles": [
+  {
+   "ticker": "CMCSA",
+   "name": "Comcast",
+   "sector": "Communication",
+   "year": "2024",
+   "x": -0.29214703727200636,
+   "y": 0.143025820777161,
+   "n_in_sector": 211,
+   "n_tickers_in_sector": 23,
+   "dist_to_centroid": 0.7191,
+   "top_skills": [
+    {
+     "key": "Capital_Allocation",
+     "value": 0.696
+    },
+    {
+     "key": "Valuation_Discipline",
+     "value": 0.543
+    }
+   ]
+  },
+  {
+   "ticker": "WSM",
+   "name": "Williams-Sonoma, Inc.",
+   "sector": "Consumer Discretionary",
+   "year": "2024",
+   "x": 0.37390213227597147,
+   "y": 0.17188056019032516,
+   "n_in_sector": 463,
+   "n_tickers_in_sector": 47,
+   "dist_to_centroid": 0.7792,
+   "top_skills": [
+    {
+     "key": "Efficiency",
+     "value": 1.169
+    },
+    {
+     "key": "Profitability",
+     "value": 0.882
+    }
+   ]
+  },
+  {
+   "ticker": "HSY",
+   "name": "Hershey Company (The)",
+   "sector": "Consumer Staples",
+   "year": "2024",
+   "x": 0.2944028136399683,
+   "y": -0.0943010512291832,
+   "n_in_sector": 328,
+   "n_tickers_in_sector": 34,
+   "dist_to_centroid": 0.7919,
+   "top_skills": [
+    {
+     "key": "Profitability",
+     "value": 0.865
+    },
+    {
+     "key": "Moat_Margin_Stability",
+     "value": 0.78
+    }
+   ]
+  },
+  {
+   "ticker": "DVN",
+   "name": "Devon Energy",
+   "sector": "Energy",
+   "year": "2024",
+   "x": 0.1120880878667724,
+   "y": -0.05632721586042824,
+   "n_in_sector": 193,
+   "n_tickers_in_sector": 20,
+   "dist_to_centroid": 0.791,
+   "top_skills": [
+    {
+     "key": "Valuation_Discipline",
+     "value": 0.686
+    },
+    {
+     "key": "Efficiency",
+     "value": 0.557
+    }
+   ]
+  },
+  {
+   "ticker": "PFG",
+   "name": "Principal Financial Group",
+   "sector": "Financials",
+   "year": "2024",
+   "x": -0.4456166226804124,
+   "y": -0.3174885249801745,
+   "n_in_sector": 740,
+   "n_tickers_in_sector": 76,
+   "dist_to_centroid": 0.7211,
+   "top_skills": [
+    {
+     "key": "Cash_Conversion",
+     "value": 0.656
+    },
+    {
+     "key": "Valuation_Discipline",
+     "value": 0.555
+    }
+   ]
+  },
+  {
+   "ticker": "GILD",
+   "name": "Gilead Sciences",
+   "sector": "Healthcare",
+   "year": "2024",
+   "x": -0.012805130531324347,
+   "y": -0.14651987438540842,
+   "n_in_sector": 571,
+   "n_tickers_in_sector": 59,
+   "dist_to_centroid": 0.8327,
+   "top_skills": [
+    {
+     "key": "Cash_Conversion",
+     "value": 0.678
+    },
+    {
+     "key": "Capital_Allocation",
+     "value": 0.599
+    }
+   ]
+  },
+  {
+   "ticker": "VLTO",
+   "name": "Veralto",
+   "sector": "Industrials",
+   "year": "2024",
+   "x": 0.3033683248215702,
+   "y": -0.1837449839809675,
+   "n_in_sector": 768,
+   "n_tickers_in_sector": 79,
+   "dist_to_centroid": 0.8393,
+   "top_skills": [
+    {
+     "key": "Profitability",
+     "value": 0.87
+    },
+    {
+     "key": "Moat_Margin_Stability",
+     "value": 0.787
+    }
+   ]
+  },
+  {
+   "ticker": "VMC",
+   "name": "Vulcan Materials Company",
+   "sector": "Materials",
+   "year": "2024",
+   "x": -0.04440519777954006,
+   "y": -0.18946601681205394,
+   "n_in_sector": 240,
+   "n_tickers_in_sector": 26,
+   "dist_to_centroid": 0.766,
+   "top_skills": [
+    {
+     "key": "Capital_Allocation",
+     "value": 0.603
+    },
+    {
+     "key": "Efficiency",
+     "value": 0.528
+    }
+   ]
+  },
+  {
+   "ticker": "KIM",
+   "name": "Kimco Realty",
+   "sector": "Real Estate",
+   "year": "2024",
+   "x": -0.3773385915939731,
+   "y": -0.3706480548770817,
+   "n_in_sector": 307,
+   "n_tickers_in_sector": 31,
+   "dist_to_centroid": 0.6456,
+   "top_skills": [
+    {
+     "key": "Moat_Margin_Stability",
+     "value": 0.627
+    },
+    {
+     "key": "Shareholder_Yield",
+     "value": 0.612
+    }
+   ]
+  },
+  {
+   "ticker": "DDOG",
+   "name": "Datadog",
+   "sector": "Technology",
+   "year": "2024",
+   "x": -0.050279815384615394,
+   "y": -0.07605326026962728,
+   "n_in_sector": 707,
+   "n_tickers_in_sector": 74,
+   "dist_to_centroid": 0.8013,
+   "top_skills": [
+    {
+     "key": "Growth",
+     "value": 0.828
+    },
+    {
+     "key": "Market_Momentum",
+     "value": 0.813
+    }
+   ]
+  },
+  {
+   "ticker": "EVRG",
+   "name": "Evergy",
+   "sector": "Utilities",
+   "year": "2024",
+   "x": -0.21020956034892943,
+   "y": -0.2079537839809675,
+   "n_in_sector": 303,
+   "n_tickers_in_sector": 31,
+   "dist_to_centroid": 0.6309,
+   "top_skills": [
+    {
+     "key": "Capital_Allocation",
+     "value": 0.679
+    },
+    {
+     "key": "Valuation_Discipline",
+     "value": 0.565
+    }
+   ]
+  }
+ ]
+}

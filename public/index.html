@@ -18,12 +18,8 @@
     --mono:"Fragment Mono","SF Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     
     --sans:ui-sans-system, -apple-system, BlinkMacSystemFont,"Inter","Segoe UI", Helvetica, Arial, sans-serif;
-    /* mood left stripes — muted so orange remains only pop fill */
-    --t-o:#EB6834; /* offense */
-    --t-b:#5C7CFF; /* bench */
-    --t-p:#9D6BFF; /* paint */
-    --t-g:#2EC4B6; /* guard */
-    --t-c:#E8B84A; /* composite */
+    /* Tile stripes are coloured per sector at render time from the same palette
+       the map uses, so a tile's stripe and its dots always agree. */
   }
   *{box-sizing:border-box}
   html,body{margin:0;background:var(--paper);color:var(--ink)}
@@ -136,14 +132,10 @@
   @media(max-width:480px){.tile{grid-column:span 12}}
   .tile:hover{transform:translate(-1px,-1px)}
   .tile-stripe{position:absolute;left:0;top:0;bottom:0;width:6px}
-  .tile.t-o .tile-stripe{background:var(--t-o)}
-  .tile.t-b .tile-stripe{background:var(--t-b)}
-  .tile.t-p .tile-stripe{background:var(--t-p)}
-  .tile.t-g .tile-stripe{background:var(--t-g)}
-  .tile.t-c .tile-stripe{background:var(--t-c)}
+  /* .tile-stripe background is set inline per sector by renderRoster(). */
   .tile-main{padding:12px 12px 10px 16px;display:flex;flex-direction:column;gap:8px;flex:1}
   .tile-top{display:flex;justify-content:space-between;gap:8px;align-items:start}
-  .tile-type{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding:3px 6px;border:1px solid var(--ink);background:#fff;line-height:1}
+  .tile-type{font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;padding:3px 6px;border:1px solid var(--ink);background:#fff;line-height:1.25}
   .tile-pos{font-family:var(--mono);font-size:10px;color:#666}
   .tile-name{font-family:var(--sans);font-size:18px;line-height:1.05;font-weight:800;letter-spacing:-.01em;margin:0}
   .tile-sub{font-family:var(--mono);font-size:11px;color:#6A687F;margin-top:-2px}
@@ -204,10 +196,10 @@
     </header>
 
     <section id="map" class="split-wrap">
-      <div class="map-pane" role="img" aria-label="Hoops embedding map">
+      <div class="map-pane" role="img" aria-label="Equities embedding map">
         <div class="map-frame">
           <div class="map-toolbar">
-            <div><b>SPACE</b> — 20719× UMAP • <span id="countLabel">4,831 FYs • ~500 tickers</span> • <span id="lodLabel">LOD 4000</span></div>
+            <div><b>SPACE</b> — PCA-3 of a 64-d embedding • <span id="countLabel">loading…</span> • <span id="lodLabel">LOD 4000</span></div>
             <div class="right">
               <span class="pill live">● live canvas</span>
               <span class="pill" id="hoverPill">hover —</span>
@@ -218,7 +210,7 @@
           <div class="map-legend">
             <div><span class="legend-dot" style="background:#EB6834"></span><span id="legA">selected</span> — focus</div>
             <div><span class="legend-dot" style="background:#B8B8B8"></span>embedding — context (90% gray)</div>
-            <div style="margin-top:6px;opacity:.9">tip: click tile → fly. scroll → story step isolates.</div>
+            <div style="margin-top:6px;opacity:.9">tip: hover a dot for its ticker. click a tile to find it.</div>
           </div>
         </div>
       </div>
@@ -228,7 +220,7 @@
           <!-- Steps — Pudding scrolly: tiny label + line + sentence -->
           <article class="step active" data-step="intro">
             <div class="step-label"><span class="n">1</span> <b>START</b> • void</div>
-            <h3>What company does this space this one?</h3>
+            <h3>What company breathes like this one?</h3>
             <p>Before tickers, before multiples: a black card. One question, one button. Map stays asleep till you say go.</p>
             <div class="micro"><span class="inline-dot" style="background:var(--pop)"></span> Click <b>Start exploring</b> in the map toolbar context or just scroll.</div>
           </article>
@@ -236,42 +228,42 @@
           <article class="step" data-step="all">
             <div class="step-label"><span class="n">2</span> <b>ALL</b> • 4,831 gray dots</div>
             <h3>Every filing-year, one dot.</h3>
-            <p>This is the 64-d company embedding flattened. Each point is a filing-year. No sector rainbow — 90% stay quiet gray. You learn the shape first, not the tickers.</p>
+            <p>This is the 64-d company embedding flattened to its first two principal components. Each point is one company's fiscal year, 2015 through 2024. No sector rainbow yet — they stay gray so you learn the shape first, not the tickers.</p>
             <div class="micro">LOD: 4,000 while scrolling, 8,000 at idle. Canvas DPR1 so it stays crisp without eating your battery.</div>
           </article>
 
-          <article class="step" data-step="clusters">
-            <div class="step-label"><span class="n">3</span> <b>CLUSTERS</b> • neighborhood</div>
-            <h3>Proximity ≙ similarity.</h3>
-            <p>Cash-compounders cling bottom-right. High-growth SaaS sprawls top-left. Cyclicals make a bridge. The model didn't get a GICS manual — it found these.</p>
-            <div class="micro"><span class="inline-dot" style="background:var(--t-g)"></span>guard  <span class="inline-dot" style="background:var(--t-p)"></span>paint  <span class="inline-dot" style="background:var(--t-o)"></span>offense</div>
+          <article class="step" data-step="sectors">
+            <div class="step-label"><span class="n">3</span> <b>SECTORS</b> • where they land</div>
+            <h3>The model never saw a GICS label.</h3>
+            <p>Colour the same dots by sector and the eleven centroids land in a narrow band: they span about 0.23 of the map's width, while a single sector's own spread is 0.14 to 0.19. Sectors overlap far more than they separate. That is the honest read, and it matches the recorded cluster purity of 0.486 — the model groups companies by how their financials behave, and only partly recovers the sector they were filed under.</p>
+            <div class="micro">Centroids are computed in the browser from the rows on screen, not stored.</div>
           </article>
 
-          <article class="step" data-step="offense">
-            <div class="step-label"><span class="n">4</span> <b>OFFENSE — T-O</b></div>
-            <h3>Growth pulls.</h3>
-            <p>High-multiple tech stretches the top edge. When you light only <span style="border-bottom:2px solid var(--t-o)">t-o</span>, the map isn't ranking — it's showing where creation lives.</p>
-            <div class="micro">Tile stripe: orange. Flat paper, no shadow lift — editorial calm.</div>
+          <article class="step" data-step="sector:Industrials">
+            <div class="step-label"><span class="n">4</span> <b>INDUSTRIALS</b></div>
+            <h3>The largest sector, and a wide one.</h3>
+            <p>768 filing-years, more than any other sector here. Its centroid sits just right of the map's middle, and its spread is among the broadest — industrials do not behave like one thing.</p>
+            <div class="micro">These three steps are the three sectors with the most filing-years. Nothing else picked them.</div>
           </article>
 
-          <article class="step" data-step="bench">
-            <div class="step-label"><span class="n">5</span> <b>BENCH — T-B</b></div>
-            <h3>Old economy is a continent.</h3>
-            <p>Not leftovers — a dense interior where asset-heavy steadiness lives. Jiggle here and you see why moats matter.</p>
-            <div class="micro">t-b industrial stripe • gap 24px keeps air like Pudding 3-up.</div>
+          <article class="step" data-step="sector:Financials">
+            <div class="step-label"><span class="n">5</span> <b>FINANCIALS</b></div>
+            <h3>The one corner the model does separate.</h3>
+            <p>740 filing-years, and the most displaced centroid on the map — furthest left and lowest of the eleven, next to Real Estate and Utilities. Balance-sheet-driven businesses are the clearest structure in here.</p>
+            <div class="micro">Left and low is a direction in PC1/PC2, not a ranking.</div>
           </article>
 
-          <article class="step" data-step="paint">
-            <div class="step-label"><span class="n">6</span> <b>PAINT — T-P</b></div>
-            <h3>Energy stays put.</h3>
-            <p>Drillers don't wander. Bottom anchor, tight variance. 64-d → 2-d loses local distance; we don't claim tighter than truth.</p>
-            <div class="micro">single pop orange #EB6834 remains only filled action color.</div>
+          <article class="step" data-step="sector:Technology">
+            <div class="step-label"><span class="n">6</span> <b>TECHNOLOGY</b></div>
+            <h3>Not off on its own.</h3>
+            <p>707 filing-years, and its centroid sits mid-map, closer to Communication and Consumer Discretionary than to any edge. Whatever the model learned, "tech" is not a corner of it. 64-d to 2-d loses local distance; we don't claim tighter than truth.</p>
+            <div class="micro">Single pop orange #EB6834 stays the only filled action colour.</div>
           </article>
 
           <article class="step" data-step="finish">
-            <div class="step-label"><span class="n">7</span> <b>ROSTER</b> • 12 tiles</div>
+            <div class="step-label"><span class="n">7</span> <b>ROSTER</b> • 11 tiles</div>
             <h3>Then, the tickers.</h3>
-            <p>Only after you feel space do we pull 12 company tiles — flat, paper, readable. Click a tile to fly the map.</p>
+            <p>One company per sector: the FY2024 filing whose embedding sits nearest its sector's mean. Click a tile and the map rings that exact filing-year.</p>
             <div class="micro">Scroll further, or jump to <a href="#roster" style="text-decoration:underline">Ranks</a>.</div>
           </article>
         </div>
@@ -279,8 +271,8 @@
     </section>
 
     <div class="section-head" id="roster">
-      <h2>Companies — 12 flat tiles</h2>
-      <span class="sans">Left stripe = sector (t-o tech, t-b industrials, t-p energy, t-g health, t-c consumer). Paper #FAFAF8 shell, ink border, 24px gap — Pudding air. Per-tile metrics (AR/stretch, either/depth) are illustrative placeholder values, not sourced from a data file.</span>
+      <h2>Companies — 11 flat tiles, one per sector</h2>
+      <span class="sans">Left stripe = sector, same palette as the map. Each tile is the FY2024 company whose 64-d embedding is nearest its sector's mean embedding — the most typical member of that sector in the space the model learned. The two figures are that company's highest-scoring skills, named as the model names them, taken from <code>assets/roster.json</code>. They are the skill head's raw outputs, not percentages, and not bounded to 1.</span>
     </div>
 
     <div class="roster-wrap" id="rosterGrid"></div>
@@ -291,20 +283,22 @@
         <p><span class="k">Paper page, dark inset.</span> Same move as Pudding's "As ___ as ___" — text stays white, margin stays calm, single orange action only when you mean it.</p>
       </div>
       <div class="void-card" style="background:#0F1320">
-        <h4>Zero-deps • LCG triple same-link-same-stars</h4>
-        <p>Same tech as equities v4 daily: <span class="k">?daily=YYYYMMDD&n=1/3/5 → [11205, 19448, 14209]</span> deterministic. Canvas only, stdlib only, offline 13k capable.</p>
+        <h4>Zero-deps • two fetches, no libraries</h4>
+        <p>The map reads <span class="k">assets/map_slim.json</span> and <span class="k">assets/roster.json</span>, both derived from the model's own export. Canvas only, no chart library, no CDN. If either file fails to load the page says so and draws nothing — there is no generated fallback.</p>
       </div>
     </div>
 
     <footer class="prov" id="about">
-      <p><b>Data provenance — honest.</b> This map is a deterministic, seeded generative visualization (LCG, zero-deps, no network calls) styled after this repo's real SEC EDGAR XBRL 10-K 2015-2024 + DEF14A + yfinance + 13F/Form4 dataset — 4,831 FYs • 500 tickers • 11 sectors — recorded in <code>assets/data/equities.json</code> and <code>assets/real_data.json</code>. Those are real, git-tracked, non-fabricated files, but this page does not fetch them: the map and roster tiles below are illustrative placeholders, not a live render of that data. Map legibility: 640 prose / 1100 breakout / full bleed — per Pudding taste. No team-color spray, no KPI ribbon, no parallax blur.</p>
+      <p><b>Data provenance.</b> Every dot, tile and figure on this page is read at runtime from <code>assets/real_data.json</code>, the output of this repo's own model <code>equities_mtnn_v_rebuild_d64_transformer</code> (64-d, transformer fusion, 118 features, built 2026-08-01). Source data is SEC EDGAR XBRL 10-K 2015–2024 plus DEF 14A, yfinance and 13F/Form 4: 4,831 filing-years, 500 tickers, 11 GICS sectors. Recorded evaluation for this checkpoint: recall@10 0.910, cluster purity@20 0.486, composite 0.615. Two derived files are committed alongside it — <code>assets/map_slim.json</code> (the same rows with the 64-d embedding and 12 skill floats dropped for page weight) and <code>assets/roster.json</code> — each rebuildable with the script named in its header. The only transform applied here is a view transform: PC1 and PC2 are rescaled from their observed range into the canvas box and y is flipped so positive PC2 renders upward; PC3 exists in the export and is dropped. No value on this page is generated, seeded, sampled or interpolated. The export also carries an <code>archetype</code> field, which is a k-means cluster index paired with a hardcoded name whose members contradict it; it is deliberately not shown. See <code>FINDING_archetype_names_are_not_real.md</code>.</p>
       <div class="right">
         <span class="tag">paper #FAFAF8</span>
         <span class="tag">void #080A0F</span>
         <span class="tag">ink #111 1.5px</span>
         <span class="tag">pop #EB6834</span>
         <span class="tag">LOD 4000/8000 DPR1</span>
-        <span class="tag">4,831 FYs • ~500 tickers</span>
+        <span class="tag">4,831 FYs • 500 tickers • 11 sectors</span>
+        <span class="tag">recall@10 0.910</span>
+        <span class="tag">purity@20 0.486</span>
         <span class="tag">zero-deps</span>
       </div>
     </footer>
@@ -312,323 +306,361 @@
 
 <script>
 (() => {
-  const PAPER = '#FAFAF8';
   const VOID = '#080A0F';
   const POP = '#EB6834';
   const GRAY = '#BFC2CC';
-  const GRAY2 = '#8E93A3';
-
-  const N = 4831; // real 4831 FYs equities
   const LOD_SCROLL = 4000;
   const LOD_IDLE = 8000;
+  const MONO = '11px ui-monospace, SFMono-Regular, Menlo, monospace';
 
-  // --- LCG for deterministic same-link-same-stars feel ---
-  function lcg(seed){
-    let s = seed >>> 0;
-    return () => {
-      s = Math.imul(s, 1664525) + 1013904223 >>> 0;
-      return s / 4294967296;
-    };
-  }
-  const dailyParam = new URLSearchParams(location.search).get('daily');
-  let seedBase = 42;
-  if(dailyParam){
-    // simple hash of daily string to int
-    let h=0; for(let i=0;i<dailyParam.length;i++) h = Math.imul(31,h)+dailyParam.charCodeAt(i)|0;
-    seedBase = Math.abs(h) % 1000000;
-  }
-  const rnd = lcg(seedBase || 42);
+  // ColorBrewer Set3 (an established qualitative palette), with Set3's grey #d9d9d9
+  // swapped for its 12th swatch #ffed6f so no sector collides with the gray context
+  // dots. Keyed by the sector names the export itself ships, in the export's order.
+  const SET3 = ['#8dd3c7','#ffffb3','#bebada','#fb8072','#80b1d3','#fdb462',
+                '#b3de69','#fccde5','#ffed6f','#bc80bd','#ccebc5'];
 
-  // mood centers matching t-*
-  const centers = [
-    {t:'o', x: 0.78, y:0.22, sx:0.12, sy:0.14, count: 0.22, color:'#EB6834', label:'offense'},
-    {t:'g', x: 0.22, y:0.28, sx:0.13, sy:0.12, count: 0.22, color:'#2EC4B6', label:'guard'},
-    {t:'p', x: 0.72, y:0.78, sx:0.11, sy:0.09, count: 0.18, color:'#9D6BFF', label:'paint'},
-    {t:'b', x: 0.48, y:0.52, sx:0.18, sy:0.16, count: 0.22, color:'#5C7CFF', label:'bench'},
-    {t:'c', x: 0.38, y:0.68, sx:0.14, sy:0.12, count: 0.16, color:'#E8B84A', label:'composite'},
-  ];
+  // The three sectors with the most filing-years; that count is why the story stops here.
+  const SPOTLIGHT = ['Industrials','Financials','Technology'];
 
-  function genPoints(){
-    const pts = [];
-    for(let ci=0; ci<centers.length; ci++){
-      const c = centers[ci];
-      const n = Math.floor(N * c.count);
-      for(let i=0;i<n;i++){
-        // box-muller-ish
-        const u1 = rnd(); const u2 = rnd();
-        const mag = Math.sqrt(-2*Math.log(u1+1e-9)) * 0.44;
-        const ang = u2*6.2831853;
-        const x = c.x + mag * c.sx * Math.cos(ang) + (rnd()-0.5)*0.03;
-        const y = c.y + mag * c.sy * Math.sin(ang) + (rnd()-0.5)*0.03;
-        pts.push({x:Math.max(0.02,Math.min(0.98,x)), y:Math.max(0.05,Math.min(0.95,y)), ci, t:c.t, c:c.color});
-      }
-    }
-    while(pts.length < N){
-      const c = centers[Math.floor(rnd()*centers.length)];
-      pts.push({x:Math.max(0.02,Math.min(0.98,c.x + (rnd()-0.5)*0.2)), y:Math.max(0.05,Math.min(0.95,c.y + (rnd()-0.5)*0.2)), ci:centers.indexOf(c), t:c.t, c:c.color});
-    }
-    // shuffle a bit
-    for(let i=pts.length-1;i>0;i--){ const j=Math.floor(rnd()*(i+1)); const tmp=pts[i]; pts[i]=pts[j]; pts[j]=tmp; }
-    return pts;
-  }
+  // --- real state, empty until the export loads. There is no generated fallback. ---
+  let points = [];        // {x,y,ticker,name,year,sector,c} in 0..1 view space
+  let centers = [];       // one centroid per sector, computed from the loaded rows
+  let sectorColor = {};
+  let roster = [];        // real tiles from assets/roster.json
+  let meta = null;
+  let loadError = null;
 
-  const points = genPoints();
-
-  // ---- roster 12 tiles ----
-  const rosterNames = [
-    {name:'AAPL', type:'t-o', pos:'Tech • 01', sub:'platform • cash compounder', a:28.4, b:6.2},
-    {name:'MSFT', type:'t-o', pos:'Tech • 01', sub:'cloud • moat', a:31.2, b:8.1},
-    {name:'NVDA', type:'t-o', pos:'Tech • 02', sub:'growth • high mult', a:42.1, b:11.3},
-    {name:'XOM', type:'t-p', pos:'Energy • 05', sub:'old econ • dividend', a:8.4, b:2.7},
-    {name:'LLY', type:'t-g', pos:'Health • 03', sub:'defensive • pricing', a:19.2, b:4.9},
-    {name:'JPM', type:'t-b', pos:'Fin • 04', sub:'bank • cyclical', a:11.2, b:2.6},
-    {name:'CAT', type:'t-b', pos:'Indust • 04', sub:'asset heavy • stable', a:9.1, b:1.8},
-    {name:'DE', type:'t-b', pos:'Indust • 04', sub:'indust • depth', a:10.3, b:1.9},
-    {name:'UNH', type:'t-g', pos:'Health • 03', sub:'health • compounder', a:22.9, b:3.8},
-    {name:'CVX', type:'t-p', pos:'Energy • 05', sub:'energy • cash flow', a:9.6, b:2.4},
-    {name:'PG', type:'t-c', pos:'Cons • 02', sub:'staple • moat', a:24.0, b:3.1},
-    {name:'COST', type:'t-c', pos:'Cons • 02', sub:'retail • membership', a:36.4, b:4.2},
-  ];
-
-  const grid = document.getElementById('rosterGrid');
-  rosterNames.forEach((r,i)=>{
-    const el = document.createElement('div');
-    el.className = `tile ${r.type}`;
-    el.dataset.idx = String(i);
-    el.innerHTML = `
-      <div class="tile-stripe" aria-hidden="true"></div>
-      <div class="tile-main">
-        <div class="tile-top"><span class="tile-type">${r.type}</span><span class="tile-pos">${r.pos}</span></div>
-        <h3 class="tile-name">${r.name}</h3>
-        <div class="tile-sub">${r.sub}</div>
-        <div class="tile-metric">
-          <div class="metric"><b>${r.a.toFixed(1)} ↑</b><i>AR / stretch</i></div>
-          <div class="metric"><b>${r.b.toFixed(1)} →</b><i>either / depth</i></div>
-        </div>
-        <div class="tile-cta">
-          <button class="btn pop" data-focus="${i}">FOCUS</button>
-          <button class="btn" data-mood="${r.type.replace('t-','')}">MOOD ${r.type}</button>
-        </div>
-      </div>`;
-    grid.appendChild(el);
-  });
-
-  // --- canvas map DPR1 LOD ---
   const canvas = document.getElementById('mapCanvas');
   const hoverPill = document.getElementById('hoverPill');
   const lodLabel = document.getElementById('lodLabel');
+  const countLabel = document.getElementById('countLabel');
   const legA = document.getElementById('legA');
-  let W=0,H=0,dpr=1;
+  const grid = document.getElementById('rosterGrid');
+  let W = 0, H = 0;
   let lod = LOD_SCROLL;
   let focusIdx = -1;
   let activeStep = 'intro';
-  let isScrolling = false;
-  let idleTimer = null;
+
+  function esc(s){
+    return String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  }
+
+  // ---------------------------------------------------------------------------
+  // Load the real export. Both files are written from assets/real_data.json - the
+  // model's own output - by scripts/build_map_slim.py and scripts/build_roster.py.
+  // ---------------------------------------------------------------------------
+  async function load(){
+    const [mapRes, rosRes] = await Promise.all([
+      fetch('assets/map_slim.json', {cache: 'no-cache'}),
+      fetch('assets/roster.json', {cache: 'no-cache'})
+    ]);
+    if(!mapRes.ok) throw new Error('assets/map_slim.json -> HTTP ' + mapRes.status);
+    if(!rosRes.ok) throw new Error('assets/roster.json -> HTTP ' + rosRes.status);
+    const map = await mapRes.json();
+    const ros = await rosRes.json();
+
+    const rows = map.rows || [];
+    if(rows.length !== map.n_rows){
+      throw new Error('row count ' + rows.length + ' != declared ' + map.n_rows);
+    }
+    if(!rows.length) throw new Error('export contains no rows');
+
+    // VIEW TRANSFORM, not a change to the data: PC1/PC2 are rescaled from their own
+    // observed range into the canvas 0..1 box, and y is flipped so positive PC2
+    // renders upward. PC3 is in the export and is dropped; this is a 2-d view of it.
+    let x0 = Infinity, x1 = -Infinity, y0 = Infinity, y1 = -Infinity;
+    for(const r of rows){
+      if(r.x < x0) x0 = r.x;
+      if(r.x > x1) x1 = r.x;
+      if(r.y < y0) y0 = r.y;
+      if(r.y > y1) y1 = r.y;
+    }
+    const dx = (x1 - x0) || 1, dy = (y1 - y0) || 1;
+
+    (map.sectors || []).forEach((s, i) => { sectorColor[s] = SET3[i % SET3.length]; });
+
+    points = rows.map(r => ({
+      x: (r.x - x0) / dx,
+      y: 1 - (r.y - y0) / dy,
+      ticker: r.ticker, name: r.name, year: r.year, sector: r.sector,
+      c: sectorColor[r.sector] || GRAY
+    }));
+
+    // Sector centroids, computed from the rows actually on screen.
+    const acc = new Map();
+    for(const p of points){
+      const a = acc.get(p.sector) || {sx: 0, sy: 0, n: 0};
+      a.sx += p.x; a.sy += p.y; a.n++;
+      acc.set(p.sector, a);
+    }
+    centers = [...acc.entries()].map(([sector, a]) => ({
+      sector: sector, x: a.sx / a.n, y: a.sy / a.n, n: a.n,
+      color: sectorColor[sector] || GRAY
+    })).sort((p, q) => q.n - p.n);
+
+    // The story stops on three sectors because they are the three largest. If a
+    // re-export changes that, the prose is no longer true, so say so loudly rather
+    // than let a stale claim stand.
+    const topThree = centers.slice(0, 3).map(c => c.sector);
+    if(SPOTLIGHT.some(s => topThree.indexOf(s) === -1)){
+      console.warn('[equities-map] the three largest sectors are now ' +
+        topThree.join(', ') + ' but the story steps still name ' + SPOTLIGHT.join(', ') +
+        '. Update the step prose in index.html.');
+    }
+
+    roster = ros.tiles || [];
+    meta = {
+      model: ros.model || map.source,
+      nRows: rows.length,
+      nSectors: (map.sectors || []).length,
+      nTickers: new Set(rows.map(r => r.ticker)).size
+    };
+  }
+
+  // ---------------------------------------------------------------------------
+  function renderRoster(){
+    if(!grid) return;
+    if(loadError){
+      grid.innerHTML = '<div class="tile" style="grid-column:span 12"><div class="tile-main">' +
+        '<h3 class="tile-name">Roster unavailable</h3>' +
+        '<div class="tile-sub">' + esc(loadError) + '</div>' +
+        '<div class="tile-sub">These tiles render real companies from assets/roster.json. ' +
+        'Nothing is shown rather than showing invented ones.</div></div></div>';
+      return;
+    }
+    grid.innerHTML = '';
+    roster.forEach((t, i) => {
+      const el = document.createElement('div');
+      el.className = 'tile';
+      el.dataset.idx = String(i);
+      const stripe = sectorColor[t.sector] || GRAY;
+      const skills = (t.top_skills || []).map(s =>
+        '<div class="metric"><b>' + s.value.toFixed(2) + '</b><i>' +
+        esc(s.key.replace(/_/g, ' ')) + '</i></div>').join('');
+      el.innerHTML =
+        '<div class="tile-stripe" aria-hidden="true" style="background:' + stripe + '"></div>' +
+        '<div class="tile-main">' +
+          '<div class="tile-top"><span class="tile-type">' + esc(t.sector) + '</span>' +
+          '<span class="tile-pos">FY' + esc(t.year) + '</span></div>' +
+          '<h3 class="tile-name">' + esc(t.ticker) + '</h3>' +
+          '<div class="tile-sub">' + esc(t.name) + '</div>' +
+          '<div class="tile-sub">' + t.n_in_sector + ' filing-years in sector</div>' +
+          '<div class="tile-metric">' + skills + '</div>' +
+          '<div class="tile-cta">' +
+            '<button class="btn pop" data-focus="' + i + '">FIND ON MAP</button>' +
+            '<button class="btn" data-sector="' + esc(t.sector) + '">SECTOR</button>' +
+          '</div>' +
+        '</div>';
+      grid.appendChild(el);
+    });
+  }
 
   function resize(){
-    // DPR1 per spec — ignore devicePixelRatio for perf, but keep sharp enough.
-    dpr = 1;
     const rect = canvas.getBoundingClientRect();
-    W = Math.max(320, Math.floor(rect.width * dpr));
-    H = Math.max(240, Math.floor(rect.height * dpr));
+    W = Math.max(320, Math.floor(rect.width));
+    H = Math.max(240, Math.floor(rect.height));
     canvas.width = W; canvas.height = H;
     draw();
+  }
+
+  function message(ctx, lines, color){
+    ctx.fillStyle = color || '#8A90A6';
+    ctx.font = MONO;
+    lines.forEach((t, i) => ctx.fillText(t, 18, 34 + i * 18));
   }
 
   function draw(){
     const ctx = canvas.getContext('2d');
     if(!ctx) return;
-    ctx.clearRect(0,0,W,H);
-    // void subtle vignette already via CSS bg, but fill again for export safety
+    ctx.clearRect(0, 0, W, H);
     ctx.fillStyle = VOID;
-    ctx.fillRect(0,0,W,H);
-    // faint grid
+    ctx.fillRect(0, 0, W, H);
     ctx.strokeStyle = 'rgba(255,255,255,0.04)';
     ctx.lineWidth = 1;
-    const gx = Math.floor(W/7);
-    for(let x=gx; x<W; x+=gx){ ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
-    const gy = Math.floor(H/5);
-    for(let y=gy; y<H; y+=gy){ ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
+    const gx = Math.floor(W / 7);
+    for(let x = gx; x < W; x += gx){ ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); }
+    const gy = Math.floor(H / 5);
+    for(let y = gy; y < H; y += gy){ ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }
 
-    // pick LOD subset for perf
-    const total = points.length;
-    const count = Math.min(lod, total);
-    // step and focus filtering
+    // Nothing real to draw yet: say so. Never substitute generated points.
+    if(loadError){
+      message(ctx, ['This map renders assets/map_slim.json and could not load it.',
+                    loadError,
+                    'No points are drawn: the page does not generate stand-ins.'], '#E8836A');
+      return;
+    }
+    if(!points.length){
+      message(ctx, ['loading the real embedding export...']);
+      return;
+    }
+
+    const spotlight = activeStep.indexOf('sector:') === 0 ? activeStep.slice(7) : null;
     let filtered = points;
     let highlightColor = POP;
+    if(spotlight){
+      filtered = points.filter(p => p.sector === spotlight);
+      highlightColor = sectorColor[spotlight] || POP;
+    }
 
-    if(activeStep === 'offense') { filtered = points.filter(p=>p.t==='o'); highlightColor = '#EB6834'; }
-    else if(activeStep === 'bench'){ filtered = points.filter(p=>p.t==='b'); highlightColor = '#5C7CFF'; }
-    else if(activeStep === 'paint'){ filtered = points.filter(p=>p.t==='p'); highlightColor = '#9D6BFF'; }
-    else if(activeStep === 'clusters'){ /* all but tint later */ }
-    // if focused tile exists, emphasize its zone
     let focusP = null;
-    if(focusIdx>=0 && focusIdx < rosterNames.length){
-      const fType = rosterNames[focusIdx].type.replace('t-','');
-      focusP = points.filter(p=>p.t===fType).slice(0,160);
+    if(focusIdx >= 0 && focusIdx < roster.length){
+      const t = roster[focusIdx];
+      focusP = points.find(p => p.ticker === t.ticker && p.year === t.year) || null;
     }
 
-    const nDraw = Math.min(count, filtered.length || count);
-    // context dots — 90% gray
-    ctx.globalAlpha = (activeStep==='intro') ? 0.08 : 0.82;
-    for(let i=0;i<nDraw;i++){
-      const p = filtered.length ? filtered[Math.floor((i/nDraw)*filtered.length)] : points[ (i*7) % points.length ];
-      const px = p.x * W;
-      const py = p.y * H;
-      const r = (activeStep==='all' ? 1.6 : 1.9);
-      ctx.fillStyle = (activeStep==='clusters') ? p.c : GRAY;
-      if(activeStep==='offense' || activeStep==='bench' || activeStep==='paint'){ ctx.fillStyle = '#3A425D'; }
-      ctx.globalAlpha = (activeStep==='intro') ? 0.14 : 0.55;
-      ctx.beginPath(); ctx.arc(px,py,r,0,Math.PI*2); ctx.fill();
+    // context dots, thinned to the level of detail
+    const count = Math.min(lod, points.length);
+    const step = Math.max(1, Math.floor(points.length / count));
+    ctx.globalAlpha = (activeStep === 'intro') ? 0.14 : 0.55;
+    for(let i = 0; i < points.length; i += step){
+      const p = points[i];
+      ctx.fillStyle = (activeStep === 'sectors') ? p.c : GRAY;
+      if(spotlight) ctx.fillStyle = '#3A425D';
+      ctx.beginPath();
+      ctx.arc(p.x * W, p.y * H, activeStep === 'all' ? 1.6 : 1.9, 0, Math.PI * 2);
+      ctx.fill();
     }
 
-    // highlighted clusters — pudding style single pop plus subtle mood
     ctx.globalAlpha = 1;
-    if(focusP){
-      for(const p of focusP){
-        ctx.fillStyle = POP;
-        ctx.beginPath(); ctx.arc(p.x*W, p.y*H, 3.2, 0, Math.PI*2); ctx.fill();
-      }
-    } else if(activeStep==='offense' || activeStep==='bench' || activeStep==='paint'){
-      const use = filtered.slice(0, Math.min(900, filtered.length));
-      for(const p of use){
+    if(spotlight){
+      for(const p of filtered){
         ctx.fillStyle = p.c;
         ctx.globalAlpha = 0.95;
-        ctx.beginPath(); ctx.arc(p.x*W, p.y*H, 2.4, 0, Math.PI*2); ctx.fill();
+        ctx.beginPath(); ctx.arc(p.x * W, p.y * H, 2.4, 0, Math.PI * 2); ctx.fill();
       }
       ctx.globalAlpha = 1;
-      legA.textContent = activeStep;
-      legA.style.color = highlightColor;
-    } else if(activeStep==='clusters'){
-      // show all centers faint strong
-      for(let i=0;i<Math.min(1200, points.length); i++){
-        const p = points[(i*31)%points.length];
-        ctx.fillStyle = p.c;
-        ctx.globalAlpha = 0.72;
-        ctx.beginPath(); ctx.arc(p.x*W, p.y*H, 1.7, 0, Math.PI*2); ctx.fill();
+      if(legA){
+        legA.textContent = spotlight + ' - ' + filtered.length + ' FYs';
+        legA.style.color = highlightColor;
       }
-    } else if(activeStep==='all' || activeStep==='intro' || activeStep==='finish'){
-      // slight pop pulse on a few random
-      for(let k=0;k<14;k++){
-        const p = points[Math.floor(rnd()*points.length)%points.length];
-        ctx.fillStyle = POP;
-        ctx.globalAlpha = 0.85;
-        ctx.beginPath(); ctx.arc(p.x*W, p.y*H, 2.0, 0, Math.PI*2); ctx.fill();
+    } else if(activeStep === 'sectors'){
+      // every sector centroid, labelled, computed from the rows on screen
+      for(const c of centers){
+        ctx.fillStyle = c.color;
+        ctx.beginPath(); ctx.arc(c.x * W, c.y * H, 5, 0, Math.PI * 2); ctx.fill();
+        ctx.strokeStyle = 'rgba(0,0,0,0.6)'; ctx.lineWidth = 1; ctx.stroke();
+        ctx.fillStyle = '#EDE8E2'; ctx.font = MONO;
+        ctx.fillText(c.sector, c.x * W + 9, c.y * H + 4);
       }
-      legA.textContent = 'selected';
+      if(legA){
+        legA.textContent = centers.length + ' sector centroids';
+        legA.style.color = '#EDE8E2';
+      }
+    } else if(legA){
+      legA.textContent = points.length.toLocaleString() + ' filing-years';
       legA.style.color = POP;
     }
 
-    if(activeStep==='intro'){
-      // void intro typography in canvas
+    if(activeStep === 'intro'){
       ctx.globalAlpha = 1;
       ctx.fillStyle = 'rgba(237,232,226,0.92)';
-      ctx.font = `${Math.max(18, Math.min(28, W*0.035))}px var(--sans)`;
+      ctx.font = Math.max(18, Math.min(28, W * 0.035)) + 'px ui-sans-serif, system-ui, sans-serif';
       ctx.fillText('What company breathes like', 18, 42);
       ctx.fillText('this one?', 18, 70);
       ctx.fillStyle = '#8A90A6';
-      ctx.font = '11px var(--mono)';
-      ctx.fillText('Start exploring → scroll', 18, 92);
+      ctx.font = MONO;
+      ctx.fillText('Start exploring - scroll', 18, 92);
     }
 
-    // focus ring
-    if(focusIdx>=0){
-      const name = rosterNames[focusIdx].name;
+    if(focusP){
       ctx.globalAlpha = 1;
-      ctx.strokeStyle = POP;
-      ctx.lineWidth = 1.2;
-      ctx.setLineDash([4,6]);
-      // approximate marker at center of its mood
-      const type = rosterNames[focusIdx].type.replace('t-','');
-      const c = centers.find(c=>c.t===type) || centers[0];
-      ctx.beginPath(); ctx.arc(c.x*W, c.y*H, Math.min(W,H)*0.16, 0, Math.PI*2); ctx.stroke();
+      ctx.fillStyle = POP;
+      ctx.beginPath(); ctx.arc(focusP.x * W, focusP.y * H, 4.5, 0, Math.PI * 2); ctx.fill();
+      ctx.strokeStyle = POP; ctx.lineWidth = 1.2; ctx.setLineDash([4, 6]);
+      ctx.beginPath(); ctx.arc(focusP.x * W, focusP.y * H, 16, 0, Math.PI * 2); ctx.stroke();
       ctx.setLineDash([]);
-      ctx.fillStyle = '#F6F1EB';
-      ctx.font = '11px var(--mono)';
-      ctx.fillText(`FLY → ${name}`, 16, H-16);
+      ctx.fillStyle = '#F6F1EB'; ctx.font = MONO;
+      ctx.fillText(focusP.ticker + ' - FY' + focusP.year + ' - ' + focusP.sector, 16, H - 16);
     }
   }
 
   function setLOD(n, label){
     lod = n;
-    lodLabel.textContent = label;
+    if(lodLabel) lodLabel.textContent = label;
     draw();
   }
 
-  // scrolling triggers LOD switch
   let scrollTO = null;
-  function onScrollTick(){
-    isScrolling = true;
-    if(lod !== LOD_SCROLL) setLOD(LOD_SCROLL, `LOD ${LOD_SCROLL}`);
+  window.addEventListener('scroll', () => {
+    if(lod !== LOD_SCROLL) setLOD(LOD_SCROLL, 'LOD ' + LOD_SCROLL);
     clearTimeout(scrollTO);
-    scrollTO = setTimeout(()=>{
-      isScrolling = false;
-      setLOD(LOD_IDLE, `LOD ${LOD_IDLE}`);
-    }, 420);
-  }
-  window.addEventListener('scroll', onScrollTick, {passive:true});
-
+    scrollTO = setTimeout(() => setLOD(LOD_IDLE, 'LOD ' + LOD_IDLE), 420);
+  }, {passive: true});
   window.addEventListener('resize', resize);
-  resize();
-  setTimeout(resize, 80);
 
-  // steps observer
-  const io = new IntersectionObserver((entries)=>{
-    entries.forEach(e=>{
-      if(e.isIntersecting && e.intersectionRatio>0.55){
-        document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if(e.isIntersecting && e.intersectionRatio > 0.55){
+        document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
         e.target.classList.add('active');
         activeStep = e.target.dataset.step || 'all';
         draw();
       }
     });
-  }, {threshold:[0.55]});
-  document.querySelectorAll('.step').forEach(s=>io.observe(s));
+  }, {threshold: [0.55]});
+  document.querySelectorAll('.step').forEach(s => io.observe(s));
 
-  // roster focus
-  grid.addEventListener('click', (e)=>{
-    const btn = e.target.closest('[data-focus]');
-    if(btn){
-      focusIdx = parseInt(btn.getAttribute('data-focus'),10);
+  if(grid) grid.addEventListener('click', e => {
+    const f = e.target.closest('[data-focus]');
+    if(f){
+      focusIdx = parseInt(f.getAttribute('data-focus'), 10);
       activeStep = 'finish';
-      document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
+      document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
       const last = document.querySelector('[data-step="finish"]');
       if(last) last.classList.add('active');
       draw();
-      canvas.scrollIntoView({behavior:'smooth', block:'center'});
+      canvas.scrollIntoView({behavior: 'smooth', block: 'center'});
       return;
     }
-    const moodBtn = e.target.closest('[data-mood]');
-    if(moodBtn){
-      const m = moodBtn.getAttribute('data-mood');
-      if(m==='o') activeStep='offense'; else if(m==='b') activeStep='bench'; else if(m==='p') activeStep='paint'; else if(m==='g') activeStep='all'; else activeStep='clusters';
-      // fake step active none
-      document.querySelectorAll('.step').forEach(s=>{ if(s.dataset.step===activeStep) s.classList.add('active'); else s.classList.remove('active'); });
+    const sBtn = e.target.closest('[data-sector]');
+    if(sBtn){
+      activeStep = 'sector:' + sBtn.getAttribute('data-sector');
       focusIdx = -1;
+      document.querySelectorAll('.step').forEach(s => {
+        s.classList.toggle('active', s.dataset.step === activeStep);
+      });
       draw();
+      canvas.scrollIntoView({behavior: 'smooth', block: 'center'});
     }
   });
 
-  // canvas hover
-  canvas.addEventListener('mousemove', (e)=>{
+  // Hover reports the nearest REAL filing-year, not a label for a region.
+  canvas.addEventListener('mousemove', e => {
+    if(!hoverPill) return;
+    if(loadError){ hoverPill.textContent = 'data not loaded'; return; }
+    if(!points.length){ hoverPill.textContent = 'loading...'; return; }
     const r = canvas.getBoundingClientRect();
-    const x = (e.clientX - r.left)/r.width;
-    const y = (e.clientY - r.top)/r.height;
-    // nearest-ish center label
-    let best = centers[0], bd=1e9;
-    for(const c of centers){ const dx=x-c.x, dy=y-c.y; const d=dx*dx+dy*dy; if(d<bd){bd=d; best=c;} }
-    hoverPill.textContent = `${(x*100).toFixed(1)}%, ${(y*100).toFixed(1)}% — ~${best.label}`;
+    const x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+    let best = null, bd = Infinity;
+    for(const p of points){
+      const dx = p.x - x, dy = p.y - y, d = dx * dx + dy * dy;
+      if(d < bd){ bd = d; best = p; }
+    }
+    hoverPill.textContent = best
+      ? best.ticker + ' - FY' + best.year + ' - ' + best.sector
+      : 'hover -';
   });
-  canvas.addEventListener('mouseleave', ()=>{ hoverPill.textContent='hover —'; });
+  canvas.addEventListener('mouseleave', () => {
+    if(hoverPill) hoverPill.textContent = 'hover -';
+  });
 
-  // init draw cycles
-  setLOD(LOD_SCROLL, `LOD ${LOD_SCROLL}`);
-  setTimeout(()=> setLOD(LOD_IDLE, `LOD ${LOD_IDLE}`), 700);
+  load().then(() => {
+    if(countLabel && meta){
+      countLabel.textContent = meta.nRows.toLocaleString() + ' FYs - ' +
+        meta.nTickers + ' tickers - ' + meta.nSectors + ' sectors';
+    }
+    renderRoster();
+    resize();
+    setLOD(LOD_IDLE, 'LOD ' + LOD_IDLE);
+  }).catch(err => {
+    loadError = String(err && err.message ? err.message : err);
+    console.error('[equities-map] real data failed to load:', err);
+    if(countLabel) countLabel.textContent = 'data unavailable';
+    renderRoster();
+    resize();
+  });
 
-  // generative-only: this file makes no fetch() call. assets/data/equities.json and assets/real_data.json
-  // are real files in this repo (500 tickers / 4,831 FYs) but are not wired into this page — the map
-  // above is a deterministically-seeded (LCG) placeholder, not a render of that data. See footer #about.
-
+  resize();
 })();
 </script>
 </body>
