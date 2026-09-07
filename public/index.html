@@ -174,7 +174,7 @@
   /* mobile overflow guard */
   img,canvas{max-width:100%}
 </style>
-</head>
+<script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments)};</script><script defer src="/_vercel/insights/script.js"></script></head>
 <body>
   <nav class="nav" aria-label="Primary">
     <div class="nav-left">
@@ -590,6 +590,7 @@
     const btn = e.target.closest('[data-focus]');
     if(btn){
       focusIdx = parseInt(btn.getAttribute('data-focus'),10);
+      try{ if(window.va){ const __r=rosterNames[focusIdx]; window.va('event',{name:'tile_focus',data:{tileIndex:focusIdx,tileType:(__r&&__r.type)||'unknown'}}); } }catch(__e){}
       activeStep = 'finish';
       document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
       const last = document.querySelector('[data-step="finish"]');
