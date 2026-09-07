@@ -84,6 +84,16 @@ ok(fin.y === Math.max(...centers.map(c => c.y)),
 const tech = centers.find(c => c.sector === 'Technology');
 const mid = (Math.max(...cx) + Math.min(...cx)) / 2;
 ok(Math.abs(tech.x - mid) < 0.08, 'Technology sits mid-map, as step 6 states');
+
+// Step 6 names Technology's two nearest neighbouring centroids. Check the claim rather
+// than trusting it: Consumer Discretionary reads like a neighbour and is the 6th nearest.
+const techNeighbours = centers
+  .filter(c => c.sector !== 'Technology')
+  .map(c => ({ sector: c.sector, d: Math.hypot(c.x - tech.x, c.y - tech.y) }))
+  .sort((a, b) => a.d - b.d);
+const nearestTwo = techNeighbours.slice(0, 2).map(c => c.sector);
+ok(nearestTwo[0] === 'Communication' && nearestTwo[1] === 'Industrials',
+   `Technology's two nearest centroids are Communication then Industrials, as step 6 states (actual ${nearestTwo.join(', ')})`);
 const ind = centers.find(c => c.sector === 'Industrials');
 ok(ind.n === Math.max(...centers.map(c => c.n)) && ind.n === 768,
    'Industrials is the largest sector at 768 filing-years, as step 4 states');
