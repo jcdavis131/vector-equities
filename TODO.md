@@ -6,6 +6,7 @@ _Last sync: 2026-08-13 21:12 CT_
 
 ## READY (pick me)
 - [ ] equities MTNN README 0.174→0.7057 forward IC eval — branch `scout/equities-mtnn-ic`
+- [ ] equities quant-lab: seasonality playbook blocked on daily bars — needs OHLCV cache (`pipeline/cache/market_history/`), currently gitignored + egress-blocked
 - [ ] equities peer drift model zoo CV — branch `scout/equities-peer-drift`
 - [ ] equities front cap — hoops-level — branch `scout/equities-front`
 
@@ -29,9 +30,10 @@ _Last sync: 2026-08-13 21:12 CT_
 - LOCAL-GPU vector-gridiron real nflverse 32-d — handoff: `LOCAL_GPU_HANDOFF.md` sect 4 — GPU only — nflreadpy fetch + train
 - LOCAL-GPU vector-unified G2 0.685→0.64 — handoff: `LOCAL_GPU_HANDOFF.md` sect 1 MAIN — GPU only — missing caches 3 restore → smoke 2ep → 60ep train → eval
 
-## DONE recent — 2 dones
+## DONE recent — 3 dones
 | Agent | Repo / Area | Done CT | What / Why | Branch | Result |
 |---|---|---|---|---|---|
+| DONE-quant-lab | vector-equities / 8-step ML-in-the-loop | 2026-08-25 | Quant research lab from @quantscience_ 2026-08-24 stack thread — universe→features→walk-forward CV→ridge→IC/IC-IR/importance→signal→backtest→portfolio (Sharpe/Sortino/MaxDD/hit-rate/turnover). Measured n=7: momentum IC +0.0272 IR +0.269, mean_reversion IC -0.1193 IR -2.369 INVERTED (continuation not reversal at 126d, sign held — refitting = look-ahead), blended L/S cum +0.050 ≈ no edge. Long-only = beta (shuffle sentinel matches). Seasonality not built: no daily bars. Zero new deps. 30 tests | claude/vector-equities-update-qpyd3p | CANDIDATE |
 | DONE-self-improvement-100 | self-improvement-loop / 70→100% closer | 18:05 CT 2026-08-13 | Self-improvement 70%→95%→100% closer board poll 17→22 seen 500-505 5 new hits 3 blocker jsonl + paired lessons 28 tight foundation v0.1.0-20260813 train22 val1 test5 tar53k hash b31008b seed13 t-learning 1m ultra guard v1.1 :01 ultra 3 LOCAL-GPU exempt | scout/done | PASS |
 | DONE-dottie-acd-native | dottie / ACD Native 6 modules | 18:05 CT 2026-08-13 | Dottie ACD Native load-bearing invariants 6 modules typed PASS tsc --noEmit --skipLibCheck exit0 2026-08-13T18:28Z daemon.ts tunnel peer.ts version mux rpc + AgentConductorPanel 40px sticky nav thin UI — timeline triple-write 7-field dottie-acd-native | scout/done | PASS |
 
