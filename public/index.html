@@ -280,7 +280,7 @@
 
     <div class="section-head" id="roster">
       <h2>Companies — 12 flat tiles</h2>
-      <span class="sans">Left stripe = sector (t-o tech, t-b industrials, t-p energy, t-g health, t-c consumer). Paper #FAFAF8 shell, ink border, 24px gap — Pudding air.</span>
+      <span class="sans">Left stripe = sector (t-o tech, t-b industrials, t-p energy, t-g health, t-c consumer). Paper #FAFAF8 shell, ink border, 24px gap — Pudding air. Per-tile metrics (AR/stretch, either/depth) are illustrative placeholder values, not sourced from a data file.</span>
     </div>
 
     <div class="roster-wrap" id="rosterGrid"></div>
@@ -297,7 +297,7 @@
     </div>
 
     <footer class="prov" id="about">
-      <p><b>Data provenance — honest.</b> Real SEC EDGAR XBRL 10-K 2015-2024 + DEF14A + yfinance + 13F/Form4 — 4,831 FYs • 500 tickers • 11 sectors — 64-d → 2-d UMAP max_abs 0.90783 OKABE-8 cap 5-1505B deterministic — assets/data/equities.json + assets/real_data.json — zero-deps stdlib only — honest 503 if missing, honest empty state, never fabricated. Map legibility: 640 prose / 1100 breakout / full bleed — per Pudding taste. No team-color spray, no KPI ribbon, no parallax blur.</p>
+      <p><b>Data provenance — honest.</b> This map is a deterministic, seeded generative visualization (LCG, zero-deps, no network calls) styled after this repo's real SEC EDGAR XBRL 10-K 2015-2024 + DEF14A + yfinance + 13F/Form4 dataset — 4,831 FYs • 500 tickers • 11 sectors — recorded in <code>assets/data/equities.json</code> and <code>assets/real_data.json</code>. Those are real, git-tracked, non-fabricated files, but this page does not fetch them: the map and roster tiles below are illustrative placeholders, not a live render of that data. Map legibility: 640 prose / 1100 breakout / full bleed — per Pudding taste. No team-color spray, no KPI ribbon, no parallax blur.</p>
       <div class="right">
         <span class="tag">paper #FAFAF8</span>
         <span class="tag">void #080A0F</span>
@@ -625,7 +625,9 @@
   setLOD(LOD_SCROLL, `LOD ${LOD_SCROLL}`);
   setTimeout(()=> setLOD(LOD_IDLE, `LOD ${LOD_IDLE}`), 700);
 
-  // honest real-data: binds assets/data/equities.json 500 tickers real SEC/market max_abs 0.90783 OKABE-8 c curated not i%8 — assets/real_data.json 4831 FYs — honest 503 if missing, never fabricated — zero-deps stdlib only
+  // generative-only: this file makes no fetch() call. assets/data/equities.json and assets/real_data.json
+  // are real files in this repo (500 tickers / 4,831 FYs) but are not wired into this page — the map
+  // above is a deterministically-seeded (LCG) placeholder, not a render of that data. See footer #about.
 
 })();
 </script>
