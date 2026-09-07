@@ -74,7 +74,7 @@ PEER_TSR_RE = re.compile(r'name="ecd:PeerGroupTotalShareholderRtnAmt"[^>]*>([^<]
 
 # Inline XBRL wraps values in nested spans and escapes entities; a name grabbed raw can
 # arrive as "John&#160;Smith" or with stray markup. Normalised here, once.
-_WS = re.compile(r"[\s ]+")  # noqa: RUF001 (NBSP intentional in whitespace class)
+_WS = re.compile(r"[\s ]+")
 _TAGS = re.compile(r"<[^>]+>")
 
 

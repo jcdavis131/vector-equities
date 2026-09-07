@@ -44,7 +44,9 @@ exclude = [
 
 [tool.ruff.lint]
 select = ["E","W","F","I","B","C4","UP","N","S","PTH","TCH","RUF"]
+# RUF001: sigma and the multiplication sign are used deliberately in training logs (same choice as pitch, unified, dottie).
 ignore = [
+    "RUF001",
   "S101",  # assert allowed in tests/research
   "S603",  # subprocess – internal pipelines
   "S607",  # start process with partial path

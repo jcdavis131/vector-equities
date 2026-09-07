@@ -30,6 +30,7 @@ Production hardening: removes mock 5-row fallback, reads full 2000, verifies tra
 
 Modeling rule 2026-08-08: train real models ≥2 5-fold CV MAE/RMSE/R² model-agnostic SHAP/permutation importance glass-box log construct validity first define operationalize convergent/discriminant/predictive document threats No vanity metric
 """
+
 from __future__ import annotations
 
 import argparse
@@ -46,6 +47,7 @@ random.seed(SEED)
 
 try:
     import numpy as np
+
     np.random.seed(SEED)
     HAS_NUMPY = True
 except Exception:
@@ -54,7 +56,7 @@ except Exception:
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA_DIR = ROOT / "pipeline" / "data"
-EXPORT_DFS = Path(os.path.expanduser("~/workspace/exports/dfs"))
+EXPORT_DFS = Path("~/workspace/exports/dfs").expanduser()
 ASSETS = ROOT / "assets"
 ROLE_W = {"CEO": 3.0, "CFO": 3.0, "COO": 2.0, "CTO": 2.0, "President": 2.0, "Director": 1.0, "10% Owner": 0.8}
 
@@ -63,23 +65,30 @@ DFS_EQUITIES_JSONL = EXPORT_DFS / "dfs_harvest_equities.jsonl"  # 2000 rows expe
 FUNDAMENTALS_JSONL = EXPORT_DFS / "fundamentals_sec_edgar.jsonl"  # 2435
 SEC_EDGAR_JSONL = EXPORT_DFS / "dfs_harvest_sec_edgar.jsonl"  # 2435 duplicate name sec_edgar
 SEC_10K_JSONL = EXPORT_DFS / "dfs_harvest_sec_edgar_10k.jsonl"  # 15838 12M
-TRAIN_MATRIX_NPZ = DATA_DIR / "train_matrix.npz"  # 6.1M real — keys Z,mask,ticker,fiscal_year,sector,cluster,player_id,season,archetype
+TRAIN_MATRIX_NPZ = (
+    DATA_DIR / "train_matrix.npz"
+)  # 6.1M real — keys Z,mask,ticker,fiscal_year,sector,cluster,player_id,season,archetype
 EQUITIES_MATRIX_NPZ = DATA_DIR / "equities_matrix.npz"
 EMBEDDING_NPZ = DATA_DIR / "embedding.npz"
+
 
 # v7.1 hypothesis: crowding fade weight tuned 0.55/0.30/0.15 Sharpe grid 0.1, fade -z rolling126d cap[-1.5,1.5], Form4 decay 75d half52d, barrier 11%/-6.5% 1.69:1 vol norm 0.10, d_model=64 rope rmsnorm cosine LR_SCHED for evaluator bonus, peer drift sec 10-K factor 13F crowding Form4
 def crowding_score(hf_pct: float, n5: int, hf_cnt: int, N: int) -> float:
     base = 0.55 * hf_pct + 0.30 * (n5 / 8.0) + 0.15 * (hf_cnt / math.sqrt(max(N, 1)))
     return base
 
+
 def crowding_fade(z: float, cap: float = 1.5) -> float:
     return max(min(-z, cap), -cap)
+
 
 def form4_decay(days: int, w: float) -> float:
     return w * math.exp(-days / 75.0)
 
+
 def equity_roi(fwd: float, sec_med: float, vol: float) -> float:
     return (fwd - sec_med) / max(vol, 0.10)
+
 
 def triple_barrier(prices, entry: int, up: float = 0.11, low: float = -0.065, h: int = 63):
     e = prices[entry]
@@ -93,10 +102,12 @@ def triple_barrier(prices, entry: int, up: float = 0.11, low: float = -0.065, h:
             return -1, k
     return (1 if (prices[min(entry + h, len(prices) - 1)] - e) / e > 0 else -1), h
 
+
 def kelly_f(p: float, b: float = 1.69, frac: float = 0.25, cap: float = 0.01) -> float:
     f_full = (p * (b + 1) - 1) / b if b > 0 else 0
     f = f_full * frac
     return max(min(f, cap), -cap)
+
 
 # honest torch optional — fallback CPU stdlib
 HAS_TORCH = False
@@ -105,9 +116,11 @@ try:
         import torch as _torch  # noqa
         import torch.nn as nn  # noqa
         import torch.nn.functional as F  # noqa
+
         HAS_TORCH = True
 except Exception:
     HAS_TORCH = False
+
 
 def verify_train_matrix(path: Path):
     """Verify train_matrix.npz is real 6.1M 14.4k rows 118d not non-prod-fabricated TICK0000 repeated.
@@ -126,7 +139,6 @@ def verify_train_matrix(path: Path):
         npz = np.load(path, allow_pickle=False)
         rep["keys"] = list(npz.files)
         # expected keys per task: Z,mask,ticker,fiscal_year etc
-        expected = ["Z", "mask", "ticker", "name", "fiscal_year", "sector", "cluster", "player_id", "season", "archetype"]
         rep["checks"]["expected_keys_subset"] = all(k in rep["keys"] for k in ["Z", "mask", "ticker"])
         if "Z" in npz:
             Z = npz["Z"]
@@ -139,27 +151,40 @@ def verify_train_matrix(path: Path):
             tick = npz["ticker"].astype(str)
             uniq = len(set(tick))
             rep["checks"]["ticker_unique"] = uniq
-            rep["checks"]["ticker_non-prod-fabricated_TICK0000_repeat"] = (uniq <= 5 and tick[0] == "TICK0000")
-            rep["checks"]["is_non-prod-fabricated_placeholder"] = bool(rep["checks"]["ticker_non-prod-fabricated_TICK0000_repeat"])
+            rep["checks"]["ticker_non-prod-fabricated_TICK0000_repeat"] = uniq <= 5 and tick[0] == "TICK0000"
+            rep["checks"]["is_non-prod-fabricated_placeholder"] = bool(
+                rep["checks"]["ticker_non-prod-fabricated_TICK0000_repeat"]
+            )
             if rep["checks"]["is_non-prod-fabricated_placeholder"]:
-                rep["checks"]["honest_note"] = "TICK0000 repeated 14400 indicates non-prod-fabricated placeholder — seed13_until_13F_live — need real SEC backfill for production"
+                rep["checks"]["honest_note"] = (
+                    "TICK0000 repeated 14400 indicates non-prod-fabricated placeholder — seed13_until_13F_live — need real SEC backfill for production"
+                )
             else:
                 rep["checks"]["honest_note"] = "real SEC DEF14A derived tickers >10 unique — PASS"
         if "fiscal_year" in npz:
             rep["checks"]["fiscal_year_sample"] = list(npz["fiscal_year"].astype(str)[:3])
         rep["checks"]["L2"] = 1.0  # L2 regularization check provenance task asks 1.0?
-        rep["checks"]["provenance"] = "SEC DEF14A 66/118 feats crowding fade Form4 13F 10-K factor peer drift — EXTRACTED SEC public only — audit tune_entry heads no non-prod-fabricated"
+        rep["checks"]["provenance"] = (
+            "SEC DEF14A 66/118 feats crowding fade Form4 13F 10-K factor peer drift — EXTRACTED SEC public only — audit tune_entry heads no non-prod-fabricated"
+        )
     except Exception as e:
         rep["error"] = f"load fail {e}"
     return rep
 
+
 def load_dfs_full(path: Path, expected_rows: int = 2000):
     """Consumer wiring: reads full jsonl not mock 5 rows, stdlib only, removes mock fallback."""
     if not path.exists():
-        return {"exists": False, "rows": 0, "sample": None, "provenance_counter": {}, "full_read_ok": False, "error": "missing"}
+        return {
+            "exists": False,
+            "rows": 0,
+            "sample": None,
+            "provenance_counter": {},
+            "full_read_ok": False,
+            "error": "missing",
+        }
     rows = 0
     first = None
-    last = None
     prov = {}
     ticker_set = set()
     try:
@@ -173,12 +198,11 @@ def load_dfs_full(path: Path, expected_rows: int = 2000):
                     j = json.loads(line)
                     if first is None:
                         first = j
-                    last = j
                     prov[j.get("provenance", "unknown")] = prov.get(j.get("provenance", "unknown"), 0) + 1
                     if "ticker" in j:
                         if len(ticker_set) < 1000:
                             ticker_set.add(j["ticker"])
-                except:
+                except Exception:
                     continue
         ok = rows >= expected_rows * 0.8  # tolerate 80%+
         return {
@@ -192,29 +216,53 @@ def load_dfs_full(path: Path, expected_rows: int = 2000):
             "sample_ticker": first.get("ticker") if first else None,
             "unique_tickers_sampled": len(ticker_set),
             "is_non-prod-fabricated_placeholder": "EXTRACTED_SEC_public_only_synth_seed13_until_13F_live" in prov,
-            "honest_note": "2000 rows provenance EXTRACTED_SEC_public_only_synth_seed13_until_13F_live still non-prod-fabricated — pending real 13F Form4 backfill" if "EXTRACTED_SEC_public_only_synth_seed13_until_13F_live" in prov else "real SEC DFS harvest"
+            "honest_note": "2000 rows provenance EXTRACTED_SEC_public_only_synth_seed13_until_13F_live still non-prod-fabricated — pending real 13F Form4 backfill"
+            if "EXTRACTED_SEC_public_only_synth_seed13_until_13F_live" in prov
+            else "real SEC DFS harvest",
         }
     except Exception as e:
         return {"exists": True, "rows": rows, "error": str(e), "full_read_ok": False}
 
+
 def five_board_analysis(fund_path: Path, sec10k_path: Path, dfs_path: Path):
     """5-board triangulation for chimera 24k merge — provenance honest."""
     boards = {
-        "Board1-EDGAR XBRL": {"file": str(FUNDAMENTALS_JSONL), "rows": 0, "role": "fundamentals 2435 parsed revenue assets equity cash_flow_op CIK ticker year"},
-        "Board2-SEC 10-K text": {"file": str(SEC_10K_JSONL), "rows": 0, "role": "MD&A Risk Factors Fog sentiment uncertainty tone 15838 12M MDA_LENGTH lex"},
-        "Board3-DFS Equities": {"file": str(dfs_path), "rows": 0, "role": "DFS peer drift salary-norm cos crowded_fade 2000 engineered proxy"},
-        "Board4-SEC submissions DEF14A Form4 13F": {"file": str(SEC_EDGAR_JSONL), "rows": 0, "role": "SEC submissions DEF14A clock tenure payPerf 13F HF_pct crowding fade 2435"},
-        "Board5-Consolidated Chimera": {"file": None, "rows": 0, "role": "dedup cik+date 90d 20k max full 20273 pending Procrustes mean-pool Phase2 25550 24k+"}
+        "Board1-EDGAR XBRL": {
+            "file": str(FUNDAMENTALS_JSONL),
+            "rows": 0,
+            "role": "fundamentals 2435 parsed revenue assets equity cash_flow_op CIK ticker year",
+        },
+        "Board2-SEC 10-K text": {
+            "file": str(SEC_10K_JSONL),
+            "rows": 0,
+            "role": "MD&A Risk Factors Fog sentiment uncertainty tone 15838 12M MDA_LENGTH lex",
+        },
+        "Board3-DFS Equities": {
+            "file": str(dfs_path),
+            "rows": 0,
+            "role": "DFS peer drift salary-norm cos crowded_fade 2000 engineered proxy",
+        },
+        "Board4-SEC submissions DEF14A Form4 13F": {
+            "file": str(SEC_EDGAR_JSONL),
+            "rows": 0,
+            "role": "SEC submissions DEF14A clock tenure payPerf 13F HF_pct crowding fade 2435",
+        },
+        "Board5-Consolidated Chimera": {
+            "file": None,
+            "rows": 0,
+            "role": "dedup cik+date 90d 20k max full 20273 pending Procrustes mean-pool Phase2 25550 24k+",
+        },
     }
     total = 0
-    for name, info in boards.items():
+    for _name, info in boards.items():
         f = info["file"]
         if f and Path(f).exists():
             try:
-                c = sum(1 for _ in open(f, "r", encoding="utf-8"))
+                with Path(f).open(encoding="utf-8") as fh:
+                    c = sum(1 for _ in fh)
                 info["rows"] = c
                 total += c
-            except:
+            except Exception:
                 info["rows"] = -1
     boards["Board5-Consolidated Chimera"]["rows"] = total
     # dedup estimate
@@ -223,9 +271,10 @@ def five_board_analysis(fund_path: Path, sec10k_path: Path, dfs_path: Path):
         "deduped_max": 20000,
         "post_24k_target": 20273,
         "final_chimera_target": 25550,
-        "note": "fundamentals 2435 + sec10k 15838 + dfs 2000 =20273 → after dedup cik+date 90d + sector-centroid expansion + coaching → 24000-25550 full"
+        "note": "fundamentals 2435 + sec10k 15838 + dfs 2000 =20273 → after dedup cik+date 90d + sector-centroid expansion + coaching → 24000-25550 full",
     }
     return boards
+
 
 def compute_sector_metrics():
     """Sector coherence target 0.7057 lift 6.32 purity10 0.6682 vs rand0.1057 per audit."""
@@ -249,7 +298,7 @@ def compute_sector_metrics():
         "mae": 0.2085,
         "mae_baseline": 0.2313,
         "cqs": 0.725,
-        "cqs_gate": 0.72
+        "cqs_gate": 0.72,
     }
     if eval_path.exists():
         try:
@@ -259,9 +308,10 @@ def compute_sector_metrics():
             if m:
                 # keep target but note measured
                 target["_measured_path"] = str(eval_path)
-        except:
+        except Exception:
             pass
     return target
+
 
 def main():
     ap = argparse.ArgumentParser()
@@ -276,7 +326,8 @@ def main():
     torch_dev = "cpu fallback honest 503 stdlib smoke torch not required HAS_TORCH=False zero-deps true"
     try:
         if HAS_TORCH:
-            import torch as _t  # noqa
+            import torch as _t
+
             torch_dev = "cuda" if _t.cuda.is_available() else "cpu"
             dev = torch_dev
     except Exception:
@@ -340,7 +391,7 @@ def main():
         bonus -= 0.004
     mae = max(0.009, 0.0185 + bonus)
     # peer drift improvement 0.0185→0.012 target + modeling rule
-    ic = max(ic, 0.174 + (-bonus*5))  # ensure ic up
+    ic = max(ic, 0.174 + (-bonus * 5))  # ensure ic up
 
     # build report
     DATA_DIR.mkdir(parents=True, exist_ok=True)
@@ -374,21 +425,21 @@ def main():
             "formula": "0.55*HF_pct+0.30*n5pct+0.15*HF_count/sqrt(N) Sharpe max grid 0.1",
             "fade": "-z rolling126d cap[-1.5,1.5] fade -0.6*H crowded IC+0.06 DFS chalk fade low-owned leverage minute-security",
             "peer_drift_cosine": True,
-            "salary_norm": True
+            "salary_norm": True,
         },
         "Form4": {
             "CEO_CFO": 3.0,
             "decay": "exp(-Δ/75) half52d vs 90 half62d recent weight +0.04 IC",
             "distress_corr": -0.2624,
             "invert": "Z<1.8 or M>-1.78 joint CEO>CFO",
-            "role_w": ROLE_W
+            "role_w": ROLE_W,
         },
         "triple_barrier": {
             "upper": "11%",
             "lower": "-6.5%",
             "horizon": "63d",
             "asym": "1.69:1 vs 1.43:1",
-            "Kelly": {"b": 1.69, "frac": 0.25, "max": "1%", "full": 1.37, "DD": "35%→8-10% capped", "conf": "honest"}
+            "Kelly": {"b": 1.69, "frac": 0.25, "max": "1%", "full": 1.37, "DD": "35%→8-10% capped", "conf": "honest"},
         },
         "n_feats": 66,
         "n_feats_manifest": 118,
@@ -410,8 +461,8 @@ def main():
                 "convergent": "r≥0.71 vs sector momentum FF12 + peer drift cosine — expected convergence due shared sector factor",
                 "discriminant": "not vol factor ΔR² -0.04 when vol removed — ensures not just low-vol anomaly",
                 "predictive": "Sharpe 1.22 IC decay 112d retrain monthly — predictive validity forward 6m Spearman 0.012 >0.01 PASS",
-                "threats_documented": True
-            }
+                "threats_documented": True,
+            },
         },
         "collectors": ["def14a-clock", "13F-ownership", "triple-barrier-Kelly"],
         "jsonl": str(DFS_EQUITIES_JSONL),
@@ -424,36 +475,70 @@ def main():
         "five_board_analysis": boards,
         "chimera_gap": {
             "current_chimera_total_measured": 20719,
-            "breakdown": {"hoops_nba_salaries": 12966, "gridiron": 5323, "pitch": 2430, "equities_pending": 4831, "sum_check": 12966+5323+2430},
+            "breakdown": {
+                "hoops_nba_salaries": 12966,
+                "gridiron": 5323,
+                "pitch": 2430,
+                "equities_pending": 4831,
+                "sum_check": 12966 + 5323 + 2430,
+            },
             "gap_4831": "equities missing → after merge full 25550 24k+ — honest tag gap 4831 pending 24k merge then Procrustes valence",
             "honest_tag": "gap 4831 pending 24k merge then Procrustes valence",
             "after_merge_full": 25550,
             "backfill_merge_plan": {
                 "sources": [
-                    {"name": "fundamentals_sec_edgar.jsonl", "rows": 2435, "note": "XBRL revenue assets equity cash_flow_op CIK"},
-                    {"name": "dfs_harvest_sec_edgar_10k.jsonl", "rows": 15838, "bytes": "12M", "note": "MD&A Risk Fog sentiment lex"},
-                    {"name": "dfs_harvest_equities.jsonl", "rows": 2000, "provenance": "EXTRACTED_SEC_public_only_synth_seed13_until_13F_live non-prod-fabricated still until real 13F/Form4"},
-                    {"name": "dfs_harvest_sec_edgar.jsonl", "rows": 2435, "note": "submissions DEF14A clock 13F crowding"}
+                    {
+                        "name": "fundamentals_sec_edgar.jsonl",
+                        "rows": 2435,
+                        "note": "XBRL revenue assets equity cash_flow_op CIK",
+                    },
+                    {
+                        "name": "dfs_harvest_sec_edgar_10k.jsonl",
+                        "rows": 15838,
+                        "bytes": "12M",
+                        "note": "MD&A Risk Fog sentiment lex",
+                    },
+                    {
+                        "name": "dfs_harvest_equities.jsonl",
+                        "rows": 2000,
+                        "provenance": "EXTRACTED_SEC_public_only_synth_seed13_until_13F_live non-prod-fabricated still until real 13F/Form4",
+                    },
+                    {
+                        "name": "dfs_harvest_sec_edgar.jsonl",
+                        "rows": 2435,
+                        "note": "submissions DEF14A clock 13F crowding",
+                    },
                 ],
                 "dedup": "cik+date 90d 20k max + sha256 bucket cap 5-1505B deterministic",
-                "total_raw": 2435+15838+2000+2435,
+                "total_raw": 2435 + 15838 + 2000 + 2435,
                 "deduped_target": 20273,
                 "final_target": "24000-25550",
                 "phase": "Phase1 per-domain PASS → Phase2 Procrustes mean-pool valence only after PASS per architecture rule team_towers 4/4 MoT B+Procrustes+VRNN",
                 "procrustes_gate": {
                     "rule": "architecture rule: Procrustes mean-pool Phase2 only after per-domain PASS",
                     "per_domain_PASS_requires": ["CQS>0.72", "IC>0.01", "Sharpe>1.2", "R2>0.02", "verifier≥8.0"],
-                    "current_equities": {"CQS": sector.get("cqs",0.725), "IC": ic, "Sharpe": sharpe, "R2": r2, "verifier": 8.7, "result": "PASS"},
-                    "next": "Procrustes valence mean-pool 4-domain 64-d → CHEMERA 25550 unified"
-                }
+                    "current_equities": {
+                        "CQS": sector.get("cqs", 0.725),
+                        "IC": ic,
+                        "Sharpe": sharpe,
+                        "R2": r2,
+                        "verifier": 8.7,
+                        "result": "PASS",
+                    },
+                    "next": "Procrustes valence mean-pool 4-domain 64-d → CHEMERA 25550 unified",
+                },
             },
             "team_towers_gate_checklist": {
                 "4/4_MoT": "MoT B cross-sport tower B (Brand/Owner) — 4 domains own towers",
                 "B_Procrustes": "Procrustes optimal rotation U Vᵀ align 4×64-d before mean",
                 "VRNN": "VRNN μ/logvar 32-d 2×16 latent unified sequence forward",
                 "phase_rule": "Phase2 only after per-domain PASS — enforced",
-                "consumers": ["dfs_optimizer.py", "vector-hub/assets/data/unified.json", "dumbmodel.com chimera 5th game"]
-            }
+                "consumers": [
+                    "dfs_optimizer.py",
+                    "vector-hub/assets/data/unified.json",
+                    "dumbmodel.com chimera 5th game",
+                ],
+            },
         },
         "14k_transformer": {
             "rows": 14400,
@@ -469,7 +554,7 @@ def main():
             "VICReg_inv": True,
             "rope": True,
             "rmsnorm": True,
-            "cosine_schedule": True
+            "cosine_schedule": True,
         },
         "cron": "11m",
         "zero_deps": True,
@@ -483,7 +568,7 @@ def main():
             "full_2000_ok": dfs_rep.get("full_read_ok", False),
             "mock_5_row_removed": not dfs_rep.get("mock_5_row_flag", True),
             "reads_full_file": True,
-            "path": str(DFS_EQUITIES_JSONL)
+            "path": str(DFS_EQUITIES_JSONL),
         },
         "monetization": {
             "note": "paper-only games free edge private — never advice — Kelly 0.25 1% max 3 concurrent IC>0.03 Sharpe>1.2 win>55% DD<12% gates",
@@ -491,22 +576,28 @@ def main():
             "gates": "IC>0.03 Sharpe>1.2 win>55% DD<12% kill-switch GREEN/YELLOW/RED auto-shrink 0.25→0.1",
             "games_free_forever": True,
             "edge_private": True,
-            "kill_switch": "DD>12% rolling 30d pause OR 3σ day pause OR TLPG dedup collision >10% reseed"
+            "kill_switch": "DD>12% rolling 30d pause OR 3σ day pause OR TLPG dedup collision >10% reseed",
         },
         "modeling_rule_2026_08_08": {
-            "train_real_models_≥2": ["LinearRegression", "Ridge", "RandomForest", "GradientBoosting", "MLP 64→32→1 ReLU"],
+            "train_real_models_≥2": [
+                "LinearRegression",
+                "Ridge",
+                "RandomForest",
+                "GradientBoosting",
+                "MLP 64→32→1 ReLU",
+            ],
             "cv": "5-fold grouped by ticker/sector/year no leakage",
             "holdout": "80/10/10 stratified sector+cap_hash deterministic 400/50/50 tickers 500 points 4831",
             "metrics": ["MAE", "RMSE", "R2"],
             "explainer": "Kernel SHAP or permutation importance + partial dependence logged glass-box",
             "construct_validity": "define plain-English operationalize convergent/discriminant/predictive document threats — no vanity metric",
-            "L2": 1.0
+            "L2": 1.0,
         },
         "zero_deps_verified": True,
         "stdlib_only": True,
         "ML_DFS": True,
         "peer_drift": True,
-        "sec_10k_factor": True
+        "sec_10k_factor": True,
     }
 
     # write report json
@@ -518,9 +609,13 @@ def main():
         return
 
     # latency for timeline
-    lat = int((time.time() - t0)*1000)
+    lat = int((time.time() - t0) * 1000)
     # timeline triple-write will be done by caller but provide stub
-    print(f"[{time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())}] equities-prod-hardening mae {mae:.4f} IC {ic:.3f} Sharpe {rep['sharpe']} full2000={dfs_rep.get('full_read_ok')} train_matrix_ok={train_rep.get('checks',{}).get('Z_shape_ok')} lat={lat}ms", file=sys.stderr)
+    print(
+        f"[{time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())}] equities-prod-hardening mae {mae:.4f} IC {ic:.3f} Sharpe {rep['sharpe']} full2000={dfs_rep.get('full_read_ok')} train_matrix_ok={train_rep.get('checks',{}).get('Z_shape_ok')} lat={lat}ms",
+        file=sys.stderr,
+    )
+
 
 if __name__ == "__main__":
     main()
