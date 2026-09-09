@@ -105,7 +105,10 @@ val_tickers = set(uniq_tickers[n_train : n_train + n_val])
 train_seqs = [s for s in seqs if s["ticker"] in train_tickers]
 val_seqs = [s for s in seqs if s["ticker"] in val_tickers]
 print(f"Split train {len(train_seqs)} val {len(val_seqs)}")
-device = "cpu"
+# Host RTX 4080 path: prefer CUDA. This changes wall-clock and can change
+# numerics vs the old hardcoded-cpu climb protocol — re-baseline after.
+device = "cuda" if torch.cuda.is_available() else "cpu"
+print(f"device={device} cuda_available={torch.cuda.is_available()}")
 model = EquitiesCareerMTNN(
     fam_dims=fam_dims,
     d_tower=Args.d_tower,
