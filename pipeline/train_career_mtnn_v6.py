@@ -5,6 +5,7 @@ sys.path.insert(0, "pipeline")
 from pathlib import Path
 
 import numpy as np
+import scipy.stats as stats
 import torch
 import torch.nn.functional as F
 from dataset_career import (
@@ -14,6 +15,11 @@ from dataset_career import (
     load_bundle,
 )
 from model_career import EquitiesCareerMTNN
+
+# Matches classic pipeline/train_mtnn.py eval_split: time is the holdout constant.
+TRAIN_FY_MAX = 2021
+VAL_FY_MIN = 2022
+VAL_FY_MAX = 2023
 
 
 def temporal_info_nce(c_seq, valid_mask, sector_ids, temp=0.08):
@@ -29,6 +35,24 @@ def temporal_info_nce(c_seq, valid_mask, sector_ids, temp=0.08):
     logits = anchors @ c_valid.T / temp
     loss = F.cross_entropy(logits, idx)
     return loss, n_anchors, int(valid.sum())
+
+
+def truncate_seq_by_fy(seq, fy_max):
+    """Keep positions with fiscal_year <= fy_max (career order preserved)."""
+    fys = np.asarray(seq["fiscal_years"])
+    keep = np.where(fys <= fy_max)[0]
+    if keep.size == 0:
+        return None
+    out = {
+        "ticker": seq["ticker"],
+        "sector": seq["sector"],
+        "fiscal_years": seq["fiscal_years"][keep].copy(),
+        "indices": seq["indices"][keep].copy(),
+        "valid_len": int(keep.size),
+    }
+    if "sector_id" in seq:
+        out["sector_id"] = seq["sector_id"]
+    return out
 
 
 ap = argparse.ArgumentParser()
@@ -54,6 +78,14 @@ ap.add_argument("--weight-rank", type=float, default=1.0)
 ap.add_argument("--weight-var", type=float, default=0.2)
 ap.add_argument("--drop-p", type=float, default=0.1)
 ap.add_argument("--val-every", type=int, default=1)
+ap.add_argument(
+    "--split",
+    type=str,
+    choices=("temporal", "ticker"),
+    default="temporal",
+    help="temporal: FY<=2021 train / score FY 2022-2023 (time constant). "
+    "ticker: 70/15/15 ticker shuffle (legacy A/B-only climb).",
+)
 ap.add_argument("--out", type=str, default="pipeline/data/mtnn_career_v6_best.pt")
 Args = ap.parse_args()
 print(f"Args {vars(Args)}")
@@ -78,33 +110,56 @@ seqs, feat_to_idx, extra_idx = build_sequences(
 )
 print(f"Built {len(seqs)} seqs")
 np.random.seed(Args.seed)
-# sorted(), NOT list(). Python randomises str hashing per process and nothing
-# here pins PYTHONHASHSEED, so `list({...})` over a set of tickers came out in a
-# DIFFERENT order in every run. np.random.shuffle is seeded, but shuffling a
-# differently-ordered list gives a different permutation -- so --seed did not
-# control the train/val split at all, and two runs at the same seed trained on
-# different data. Measured 2026-08-15 against a fresh baseline panel: seed 5
-# gave IC 0.5047 then 0.5309, seed 7 gave 0.5182 then 0.4571, same commit, same
-# flags. That is a ~0.06 swing attributed to a seed that was not in control.
-#
-# Consequences this fix removes: the panel's spread was split variance wearing
-# seed variance's name, an A/B compared two different data splits, and per-seed
-# pairing across arms was meaningless because seed 5 was not the same split on
-# both sides. sorted() makes the pre-shuffle order canonical, after which the
-# seeded shuffle is reproducible.
-#
-# This CHANGES THE NUMBERS -- it is a new data regime, and any baseline measured
-# before this commit is not comparable to one measured after.
-uniq_tickers = sorted({s["ticker"] for s in seqs})
-np.random.shuffle(uniq_tickers)
-n = len(uniq_tickers)
-n_train = int(n * 0.7)
-n_val = int(n * 0.15)
-train_tickers = set(uniq_tickers[:n_train])
-val_tickers = set(uniq_tickers[n_train : n_train + n_val])
-train_seqs = [s for s in seqs if s["ticker"] in train_tickers]
-val_seqs = [s for s in seqs if s["ticker"] in val_tickers]
-print(f"Split train {len(train_seqs)} val {len(val_seqs)}")
+# Split regime. temporal is the product constant (time); ticker is legacy climb A/B.
+# CHANGES THE NUMBERS — baselines under the other split are not comparable.
+val_score_fy_min = None
+val_score_fy_max = None
+if Args.split == "temporal":
+    # Train on careers truncated to FY<=2021. Validate with history through 2023
+    # but score IC only on FY 2022-2023 positions (same cuts as train_mtnn.eval_split).
+    train_seqs = []
+    for s in seqs:
+        t = truncate_seq_by_fy(s, TRAIN_FY_MAX)
+        if t is not None:
+            train_seqs.append(t)
+    val_seqs = []
+    for s in seqs:
+        t = truncate_seq_by_fy(s, VAL_FY_MAX)
+        if t is not None and np.any(
+            (t["fiscal_years"] >= VAL_FY_MIN) & (t["fiscal_years"] <= VAL_FY_MAX)
+        ):
+            val_seqs.append(t)
+    val_score_fy_min = VAL_FY_MIN
+    val_score_fy_max = VAL_FY_MAX
+    print(
+        f"Split temporal train FY<={TRAIN_FY_MAX} n={len(train_seqs)} "
+        f"val score FY {VAL_FY_MIN}-{VAL_FY_MAX} n={len(val_seqs)}"
+    )
+else:
+    # sorted(), NOT list(). Python randomises str hashing per process and nothing
+    # here pins PYTHONHASHSEED, so `list({...})` over a set of tickers came out in a
+    # DIFFERENT order in every run. np.random.shuffle is seeded, but shuffling a
+    # differently-ordered list gives a different permutation -- so --seed did not
+    # control the train/val split at all, and two runs at the same seed trained on
+    # different data. Measured 2026-08-15 against a fresh baseline panel: seed 5
+    # gave IC 0.5047 then 0.5309, seed 7 gave 0.5182 then 0.4571, same commit, same
+    # flags. That is a ~0.06 swing attributed to a seed that was not in control.
+    #
+    # Consequences this fix removes: the panel's spread was split variance wearing
+    # seed variance's name, an A/B compared two different data splits, and per-seed
+    # pairing across arms was meaningless because seed 5 was not the same split on
+    # both sides. sorted() makes the pre-shuffle order canonical, after which the
+    # seeded shuffle is reproducible.
+    uniq_tickers = sorted({s["ticker"] for s in seqs})
+    np.random.shuffle(uniq_tickers)
+    n = len(uniq_tickers)
+    n_train = int(n * 0.7)
+    n_val = int(n * 0.15)
+    train_tickers = set(uniq_tickers[:n_train])
+    val_tickers = set(uniq_tickers[n_train : n_train + n_val])
+    train_seqs = [s for s in seqs if s["ticker"] in train_tickers]
+    val_seqs = [s for s in seqs if s["ticker"] in val_tickers]
+    print(f"Split ticker train {len(train_seqs)} val {len(val_seqs)}")
 # Host RTX 4080 path: prefer CUDA. This changes wall-clock and can change
 # numerics vs the old hardcoded-cpu climb protocol — re-baseline after.
 device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -318,6 +373,11 @@ for epoch in range(Args.epochs):
                 pd = out["fwd_dd"].cpu().numpy()
                 for b in range(len(bl)):
                     for seq_pos in range(bl[b]["valid_len"]):
+                        fy = int(bl[b]["fiscal_years"][seq_pos])
+                        if val_score_fy_min is not None and fy < val_score_fy_min:
+                            continue
+                        if val_score_fy_max is not None and fy > val_score_fy_max:
+                            continue
                         if not np.isnan(f6[b, seq_pos]):
                             pf_all.append(pf[b, seq_pos])
                             tf_all.append(f6[b, seq_pos])
@@ -327,7 +387,6 @@ for epoch in range(Args.epochs):
                         if triple[b, seq_pos] != -1:
                             entry_logits.append(out["entry"][b, seq_pos].item())
                             entry_true.append(triple[b, seq_pos])
-        import scipy.stats as stats
 
         if len(pf_all) > 10:
             ic_f6 = stats.spearmanr(pf_all, tf_all)[0]
